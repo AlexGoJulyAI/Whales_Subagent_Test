@@ -1,0 +1,15 @@
+- main [ref=e4]:
+  - generic [ref=e7]:
+    - generic [ref=e9]: july ai
+    - generic [ref=e10]: Welcome back!
+    - generic [ref=e11]: Sign in to continue your AI learning journey.
+    - generic [ref=e15]:
+      - button "Sign in with Google. Opens in new tab" [ref=e17] [cursor=pointer]:
+        - generic [ref=e19]:
+          - img [ref=e21]
+          - generic [ref=e28]: Sign in with Google
+      - iframe
+    - generic [ref=e29]:
+      - text: Don't have an account?
+      - link "Sign up here" [ref=e30] [cursor=pointer]:
+        - /url: /

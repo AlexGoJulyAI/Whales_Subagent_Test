@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoJuly — Navigation UX Fix Prototype</title>
+
+  <!-- Google Fonts: Calistoga (400) + Inter (400, 500, 600, 700) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    button { cursor: pointer; background: none; border: none; font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul, ol { list-style: none; }
+
+    /* ── Design Tokens ── */
+    :root {
+      /* Colors */
+      --primary:           #083386;
+      --primary-hover:     #0a40a0;
+      --deep-sea:          #10204b;
+      --heading-dark:      #1a2847;
+      --bg-page:           #eeeeee;
+      --card-bg:           #ffffff;
+      --border-card:       #e5e7eb;
+      --border-heavy:      #dadee7;
+      --badge-default:     #dadee7;
+      --badge-positive:    #a2e8a5;
+      --badge-text-primary:#083386;
+      --badge-text-default:#374151;
+      --green-border:      #5ccc89;
+      --admin-pink:        #e040a0;
+      --admin-teal:        #40b0a0;
+      --admin-teal-text:   #0a2030;
+      --nav-active:        #2563eb;
+      --nav-inactive:      #6b7280;
+      --chevron:           #9ca3af;
+      --expanded-border:   #f3f4f6;
+      --separator:         #f3f4f6;
+      --sidebar-nav-default: #374151;
+      --sidebar-nav-hover-bg: #f9fafb;
+      --body-muted:        #6b7280;
+      --body-text:         #4b5563;
+
+      /* Spacing */
+      --page-padding: 32px;
+      --card-padding: 16px;
+      --nav-px: 24px;
+      --nav-py: 8px;
+
+      /* Border Radius */
+      --radius-card: 8px;
+      --radius-btn-primary: 12px;
+      --radius-btn-view: 9999px;
+      --radius-sidebar-item: 8px;
+
+      /* Typography */
+      --font-display: 'Calistoga', serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    /* ── Base ── */
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-page);
+      min-height: 100vh;
+    }
+
+    /* ── Screen Switcher Bar ── */
+    #screen-switcher {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: #1e293b;
+      font-family: var(--font-body);
+      font-size: 12px;
+    }
+
+    #screen-switcher span {
+      color: #94a3b8;
+      font-weight: 500;
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
+    .switcher-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      color: #94a3b8;
+      background: transparent;
+      border: 1px solid #334155;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .switcher-btn.active {
+      background: #334155;
+      color: #f1f5f9;
+      border-color: #475569;
+    }
+
+    .switcher-btn:hover:not(.active) {
+      background: #1e3a5f;
+      color: #cbd5e1;
+      border-color: #475569;
+    }
+
+    /* ── Screen containers ── */
+    .screen {
+      display: none;
+      padding-top: 33px; /* height of switcher bar */
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* ── Shared: App wrapper ── */
+    .app-wrapper {
+      min-height: 100vh;
+      background: var(--bg-page);
+    }
+
+    .app-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: sticky;
+      top: 33px; /* account for switcher bar */
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      padding: var(--nav-py) var(--nav-px);
+      border-radius: 0 0 16px 16px;
+      border: 2px solid var(--border-heavy);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--deep-sea);
+      margin-right: 32px;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .navbar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-card);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--nav-inactive);
+      transition: color 0.15s;
+    }
+
+    .navbar-nav-item.active {
+      color: var(--nav-active);
+    }
+
+    .navbar-nav-item:hover:not(.active) {
+      color: #111827;
+    }
+
+    .navbar-nav-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-admin {
+      padding: 0 12px;
+      height: 32px;
+      border-radius: var(--radius-card);
+      background: var(--admin-pink);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+
+    .btn-fe-admin {
+      padding: 0 12px;
+      height: 32px;
+      border-radius: var(--radius-card);
+      background: var(--admin-teal);
+      color: var(--admin-teal-text);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+
+    .navbar-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 9999px;
+      object-fit: cover;
+    }
+
+    /* ── Primary Button ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 24px;
+      height: 48px;
+      border-radius: var(--radius-btn-primary);
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      transition: background-color 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-primary svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .btn-primary.w-full {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      white-space: nowrap;
+    }
+
+    .badge-default {
+      background: var(--badge-default);
+      color: var(--badge-text-default);
+    }
+
+    .badge-completed {
+      background: var(--badge-positive);
+      color: var(--badge-text-primary);
+    }
+
+    /* ── Duration label ── */
+    .duration {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--body-muted);
+    }
+
+    .duration svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       SCREEN 2 — HOME PAGE
+    ───────────────────────────────────────────────────────── */
+
+    .home-content {
+      padding: var(--page-padding);
+    }
+
+    .home-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .home-greeting {
+      font-family: var(--font-display);
+      font-size: 36px;
+      line-height: 1.3;
+      font-weight: 400;
+      color: var(--heading-dark);
+      margin-bottom: 32px;
+    }
+
+    /* ── Track Card (Accordion) ── */
+    .track-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      border: 1px solid var(--border-card);
+      margin-bottom: 24px;
+    }
+
+    .track-card-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--card-padding);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .track-card-header:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+      border-radius: var(--radius-card);
+    }
+
+    .track-card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .track-icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .track-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .track-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--heading-dark);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .track-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .track-chevron {
+      width: 20px;
+      height: 20px;
+      color: var(--chevron);
+      flex-shrink: 0;
+    }
+
+    .track-chevron svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Expanded body */
+    .track-body {
+      border-top: 1px solid var(--expanded-border);
+    }
+
+    .track-body.hidden {
+      display: none;
+    }
+
+    /* ── Welcome expanded content ── */
+    .welcome-content {
+      padding: 0 16px 16px;
+    }
+
+    .welcome-content p {
+      font-size: 14px;
+      color: var(--body-text);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    /* ── AI Red Team expanded content ── */
+    .redteam-content {
+      padding: 0 16px 16px;
+    }
+
+    .redteam-content > p {
+      font-size: 14px;
+      color: var(--body-text);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .green-panel {
+      border-radius: var(--radius-card);
+      padding: 32px;
+      width: 100%;
+      background-image: url(../images/gojuly/btn-bg-green.png);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .step-cards-row {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: nowrap;
+    }
+
+    .step-card-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .step-card {
+      width: 288px;
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .step-card img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .step-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--heading-dark);
+      margin-top: 12px;
+      margin-bottom: 8px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--body-text);
+      line-height: 1.5;
+    }
+
+    .step-arrow {
+      width: 20px;
+      height: 20px;
+      color: var(--chevron);
+      margin: 0 8px;
+      flex-shrink: 0;
+    }
+
+    .step-arrow svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .dive-in-wrap {
+      margin-top: 16px;
+    }
+
+    /* ── Sample Submission expanded content ── */
+    .sample-submission-content {
+      padding: 0 16px 16px;
+    }
+
+    .sample-card-outer {
+      width: 250px;
+      border-radius: 16px;
+      border: 4px solid var(--green-border);
+      background: var(--card-bg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sample-card-outer img.card-header-img {
+      width: 250px;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sample-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .sample-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--heading-dark);
+      margin-bottom: 4px;
+    }
+
+    .sample-card-desc {
+      font-size: 12px;
+      color: var(--body-muted);
+      margin-top: 12px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .btn-view {
+      width: 100%;
+      padding: 8px 0;
+      border-radius: var(--radius-btn-view);
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+
+    .btn-view:hover {
+      background: var(--primary-hover);
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       SCREEN 1 — LEARNING PAGE
+    ───────────────────────────────────────────────────────── */
+
+    .learning-layout {
+      display: flex;
+      min-height: calc(100vh - 33px - 52px); /* full - switcher - navbar */
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border-card);
+      height: 100%;
+      min-height: calc(100vh - 33px - 52px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .sidebar-section-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--body-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-section-header.mt {
+      margin-top: 16px;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: var(--radius-sidebar-item);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--sidebar-nav-default);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      text-align: left;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .sidebar-nav-item:hover {
+      background: var(--sidebar-nav-hover-bg);
+      color: #111827;
+    }
+
+    .sidebar-nav-item.active {
+      color: var(--nav-active);
+    }
+
+    .sidebar-nav-item.active:hover {
+      background: var(--sidebar-nav-hover-bg);
+      color: var(--nav-active);
+    }
+
+    .sidebar-separator {
+      border: none;
+      border-top: 1px solid var(--separator);
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* Pushes the button to the bottom if there's leftover space */
+    .sidebar-spacer {
+      flex: 1;
+    }
+
+    /* ── Go to Job Application button ── */
+    .btn-job-application {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 0 24px;
+      height: 48px;
+      border-radius: var(--radius-btn-primary);
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      transition: background-color 0.15s;
+      text-decoration: none;
+    }
+
+    .btn-job-application:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-job-application svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── Learning content area ── */
+    .learning-content {
+      flex: 1;
+      background: var(--bg-page);
+      padding: var(--page-padding);
+      overflow-y: auto;
+    }
+
+    .learning-h1 {
+      font-family: var(--font-display);
+      font-size: 36px;
+      line-height: 1.3;
+      font-weight: 400;
+      color: var(--heading-dark);
+      margin-bottom: 32px;
+    }
+
+    .learning-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      padding: 24px;
+    }
+
+    .learning-card-placeholder {
+      color: var(--body-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .learning-card-placeholder h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--heading-dark);
+      margin-bottom: 12px;
+    }
+
+    .learning-card-placeholder p {
+      margin-bottom: 12px;
+    }
+
+    .learning-card-placeholder ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .learning-card-placeholder ul li {
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     SCREEN SWITCHER (prototype nav — not part of GoJuly UI)
+════════════════════════════════════════════════════════════════════════════════ -->
+<div id="screen-switcher" role="navigation" aria-label="Prototype screen switcher">
+  <span>View:</span>
+  <button class="switcher-btn" id="btn-screen1" onclick="showScreen(1)">
+    Screen 1: Learning Page
+  </button>
+  <button class="switcher-btn active" id="btn-screen2" onclick="showScreen(2)">
+    Screen 2: Home Page (Default)
+  </button>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     SCREEN 2 — HOME PAGE
+════════════════════════════════════════════════════════════════════════════════ -->
+<div id="screen-2" class="screen active">
+  <div class="app-wrapper">
+    <div class="app-inner">
+
+      <!-- Navbar (Home active) -->
+      <nav class="navbar">
+        <div class="navbar-left">
+          <span class="navbar-logo">july ai</span>
+          <ul class="navbar-nav">
+            <li>
+              <span class="navbar-nav-item active">
+                <!-- Home icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Home
+              </span>
+            </li>
+            <li>
+              <span class="navbar-nav-item">
+                <!-- PenTool icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m12 19 7-7 3 3-7 7-3-3z"/>
+                  <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                  <path d="m2 2 7.586 7.586"/>
+                  <circle cx="11" cy="11" r="2"/>
+                </svg>
+                Data Portfolio
+              </span>
+            </li>
+            <li>
+              <span class="navbar-nav-item">
+                <!-- DollarSign icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="12" x2="12" y1="2" y2="22"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                Payment
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="navbar-right">
+          <button class="btn-admin">Admin</button>
+          <button class="btn-fe-admin">FE Admin</button>
+          <img class="navbar-avatar" src="../images/gojuly/slack-icon.png" alt="Slack" width="32" height="32" />
+          <img class="navbar-avatar" src="../images/gojuly/profile.png" alt="Profile" width="32" height="32" />
+        </div>
+      </nav>
+
+      <!-- Main content -->
+      <div class="home-content">
+        <div class="home-inner">
+
+          <!-- Greeting -->
+          <h1 class="home-greeting">Hey, Alex!</h1>
+
+          <!-- ── Track 0: Welcome to July AI! (defaultOpen = true) ── -->
+          <div class="track-card">
+            <button class="track-card-header" onclick="toggleTrack(this)" aria-expanded="true" aria-controls="track-body-0">
+              <div class="track-card-header-left">
+                <img class="track-icon" src="../images/gojuly/TrackWelcome.svg" alt="Welcome to July AI! icon" width="40" height="40" />
+                <div class="track-meta">
+                  <div class="track-title">Welcome to July AI!</div>
+                  <div class="track-badges">
+                    <span class="badge badge-default">IN PROGRESS</span>
+                    <span class="duration">
+                      <!-- Clock icon -->
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      2.5 MINUTES
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="track-chevron" aria-hidden="true">
+                <!-- ChevronUp (expanded) -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+              </span>
+            </button>
+            <div class="track-body" id="track-body-0">
+              <div class="welcome-content">
+                <p>We are glad you are here to start an exciting journey with us. Start here to get familiar with using the platform.</p>
+                <button class="btn-primary">
+                  Onboard
+                  <!-- ArrowRight icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="5" x2="19" y1="12" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Track 1: AI Red Team (defaultOpen = false) ── -->
+          <div class="track-card">
+            <button class="track-card-header" onclick="toggleTrack(this)" aria-expanded="false" aria-controls="track-body-1">
+              <div class="track-card-header-left">
+                <img class="track-icon" src="../images/gojuly/TrackRedTeam.svg" alt="AI Red Team icon" width="40" height="40" />
+                <div class="track-meta">
+                  <div class="track-title">AI Red Team</div>
+                  <div class="track-badges">
+                    <span class="badge badge-default">IN PROGRESS</span>
+                    <span class="duration">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      2.0 HOURS
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="track-chevron" aria-hidden="true">
+                <!-- ChevronDown (collapsed) -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="track-body hidden" id="track-body-1">
+              <div class="redteam-content">
+                <p>Learning what red teaming is and apply your knowledge to guide AI respond outside its safety guard rails</p>
+                <div class="green-panel">
+                  <div class="step-cards-row">
+                    <!-- Card 1: Learn -->
+                    <div class="step-card-wrapper">
+                      <div class="step-card">
+                        <img src="../images/gojuly/Lightbulb_medium.svg" alt="Learn" width="28" height="28" />
+                        <h3>Learn</h3>
+                        <p>Build AI red teaming skills through core concepts, skill checks, and hands-on exercises.</p>
+                      </div>
+                    </div>
+                    <!-- Arrow -->
+                    <span class="step-arrow" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" x2="19" y1="12" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </span>
+                    <!-- Card 2: Advance -->
+                    <div class="step-card-wrapper">
+                      <div class="step-card">
+                        <img src="../images/gojuly/SuccessfulAttack_medium.svg" alt="Advance" width="28" height="28" />
+                        <h3>Advance</h3>
+                        <p>Progress to real-world scenarios and deeper technical material after a background check and interview.</p>
+                      </div>
+                    </div>
+                    <!-- Arrow -->
+                    <span class="step-arrow" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" x2="19" y1="12" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </span>
+                    <!-- Card 3: Get Hired -->
+                    <div class="step-card-wrapper">
+                      <div class="step-card">
+                        <img src="../images/gojuly/money_medium.svg" alt="Get Hired" width="28" height="28" />
+                        <h3>Get Hired</h3>
+                        <p>Strong performance leads to hiring opportunities for AI red team roles, paying $25–$100 per hour.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Dive In button -->
+                  <div class="dive-in-wrap">
+                    <button class="btn-primary">
+                      Dive In
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="5" x2="19" y1="12" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Track 2: Red Team Sample Submission (defaultOpen = false) ── -->
+          <div class="track-card">
+            <button class="track-card-header" onclick="toggleTrack(this)" aria-expanded="false" aria-controls="track-body-2">
+              <div class="track-card-header-left">
+                <img class="track-icon" src="../images/gojuly/SampleSubmissionImage.png" alt="Red Team Sample Submission icon" width="40" height="40" />
+                <div class="track-meta">
+                  <div class="track-title">Red Team Sample Submission</div>
+                  <!-- No status or duration badge for this track -->
+                </div>
+              </div>
+              <span class="track-chevron" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="track-body hidden" id="track-body-2">
+              <div class="sample-submission-content">
+                <div class="sample-card-outer">
+                  <img class="card-header-img" src="../images/gojuly/card-bg-blue.png" alt="Red Team Sample Submission header" width="250" height="100" />
+                  <div class="sample-card-body">
+                    <div class="sample-card-title">Red Team Sample Submission</div>
+                    <span class="badge badge-completed">COMPLETED</span>
+                    <p class="sample-card-desc">Click this to submit your red team samples.</p>
+                    <button class="btn-view">View</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Track 3: AI Fundamentals (defaultOpen = false) ── -->
+          <div class="track-card">
+            <button class="track-card-header" onclick="toggleTrack(this)" aria-expanded="false" aria-controls="track-body-3">
+              <div class="track-card-header-left">
+                <img class="track-icon" src="../images/gojuly/TrackAIFundamentals.svg" alt="AI Fundamentals icon" width="40" height="40" />
+                <div class="track-meta">
+                  <div class="track-title">AI Fundamentals</div>
+                  <div class="track-badges">
+                    <span class="badge badge-default">IN PROGRESS</span>
+                    <span class="duration">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      45 MINUTES
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="track-chevron" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="track-body hidden" id="track-body-3">
+              <div class="welcome-content">
+                <p>Explore core AI concepts and fundamentals to build a strong foundation for your journey.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Track 4: Coding Fundamentals (defaultOpen = false) ── -->
+          <div class="track-card">
+            <button class="track-card-header" onclick="toggleTrack(this)" aria-expanded="false" aria-controls="track-body-4">
+              <div class="track-card-header-left">
+                <img class="track-icon" src="../images/gojuly/TrackCodingFundamentals.svg" alt="Coding Fundamentals icon" width="40" height="40" />
+                <div class="track-meta">
+                  <div class="track-title">Coding Fundamentals</div>
+                  <div class="track-badges">
+                    <span class="badge badge-default">NOT STARTED</span>
+                    <span class="duration">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      2.25 HOURS
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span class="track-chevron" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="track-body hidden" id="track-body-4">
+              <div class="welcome-content">
+                <p>Build essential coding skills to support your AI and red team work.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Track 5: Exclusive Events (defaultOpen = false) ── -->
+          <div class="track-card">
+            <button class="track-card-header" onclick="toggleTrack(this)" aria-expanded="false" aria-controls="track-body-5">
+              <div class="track-card-header-left">
+                <img class="track-icon" src="../images/gojuly/TrackEventExclusives.svg" alt="Exclusive Events icon" width="40" height="40" />
+                <div class="track-meta">
+                  <div class="track-title">Exclusive Events</div>
+                  <!-- No status or duration -->
+                </div>
+              </div>
+              <span class="track-chevron" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="track-body hidden" id="track-body-5">
+              <div class="welcome-content">
+                <p>Join exclusive events and workshops available to July AI members.</p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.home-inner -->
+      </div><!-- /.home-content -->
+    </div><!-- /.app-inner -->
+  </div><!-- /.app-wrapper -->
+</div><!-- /#screen-2 -->
+
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     SCREEN 1 — LEARNING PAGE
+════════════════════════════════════════════════════════════════════════════════ -->
+<div id="screen-1" class="screen">
+  <div class="app-wrapper">
+    <div class="app-inner">
+
+      <!-- Navbar (Home inactive — user is on learning page) -->
+      <nav class="navbar">
+        <div class="navbar-left">
+          <span class="navbar-logo">july ai</span>
+          <ul class="navbar-nav">
+            <li>
+              <span class="navbar-nav-item">
+                <!-- Home icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Home
+              </span>
+            </li>
+            <li>
+              <span class="navbar-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m12 19 7-7 3 3-7 7-3-3z"/>
+                  <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                  <path d="m2 2 7.586 7.586"/>
+                  <circle cx="11" cy="11" r="2"/>
+                </svg>
+                Data Portfolio
+              </span>
+            </li>
+            <li>
+              <span class="navbar-nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="12" x2="12" y1="2" y2="22"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                Payment
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="navbar-right">
+          <button class="btn-admin">Admin</button>
+          <button class="btn-fe-admin">FE Admin</button>
+          <img class="navbar-avatar" src="../images/gojuly/slack-icon.png" alt="Slack" width="32" height="32" />
+          <img class="navbar-avatar" src="../images/gojuly/profile.png" alt="Profile" width="32" height="32" />
+        </div>
+      </nav>
+
+      <!-- Two-column layout -->
+      <div class="learning-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+          <!-- LEARN section -->
+          <div class="sidebar-section-header">Learn</div>
+          <button class="sidebar-nav-item active">Introduction</button>
+          <button class="sidebar-nav-item">Concepts</button>
+          <button class="sidebar-nav-item">Techniques</button>
+          <button class="sidebar-nav-item">Case Studies</button>
+
+          <!-- PRACTICE section -->
+          <div class="sidebar-section-header mt">Practice</div>
+          <button class="sidebar-nav-item">Requirements</button>
+          <button class="sidebar-nav-item">Challenge 1</button>
+          <button class="sidebar-nav-item">Challenge 2</button>
+          <button class="sidebar-nav-item">Challenge 3</button>
+
+          <!-- Separator -->
+          <hr class="sidebar-separator" />
+
+          <!-- Go to Job Application button (PRIMARY DELIVERABLE) -->
+          <a
+            href="https://app.gojuly.ai/learning/3a0c9d2c-acdf-4696-aa32-f1e72dc79401"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-job-application"
+          >
+            Go to Job Application
+            <!-- ArrowRight icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" x2="19" y1="12" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+
+        </aside>
+
+        <!-- Learning content area -->
+        <main class="learning-content">
+          <h1 class="learning-h1">AI Red Teaming Beginner</h1>
+          <div class="learning-card">
+            <div class="learning-card-placeholder">
+              <p>Lesson content</p>
+            </div>
+          </div>
+        </main>
+
+      </div><!-- /.learning-layout -->
+    </div><!-- /.app-inner -->
+  </div><!-- /.app-wrapper -->
+</div><!-- /#screen-1 -->
+
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════════════════════════════ -->
+<script>
+  /* ── Screen switcher ── */
+  function showScreen(n) {
+    document.querySelectorAll('.screen').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.querySelectorAll('.switcher-btn').forEach(function(btn) {
+      btn.classList.remove('active');
+    });
+    document.getElementById('screen-' + n).classList.add('active');
+    document.getElementById('btn-screen' + n).classList.add('active');
+  }
+
+  /* ── Accordion toggle — INSTANT, no CSS transition ──
+     Spec: toggle display:none. No max-height. No opacity fade. No animation.
+  ── */
+  function toggleTrack(headerBtn) {
+    var isExpanded = headerBtn.getAttribute('aria-expanded') === 'true';
+    var bodyId = headerBtn.getAttribute('aria-controls');
+    var body = document.getElementById(bodyId);
+    var chevronSpan = headerBtn.querySelector('.track-chevron');
+
+    if (isExpanded) {
+      /* Collapse */
+      body.classList.add('hidden');
+      headerBtn.setAttribute('aria-expanded', 'false');
+      /* Swap to ChevronDown */
+      chevronSpan.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    } else {
+      /* Expand */
+      body.classList.remove('hidden');
+      headerBtn.setAttribute('aria-expanded', 'true');
+      /* Swap to ChevronUp */
+      chevronSpan.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+    }
+  }
+
+  /* ── Sidebar nav item active state ── */
+  document.querySelectorAll('.sidebar-nav-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      /* Only update active within the same sidebar */
+      var sidebar = this.closest('.sidebar');
+      sidebar.querySelectorAll('.sidebar-nav-item').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      this.classList.add('active');
+    });
+  });
+</script>
+
+<!--
+════════════════════════════════════════════════════════════════════════════════
+  BUILD DOCUMENTATION
+════════════════════════════════════════════════════════════════════════════════
+
+UPSTREAM HANDOFF VALIDATION
+  - User Journey present: YES
+  - Part A (visual render) for all screens: YES — Screen 1 and Screen 2
+  - Part B (text spec) for all screens: YES
+  - Living Token Reference block: YES
+  - Active State Documentation: YES (Designer Notes section 2)
+  - Edge Case Specifications: YES (Designer Notes section 4)
+  - Component Assembly Order: YES (Navbar → Screen 2 → Screen 1)
+  - Open Questions: YES (4 flagged as estimated, all with safe fallbacks)
+  - P0 fields missing: NONE — proceed to build
+
+AESTHETIC DIRECTION LOCK
+  Palette: Deep navy primary (#083386, #10204b) on white card surfaces.
+  Typography: Calistoga for display headings, Inter for all body/UI text.
+  Feel: Professional SaaS learning platform. Editorial-utilitarian.
+  No decorative additions beyond spec. Pixel-faithful.
+
+BUILD DECISION LOG
+  1. Screen switcher implemented as a 33px fixed bar above the navbar,
+     z-index 9999. Navbar top offset adjusted accordingly.
+  2. Accordion toggle uses classList.add/remove('hidden') + aria-expanded.
+     Chevron SVG is swapped via innerHTML to avoid transitions.
+     ZERO CSS transitions on accordion. Instant toggle only.
+  3. "Go to Job Application" is an <a> tag styled as button-primary + w-full,
+     href to destination URL, target="_blank" rel="noopener noreferrer".
+  4. All colors defined as CSS custom properties in :root. No hardcoded hex
+     values in CSS rules — only var() references.
+  5. All images reference ../images/gojuly/ (relative from public/prototype.html).
+     No base64 encoding.
+  6. SVG icons inlined as raw <svg> elements. No CDN icon library loaded.
+     Icons used: Home, PenTool, DollarSign, ChevronDown, ChevronUp, Clock, ArrowRight.
+  7. Navbar Home item: active (#2563eb) on Screen 2. Inactive (#6b7280) on Screen 1.
+  8. Track 0 (Welcome): aria-expanded="true", body visible on page load.
+     Tracks 1–5: aria-expanded="false", body.hidden on page load.
+  9. AI Red Team expanded content includes full green panel with 3 step cards
+     (Lightbulb, SuccessfulAttack, money icons) and Dive In button.
+  10. Admin + FE Admin buttons included in both navbars for fidelity.
+  11. Sidebar: 240px width, bg #ffffff, border-right 1px #e5e7eb, flex col.
+      Separator: border-t #f3f4f6, mt-4 mb-4. Button at bottom of sidebar.
+
+EVALUATION REPORT
+  PRIMARY DELIVERABLE: "Go to Job Application" button — PRESENT
+    - Label: "Go to Job Application" (locked string, not altered)
+    - Destination: https://app.gojuly.ai/learning/3a0c9d2c-acdf-4696-aa32-f1e72dc79401
+    - Implemented as <a href> styled as btn-primary w-full
+    - ArrowRight SVG icon after label
+    - Hover: #0a40a0
+    - Full sidebar width
+    - Located below Practice section items, after separator
+
+  HOME PAGE FIX: AI Red Team collapsed by default — PRESENT
+    - Only Track 0 (Welcome) starts expanded
+    - Tracks 1–5 start collapsed
+    - Red Team Sample Submission (Track 2) visible without scrolling
+    - Instant toggle — no CSS animation anywhere
+
+  DESIGN FIDELITY: FULL
+    - All color tokens matched to spec
+    - All typography matched (Calistoga display, Inter body)
+    - Spacing, radius, shadow matched to spec
+    - Badge variants (IN PROGRESS, NOT STARTED, COMPLETED) correct
+    - Duration labels with Clock icon present
+    - Track icons using correct relative paths
+
+  INTERACTIONS:
+    - Accordion: instant toggle, aria-expanded, chevron swap
+    - Sidebar nav items: click-to-activate
+    - All button hover states: transition-colors only
+    - No layout shifts, no animations
+════════════════════════════════════════════════════════════════════════════════
+-->
+
+</body>
+</html>

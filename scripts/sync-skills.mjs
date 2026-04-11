@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Generates clone-website command/skill files for all supported AI coding platforms.
- * Source of truth: .claude/skills/clone-website/SKILL.md
+ * Syncs skill/command files to supported platforms.
+ * Source of truth:
+ *   .claude/skills/clone-website/SKILL.md
+ *   .claude/skills/clone-and-edit-website/SKILL.md (+ agent files)
  *
  * Usage: node scripts/sync-skills.mjs
  */
@@ -24,15 +26,6 @@ try {
   process.exit(1);
 }
 
-const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-if (!match) {
-  console.error('Error: Could not parse SKILL.md frontmatter');
-  process.exit(1);
-}
-
-const body = match[2];
-const shortDesc = 'Reverse-engineer and clone any website as a pixel-perfect replica';
-
 // --- Helpers ---
 
 function write(relPath, content) {
@@ -42,70 +35,44 @@ function write(relPath, content) {
   console.log(`  \u2713 ${relPath}`);
 }
 
-const HEADER =
-  '<!-- AUTO-GENERATED from .claude/skills/clone-website/SKILL.md \u2014 do not edit directly.\n' +
-  '     Run `node scripts/sync-skills.mjs` to regenerate. -->\n\n';
-
-const noArgs = (text) => text.replace(/\$ARGUMENTS/g, 'the target URL provided by the user');
-
 // --- Generate ---
 
-console.log('Syncing clone-website skill to all platforms...');
+console.log('Syncing clone-website skill...');
 console.log(`  Source: .claude/skills/clone-website/SKILL.md\n`);
 
-// 1. Codex CLI — same SKILL.md format, same $ARGUMENTS syntax
-write('.codex/skills/clone-website/SKILL.md', raw);
-
-// 2. GitHub Copilot — same SKILL.md format
+// GitHub Copilot
 write('.github/skills/clone-website/SKILL.md', raw);
 
-// 3. Cursor — plain markdown, no argument substitution support
-write('.cursor/commands/clone-website.md', HEADER + noArgs(body));
+console.log('\nDone! 1 platform file generated from source skill.');
 
-// 4. Windsurf — markdown workflow
-write('.windsurf/workflows/clone-website.md', HEADER + noArgs(body));
+// ============================================================
+// clone-and-edit-website skill
+// ============================================================
 
-// 5. Gemini CLI — TOML format, {{args}} for arguments
-const geminiBody = body.replace(/\$ARGUMENTS/g, '{{args}}');
-write(
-  '.gemini/commands/clone-website.toml',
-  `# AUTO-GENERATED from .claude/skills/clone-website/SKILL.md\n` +
-    `# Run \`node scripts/sync-skills.mjs\` to regenerate.\n\n` +
-    `description = "${shortDesc}"\n\n` +
-    `[prompt]\ntext = '''\n${geminiBody}\n'''\n`
-);
+const CAE_SOURCE = join(ROOT, '.claude', 'skills', 'clone-and-edit-website', 'SKILL.md');
+const CAE_AGENT_FILES = ['INTAKE_AGENT.md', 'DESIGNER_AGENT.md', 'PROTOTYPER_AGENT.md'];
 
-// 6. OpenCode — markdown + YAML frontmatter, $ARGUMENTS works natively
-write(
-  '.opencode/commands/clone-website.md',
-  `---\ndescription: "${shortDesc}"\n---\n${HEADER}${body}`
-);
+let caeRaw;
+try {
+  caeRaw = readFileSync(CAE_SOURCE, 'utf8').replace(/\r\n/g, '\n');
+} catch {
+  console.error(`\nWarning: clone-and-edit-website SKILL.md not found — skipping.`);
+  process.exit(0);
+}
 
-// 7. Augment Code — markdown + YAML frontmatter
-write(
-  '.augment/commands/clone-website.md',
-  `---\ndescription: "${shortDesc}"\nargument-hint: "<url>"\n---\n${HEADER}${body}`
-);
+console.log('\nSyncing clone-and-edit-website skill...');
+console.log(`  Source: .claude/skills/clone-and-edit-website/SKILL.md\n`);
 
-// 8. Continue — prompt file with invokable: true
-write(
-  '.continue/commands/clone-website.md',
-  `---\nname: clone-website\ndescription: "${shortDesc}"\ninvokable: true\n---\n${HEADER}${body}`
-);
+// GitHub Copilot — copy SKILL.md + all agent files
+write('.github/skills/clone-and-edit-website/SKILL.md', caeRaw);
+for (const agentFile of CAE_AGENT_FILES) {
+  const agentSrc = join(ROOT, '.claude', 'skills', 'clone-and-edit-website', agentFile);
+  try {
+    const agentContent = readFileSync(agentSrc, 'utf8');
+    write(`.github/skills/clone-and-edit-website/${agentFile}`, agentContent);
+  } catch {
+    console.log(`  ! .github/skills/clone-and-edit-website/${agentFile} — source not found, skipped`);
+  }
+}
 
-// 9. Amazon Q — JSON agent definition
-write(
-  '.amazonq/cli-agents/clone-website.json',
-  JSON.stringify(
-    {
-      name: 'clone-website',
-      description: shortDesc,
-      prompt: noArgs(body),
-      fileContext: ['AGENTS.md', 'docs/research/**'],
-    },
-    null,
-    2
-  ) + '\n'
-);
-
-console.log('\nDone! 9 platform command files generated from source skill.');
+console.log('\nDone! clone-and-edit-website skill synced to github platform.');

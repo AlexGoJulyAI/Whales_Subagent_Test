@@ -1,0 +1,5 @@
+[     530ms] [WARNING] [PostHog.js] `client` was already loaded elsewhere. This may cause issues. @ https://app.gojuly.ai/assets/application-f63d4fb1.js:304
+[   10533ms] [LOG] Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm @ https://edge.fullstory.com/s/fs.js:3
+[  132411ms] [ERROR] Cross-Origin-Opener-Policy policy would block the window.postMessage call. @ https://accounts.google.com/gsi/client:377
+[  132411ms] [ERROR] Cross-Origin-Opener-Policy policy would block the window.postMessage call. @ https://accounts.google.com/gsi/client:377
+[  132960ms] [WARNING] [GSI_LOGGER]: google.accounts.id.initialize() is called multiple times. This could cause unexpected behavior and only the last initialized instance will be used. @ https://edge.fullstory.com/s/fs.js:3

@@ -1,0 +1,2 @@
+[    2600ms] [WARNING] [PostHog.js] `client` was already loaded elsewhere. This may cause issues. @ https://app.gojuly.ai/assets/application-f63d4fb1.js:304
+[   12603ms] [LOG] Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm @ https://edge.fullstory.com/s/fs.js:3
