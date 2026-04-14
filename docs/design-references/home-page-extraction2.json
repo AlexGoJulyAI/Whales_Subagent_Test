@@ -1,0 +1,104 @@
+{
+  "badgeData": [
+    {
+      "text": "IN PROGRESS",
+      "className": "px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-default",
+      "bg": "rgb(218, 222, 231)",
+      "color": "rgb(55, 65, 81)",
+      "fontSize": "10px",
+      "fontWeight": "600",
+      "padding": "4px 8px",
+      "borderRadius": "4px"
+    },
+    {
+      "text": "IN PROGRESS",
+      "className": "px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-default",
+      "bg": "rgb(218, 222, 231)",
+      "color": "rgb(55, 65, 81)",
+      "fontSize": "10px",
+      "fontWeight": "600",
+      "padding": "4px 8px",
+      "borderRadius": "4px"
+    },
+    {
+      "text": "COMPLETED",
+      "className": "badge ja-badge mr-2 ja-state-positive",
+      "bg": "rgb(162, 232, 165)",
+      "color": "rgb(8, 51, 134)",
+      "fontSize": "10px",
+      "fontWeight": "600",
+      "padding": "0px 9.008px",
+      "borderRadius": "6px"
+    },
+    {
+      "text": "IN PROGRESS",
+      "className": "px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-default",
+      "bg": "rgb(218, 222, 231)",
+      "color": "rgb(55, 65, 81)",
+      "fontSize": "10px",
+      "fontWeight": "600",
+      "padding": "4px 8px",
+      "borderRadius": "4px"
+    },
+    {
+      "text": "NOT STARTED",
+      "className": "px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-ghost",
+      "bg": "rgb(218, 222, 231)",
+      "color": "rgb(55, 65, 81)",
+      "fontSize": "10px",
+      "fontWeight": "600",
+      "padding": "4px 8px",
+      "borderRadius": "4px"
+    }
+  ],
+  "mainWrapperStyle": {
+    "className": "flex max-w-none",
+    "bg": "rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "paddingLeft": "0px",
+    "paddingTop": "0px",
+    "width": 1200,
+    "marginLeft": "0px"
+  },
+  "bodyChildren": [
+    {
+      "tag": "DIV",
+      "className": "overflow-visible",
+      "width": 1200,
+      "height": 1873,
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "width": 0,
+      "height": 0,
+      "bg": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "width": 0,
+      "height": 0,
+      "bg": "rgba(0, 0, 0, 0)"
+    }
+  ],
+  "diveInBtnData": {
+    "className": "btn ja-btn-primary text-ja-xs font-semibold mt-4",
+    "bg": "rgb(8, 51, 134)",
+    "color": "rgb(255, 255, 255)",
+    "padding": "0px 24px",
+    "borderRadius": "12px",
+    "fontSize": "14px",
+    "fontWeight": "600"
+  },
+  "headerRowData": {
+    "className": "flex items-center justify-between py-4 px-4 cursor-pointer",
+    "ariaExpanded": null,
+    "children": [
+      "DIV:flex items-center gap-4 flex-1",
+      "DIV:flex items-center ml-4"
+    ]
+  },
+  "welcomeCardHTML": "<div class=\"bg-white rounded-lg shadow-sm border border-gray-200 mb-6\"><div class=\"flex items-center justify-between py-4 px-4 \"><div class=\"flex items-center gap-4 flex-1\"><img src=\"/images/TrackWelcome.svg\" alt=\"Welcome to July AI! icon\" class=\"shrink-0 object-contain\" style=\"width: 52px; height: 52px;\"><div class=\"flex flex-col text-left flex-1\"><h2 class=\"text-xl font-bold my-0 mb-1\">Welcome to July AI!</h2><div class=\"flex items-center gap-2\"><span class=\"px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-default\">IN PROGRESS</span><span class=\"flex items-center gap-1 text-ja-xxs text-gray-500\"><svg class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium w-4 h-4 css-q7mezt\" focusable=\"false\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" data-testid=\"AccessTimeOutlinedIcon\"><path d=\"M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8m.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z\"></path></svg>2.5 MINUTES</span></div></div></div></div><div class=\"px-4 mb-4\"><div class=\"border-t border-gray-200\"></div></div><div class=\"px-4 pb-4\"><div class=\"text-sm text-gray-500 mb-4 mt-4\">We are glad you are here to start an exciting journey with us. Start here to get familiar with using the platform.</div><div class=\"relative\"><div id=\"modules-container-9e453645-b8de-41e7-b440-8b5d900864ff\" class=\"flex overflow-x-auto scrollbar-hide gap-4\"><div class=\"\"><button class=\"btn ja-btn-primary text-ja-xs font-s"
+}

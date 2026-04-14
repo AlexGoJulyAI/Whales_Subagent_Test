@@ -1,0 +1,94 @@
+{
+  "tag": "body",
+  "id": null,
+  "classes": null,
+  "text": null,
+  "bg": "rgb(238, 238, 238)",
+  "color": "oklch(0.278078 0.029596 256.848)",
+  "fontSize": "16px",
+  "position": null,
+  "width": "1440px",
+  "height": "912px",
+  "children": [
+    {
+      "tag": "div",
+      "id": null,
+      "classes": "overflow-visible",
+      "text": null,
+      "bg": null,
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "position": null,
+      "width": "1440px",
+      "height": "912px",
+      "children": [
+        {
+          "tag": "div",
+          "id": "root",
+          "classes": null,
+          "text": null,
+          "bg": null,
+          "color": "oklch(0.278078 0.029596 256.848)",
+          "fontSize": "16px",
+          "position": null,
+          "width": "1440px",
+          "height": "912px",
+          "children": [
+            {
+              "tag": "main",
+              "id": null,
+              "classes": "flex max-w-none",
+              "text": null,
+              "bg": null,
+              "color": "oklch(0.278078 0.029596 256.848)",
+              "fontSize": "16px",
+              "position": null,
+              "width": "1440px",
+              "height": "912px",
+              "children": []
+            },
+            {
+              "tag": "div",
+              "id": null,
+              "classes": null,
+              "text": null,
+              "bg": null,
+              "color": "oklch(0.278078 0.029596 256.848)",
+              "fontSize": "16px",
+              "position": "fixed",
+              "width": "1408px",
+              "height": "868px",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "script",
+      "id": null,
+      "classes": null,
+      "text": null,
+      "bg": null,
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "position": null,
+      "width": "auto",
+      "height": "auto",
+      "children": []
+    },
+    {
+      "tag": "script",
+      "id": null,
+      "classes": null,
+      "text": null,
+      "bg": null,
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "position": null,
+      "width": "auto",
+      "height": "auto",
+      "children": []
+    }
+  ]
+}

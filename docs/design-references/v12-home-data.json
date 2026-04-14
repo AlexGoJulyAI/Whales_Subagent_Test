@@ -1,0 +1,62 @@
+{
+  "aiRedTeamInfo": {
+    "outerHTML": "<div class=\"bg-white rounded-lg shadow-sm border border-gray-200 mb-6\"><div class=\"flex items-center justify-between py-4 px-4 cursor-pointer\"><div class=\"flex items-center gap-4 flex-1\"><img src=\"/images/TrackRedTeam.svg\" alt=\"AI Red Team icon\" class=\"shrink-0 object-contain\" style=\"width: 52px; height: 52px;\"><div class=\"flex flex-col text-left flex-1\"><h2 class=\"text-xl font-bold my-0 mb-1\">AI Red Team</h2><div class=\"flex items-center gap-2\"><span class=\"px-2 py-1 text-ja-xxs font-semibold r",
+    "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+    "height": 519,
+    "isExpanded": true
+  },
+  "navInfo": {
+    "className": "navbar bg-white w-full px-ja-md rounded-b-2xl sticky top-0 z-[2147483647] border-2 border-ja-tide",
+    "height": 76,
+    "position": "sticky"
+  },
+  "headings": [
+    {
+      "tag": "H2",
+      "text": "Welcome to July AI!",
+      "className": "text-xl font-bold my-0 mb-1"
+    },
+    {
+      "tag": "H2",
+      "text": "AI Red Team",
+      "className": "text-xl font-bold my-0 mb-1"
+    },
+    {
+      "tag": "H3",
+      "text": "Learn",
+      "className": "font-bold text-base mb-2"
+    },
+    {
+      "tag": "H3",
+      "text": "Advance",
+      "className": "font-bold text-base mb-2"
+    },
+    {
+      "tag": "H3",
+      "text": "Get Hired",
+      "className": "font-bold text-base mb-2"
+    },
+    {
+      "tag": "H2",
+      "text": "Red Team Sample Submission",
+      "className": "text-xl font-bold my-0 mb-1"
+    },
+    {
+      "tag": "H2",
+      "text": "AI Fundamentals",
+      "className": "text-xl font-bold my-0 mb-1"
+    },
+    {
+      "tag": "H2",
+      "text": "Coding Fundamentals",
+      "className": "text-xl font-bold my-0 mb-1"
+    },
+    {
+      "tag": "H2",
+      "text": "Exclusive Events",
+      "className": "text-xl font-bold my-0 mb-1"
+    }
+  ],
+  "bodyBg": "rgb(238, 238, 238)",
+  "mainBg": "rgba(0, 0, 0, 0)"
+}

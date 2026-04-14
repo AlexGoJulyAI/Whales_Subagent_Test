@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Direction C — Timeline Preview User Journey</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #FAF8F4; font-family: Inter, system-ui, sans-serif; color: #1E2A40; padding: 32px 24px 64px; }
+.container { max-width: 600px; margin: 0 auto; }
+
+/* Header */
+.header { background: #083386; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+.header-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.55); margin-bottom: 6px; }
+.header h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.header-stance { font-size: 12px; color: rgba(255,255,255,.70); max-width: 500px; line-height: 1.5; margin-bottom: 12px; }
+.header-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.header-chip { border: 1px solid rgba(255,255,255,.30); border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,.85); }
+
+/* Current UI snapshot */
+.current-ui-snapshot { margin-bottom: 24px; }
+.current-ui-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9CA3AF; margin-bottom: 8px; }
+.current-ui-frame { border: 3px solid #D97706; border-radius: 8px; overflow: hidden; font-size: 12px; }
+.current-ui-appbar { background: #083386; height: 36px; display: flex; align-items: center; padding: 0 14px; }
+.current-ui-appbar-wordmark { font-size: 12px; font-weight: 700; color: #fff; }
+.current-ui-tableheader { background: #F9FAFB; padding: 7px 14px; border-bottom: 1px solid #E5E7EB; display: flex; gap: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #9CA3AF; }
+.current-ui-row { padding: 8px 14px; border-bottom: 1px solid #F3F4F6; display: flex; gap: 12px; align-items: center; background: #fff; }
+.current-ui-row.muted { background: #F9FAFB; opacity: 0.65; }
+.current-ui-cell-date { flex: 2; font-size: 11px; color: #374151; }
+.current-ui-cell-status { flex: 1; }
+.current-ui-cell-result { flex: 1; }
+.current-ui-badge-submitted { font-size: 10px; font-weight: 600; background: #A2E8A5; color: #083386; padding: 2px 6px; border-radius: 4px; }
+.current-ui-badge-guarded { font-size: 10px; font-weight: 600; background: #DADEE7; color: #083386; padding: 2px 6px; border-radius: 4px; }
+.current-ui-badge-reset { font-size: 10px; font-weight: 600; background: #DADEE7; color: #374151; padding: 2px 6px; border-radius: 4px; }
+.current-ui-annotation { font-size: 10px; color: #D97706; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+.current-ui-annotation-dot { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; background: #D97706; border-radius: 50%; color: #fff; font-size: 9px; font-weight: 700; flex-shrink: 0; }
+
+/* Flow label row */
+.flow-label-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.flow-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9CA3AF; white-space: nowrap; }
+.flow-rule { flex: 1; height: 1px; background: #D1D5DB; }
+
+/* Step cards */
+.step-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.step-meta { display: flex; justify-content: space-between; align-items: center; padding: 7px 16px; border-bottom: 1px solid #F3F4F6; }
+.step-meta span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9CA3AF; }
+.step-title { font-size: 14px; font-weight: 700; color: #1E2A40; padding: 12px 16px 5px; line-height: 1.3; }
+.step-body { font-size: 12px; color: #4B5563; padding: 0 16px 14px; line-height: 1.6; }
+
+/* Arrow */
+.arrow { text-align: center; font-size: 18px; color: #9CA3AF; padding: 3px 0; }
+
+/* Decision point */
+.decision-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.decision-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9CA3AF; margin-bottom: 6px; }
+.decision-question { font-size: 14px; font-weight: 700; color: #1E2A40; margin-bottom: 12px; }
+.decision-paths { display: flex; gap: 10px; }
+.path-card { flex: 1; background: #FAF8F4; border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px 12px; }
+.path-label { font-size: 10px; font-weight: 700; color: #1E2A40; margin-bottom: 4px; }
+.path-body { font-size: 11px; color: #4B5563; line-height: 1.5; }
+
+/* What happens next */
+.next-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #9CA3AF; margin-bottom: 8px; text-align: center; }
+.next-cards { display: flex; gap: 10px; }
+.next-card { flex: 1; background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.next-card-label { font-size: 11px; font-weight: 700; color: #1E2A40; margin-bottom: 4px; }
+.next-card-body { font-size: 11px; color: #4B5563; line-height: 1.5; }
+
+/* Spacer and footnote */
+.flow-spacer { margin-top: 32px; }
+.footnote { background: #fff; border: 1px solid #E5E7EB; border-left: 3px solid #083386; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #6B7280; margin-top: 14px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-tag">Direction C — User Journey</div>
+    <h1>Timeline Preview</h1>
+    <p class="header-stance">Commit to a tab only when you're sure. Clicking a conversation card expands an inline three-line transcript excerpt — a quick look before opening the full conversation. Search results also appear inline with the matched excerpt already visible. Fewer wasted tab-opens, more confidence per click.</p>
+    <div class="header-chips">
+      <span class="header-chip">Inline peek before commit</span>
+      <span class="header-chip">Accordion hierarchy preserved</span>
+      <span class="header-chip">Desktop</span>
+    </div>
+  </div>
+
+  <!-- CURRENT UI SNAPSHOT -->
+  <div class="current-ui-snapshot">
+    <div class="current-ui-label">Current UI — Previous Conversations Tab (sections being redesigned)</div>
+    <div class="current-ui-frame">
+      <div class="current-ui-appbar"><span class="current-ui-appbar-wordmark">GoJuly</span></div>
+      <div class="current-ui-tableheader">
+        <span style="flex:2">Attempted</span>
+        <span style="flex:1">On Progress</span>
+        <span style="flex:1">Result</span>
+        <span style="width:28px"></span>
+      </div>
+      <div class="current-ui-row">
+        <span class="current-ui-cell-date">Mar 9, 2026, 9:52 AM (PDT)</span>
+        <span class="current-ui-cell-status"><span class="current-ui-badge-submitted">SUBMITTED</span></span>
+        <span class="current-ui-cell-result"><span class="current-ui-badge-guarded">GUARDED</span></span>
+        <span style="width:28px"></span>
+      </div>
+      <div class="current-ui-row">
+        <span class="current-ui-cell-date">Mar 9, 2026, 9:46 AM (PDT)</span>
+        <span class="current-ui-cell-status"><span class="current-ui-badge-submitted">SUBMITTED</span></span>
+        <span class="current-ui-cell-result"><span class="current-ui-badge-guarded">GUARDED</span></span>
+        <span style="width:28px"></span>
+      </div>
+      <div class="current-ui-row muted">
+        <span class="current-ui-cell-date">Feb 14, 2026, 3:51 PM (PST)</span>
+        <span class="current-ui-cell-status"><span class="current-ui-badge-reset">RESET</span></span>
+        <span class="current-ui-cell-result"></span>
+        <span style="width:28px"></span>
+      </div>
+    </div>
+    <div class="current-ui-annotation">
+      <span class="current-ui-annotation-dot">!</span>
+      No search bar, no conversation titles, no outcome grouping — only timestamps and status badges
+    </div>
+  </div>
+
+  <!-- Flow 1 -->
+  <div class="flow-label-row">
+    <span class="flow-label">Flow 1 — Peek before opening</span>
+    <div class="flow-rule"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-meta"><span>Step 1</span><span>Existing</span></div>
+    <div class="step-title">User expands a Challenge section</div>
+    <div class="step-body">The accordion opens to reveal a list of conversation cards showing auto-generated titles, dates, and outcome badges.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step-card">
+    <div class="step-meta"><span>Step 2</span><span>New</span></div>
+    <div class="step-title">User clicks a card to expand its inline excerpt</div>
+    <div class="step-body">Instead of opening a new tab, clicking the card reveals three lines from the transcript directly beneath it on the same page.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step-card">
+    <div class="step-meta"><span>Step 3</span><span>New</span></div>
+    <div class="step-title">User reads the inline excerpt to confirm this is the right conversation</div>
+    <div class="step-body">A "Read full conversation" button at the bottom of the expanded excerpt lets the user open the full conversation in a new tab only after they have confirmed it is what they need.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="decision-card">
+    <div class="decision-tag">Decision point</div>
+    <div class="decision-question">Is this the conversation the user was looking for?</div>
+    <div class="decision-paths">
+      <div class="path-card">
+        <div class="path-label">Yes</div>
+        <div class="path-body">User clicks "Read full conversation" and the conversation opens in a new tab.</div>
+      </div>
+      <div class="path-card">
+        <div class="path-label">No</div>
+        <div class="path-body">User collapses the card and clicks a different one without leaving the page.</div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="next-label">What happens next</div>
+  <div class="next-cards">
+    <div class="next-card">
+      <div class="next-card-label">Right conversation, confirmed by the preview</div>
+      <div class="next-card-body">User opens the tab with confidence rather than by guessing.</div>
+    </div>
+    <div class="next-card">
+      <div class="next-card-label">Wrong conversation</div>
+      <div class="next-card-body">User collapses the card and tries another one without ever leaving the list page.</div>
+    </div>
+  </div>
+
+  <!-- Flow 2 -->
+  <div class="flow-spacer"></div>
+  <div class="flow-label-row">
+    <span class="flow-label">Flow 2 — Search with inline results</span>
+    <div class="flow-rule"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-meta"><span>Step 1</span><span>New</span></div>
+    <div class="step-title">User types a keyword into the search bar</div>
+    <div class="step-body">Challenge sections expand to show matching cards, each with its inline excerpt already expanded beneath it so the user can read context immediately.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step-card">
+    <div class="step-meta"><span>Step 2</span><span>New</span></div>
+    <div class="step-title">User reads the inline excerpts directly in the list</div>
+    <div class="step-body">The keyword is highlighted within each excerpt, letting the user evaluate multiple conversations at once without opening any tabs.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step-card">
+    <div class="step-meta"><span>Step 3</span><span>New</span></div>
+    <div class="step-title">User clicks "Read full conversation" on the card whose excerpt confirms it is correct</div>
+    <div class="step-body">The full conversation opens in a new tab after the user has already verified the content from the list view.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="next-label">What happens next</div>
+  <div class="next-cards">
+    <div class="next-card">
+      <div class="next-card-label">Found it by reading the excerpt in the list</div>
+      <div class="next-card-body">User opened exactly one tab — the right one.</div>
+    </div>
+    <div class="next-card">
+      <div class="next-card-label">The excerpt wasn't enough context</div>
+      <div class="next-card-body">User opens the full conversation and returns to the list if it turns out to be the wrong one.</div>
+    </div>
+  </div>
+
+  <!-- Flow 3 -->
+  <div class="flow-spacer"></div>
+  <div class="flow-label-row">
+    <span class="flow-label">Flow 3 — Auto-rename background flow</span>
+    <div class="flow-rule"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-meta"><span>Step 1</span><span>New</span></div>
+    <div class="step-title">User finishes a conversation and navigates away</div>
+    <div class="step-body">The system immediately begins reading the transcript in the background without any action from the user.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step-card">
+    <div class="step-meta"><span>Step 2</span><span>New</span></div>
+    <div class="step-title">AI generates a short descriptive title from the transcript</div>
+    <div class="step-body">A title such as "Self-Harm Encouragement — Unsuccessful" is produced by reading the topics and outcome contained in the transcript.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="step-card">
+    <div class="step-meta"><span>Step 3</span><span>New</span></div>
+    <div class="step-title">Title appears on the conversation card and in the conversation header</div>
+    <div class="step-body">No user action is needed — the user simply returns to the list and finds the attempt already named.</div>
+  </div>
+  <div class="arrow">↓</div>
+  <div class="next-label">What happens next</div>
+  <div class="next-cards">
+    <div class="next-card">
+      <div class="next-card-label">Title appears right away</div>
+      <div class="next-card-body">The card becomes immediately scannable by topic the next time the user opens the list.</div>
+    </div>
+    <div class="next-card">
+      <div class="next-card-label">Title is still generating</div>
+      <div class="next-card-body">The card shows "Generating title…" until the process completes.</div>
+    </div>
+  </div>
+  <div class="footnote">This flow runs silently after every conversation. The user never triggers or approves it — they simply return to the list and find their attempt already named.</div>
+
+</div>
+</body>
+</html>

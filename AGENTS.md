@@ -62,4 +62,28 @@ scripts/            # Asset download scripts
 - After editing `AGENTS.md`, run `bash scripts/sync-agent-rules.sh` to regenerate platform-specific instruction files.
 - After editing `.claude/skills/clone-website/SKILL.md`, run `node scripts/sync-skills.mjs` to regenerate the skill for all platforms.
 
+## Live Extraction & Build Protocol
+
+These rules apply to **every task** that involves inspecting, cloning, or editing a live webpage. No exceptions, no shortcuts.
+
+### Rule 1 — Screenshots Must Be Viewed Before Any Code Is Written
+After capturing any screenshot (via Playwright MCP, CDP script, or any browser tool), you MUST immediately read and view it using the `Read` tool before writing a single line of component code. Saving a screenshot to disk is not the same as viewing it. A path in a variable is not a design reference. **Capture → Read → then code.** If the Read tool fails, recapture and retry before proceeding.
+
+### Rule 2 — Live Page Is The Only Source of Truth
+All UI implementation — colors, fonts, spacing, icons, SVG paths, component structure, active states, borders, hover states — must be derived exclusively from live page extraction (screenshots + `getComputedStyle()` + DOM outerHTML). **Never copy, adapt, or reference prior test files** (`src/app/tests/*/page.tsx`) as a design source. Prior tests are comparisons only, not references. If a prior test and the live page disagree, the live page wins.
+
+### Rule 3 — Explicit-Changes-Only
+When a brief specifies changes to make, implement exactly and only those changes. Every other UI element must match the live page exactly. Do not "improve," simplify, omit, or substitute any component that was not explicitly called out in the brief. This includes icons, button variants, active-state colors, fonts, backgrounds, and layout structure.
+
+### Rule 4 — Component-by-Component Extraction
+Before implementing any component, extract its exact computed styles from the live page. Required per component:
+- `background-color`, `color`, `font-family`, `font-size`, `font-weight`, `line-height`
+- `padding`, `border`, `border-radius`, `gap`, `width`, `height`
+- All active/hover/focus state classes (read from `className`, not just `getComputedStyle`)
+- Icon `src` paths, SVG `d` attributes, and dimensions
+- Image `src` attributes and their rendered dimensions
+
+### Rule 5 — Never Approximate or Guess
+If a value cannot be extracted (element is hidden, requires interaction, or is behind auth), note the gap explicitly and either trigger the interaction (click, hover) to reveal it, or ask the user. "Close enough" is never acceptable. Wrong values compound — one wrong color cascades into wrong hover states, wrong active states, wrong badges.
+
 @docs/research/INSPECTION_GUIDE.md

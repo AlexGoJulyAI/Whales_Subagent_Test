@@ -1,0 +1,35 @@
+{
+  "h1": null,
+  "featureCards": [
+    {
+      "title": "Learn",
+      "imgSrc": "Lightbulb_medium.svg",
+      "desc": "Build AI red teaming skills through core concepts, skill checks, and hands-on exercises."
+    },
+    {
+      "title": "Advance",
+      "imgSrc": "SuccessfulAttack_medium.svg",
+      "desc": "Progress to real-world scenarios and deeper technical material after a background check and interview."
+    },
+    {
+      "title": "Get Hired",
+      "imgSrc": "money_medium.svg",
+      "desc": "Strong performance leads to hiring opportunities for AI red team roles, paying $25–$100 per hour."
+    }
+  ],
+  "rtssCard": null,
+  "rtssTitle": null,
+  "rtssBadge": null,
+  "viewBtn": {
+    "bg": "rgb(8, 51, 134)",
+    "color": "rgb(255, 255, 255)",
+    "borderRadius": "12px",
+    "height": "36px",
+    "padding": "0px 24px"
+  },
+  "outerDiv": {
+    "padding": "32px",
+    "className": "min-h-screen p-8"
+  },
+  "bgImgUrl": "url(\"/images/btn-bg-green.png\")"
+}

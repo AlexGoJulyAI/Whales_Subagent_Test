@@ -1,0 +1,231 @@
+{
+  "sidebarInfo": {
+    "className": "pt-4 px-0 fixed h-[calc(100vh-4rem)] top-16 transition-all bg-white border-r border-gray-200 overflow-y-auto w-64",
+    "width": 256,
+    "position": "fixed",
+    "top": "64px",
+    "backgroundColor": "rgb(255, 255, 255)",
+    "innerText": "Red Teaming - Beginner\nLearning Material - Beginner\nRed Teaming Beginner\nPrevious Conversations\nPRACTICE\nRequirements\nChallenge 1\nChallenge 2\nChallenge 3\nChallenge 4\nChallenge 5\nChallenge 6\nChallenge 7\nChallenge 8\nChallenge 9\nChallenge 10",
+    "navItems": [
+      {
+        "text": "Learning Material - Beginner",
+        "className": "my-0 border-b border-tide",
+        "isActive": false
+      },
+      {
+        "text": "Red Teaming Beginner\nPrevious Conversations\nPRACTICE\nRequirements\nChallenge 1\nCh",
+        "className": "my-0 border-b border-tide",
+        "isActive": false
+      }
+    ]
+  },
+  "rightPanelInfo": {
+    "className": "flex-[1] min-w-[15rem] relative z-10 flex flex-col gap-3 min-h-0 self-stretch pb-4",
+    "width": 284,
+    "left": 1140,
+    "innerText": "Annotation\n\nExplain your thought process\n\nExplain the intent behind your prompt clearly\nNote which safety guidelines were bypassed\nDescribe what the model should have done instead\nReference specific parts of the response\nFeedback\nClick here for live feedback\n\nNo feedback available\n\nStatus of Attack Outcome:\nUnsuccessful\nSubmit"
+  },
+  "navHeight": 76,
+  "sidebarButtons": [
+    {
+      "text": "",
+      "className": "rounded-md hover:bg-gray-100 transition p-1.5",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "6px"
+      }
+    },
+    {
+      "text": "",
+      "className": "flex-shrink-0",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "0px"
+      }
+    }
+  ],
+  "resetBtnInfo": {
+    "text": "Reset Conversation",
+    "className": "flex items-center gap-1.5 px-[18px] py-2.5 rounded-full bg-gray-100 border border-red-500 text-red-500 hover:bg-red-50 transition-colors shadow-sm tour-restart-button disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0",
+    "styles": {
+      "backgroundColor": "rgb(243, 244, 246)",
+      "color": "rgb(239, 68, 68)",
+      "border": "1px solid rgb(239, 68, 68)",
+      "borderRadius": "9999px",
+      "padding": "10px 18px",
+      "fontSize": "14px",
+      "fontWeight": "400"
+    }
+  },
+  "allButtons": [
+    {
+      "text": "Home",
+      "className": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-900 font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-600",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 24, 39)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "Data Portfolio",
+      "className": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(75, 85, 99)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "Payment",
+      "className": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(75, 85, 99)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "Home",
+      "className": "flex items-center text-blue-600 font-medium",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(37, 99, 235)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "Data Portfolio",
+      "className": "flex items-center ",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "Payment",
+      "className": "flex items-center ",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "Admin",
+      "className": "btn btn-sm btn-secondary ml-3",
+      "styles": {
+        "backgroundColor": "oklch(0.6971 0.329 342.55)",
+        "color": "oklch(0.9871 0.0106 342.55)",
+        "border": "1px solid oklch(0.6971 0.329 342.55)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "FE Admin",
+      "className": "btn btn-sm btn-accent ml-3",
+      "styles": {
+        "backgroundColor": "oklch(0.7676 0.184 183.61)",
+        "color": "oklch(0.15352 0.0368 183.61)",
+        "border": "1px solid oklch(0.7676 0.184 183.61)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "",
+      "className": "rounded-md hover:bg-gray-100 transition p-1.5",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "6px",
+        "fontSize": "16px"
+      }
+    },
+    {
+      "text": "",
+      "className": "flex-shrink-0",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "0px",
+        "fontSize": "16px"
+      }
+    },
+    {
+      "text": "",
+      "className": "px-4 py-3 text-left hover:bg-gray-100 focus:bg-gray-100 transition-colors duration-150 rounded-lg w-full block",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "",
+      "className": "px-4 py-3 text-left hover:bg-gray-100 focus:bg-gray-100 transition-colors duration-150 rounded-lg w-full block",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "",
+      "className": "px-4 py-3 text-left hover:bg-gray-100 focus:bg-gray-100 transition-colors duration-150 rounded-lg w-full block",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "",
+      "className": "px-4 py-3 text-left hover:bg-gray-100 focus:bg-gray-100 transition-colors duration-150 rounded-lg w-full block",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    },
+    {
+      "text": "",
+      "className": "px-4 py-3 text-left hover:bg-gray-100 focus:bg-gray-100 transition-colors duration-150 rounded-lg w-full block",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "oklch(0.278078 0.029596 256.848)",
+        "border": "0px solid rgb(229, 231, 235)",
+        "borderRadius": "8px",
+        "fontSize": "14px"
+      }
+    }
+  ]
+}

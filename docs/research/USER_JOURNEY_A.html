@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direction A — Linear Step-Through — SafeChat User Journey</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Inter, system-ui, sans-serif; background: #FAF8F4; color: #1E2A40; padding-bottom: 48px; }
+
+    .header { background: #083386; color: #fff; padding: 28px 32px 24px; border-radius: 10px; margin: 24px auto; max-width: 600px; }
+    .header__eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; opacity: .55; margin-bottom: 5px; }
+    .header__title   { font-size: 22px; font-weight: 700; margin-bottom: 5px; }
+    .header__stance  { font-size: 12px; opacity: .70; max-width: 500px; margin-bottom: 18px; line-height: 1.6; }
+    .chips { display: flex; gap: 7px; flex-wrap: wrap; }
+    .chip  { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.85); }
+
+    .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+
+    .flow-label { display: flex; align-items: center; gap: 12px; margin: 28px 0 14px; }
+    .flow-label__text { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9CA3AF; white-space: nowrap; }
+    .flow-label__rule { flex: 1; height: 1px; background: #E5E7EB; }
+
+    .step { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+    .step__meta  { display: flex; justify-content: space-between; padding: 7px 16px; border-bottom: 1px solid #F3F4F6; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9CA3AF; }
+    .step__title { font-size: 14px; font-weight: 700; color: #1E2A40; padding: 12px 16px 5px; }
+    .step__body  { font-size: 12px; color: #4B5563; padding: 0 16px 14px; line-height: 1.6; }
+
+    .arrow { text-align: center; font-size: 18px; color: #9CA3AF; padding: 3px 0; }
+
+    .decision { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+    .decision__tag   { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 6px; }
+    .decision__q     { font-size: 14px; font-weight: 700; color: #1E2A40; margin-bottom: 10px; }
+    .decision__paths { display: flex; gap: 10px; }
+    .dpath { flex: 1; background: #FAF8F4; border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px 12px; }
+    .dpath__lbl  { font-size: 10px; font-weight: 700; color: #1E2A40; margin-bottom: 4px; }
+    .dpath__body { font-size: 11px; color: #4B5563; line-height: 1.5; }
+
+    .whn-lbl   { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 8px; }
+    .whn-cards { display: flex; gap: 10px; }
+    .whn-card  { flex: 1; background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+    .whn-card__lbl  { font-size: 11px; font-weight: 700; color: #1E2A40; margin-bottom: 4px; }
+    .whn-card__body { font-size: 11px; color: #4B5563; line-height: 1.5; }
+
+    .footnote { background: #fff; border: 1px solid #E5E7EB; border-left: 3px solid #083386; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #6B7280; line-height: 1.5; margin-top: 20px; }
+    .gap { height: 4px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header__eyebrow">Direction A · User Journey · SafeChat · 2026-04-14</div>
+    <div class="header__title">Linear Step-Through</div>
+    <div class="header__stance">One category group per screen. Persistent progress bar. Forward-only navigation with a back chevron available at any step. Parent completes 4 focused screens before reaching confirmation. The child's experience begins immediately after.</div>
+    <div class="chips">
+      <span class="chip">Interaction: step-by-step</span>
+      <span class="chip">6 parent screens</span>
+      <span class="chip">2 child states</span>
+      <span class="chip">Pattern: Duolingo onboarding</span>
+    </div>
+  </div>
+
+  <!-- FLOW 1: PARENT -->
+  <div class="flow-label">
+    <span class="flow-label__text">Flow 1 — Parent Setup</span>
+    <div class="flow-label__rule"></div>
+  </div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 1</span><span>New</span></div>
+    <div class="step__title">Parent lands on the Welcome screen</div>
+    <div class="step__body">The parent sees the SafeChat brand, a plain-language explanation of what setup involves, and a visual preview of the three tier options (Off, Balanced, Strict) before touching anything.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 2</span><span>New</span></div>
+    <div class="step__title">Parent taps "Get started" and the progress bar appears</div>
+    <div class="step__body">The first settings screen loads with a 5-dot progress bar at the top and a step counter. The parent now knows exactly how far they are in the flow at all times.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 3</span><span>New</span></div>
+    <div class="step__title">Content settings — parent selects a tier for each of 4 categories</div>
+    <div class="step__body">Self-harm, drugs, eating disorders, and illegal activities each have a three-tile selector. The Next button stays disabled until all four have a selection.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="decision">
+    <div class="decision__tag">Decision point</div>
+    <div class="decision__q">Does the parent select a tier for all 4 categories before tapping Next?</div>
+    <div class="decision__paths">
+      <div class="dpath"><div class="dpath__lbl">If yes</div><div class="dpath__body">The Next button activates and the parent advances to behavioral monitoring (Step 4).</div></div>
+      <div class="dpath"><div class="dpath__lbl">If no</div><div class="dpath__body">The Next button stays disabled. The unselected card gets a subtle highlight so the parent knows what's missing.</div></div>
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 4</span><span>New</span></div>
+    <div class="step__title">Behavioral monitoring — parent sets 3 pattern-watch categories</div>
+    <div class="step__body">A blue intro card explains these settings watch trends over time, not individual messages. Parent selects tiers for loneliness, radicalization, and personal information sharing.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 5</span><span>New</span></div>
+    <div class="step__title">AI personality — parent picks honesty level and relational style</div>
+    <div class="step__body">Two independent radio-card groups: how candid the AI should be, and whether it should feel like a tool or a friend. Each group requires one selection before the Next button activates.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 6</span><span>New</span></div>
+    <div class="step__title">Learning settings — parent configures 2 academic integrity categories</div>
+    <div class="step__body">A green philosophy box frames the reason for the settings before the options appear. Parent selects tiers for homework completion detection and over-reliance pattern monitoring.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 7</span><span>New</span></div>
+    <div class="step__title">Completion screen confirms settings are live</div>
+    <div class="step__body">All 5 progress dots turn green. A success indicator, 3-bullet "what happens next" list, and the locked reassurance: "Think of SafeChat as a seatbelt, not a substitute for conversation."</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="whn-lbl">What happens next</div>
+  <div class="whn-cards">
+    <div class="whn-card">
+      <div class="whn-card__lbl">Parent taps Done</div>
+      <div class="whn-card__body">Settings activate immediately. The parent exits to their dashboard. Their child can now begin using the AI chat.</div>
+    </div>
+    <div class="whn-card">
+      <div class="whn-card__lbl">Parent wants to change a setting</div>
+      <div class="whn-card__body">They tap the back chevron to return to any prior screen. Their existing selections are preserved on every screen they revisit.</div>
+    </div>
+  </div>
+
+  <!-- FLOW 2: CHILD -->
+  <div class="flow-label">
+    <span class="flow-label__text">Flow 2 — Child Chat Interface</span>
+    <div class="flow-label__rule"></div>
+  </div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 1</span><span>New</span></div>
+    <div class="step__title">Child opens the AI chat — sees a normal chat interface</div>
+    <div class="step__body">A "SafeChat ✓" badge in the chat header signals that settings are active, but nothing else is visually different from a standard chat experience.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 2</span><span>New</span></div>
+    <div class="step__title">Child sends a message and the AI's response is evaluated</div>
+    <div class="step__body">Before the AI's reply appears, it is checked against the parent's configured settings. This happens silently in under a second.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="decision">
+    <div class="decision__tag">Decision point</div>
+    <div class="decision__q">Does the AI's response trigger any of the parent's configured policies?</div>
+    <div class="decision__paths">
+      <div class="dpath"><div class="dpath__lbl">If no</div><div class="dpath__body">The AI response appears as a normal chat bubble. The conversation continues naturally.</div></div>
+      <div class="dpath"><div class="dpath__lbl">If yes</div><div class="dpath__body">The response is intercepted. The child sees a warm redirect message with a lock icon in place of the original reply.</div></div>
+    </div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step">
+    <div class="step__meta"><span>Step 3 — blocked path</span><span>New</span></div>
+    <div class="step__title">Child reads the redirect message — empathetic, not alarming</div>
+    <div class="step__body">The message leads with acknowledgment ("I hear you"), redirects to a trusted adult, and for self-harm triggers includes a crisis resource. The input field stays active so the child can keep talking.</div>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="whn-lbl">What happens next</div>
+  <div class="whn-cards">
+    <div class="whn-card">
+      <div class="whn-card__lbl">Child continues chatting</div>
+      <div class="whn-card__body">They change the subject and the AI responds normally. The parent receives a background alert about what was flagged.</div>
+    </div>
+    <div class="whn-card">
+      <div class="whn-card__lbl">Child closes the app</div>
+      <div class="whn-card__body">The parent alert is sent regardless. No immediate action is required from the parent unless they choose to follow up.</div>
+    </div>
+  </div>
+
+  <div class="footnote">Direction A's distinctive move: the Next button is disabled until every category on the current screen has a selection — a gate that prevents a parent from accidentally skipping a setting without realizing it.</div>
+
+</div>
+</body>
+</html>

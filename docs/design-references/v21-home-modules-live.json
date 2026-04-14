@@ -1,0 +1,79 @@
+{
+  "modules": [
+    {
+      "title": "Welcome to July AI!",
+      "iconSrc": "TrackWelcome.svg",
+      "iconAlt": "Welcome to July AI! icon",
+      "badgeText": "IN PROGRESS",
+      "badgeBg": "rgb(218, 222, 231)",
+      "badgeColor": "rgb(55, 65, 81)",
+      "duration": "2.5 MINUTES",
+      "descText": "We are glad you are here to start an exciting journey with us. Start here to get familiar with using",
+      "btnText": null
+    },
+    {
+      "title": "AI Red Team",
+      "iconSrc": "TrackRedTeam.svg",
+      "iconAlt": "AI Red Team icon",
+      "badgeText": "IN PROGRESS",
+      "badgeBg": "rgb(218, 222, 231)",
+      "badgeColor": "rgb(55, 65, 81)",
+      "duration": "2.0 HOURS",
+      "descText": "Learning what red teaming is and apply your knowledge to guide AI respond outside its safety guard r",
+      "btnText": null
+    },
+    {
+      "title": "Red Team Sample Submission",
+      "iconSrc": "SampleSubmissionImage.png",
+      "iconAlt": "Red Team Sample Submission icon",
+      "badgeText": null,
+      "badgeBg": null,
+      "badgeColor": null,
+      "duration": null,
+      "descText": null,
+      "btnText": null
+    },
+    {
+      "title": "AI Fundamentals",
+      "iconSrc": "TrackAIFundamentals.svg",
+      "iconAlt": "AI Fundamentals icon",
+      "badgeText": "IN PROGRESS",
+      "badgeBg": "rgb(218, 222, 231)",
+      "badgeColor": "rgb(55, 65, 81)",
+      "duration": "45 MINUTES",
+      "descText": null,
+      "btnText": null
+    },
+    {
+      "title": "Coding Fundamentals",
+      "iconSrc": "TrackCodingFundamentals.svg",
+      "iconAlt": "Coding Fundamentals icon",
+      "badgeText": "NOT STARTED",
+      "badgeBg": "rgb(218, 222, 231)",
+      "badgeColor": "rgb(55, 65, 81)",
+      "duration": "2.25 HOURS",
+      "descText": null,
+      "btnText": null
+    },
+    {
+      "title": "Exclusive Events",
+      "iconSrc": "TrackEventExclusives.svg",
+      "iconAlt": "Exclusive Events icon",
+      "badgeText": null,
+      "badgeBg": null,
+      "badgeColor": null,
+      "duration": null,
+      "descText": null,
+      "btnText": null
+    }
+  ],
+  "contentWrapper": {
+    "padding": "0px",
+    "maxWidth": "none"
+  },
+  "greenPanel": {
+    "style": "background-image: url(\"/images/btn-bg-green.png\");",
+    "className": "relative rounded-lg p-8 bg-cover bg-center w-full cursor-pointer"
+  },
+  "rtssCard": null
+}

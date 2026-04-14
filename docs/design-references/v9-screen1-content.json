@@ -1,0 +1,212 @@
+{
+  "url": "https://app.gojuly.ai/learning/8677bb41-e677-4995-8cc0-9b5d38d934e0?type=objective&id=6d9bf3bd-14e7-48f6-967a-daa0494e3c6f&collection=f45878f9-fc2a-4e91-ab98-22a4efc281fc",
+  "title": "Red Team Sample Submission - July AI",
+  "headings": [
+    {
+      "tag": "H2",
+      "text": "If you’re new…Learn the skills forsuccess.",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "48px",
+      "fontWeight": "700",
+      "fontFamily": "Inter, sans-serif",
+      "bg": "rgba(0, 0, 0, 0)"
+    }
+  ],
+  "allText": [
+    {
+      "text": "If you’re new…",
+      "tag": "SPAN",
+      "cls": "text-[#4A78D6]",
+      "color": "rgb(74, 120, 214)",
+      "fontSize": "48px",
+      "fontWeight": "700",
+      "bg": "rgba(0, 0, 0, 0)",
+      "rect": {
+        "x": 564,
+        "y": 251,
+        "w": 313
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "text": "july ai",
+      "tag": "A",
+      "href": "/home",
+      "cls": "no-underline font-calistoga text-2xl text-ja-deep-sea mr-8",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(16, 32, 75)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "0px",
+      "padding": "0px",
+      "fontSize": "24px",
+      "fontWeight": "400",
+      "height": 32,
+      "width": 66,
+      "x": 26,
+      "y": 22
+    },
+    {
+      "text": "Home",
+      "tag": "BUTTON",
+      "href": null,
+      "cls": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-900 font-medium after:absolute after:bottom-0 after:left-0 after:",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(17, 24, 39)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "height": 40,
+      "width": 176,
+      "x": 128,
+      "y": 18
+    },
+    {
+      "text": "Data Portfolio",
+      "tag": "BUTTON",
+      "href": null,
+      "cls": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(75, 85, 99)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "height": 40,
+      "width": 176,
+      "x": 304,
+      "y": 18
+    },
+    {
+      "text": "Payment",
+      "tag": "BUTTON",
+      "href": null,
+      "cls": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(75, 85, 99)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "height": 40,
+      "width": 176,
+      "x": 480,
+      "y": 18
+    },
+    {
+      "text": "Admin",
+      "tag": "BUTTON",
+      "href": null,
+      "cls": "btn btn-sm btn-secondary ml-3",
+      "bg": "oklch(0.6971 0.329 342.55)",
+      "color": "oklch(0.9871 0.0106 342.55)",
+      "border": "1px solid oklch(0.6971 0.329 342.55)",
+      "borderRadius": "8px",
+      "padding": "0px 12px",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "height": 32,
+      "width": 70,
+      "x": 1147,
+      "y": 22
+    },
+    {
+      "text": "FE Admin",
+      "tag": "BUTTON",
+      "href": null,
+      "cls": "btn btn-sm btn-accent ml-3",
+      "bg": "oklch(0.7676 0.184 183.61)",
+      "color": "oklch(0.15352 0.0368 183.61)",
+      "border": "1px solid oklch(0.7676 0.184 183.61)",
+      "borderRadius": "8px",
+      "padding": "0px 12px",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "height": 32,
+      "width": 90,
+      "x": 1228,
+      "y": 22
+    },
+    {
+      "text": "Start Beginner Module",
+      "tag": "A",
+      "href": "/learning/3a0c9d2c-acdf-4696-aa32-f1e72dc79401",
+      "cls": "btn ja-btn-secondary btn-lg h-14 min-h-14 px-8 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-ja-ocean focus:ring-offset-2",
+      "bg": "rgb(255, 255, 255)",
+      "color": "rgb(8, 51, 134)",
+      "border": "1px solid rgb(8, 51, 134)",
+      "borderRadius": "12px",
+      "padding": "0px 32px",
+      "fontSize": "16px",
+      "fontWeight": "600",
+      "height": 56,
+      "width": 274,
+      "x": 436,
+      "y": 648
+    },
+    {
+      "text": "Skip to Job Application",
+      "tag": "BUTTON",
+      "href": null,
+      "cls": "btn ja-btn-primary btn-lg h-14 min-h-14 px-8 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-ja-ocean focus:ring-offset-2",
+      "bg": "rgb(8, 51, 134)",
+      "color": "rgb(255, 255, 255)",
+      "border": "1px solid oklch(0.961151 0 0)",
+      "borderRadius": "12px",
+      "padding": "0px 32px",
+      "fontSize": "16px",
+      "fontWeight": "600",
+      "height": 56,
+      "width": 279,
+      "x": 726,
+      "y": 648
+    }
+  ],
+  "noteBoxes": [],
+  "images": [
+    {
+      "src": "https://app.gojuly.ai/images/slack-icon.png",
+      "alt": "",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "src": "https://app.gojuly.ai/images/profile.png",
+      "alt": "",
+      "w": 40,
+      "h": 40
+    }
+  ],
+  "pageBg": "rgb(238, 238, 238)",
+  "mainBg": "rgba(0, 0, 0, 0)",
+  "bodyInfo": {
+    "bodyClass": "",
+    "children": [
+      {
+        "tag": "DIV",
+        "cls": "overflow-visible",
+        "id": "",
+        "childCount": 1,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "tag": "SCRIPT",
+        "cls": "",
+        "id": "",
+        "childCount": 0,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "tag": "SCRIPT",
+        "cls": "",
+        "id": "",
+        "childCount": 0,
+        "bg": "rgba(0, 0, 0, 0)"
+      }
+    ]
+  }
+}

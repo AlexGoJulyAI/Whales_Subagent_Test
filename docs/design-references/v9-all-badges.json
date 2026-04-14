@@ -1,0 +1,32 @@
+[
+  {
+    "text": "COMPLETED",
+    "cls": "badge ja-badge mr-2 ja-state-positive",
+    "bg": "rgb(162, 232, 165)",
+    "color": "rgb(8, 51, 134)",
+    "borderRadius": "6px",
+    "padding": "0px 9.008px",
+    "fontSize": "10px",
+    "fontWeight": "600"
+  },
+  {
+    "text": "IN PROGRESS",
+    "cls": "px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-default",
+    "bg": "rgb(218, 222, 231)",
+    "color": "rgb(55, 65, 81)",
+    "borderRadius": "4px",
+    "padding": "4px 8px",
+    "fontSize": "10px",
+    "fontWeight": "600"
+  },
+  {
+    "text": "NOT STARTED",
+    "cls": "px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-ghost",
+    "bg": "rgb(218, 222, 231)",
+    "color": "rgb(55, 65, 81)",
+    "borderRadius": "4px",
+    "padding": "4px 8px",
+    "fontSize": "10px",
+    "fontWeight": "600"
+  }
+]

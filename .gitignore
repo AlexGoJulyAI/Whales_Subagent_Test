@@ -47,3 +47,19 @@ next-env.d.ts
 
 # Local temp files
 temp/
+
+# AIDesigner local runs (generated artifacts, not source)
+.aidesigner/*
+!.aidesigner/.gitkeep
+
+# Browser session credentials — never commit
+auth.json
+
+# Playwright MCP logs and snapshots
+.playwright-mcp/*.log
+.playwright-mcp/*.yml
+.playwright-mcp/*.png
+.playwright-mcp/*.json
+
+# Subagent worktrees
+.claude/worktrees/

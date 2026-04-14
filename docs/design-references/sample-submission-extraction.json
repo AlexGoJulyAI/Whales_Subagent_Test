@@ -1,0 +1,73 @@
+{
+  "bodyBg": "rgb(238, 238, 238)",
+  "ifNewHeadingStyle": null,
+  "mainCardData": {
+    "className": "bg-white rounded-2xl px-8 py-14 md:px-16 md:py-20 max-w-2xl w-full mx-4 text-center",
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px solid rgb(229, 231, 235)",
+    "borderRadius": "16px",
+    "boxShadow": "none",
+    "padding": "80px 64px",
+    "width": 672,
+    "height": 632,
+    "outerHTML": "<div class=\"bg-white rounded-2xl px-8 py-14 md:px-16 md:py-20 max-w-2xl w-full mx-4 text-center\"><h2 class=\"text-4xl md:text-5xl font-bold leading-tight mb-6\"><span class=\"text-[#4A78D6]\">If you’re new…</span><br><span class=\"text-ja-ocean\">Learn the skills for<br>success.</span></h2><p class=\"text-lg text-[#4A78D6] mb-6 max-w-lg mx-auto\">Our beginner module strengthens your application by teaching <strong class=\"text-ja-ocean\">red team strategies</strong> and making you <strong class=\"text-ja-ocean\">hire-ready</strong>.</p><div class=\"bg-gray-50 rounded-xl px-6 py-5 mb-8 max-w-lg mx-auto text-left\"><p class=\"text-xs text-gray-600 leading-loose\"><strong class=\"text-gray-700\">Note:</strong> Although submissions aren’t compensated, your conversations will be considered for our Revenue Share Program. If they are commercialized, you’ll receive a share of the proceeds. Learn more <a href=\"https://app.gojuly.ai/home/data_portfolio\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-ja-ocean underline hover:text-ja-ocean-dark\">here</a>.</p></div><div class=\"flex flex-col sm:flex-row gap-4 justify-center\"><a href=\"/learning/3a0c9d2c-acdf-4696-aa32-f1e72dc79401\" class=\"btn ja-btn-secondary btn-lg h-14 min-h-14 px-8 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-ja-ocean focus:ring-offset-2\">Start Beginner Module<svg class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium w-5 h-5 ml-1 css-q7mezt\" focusable=\"false\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" data-testid=\"ArrowForwardIcon\"><path d=\"m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"></path></svg></a><button class=\"btn ja-btn-primary btn-lg h-14 min-h-14 px-8 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-ja-ocean focus:ring-offset-2\">Skip to Job Application<svg class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium w-5 h-5 ml-1 css-q7mezt\" focusable=\"false\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" data-testid=\"ArrowForwardIcon\"><path d=\"m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z\"></path></svg></button></div></div>"
+  },
+  "buttonData": [
+    {
+      "text": "Home",
+      "className": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-900 font-medium after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-600",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(17, 24, 39)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "fontSize": "14px",
+      "fontWeight": "500"
+    },
+    {
+      "text": "Data Portfolio",
+      "className": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(75, 85, 99)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "fontSize": "14px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Payment",
+      "className": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(75, 85, 99)",
+      "border": "0px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "fontSize": "14px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Start Beginner Module",
+      "className": "btn ja-btn-secondary btn-lg h-14 min-h-14 px-8 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-ja-ocean focus:ring-offset-2",
+      "bg": "rgb(255, 255, 255)",
+      "color": "rgb(8, 51, 134)",
+      "border": "1px solid rgb(8, 51, 134)",
+      "borderRadius": "12px",
+      "padding": "0px 32px",
+      "fontSize": "16px",
+      "fontWeight": "600"
+    },
+    {
+      "text": "Skip to Job Application",
+      "className": "btn ja-btn-primary btn-lg h-14 min-h-14 px-8 text-base font-semibold focus:outline-none focus:ring-2 focus:ring-ja-ocean focus:ring-offset-2",
+      "bg": "rgb(8, 51, 134)",
+      "color": "rgb(255, 255, 255)",
+      "border": "1px solid oklch(0.961151 0 0)",
+      "borderRadius": "12px",
+      "padding": "0px 32px",
+      "fontSize": "16px",
+      "fontWeight": "600"
+    }
+  ],
+  "pageURL": "https://app.gojuly.ai/learning/8677bb41-e677-4995-8cc0-9b5d38d934e0?type=objective&id=6d9bf3bd-14e7-48f6-967a-daa0494e3c6f&collection=f45878f9-fc2a-4e91-ab98-22a4efc281fc"
+}

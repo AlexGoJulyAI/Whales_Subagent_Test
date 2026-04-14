@@ -1,0 +1,87 @@
+{
+  "bodyBg": "rgb(238, 238, 238)",
+  "htmlBg": "oklch(1 0 0)",
+  "cardData": [
+    {
+      "text": "july aiHomeData PortfolioPaymentHomeData PortfolioPaymentAdminFE Admin",
+      "className": "navbar bg-white w-full px-ja-md rounded-b-2xl sticky top-0 z-[2147483647] border-2 border-ja-tide",
+      "bg": "rgb(255, 255, 255)",
+      "border": "2px solid rgb(218, 222, 231)",
+      "borderRadius": "0px 0px 16px 16px",
+      "boxShadow": "none",
+      "padding": "8px 24px",
+      "width": 1200,
+      "height": 116
+    },
+    {
+      "text": "Welcome to July AI!IN PROGRESS2.5 MINUTESWe are glad you are here to start an exciting journey with ",
+      "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+      "bg": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "padding": "0px",
+      "width": 1136,
+      "height": 207
+    },
+    {
+      "text": "Red Team Sample SubmissionRed Team Sample SubmissionCOMPLETEDClick this to submit your red team samp",
+      "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+      "bg": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "padding": "0px",
+      "width": 1136,
+      "height": 427
+    },
+    {
+      "text": "AI FundamentalsIN PROGRESS45 MINUTES",
+      "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+      "bg": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "padding": "0px",
+      "width": 1136,
+      "height": 107
+    },
+    {
+      "text": "Coding FundamentalsNOT STARTED2.25 HOURS",
+      "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+      "bg": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "padding": "0px",
+      "width": 1136,
+      "height": 107
+    },
+    {
+      "text": "Exclusive Events",
+      "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+      "bg": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(229, 231, 235)",
+      "borderRadius": "8px",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+      "padding": "0px",
+      "width": 1136,
+      "height": 103
+    }
+  ],
+  "aiRedTeamCardData": {
+    "text": "AI Red TeamIN PROGRESS2.0 HOURSLearning what red teaming is and apply your knowledge to guide AI respond outside its safety guard railsLearnBuild AI red teaming skills through core concepts, skill che",
+    "className": "bg-white rounded-lg shadow-sm border border-gray-200 mb-6",
+    "bg": "rgb(255, 255, 255)",
+    "border": "1px solid rgb(229, 231, 235)",
+    "borderRadius": "8px",
+    "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+    "outerHTML": "<div class=\"bg-white rounded-lg shadow-sm border border-gray-200 mb-6\"><div class=\"flex items-center justify-between py-4 px-4 cursor-pointer\"><div class=\"flex items-center gap-4 flex-1\"><img src=\"/images/TrackRedTeam.svg\" alt=\"AI Red Team icon\" class=\"shrink-0 object-contain\" style=\"width: 52px; height: 52px;\"><div class=\"flex flex-col text-left flex-1\"><h2 class=\"text-xl font-bold my-0 mb-1\">AI Red Team</h2><div class=\"flex items-center gap-2\"><span class=\"px-2 py-1 text-ja-xxs font-semibold rounded text-gray-700 ja-state-default\">IN PROGRESS</span><span class=\"flex items-center gap-1 text-ja-xxs text-gray-500\"><svg class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium w-4 h-4 css-q7mezt\" focusable=\"false\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" data-testid=\"AccessTimeOutlinedIcon\"><path d=\"M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2M12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8m.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z\"></path></svg>2.0 HOURS</span></div></div></div><div class=\"flex items-center ml-4\"><svg class=\"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-q7mezt\" focusable=\"false\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" data-testid=\"KeyboardArrowLeftOutlinedIcon\"><path d=\"M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6z\"></path></svg></div></div><div class=\"px-4 mb-4\"><div class=\"border-t border-gray-200\"></div></div><div class=\"px-4 pb-4\"><div class=\"text-sm text-gray-500 mb-4 mt-4\">Learning what red teaming is and apply your knowledge to guide AI respond outside its safety guard rails</div><div class=\"relative\"><div id=\"modules-container-89c756f8-0966-40eb-9fe6-048ab7f8b153\" class=\"flex overflow-x-auto scrollbar-hide gap-4\"><div class=\"w-full\"><div class=\"relative rounded-lg p-8 bg-cover bg-center w-full cursor-pointer\" style=\"background-image: url(&quot;/images/btn-bg-green.png&quot;);\"><div class=\"flex items-stretch justify-center gap-6\"><div class=\"w-72 bg-white rounded-lg p-6 shadow-sm\"><div class=\"flex flex-col it"
+  },
+  "pageWrapperData": {
+    "className": "container false w-full h-full max-w-[2000px]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "maxWidth": "2000px"
+  }
+}

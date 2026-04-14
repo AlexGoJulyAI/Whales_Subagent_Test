@@ -140,8 +140,9 @@ Two source-of-truth files power all platform support. Edit the source, then run 
 
 | What                   | Source of truth                         | Sync command                       |
 | ---------------------- | --------------------------------------- | ---------------------------------- |
-| Project instructions   | `AGENTS.md`                             | `bash scripts/sync-agent-rules.sh` |
-| `/clone-website` skill | `.claude/skills/clone-website/SKILL.md` | `node scripts/sync-skills.mjs`     |
+| Project instructions          | `AGENTS.md`                                      | `bash scripts/sync-agent-rules.sh` |
+| `/clone-website` skill        | `.claude/skills/clone-website/SKILL.md`          | `node scripts/sync-skills.mjs`     |
+| `/clone-and-edit-website` skill | `.claude/skills/clone-and-edit-website/SKILL.md` | `node scripts/sync-skills.mjs`     |
 
 Each script regenerates the platform-specific copies automatically. Agents that read the source files natively need no regeneration.
 

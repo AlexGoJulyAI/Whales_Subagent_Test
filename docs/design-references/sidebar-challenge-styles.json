@@ -1,0 +1,452 @@
+[
+  {
+    "tag": "SPAN",
+    "text": "",
+    "className": "flex-shrink-0 text-violet-500",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(139, 92, 246)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "svg",
+    "text": "",
+    "className": "[object SVGAnimatedString]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(139, 92, 246)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "path",
+    "text": "",
+    "className": "[object SVGAnimatedString]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(139, 92, 246)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Previous Conversations",
+    "className": "flex-1 text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "PRACTICERequirementsChallenge 1Challenge 2Challeng",
+    "className": "",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "PRACTICE",
+    "className": "py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer hover:bg-gray-50",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "svg",
+    "text": "",
+    "className": "[object SVGAnimatedString]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "20px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "path",
+    "text": "",
+    "className": "[object SVGAnimatedString]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "20px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "PRACTICE",
+    "className": "text-xs font-bold uppercase tracking-wider text-gray-600",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(75, 85, 99)",
+    "fontSize": "12px",
+    "fontWeight": "700",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "RequirementsChallenge 1Challenge 2Challenge 3Chall",
+    "className": "",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Requirements",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm hover:bg-gray-50",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "",
+    "className": "flex-shrink-0 text-orange-500",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(249, 115, 22)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "svg",
+    "text": "",
+    "className": "[object SVGAnimatedString]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(249, 115, 22)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "path",
+    "text": "",
+    "className": "[object SVGAnimatedString]",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(249, 115, 22)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Requirements",
+    "className": "flex-1 text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 1",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 1",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 2",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 2",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 3",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgb(253, 242, 248)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 3",
+    "className": "flex-1 truncate text-left font-medium text-gray-900",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 24, 39)",
+    "fontSize": "14px",
+    "fontWeight": "500",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 4",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 4",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 5",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 5",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 6",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 6",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 7",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 7",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 8",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 8",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 9",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 9",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "DIV",
+    "text": "Challenge 10",
+    "className": "relative py-2.5 px-4 flex items-center gap-2 hover:cursor-pointer text-sm tooltip tooltip-top before:w-[14rem] before:whitespace-normal before:text-le",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "10px 16px"
+  },
+  {
+    "tag": "IMG",
+    "text": "",
+    "className": "w-5 h-5 flex-shrink-0",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  },
+  {
+    "tag": "SPAN",
+    "text": "Challenge 10",
+    "className": "flex-1 truncate text-left text-gray-700",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(55, 65, 81)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "padding": "0px"
+  }
+]

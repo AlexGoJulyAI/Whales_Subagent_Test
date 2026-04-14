@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "height": "647px",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "0px solid rgb(229, 231, 235)",
+    "borderRadius": "0px",
+    "zIndex": "auto"
+  },
+  "logo": null,
+  "tabs": [],
+  "challengeBarText": "july aiHomeData PortfolioPaymentHomeData PortfolioPaymentAdminFE AdminRed Teaming - BeginnerLearning Material - BeginnerRed Teaming BeginnerPrevious ConversationsPRACTICERequirementsChallenge 1Challen",
+  "challengeBarStyle": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "borderBottom": "0px solid rgb(229, 231, 235)"
+  },
+  "annotHeading": {
+    "text": "Annotation",
+    "fontSize": "14px",
+    "fontWeight": "600",
+    "color": "rgb(55, 65, 81)"
+  },
+  "textareaPlaceholder": "Type your prompt here...",
+  "textareaStyle": {
+    "bg": "rgb(255, 255, 255)",
+    "border": "0px solid rgb(229, 231, 235)",
+    "borderRadius": "12px 0px 0px",
+    "fontSize": "14px"
+  },
+  "statusText": "Unsuccessful",
+  "statusColor": "oklch(0.278078 0.029596 256.848)"
+}

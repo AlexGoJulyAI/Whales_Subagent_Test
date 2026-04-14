@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup C — Right-Rail Status | Previous Conversations Redesign</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #FAF8F4;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 14px;
+    color: #1E2A40;
+    min-height: 100vh;
+  }
+
+  /* PAGE HEADER BAND */
+  .page-header {
+    background: #083386;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    gap: 16px;
+  }
+  .page-header .direction-tag {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .page-header .screen-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+
+  /* TWO-COLUMN BODY */
+  .body-columns {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 0;
+    align-items: flex-start;
+  }
+
+  /* LEFT COLUMN */
+  .left-col {
+    flex: 0 0 58%;
+    padding: 32px 24px 48px 32px;
+  }
+
+  /* RIGHT COLUMN */
+  .right-col {
+    flex: 0 0 42%;
+    padding: 32px 32px 48px 24px;
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: #FAF8F4;
+  }
+
+  /* ===== SCREEN RENDERS ===== */
+  .screen-frame {
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  /* App header */
+  .app-header {
+    background: #fff;
+    height: 56px;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+  .app-wordmark {
+    font-size: 16px;
+    font-weight: 700;
+    color: #083386;
+    letter-spacing: -0.01em;
+  }
+
+  /* App body */
+  .app-body {
+    display: flex;
+    min-height: 520px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    border-right: 1px solid #E5E7EB;
+    background: #fff;
+    padding: 16px 0;
+  }
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0 16px 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 7px 16px;
+    font-size: 12px;
+    color: #374151;
+    cursor: pointer;
+    gap: 8px;
+  }
+  .nav-item.active {
+    border-left: 4px solid #EC4899;
+    background: #FDF2F8;
+    color: #831843;
+    font-weight: 600;
+    padding-left: 12px;
+  }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 12px 16px 4px;
+  }
+  .challenge-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #374151;
+    gap: 6px;
+  }
+  .challenge-item.active { color: #EC4899; font-weight: 600; }
+
+  /* Main content */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    background: #F9FAFB;
+    overflow: hidden;
+  }
+  .main-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1E2A40;
+    margin-bottom: 14px;
+  }
+
+  /* Callout badge */
+  .callout-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #D97706;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .new-element-wrapper {
+    border-left: 4px solid #D97706;
+    padding-left: 10px;
+    margin-bottom: 4px;
+  }
+  .callout-annotation {
+    font-size: 10px;
+    color: #D97706;
+    font-weight: 600;
+    margin: 3px 0 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* MOCKUP C — Search bar: 44px, navy left accent, #F9FAFB fill */
+  .search-bar-c {
+    height: 44px;
+    border: 1px solid #DADEE7;
+    border-left: 3px solid #083386;
+    border-radius: 0;
+    background: #F9FAFB;
+    display: flex;
+    align-items: center;
+    padding: 0 12px 0 12px;
+    gap: 8px;
+    width: 100%;
+  }
+  .search-icon {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #9CA3AF;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .search-icon::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 5px;
+    height: 1.5px;
+    background: #9CA3AF;
+    transform: rotate(45deg);
+  }
+  .search-placeholder {
+    font-size: 13px;
+    color: #9CA3AF;
+  }
+
+  /* Challenge card (existing — gray box) */
+  .challenge-card-existing {
+    background: #E5E7EB;
+    border-radius: 0;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  .challenge-card-existing-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6B7280;
+  }
+
+  /* Accordion */
+  .accordion-open {
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .accordion-header {
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #374151;
+    background: #F9FAFB;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .accordion-body { padding: 0; background: #fff; }
+
+  /* MOCKUP C — Success sub-section header: navy band */
+  .subsection-header-c-success {
+    background: #083386;
+    padding: 7px 12px;
+    border-radius: 6px;
+    margin: 10px 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-label-c-success {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* MOCKUP C — Other sub-section header: plain rule */
+  .subsection-header-c-other {
+    border-bottom: 1px solid #E5E7EB;
+    padding: 8px 12px 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 0;
+  }
+  .subsection-label-c-other {
+    font-size: 10px;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* MOCKUP C — Cards: two-zone split */
+  .conv-card-c {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid #E5E7EB;
+    border-radius: 0;
+    background: #fff;
+    min-height: 68px;
+  }
+  .conv-card-c:last-child { border-bottom: none; }
+
+  .conv-card-c-left {
+    flex: 0 0 80%;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .conv-card-c-right {
+    flex: 0 0 20%;
+    background: #F9FAFB;
+    border-left: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 6px;
+  }
+  .conv-card-title-c {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .conv-card-date-c {
+    font-size: 11px;
+    color: #9CA3AF;
+    margin-bottom: 3px;
+  }
+  .conv-preview-c {
+    font-size: 11px;
+    color: #6B7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .badge-positive {
+    background: #A2E8A5;
+    color: #166534;
+  }
+  .badge-default {
+    background: #DADEE7;
+    color: #374151;
+  }
+
+  /* Spatial summary */
+  .spatial-summary {
+    background: #F3F4F6;
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .spatial-summary-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6B7280;
+    margin-bottom: 6px;
+  }
+  .spatial-row {
+    display: flex;
+    gap: 8px;
+  }
+  .spatial-key {
+    color: #6B7280;
+    width: 170px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .spatial-val { color: #1E2A40; }
+
+  /* Screen divider */
+  .screen-divider {
+    background: #F3F4F6;
+    border-radius: 0;
+    padding: 9px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 20px 0 16px;
+    border-left: 3px solid #083386;
+  }
+
+  /* Screen 2 */
+  .conversation-header-area {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #E5E7EB;
+    background: #fff;
+  }
+  .conv-header-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+  }
+  .conv-header-before {
+    font-size: 13px;
+    color: #9CA3AF;
+    text-decoration: line-through;
+    margin-bottom: 2px;
+  }
+  .conv-header-after {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1E2A40;
+  }
+  .screen2-body {
+    display: flex;
+    gap: 0;
+    min-height: 260px;
+  }
+  .screen2-sidebar-placeholder {
+    width: 200px;
+    flex-shrink: 0;
+    background: #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9CA3AF;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-right: 1px solid #D1D5DB;
+  }
+  .screen2-main {
+    flex: 1;
+    background: #F9FAFB;
+    display: flex;
+    flex-direction: column;
+  }
+  .screen2-content {
+    display: flex;
+    flex: 1;
+  }
+  .chat-placeholder {
+    flex: 1;
+    background: #E5E7EB;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9CA3AF;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .right-panel-placeholder {
+    width: 160px;
+    flex-shrink: 0;
+    background: #E5E7EB;
+    border-left: 1px solid #D1D5DB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9CA3AF;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding: 8px;
+  }
+
+  /* ===== RIGHT COLUMN SPEC ===== */
+  .spec-section {
+    margin-bottom: 24px;
+  }
+  .spec-section-title {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #083386;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #083386;
+  }
+  .spec-bullets {
+    list-style: none;
+    padding: 0;
+  }
+  .spec-bullets li {
+    font-size: 12px;
+    color: #374151;
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+    line-height: 1.5;
+  }
+  .spec-bullets li::before {
+    content: '•';
+    color: #083386;
+    flex-shrink: 0;
+  }
+  .spec-above-fold ol {
+    padding-left: 0;
+    list-style: none;
+    counter-reset: item;
+  }
+  .spec-above-fold ol li {
+    font-size: 12px;
+    color: #374151;
+    padding: 3px 0;
+    counter-increment: item;
+    display: flex;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .spec-above-fold ol li::before {
+    content: '1st';
+    color: #6B7280;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    min-width: 28px;
+  }
+  .spec-above-fold ol li:nth-child(2)::before { content: '2nd'; }
+  .spec-above-fold ol li:nth-child(3)::before { content: '3rd'; }
+  .spec-component {
+    margin-bottom: 20px;
+  }
+  .spec-component-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1E2A40;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .spec-badge-new {
+    font-size: 9px;
+    font-weight: 700;
+    background: #D97706;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .spec-badge-p0 {
+    font-size: 9px;
+    font-weight: 700;
+    background: #083386;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .spec-badge-p1 {
+    font-size: 9px;
+    font-weight: 700;
+    background: #6B7280;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .spec-badge-modified {
+    font-size: 9px;
+    font-weight: 700;
+    background: #7C3AED;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .spec-table tr { border-bottom: 1px solid #F3F4F6; }
+  .spec-table td {
+    padding: 5px 8px 5px 0;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .spec-table td:first-child {
+    color: #6B7280;
+    font-weight: 600;
+    width: 38%;
+    padding-right: 12px;
+  }
+  .spec-table td:last-child {
+    color: #1E2A40;
+    width: 62%;
+  }
+  .spec-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 11px;
+    color: #92400E;
+    background: #FEF3C7;
+    border: 1px solid #FCD34D;
+    border-radius: 4px;
+    padding: 7px 10px;
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .spec-warning-icon { flex-shrink: 0; }
+
+  .screen-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER BAND -->
+<div class="page-header">
+  <span class="direction-tag">Mockup C</span>
+  <span class="screen-name">Right-Rail Status — Previous Conversations Redesign</span>
+</div>
+
+<div style="background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:14px 20px;margin:16px 24px;">
+  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#083386;margin-bottom:6px;">What this changes</div>
+  <p style="font-size:13px;color:#374151;line-height:1.6;margin:0;">The Previous Conversations tab currently shows timestamps with no way to search or see outcomes without opening each conversation. This direction adds a search bar and gives every conversation an AI-generated title, then splits each card into two zones: a wide left area showing the title and a short preview snippet, and a narrow right column showing submission status and outcome — so the result of every attempt is visible at a glance without clicking into it.</p>
+</div>
+
+<div class="body-columns">
+
+  <!-- ===== LEFT COLUMN: VISUAL RENDERS ===== -->
+  <div class="left-col">
+
+    <div class="screen-label">Screen 1 — Practice Sets Page</div>
+
+    <div class="screen-frame">
+      <!-- App header -->
+      <div class="app-header">
+        <div class="app-wordmark">july ai</div>
+      </div>
+
+      <div class="app-body">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="sidebar-title">Red Team Sample</div>
+          <div class="nav-item">Success Criteria</div>
+          <div class="nav-item">Examples of Successful Attacks</div>
+          <div class="nav-item active">Previous Conversations</div>
+          <div class="nav-section-label">Challenges</div>
+          <div class="challenge-item active">Challenge 1</div>
+          <div class="challenge-item">Challenge 2</div>
+          <div class="challenge-item">Challenge 3</div>
+        </div>
+
+        <!-- Main content -->
+        <div class="main-content">
+          <div class="main-heading">Practice Sets</div>
+
+          <!-- ① Search Bar (NEW) — navy left accent -->
+          <div class="new-element-wrapper" style="margin-bottom:2px;padding-left:0;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span class="callout-badge" style="flex-shrink:0;">①</span>
+              <div class="search-bar-c" style="flex:1;">
+                <div class="search-icon"></div>
+                <span class="search-placeholder">Search conversations…</span>
+              </div>
+            </div>
+          </div>
+          <div class="callout-annotation">
+            <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">①</span>
+            Full-text search — navy left accent signals primary brand action
+          </div>
+
+          <!-- Challenge 1 card (existing) -->
+          <div class="challenge-card-existing">
+            <div class="challenge-card-existing-label">Challenge 1 — Jailbreak Resistance</div>
+          </div>
+
+          <!-- Accordion open -->
+          <div class="accordion-open" style="margin-top:8px;">
+            <div class="accordion-header">
+              <span>▾</span> View Attempts
+            </div>
+            <div class="accordion-body">
+
+              <!-- ② Success sub-section header: navy band (NEW) -->
+              <div class="new-element-wrapper" style="margin:0;padding-left:6px;border-left-color:#D97706;">
+                <div style="display:flex;align-items:center;gap:6px;padding:8px 4px 0;">
+                  <span class="callout-badge">②</span>
+                  <div class="subsection-header-c-success" style="flex:1;margin:0;">
+                    <span class="subsection-label-c-success">Successful Attacks (1)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="callout-annotation">
+                <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">②</span>
+                Navy #083386 band — maximum authority signal for success header
+              </div>
+
+              <!-- ③ Success card — two zones -->
+              <div class="new-element-wrapper" style="margin:0;padding-left:0;border-left:none;">
+                <div style="display:flex;align-items:center;gap:4px;padding-left:4px;">
+                  <span class="callout-badge" style="flex-shrink:0;margin-right:2px;">③</span>
+                  <div class="conv-card-c" style="flex:1;">
+                    <div class="conv-card-c-left">
+                      <div class="conv-card-title-c">Political Radicalization Roleplay</div>
+                      <div class="conv-card-date-c">Apr 10, 2026</div>
+                      <div class="conv-preview-c">The model adopted a persona expressing extremist views…</div>
+                    </div>
+                    <div class="conv-card-c-right">
+                      <span class="badge badge-positive">Success</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="callout-annotation">
+                <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">③</span>
+                Two-zone grid: 80% content left / 20% status badge right rail
+              </div>
+
+              <!-- ② All Attempts header (NEW) -->
+              <div class="new-element-wrapper" style="margin:4px 0 0;padding-left:6px;border-left-color:#D97706;">
+                <div style="display:flex;align-items:center;gap:6px;padding:4px 4px 0;">
+                  <span class="callout-badge">②</span>
+                  <div class="subsection-header-c-other" style="flex:1;margin:0;padding-left:0;border-bottom:none;">
+                    <span class="subsection-label-c-other">All Attempts</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ③ Other cards — two zones -->
+              <div style="padding-left:24px;">
+                <div class="conv-card-c">
+                  <div class="conv-card-c-left">
+                    <div class="conv-card-title-c">Persona Substitution Attempt</div>
+                    <div class="conv-card-date-c">Apr 9, 2026</div>
+                    <div class="conv-preview-c">Harmful request framed as fictional character dialogue…</div>
+                  </div>
+                  <div class="conv-card-c-right">
+                    <span class="badge badge-default">Blocked</span>
+                  </div>
+                </div>
+                <div class="conv-card-c">
+                  <div class="conv-card-c-left">
+                    <div class="conv-card-title-c" style="color:#9CA3AF;font-style:italic;font-weight:400;">Generating title…</div>
+                    <div class="conv-card-date-c">Apr 8, 2026</div>
+                    <div class="conv-preview-c">System-level prompt override framing attempt…</div>
+                  </div>
+                  <div class="conv-card-c-right">
+                    <span class="badge badge-default">Blocked</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /main-content -->
+      </div><!-- /app-body -->
+    </div><!-- /screen-frame -->
+
+    <!-- SPATIAL SUMMARY -->
+    <div class="spatial-summary">
+      <div class="spatial-summary-title">Spatial Summary</div>
+      <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">Right-Rail Status</span></div>
+      <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Structured two-zone card grid; strong vertical column separation; most opinionated layout</span></div>
+      <div class="spatial-row"><span class="spatial-key">Distinctive layout move:</span><span class="spatial-val">Every card splits 80/20 into content zone + dedicated status badge rail — badge never competes with title</span></div>
+      <div class="spatial-row"><span class="spatial-key">New / changed zones:</span><span class="spatial-val">Search bar ①, Status sub-groups ②, Conversation cards ③, Conversation header ④</span></div>
+      <div class="spatial-row"><span class="spatial-key">Proportional note:</span><span class="spatial-val">Card heights and sidebar width are representative proportions</span></div>
+    </div>
+
+    <!-- SCREEN 2 DIVIDER -->
+    <div class="screen-divider">Screen 2 — Conversation View (Header Update)</div>
+
+    <!-- SCREEN 2 -->
+    <div class="screen-frame">
+      <div class="app-header">
+        <div class="app-wordmark">july ai</div>
+      </div>
+      <div class="screen2-body">
+        <div class="screen2-sidebar-placeholder">Sidebar</div>
+        <div class="screen2-main">
+          <!-- ④ Auto-generated title (MODIFIED) -->
+          <div class="conversation-header-area">
+            <div style="display:flex;align-items:flex-start;gap:8px;">
+              <span class="callout-badge" style="margin-top:2px;flex-shrink:0;">④</span>
+              <div style="flex:1;">
+                <div class="conv-header-label">Conversation Title</div>
+                <div class="conv-header-before">Challenge 1 Feedback</div>
+                <div class="conv-header-after">Political Radicalization Roleplay</div>
+              </div>
+            </div>
+            <div class="callout-annotation" style="margin-top:4px;">
+              <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">④</span>
+              Auto-generated title replaces generic "Challenge N Feedback"
+            </div>
+          </div>
+          <div class="screen2-content">
+            <div class="chat-placeholder">Chat Area (unchanged)</div>
+            <div class="right-panel-placeholder">Right Panel<br>Annotation &amp;<br>Feedback<br>(unchanged)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /left-col -->
+
+  <!-- ===== RIGHT COLUMN: TEXT SPEC ===== -->
+  <div class="right-col">
+
+    <div class="spec-section">
+      <div class="spec-section-title">Direction at a Glance</div>
+      <ul class="spec-bullets">
+        <li>Visual character: structured grid, square corners, strong structural columns — enterprise data tool feel</li>
+        <li>Distinctive layout move: 80/20 two-zone card split creates a permanent right rail exclusively for outcome status badges</li>
+        <li>What client will remember: the navy sub-section header band — the boldest section signal of all three options</li>
+      </ul>
+    </div>
+
+    <div class="spec-section spec-above-fold">
+      <div class="spec-section-title">Above the Fold</div>
+      <ol>
+        <li>Search bar — draws the eye immediately, sets expectation of findability</li>
+        <li>Challenge 1 card — existing orientation anchor</li>
+        <li>View Attempts accordion + Status sub-groups</li>
+      </ol>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Components</div>
+
+      <div class="spec-component">
+        <div class="spec-component-title">
+          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">①</span>
+          Component ① — Search Bar
+          <span class="spec-badge-new">NEW</span>
+          <span class="spec-badge-p0">P0</span>
+        </div>
+        <table class="spec-table">
+          <tr><td>Source</td><td>New</td></tr>
+          <tr><td>Background</td><td>#F9FAFB (surface gray-50)</td></tr>
+          <tr><td>Border</td><td>1px solid #DADEE7; border-left: 3px solid #083386 (navy brand accent)</td></tr>
+          <tr><td>Height</td><td>44px</td></tr>
+          <tr><td>Border-radius</td><td>0px (square — matches grid card style)</td></tr>
+          <tr><td>Placeholder</td><td>"Search conversations…" — brief §12</td></tr>
+          <tr><td>Font</td><td>Inter 14px / 400 · color #6B7280</td></tr>
+          <tr><td>Focus state</td><td>border-left-color: #EC4899; background: #fff</td></tr>
+          <tr><td>Results</td><td>Conversation cards filter in real-time; non-matching sections collapse</td></tr>
+          <tr><td>Animation</td><td>Filter transition 150ms ease-out</td></tr>
+          <tr><td>Copy</td><td>"Search conversations…" placeholder; "No conversations match '[query]'" empty state</td></tr>
+        </table>
+      </div>
+
+      <div class="spec-component">
+        <div class="spec-component-title">
+          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">②</span>
+          Component ② — Status Sub-Group Headers
+          <span class="spec-badge-new">NEW</span>
+          <span class="spec-badge-p1">P1</span>
+        </div>
+        <table class="spec-table">
+          <tr><td>Source</td><td>New</td></tr>
+          <tr><td>Successful header</td><td>background: #083386 navy band; white text "SUCCESSFUL ATTACKS (N)"; border-radius: 6px; padding: 7px 12px</td></tr>
+          <tr><td>All Attempts header</td><td>plain 1px solid #E5E7EB border-bottom; "ALL ATTEMPTS" gray label; no fill</td></tr>
+          <tr><td>Font</td><td>10px / 700 / uppercase / #fff (success) or #6B7280 (other); letter-spacing: 0.1em</td></tr>
+          <tr><td>Margin</td><td>8px top / 4px bottom</td></tr>
+          <tr><td>Behavior</td><td>"SUCCESSFUL ATTACKS (N)" count in header text updates dynamically with search filter</td></tr>
+        </table>
+      </div>
+
+      <div class="spec-component">
+        <div class="spec-component-title">
+          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">③</span>
+          Component ③ — Conversation Card
+          <span class="spec-badge-new">NEW</span>
+          <span class="spec-badge-p0">P0</span>
+        </div>
+        <table class="spec-table">
+          <tr><td>Source</td><td>Replaces existing tr.cursor-pointer.h-12 table row</td></tr>
+          <tr><td>Background</td><td>#ffffff left zone; #F9FAFB right zone</td></tr>
+          <tr><td>Border</td><td>1px solid #E5E7EB (bottom only between cards); border-left on right zone: 1px solid #E5E7EB</td></tr>
+          <tr><td>Border-radius</td><td>0px (square corners)</td></tr>
+          <tr><td>Height</td><td>~68px (auto with content)</td></tr>
+          <tr><td>Left zone (80%)</td><td>Title + date + preview — flex column, padding 10px 12px</td></tr>
+          <tr><td>Right zone (20%)</td><td>Outcome badge centered; background #F9FAFB; border-left 1px solid #E5E7EB</td></tr>
+          <tr><td>Title</td><td>13px / 600 / #111 — auto-generated by AI</td></tr>
+          <tr><td>Date</td><td>11px / 400 / #9CA3AF</td></tr>
+          <tr><td>Outcome badge</td><td>.badge.ja-badge — centered in right zone; existing token system</td></tr>
+          <tr><td>Preview</td><td>11px / 400 / #6B7280 — 1 line truncated with text-overflow: ellipsis</td></tr>
+          <tr><td>Loading state</td><td>Title shows "Generating title…" in #9CA3AF italic while AI processes</td></tr>
+          <tr><td>Click target</td><td>Entire card — opens /collections/{id}/feedback/{id} in new tab</td></tr>
+          <tr><td>Share button</td><td>btn.btn-ghost — existing DaisyUI, preserved from current UI</td></tr>
+        </table>
+      </div>
+
+      <div class="spec-component">
+        <div class="spec-component-title">
+          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">④</span>
+          Component ④ — Conversation View Header
+          <span class="spec-badge-modified">Modified</span>
+          <span class="spec-badge-p1">P1</span>
+        </div>
+        <table class="spec-table">
+          <tr><td>Source</td><td>Modified — replaces "Challenge 1 Feedback" generic title</td></tr>
+          <tr><td>Before</td><td>"Challenge 1 Feedback" (static, generic)</td></tr>
+          <tr><td>After</td><td>Auto-generated title e.g. "Political Radicalization Roleplay"</td></tr>
+          <tr><td>Font</td><td>Inherit existing header styles — only the string changes</td></tr>
+          <tr><td>Scope</td><td>Header text only — no other changes to conversation view layout</td></tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Integration</div>
+      <ul class="spec-bullets">
+        <li>Token family coherence: navy #083386 used consistently in search bar left accent and success section header — reinforces primary brand color as the "important action" signal</li>
+        <li>Attention path: search bar navy accent → navy success section band → right-rail badge column → card click → conversation header ④</li>
+        <li>Visual differentiator from A and B: only direction with explicit spatial column separation for status — badge rail makes outcome scannable without reading card titles</li>
+      </ul>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Open Questions</div>
+      <div class="spec-warning">
+        <span class="spec-warning-icon">⚠</span>
+        Auto-title character limit — recommend 60 chars max — confirm before build
+      </div>
+      <div class="spec-warning">
+        <span class="spec-warning-icon">⚠</span>
+        Search latency — confirm debounce ms and whether results are real-time or on-submit
+      </div>
+    </div>
+
+  </div><!-- /right-col -->
+
+</div><!-- /body-columns -->
+</body>
+</html>

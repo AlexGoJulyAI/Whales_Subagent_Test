@@ -1,0 +1,116 @@
+- main [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - link "july ai" [ref=e10] [cursor=pointer]:
+          - /url: /home
+        - generic [ref=e12]:
+          - listitem [ref=e13]:
+            - button "Home" [ref=e14] [cursor=pointer]:
+              - img [ref=e15]
+              - text: Home
+          - listitem [ref=e17]:
+            - button "Data Portfolio" [ref=e18] [cursor=pointer]:
+              - img [ref=e19]
+              - text: Data Portfolio
+          - listitem [ref=e21]:
+            - button "Payment" [ref=e22] [cursor=pointer]:
+              - img [ref=e23]
+              - text: Payment
+      - generic [ref=e25]:
+        - button "Admin" [ref=e26] [cursor=pointer]
+        - button "FE Admin" [ref=e27] [cursor=pointer]
+        - img [ref=e29]
+        - img [ref=e31]
+    - generic [ref=e33]:
+      - generic [ref=e34]: Hey, Alex!
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e38]:
+            - img "Welcome to July AI! icon" [ref=e39]
+            - generic [ref=e40]:
+              - heading "Welcome to July AI!" [level=2] [ref=e41]
+              - generic [ref=e42]:
+                - generic [ref=e43]: IN PROGRESS
+                - generic [ref=e44]:
+                  - img [ref=e45]
+                  - text: 2.5 MINUTES
+          - generic [ref=e49]:
+            - generic [ref=e50]: We are glad you are here to start an exciting journey with us. Start here to get familiar with using the platform.
+            - button "Onboard" [ref=e54] [cursor=pointer]:
+              - text: Onboard
+              - img [ref=e55]
+        - generic [ref=e57]:
+          - generic [ref=e58] [cursor=pointer]:
+            - generic [ref=e59]:
+              - img "AI Red Team icon" [ref=e60]
+              - generic [ref=e61]:
+                - heading "AI Red Team" [level=2] [ref=e62]
+                - generic [ref=e63]:
+                  - generic [ref=e64]: IN PROGRESS
+                  - generic [ref=e65]:
+                    - img [ref=e66]
+                    - text: 2.0 HOURS
+            - img [ref=e69]
+          - generic [ref=e73]:
+            - generic [ref=e74]: Learning what red teaming is and apply your knowledge to guide AI respond outside its safety guard rails
+            - generic [ref=e77]:
+              - generic [ref=e79] [cursor=pointer]:
+                - generic [ref=e81]:
+                  - img "Learn" [ref=e82]
+                  - heading "Learn" [level=3] [ref=e83]
+                  - paragraph [ref=e84]: Build AI red teaming skills through core concepts, skill checks, and hands-on exercises.
+                - img [ref=e86]
+                - generic [ref=e89]:
+                  - img "Advance" [ref=e90]
+                  - heading "Advance" [level=3] [ref=e91]
+                  - paragraph [ref=e92]: Progress to real-world scenarios and deeper technical material after a background check and interview.
+                - img [ref=e94]
+                - generic [ref=e97]:
+                  - img "Get Hired" [ref=e98]
+                  - heading "Get Hired" [level=3] [ref=e99]
+                  - paragraph [ref=e100]: Strong performance leads to hiring opportunities for AI red team roles, paying $25–$100 per hour.
+              - button "Dive In" [ref=e101] [cursor=pointer]:
+                - text: Dive In
+                - img [ref=e102]
+        - generic [ref=e104]:
+          - generic [ref=e105] [cursor=pointer]:
+            - generic [ref=e106]:
+              - img "Red Team Sample Submission icon" [ref=e107]
+              - heading "Red Team Sample Submission" [level=2] [ref=e109]
+            - img [ref=e111]
+          - generic [ref=e118]:
+            - figure [ref=e119]:
+              - img "card background" [ref=e120]
+            - generic [ref=e121]:
+              - generic [ref=e122]: Red Team Sample Submission
+              - generic [ref=e123]: COMPLETED
+              - generic [ref=e124]: Click this to submit your red team samples.
+              - button "View" [ref=e126] [cursor=pointer]
+        - generic [ref=e128] [cursor=pointer]:
+          - generic [ref=e129]:
+            - img "AI Fundamentals icon" [ref=e130]
+            - generic [ref=e131]:
+              - heading "AI Fundamentals" [level=2] [ref=e132]
+              - generic [ref=e133]:
+                - generic [ref=e134]: IN PROGRESS
+                - generic [ref=e135]:
+                  - img [ref=e136]
+                  - text: 45 MINUTES
+          - img [ref=e139]
+        - generic [ref=e144] [cursor=pointer]:
+          - generic [ref=e145]:
+            - img "Coding Fundamentals icon" [ref=e146]
+            - generic [ref=e147]:
+              - heading "Coding Fundamentals" [level=2] [ref=e148]
+              - generic [ref=e149]:
+                - generic [ref=e150]: NOT STARTED
+                - generic [ref=e151]:
+                  - img [ref=e152]
+                  - text: 2.25 HOURS
+          - img [ref=e155]
+        - generic [ref=e160] [cursor=pointer]:
+          - generic [ref=e161]:
+            - img "Exclusive Events icon" [ref=e162]
+            - heading "Exclusive Events" [level=2] [ref=e164]
+          - img [ref=e166]

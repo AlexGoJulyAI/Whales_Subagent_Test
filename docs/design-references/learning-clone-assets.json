@@ -1,0 +1,125 @@
+{
+  "images": [
+    {
+      "src": "https://app.gojuly.ai/images/slack-icon.png",
+      "alt": "",
+      "width": 300,
+      "height": 300,
+      "classes": "h-8"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/profile.png",
+      "alt": "",
+      "width": 144,
+      "height": 144,
+      "classes": "w-10 h-10 rounded-full hover:cursor-pointer"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-SectionComplete_small.svg",
+      "alt": "collection status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-SectioInProgress_small.svg",
+      "alt": "collection status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-SectioInProgress_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-SectioInProgress_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-NotStarted_small.svg",
+      "alt": "objective status",
+      "width": 18,
+      "height": 18,
+      "classes": "w-5 h-5 flex-shrink-0"
+    },
+    {
+      "src": "https://app.gojuly.ai/images/icon-send.svg",
+      "alt": "Send",
+      "width": 28,
+      "height": 28,
+      "classes": "opacity-50 pointer-events-none"
+    }
+  ],
+  "svgCount": 25,
+  "backgroundImages": [],
+  "links": [
+    {
+      "href": "https://app.gojuly.ai/images/favicon.png",
+      "rel": "icon"
+    },
+    {
+      "href": "https://app.gojuly.ai/images/favicon.png",
+      "rel": "apple-touch-icon"
+    },
+    {
+      "href": "https://app.gojuly.ai/images/favicon.ico",
+      "rel": "shortcut icon"
+    }
+  ]
+}

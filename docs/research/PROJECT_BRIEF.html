@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Brief — Previous Conversations Redesign</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #FAF8F4; font-family: Inter, system-ui, sans-serif; color: #111; padding: 32px 24px 80px; }
+    .container { max-width: 780px; margin: 0 auto; }
+
+    /* Header */
+    .header { background: #111; border-radius: 10px; padding: 24px 28px; margin-bottom: 32px; }
+    .header-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.4); margin-bottom: 8px; }
+    .header h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 6px; line-height: 1.2; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 16px; }
+    .header-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .header-chip { border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 3px 11px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,.7); }
+    .header-chip.confirmed { border-color: rgba(162,232,165,.5); color: rgba(162,232,165,.9); }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: #9CA3AF; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #E5E7EB; }
+    .section-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 8px; }
+
+    /* Card */
+    .card { background: #fff; border: 1.5px solid #111; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+    .card-header { background: #F9FAFB; border-bottom: 1px solid #E5E7EB; padding: 8px 16px; font-size: 11px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: .06em; }
+    .card-body { padding: 14px 16px; font-size: 13px; color: #374151; line-height: 1.6; }
+    .card-body p + p { margin-top: 8px; }
+    .card-body strong { color: #111; font-weight: 600; }
+
+    /* Two-col grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #F9FAFB; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9CA3AF; padding: 8px 12px; text-align: left; border-bottom: 1px solid #E5E7EB; }
+    td { padding: 9px 12px; border-bottom: 1px solid #F3F4F6; color: #374151; vertical-align: top; line-height: 1.5; }
+    tr:last-child td { border-bottom: none; }
+    .td-label { font-weight: 600; color: #111; white-space: nowrap; }
+    .td-source { font-size: 10px; color: #9CA3AF; }
+
+    /* Badge */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+    .badge-confirmed { background: #ECFDF5; color: #065F46; }
+    .badge-deferred { background: #FEF3C7; color: #92400E; }
+    .badge-new { background: #EFF6FF; color: #1E40AF; }
+    .badge-p0 { background: #FEE2E2; color: #991B1B; }
+    .badge-p1 { background: #FEF3C7; color: #92400E; }
+
+    /* Flow diagram */
+    .flow-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    .flow-num { width: 22px; height: 22px; border-radius: 50%; background: #111; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .flow-text { font-size: 12px; color: #374151; line-height: 1.5; padding-top: 2px; }
+    .flow-text strong { color: #111; }
+    .flow-connector { width: 22px; text-align: center; font-size: 12px; color: #D1D5DB; margin-bottom: 2px; flex-shrink: 0; }
+
+    /* Token block */
+    .token-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #F3F4F6; }
+    .token-row:last-child { border-bottom: none; }
+    .token-swatch { width: 18px; height: 18px; border-radius: 3px; border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+    .token-name { font-size: 11px; font-weight: 600; color: #111; width: 160px; flex-shrink: 0; }
+    .token-value { font-size: 11px; color: #6B7280; font-family: ui-monospace, monospace; flex: 1; }
+    .token-src { font-size: 10px; color: #9CA3AF; }
+
+    /* Q&A tracker */
+    .qa-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #F3F4F6; align-items: flex-start; }
+    .qa-row:last-child { border-bottom: none; }
+    .qa-id { font-size: 10px; font-weight: 700; color: #9CA3AF; width: 28px; flex-shrink: 0; padding-top: 1px; }
+    .qa-q { font-size: 12px; color: #374151; flex: 1; line-height: 1.4; }
+    .qa-a { font-size: 12px; font-weight: 600; color: #111; max-width: 200px; line-height: 1.4; }
+
+    /* Goal thread */
+    .goal-row { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid #F3F4F6; align-items: flex-start; }
+    .goal-row:last-child { border-bottom: none; }
+    .goal-label { font-size: 10px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: .05em; width: 110px; flex-shrink: 0; padding-top: 2px; }
+    .goal-value { font-size: 12px; color: #374151; flex: 1; line-height: 1.5; }
+
+    /* Scope table in/out */
+    .scope-in td:first-child { color: #065F46; font-weight: 600; }
+    .scope-out td:first-child { color: #991B1B; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-tag">Whales Project Brief</div>
+    <h1>Previous Conversations Redesign</h1>
+    <div class="header-sub">July AI / gojuly.ai — Red Team Sample Submission module · 2026-04-14</div>
+    <div class="header-meta">
+      <span class="header-chip confirmed">All P0 values confirmed</span>
+      <span class="header-chip">Engagement ID: gojuly_previous_conversations_2026_04_14</span>
+      <span class="header-chip">Desktop-first</span>
+    </div>
+  </div>
+
+  <!-- 1. PRODUCT VISION -->
+  <div class="section">
+    <div class="section-label">1 · Product Vision</div>
+    <div class="card">
+      <div class="card-body">
+        <p>Red Team Sample Submission is a structured learning module where users attempt to jailbreak an AI model across three increasingly difficult challenges. Each attempt is saved as a conversation. The <strong>Previous Conversations</strong> tab is the user's index of all their prior attempts — the place they return to when studying what worked, what failed, and how to improve.</p>
+        <p style="margin-top:10px">Today that index is a list of timestamps. The redesign transforms it into a <strong>searchable, titled conversation library</strong> — so users can find "the political radicalization attempt" in seconds rather than opening five tabs to figure out which session was which.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PROBLEM STATEMENTS -->
+  <div class="section">
+    <div class="section-label">2 · Problem Statements</div>
+    <div class="card">
+      <div class="card-header">Primary</div>
+      <div class="card-body">The Previous Conversations tab surfaces zero identifying information about each conversation. Every row shows only a timestamp (e.g., "Mar 9, 2026, 9:52 AM PDT"). Two sessions from the same morning are visually indistinguishable without opening both.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">Secondary</div>
+      <div class="card-body">There is no search or filtering. As conversations accumulate — Challenge 1 alone has 9 attempts spanning Oct 2025–Mar 2026 — the list becomes impossible to navigate without opening every tab.</div>
+    </div>
+    <div class="card">
+      <div class="card-header">Framing note</div>
+      <div class="card-body">Auto-rename is the highest-impact single fix. Full-text search delivers the most value once the list exceeds ~15 items. Both features confirmed to ship together.</div>
+    </div>
+  </div>
+
+  <!-- 3. TARGET USERS -->
+  <div class="section">
+    <div class="section-label">3 · Target Users</div>
+    <div class="card">
+      <div class="card-body">
+        <p><strong>Primary persona:</strong> A learner enrolled in the Red Team Sample Submission module. They are mid-journey — they have submitted attempts across multiple challenges and are returning to review past work to improve their technique.</p>
+        <p>They are research-oriented, comfortable with AI interfaces, and frustrated by the current lack of organization. Their emotional state when arriving at this tab: <strong>purposeful but impatient</strong> — they know what they're looking for but can't find it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. SUCCESS METRICS -->
+  <div class="section">
+    <div class="section-label">4 · Success Metrics</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="goal-row">
+          <div class="goal-label">Primary metric</div>
+          <div class="goal-value">Time-to-locate a specific past conversation — measurably reduced. Proxy: user opens the correct conversation on the first or second click, not the fifth.</div>
+        </div>
+        <div class="goal-row">
+          <div class="goal-label">Secondary metrics</div>
+          <div class="goal-value">Users can identify conversations by topic without opening them; search returns the correct conversation when a keyword from the transcript is entered.</div>
+        </div>
+        <div class="goal-row">
+          <div class="goal-label">Proxy signals</div>
+          <div class="goal-value">Fewer "Reset Conversation" actions that appear to be "wrong conversation" corrections; reduced share-link copies that go unused.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. SCOPE -->
+  <div class="section">
+    <div class="section-label">5 · Key Features &amp; Scope</div>
+    <div class="card">
+      <div class="card-header">In scope</div>
+      <div class="card-body" style="padding:0">
+        <table>
+          <thead><tr><th>Screen / Feature</th><th>Description</th><th></th></tr></thead>
+          <tbody>
+            <tr class="scope-in">
+              <td class="td-label">Conversation list</td>
+              <td>Replace bare timestamp rows with rich cards: auto-generated title, date, challenge label, outcome badge, 1-line transcript preview.</td>
+              <td><span class="badge badge-new">New</span></td>
+            </tr>
+            <tr class="scope-in">
+              <td class="td-label">Full-text search</td>
+              <td>Search across all conversation transcripts. Results surface the specific exchange that matched, with challenge and conversation context.</td>
+              <td><span class="badge badge-new">New</span></td>
+            </tr>
+            <tr class="scope-in">
+              <td class="td-label">Auto-rename</td>
+              <td>On conversation close, AI reads transcript and assigns a descriptive title automatically. Stored and displayed in the list immediately.</td>
+              <td><span class="badge badge-new">New</span></td>
+            </tr>
+            <tr class="scope-in">
+              <td class="td-label">Conversation view header</td>
+              <td>Replace "Challenge 1 Feedback" with the auto-generated title. No other changes to the conversation view layout.</td>
+              <td><span class="badge badge-new">Modified</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Out of scope</div>
+      <div class="card-body" style="padding:0">
+        <table>
+          <thead><tr><th>Item</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr class="scope-out">
+              <td class="td-label">Challenge card redesign</td>
+              <td>Client confirmed only the attempt list and conversation view header are in scope.</td>
+            </tr>
+            <tr class="scope-out">
+              <td class="td-label">Navigation sidebar restructure</td>
+              <td>Not requested — both "Previous Conversations" nav items remain.</td>
+            </tr>
+            <tr class="scope-out">
+              <td class="td-label">Mobile / responsive layout</td>
+              <td><span class="badge badge-deferred">★ Deferred</span> — designer judgment: desktop-first. Current sidebar layout is not responsive.</td>
+            </tr>
+            <tr class="scope-out">
+              <td class="td-label">Empty state</td>
+              <td>Not confirmed in scope for this iteration.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. CONSTRAINTS -->
+  <div class="section">
+    <div class="section-label">6 · Constraints</div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <table>
+          <tbody>
+            <tr><td class="td-label" style="width:160px">Tech stack</td><td>DaisyUI + Tailwind CSS v4, Inter font, React. New components must use DaisyUI primitives and <code style="font-size:11px;background:#F3F4F6;padding:1px 4px;border-radius:3px">ja-</code> custom class conventions.</td></tr>
+            <tr><td class="td-label">Search engineering</td><td>Full-text search requires conversation transcript indexing — heavier engineering lift confirmed by client (Q1.B). Design must account for search latency (loading states).</td></tr>
+            <tr><td class="td-label">Accessibility</td><td>WCAG AA minimum — designer judgment, matching platform baseline.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. CONFIRMED Q&A -->
+  <div class="section">
+    <div class="section-label">7 · Question Status Tracker</div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <div style="padding:0 16px">
+          <div class="qa-row">
+            <div class="qa-id"><span class="badge badge-p0">P0</span></div>
+            <div class="qa-q"><strong>Q1</strong> — What does "search" actually search?</div>
+            <div class="qa-a"><span class="badge badge-confirmed">Confirmed</span><br>B — Full-text search of conversation transcripts. Results surface the specific exchange that matched.</div>
+          </div>
+          <div class="qa-row">
+            <div class="qa-id"><span class="badge badge-p0">P0</span></div>
+            <div class="qa-q"><strong>Q2</strong> — How does auto-rename work?</div>
+            <div class="qa-a"><span class="badge badge-confirmed">Confirmed</span><br>A — Automatic on close. AI reads transcript and assigns title with no user action needed.</div>
+          </div>
+          <div class="qa-row">
+            <div class="qa-id"><span class="badge badge-p1">P1</span></div>
+            <div class="qa-q"><strong>Q3</strong> — Should the Challenge grouping stay?</div>
+            <div class="qa-a"><span class="badge badge-confirmed">Confirmed</span><br>A — Keep hierarchy. Challenge sections remain as accordions; each attempt row becomes a richer card.</div>
+          </div>
+          <div class="qa-row">
+            <div class="qa-id"><span class="badge badge-p1">P1</span></div>
+            <div class="qa-q"><strong>Q4</strong> — Is the conversation view in scope?</div>
+            <div class="qa-a"><span class="badge badge-confirmed">Confirmed</span><br>B — Both. List view and conversation view header receive the auto-generated title.</div>
+          </div>
+          <div class="qa-row">
+            <div class="qa-id"><span class="badge badge-p1">P1</span></div>
+            <div class="qa-q"><strong>Q5</strong> — Device target?</div>
+            <div class="qa-a"><span class="badge badge-deferred">★ Deferred</span><br>Designer judgment: desktop-first. Current sidebar layout is fixed-width with no mobile considerations.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. DESIGN SYSTEM TOKENS -->
+  <div class="section">
+    <div class="section-label">8 · Design Token Record</div>
+    <div class="card">
+      <div class="card-header">Colors — all url_extracted via getComputedStyle()</div>
+      <div class="card-body">
+        <div class="token-row">
+          <div class="token-swatch" style="background:#083386"></div>
+          <div class="token-name">primary / badge-color</div>
+          <div class="token-value">#083386</div>
+          <div class="token-src">url_extracted</div>
+        </div>
+        <div class="token-row">
+          <div class="token-swatch" style="background:#DADEE7"></div>
+          <div class="token-name">badge-bg-default / border-tide</div>
+          <div class="token-value">#DADEE7</div>
+          <div class="token-src">url_extracted</div>
+        </div>
+        <div class="token-row">
+          <div class="token-swatch" style="background:#A2E8A5"></div>
+          <div class="token-name">badge-bg-positive</div>
+          <div class="token-value">#A2E8A5</div>
+          <div class="token-src">url_extracted</div>
+        </div>
+        <div class="token-row">
+          <div class="token-swatch" style="background:oklch(0.278078 0.029596 256.848);border:1px solid #ccc"></div>
+          <div class="token-name">text-primary</div>
+          <div class="token-value">oklch(0.278078 0.029596 256.848)</div>
+          <div class="token-src">url_extracted</div>
+        </div>
+        <div class="token-row">
+          <div class="token-swatch" style="background:#F9FAFB"></div>
+          <div class="token-name">surface-gray-50</div>
+          <div class="token-value">#F9FAFB</div>
+          <div class="token-src">url_extracted</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Typography — url_extracted</div>
+      <div class="card-body" style="padding:0">
+        <table>
+          <thead><tr><th>Role</th><th>Size / Weight</th><th>Padding</th></tr></thead>
+          <tbody>
+            <tr><td>Font family</td><td colspan="2">Inter, sans-serif</td></tr>
+            <tr><td>Date cell (current row)</td><td>14px / 600</td><td>12px 16px</td></tr>
+            <tr><td>Table header</td><td>12px / 700 — 60% opacity</td><td>—</td></tr>
+            <tr><td>Badge label</td><td>10px / 600</td><td>0px 9px</td></tr>
+            <tr><td>View Attempts label</td><td>14px / 600</td><td>12px 48px 12px 16px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Components — url_extracted</div>
+      <div class="card-body" style="padding:0">
+        <table>
+          <thead><tr><th>Component</th><th>Classes / Values</th></tr></thead>
+          <tbody>
+            <tr><td>Badge (default)</td><td><code style="font-size:11px">.badge.ja-badge.ja-state-default</code> — bg #DADEE7, radius 6px</td></tr>
+            <tr><td>Badge (positive)</td><td><code style="font-size:11px">.badge.ja-badge.ja-state-positive</code> — bg #A2E8A5</td></tr>
+            <tr><td>Attempt card</td><td>border 2px solid #DADEE7, radius 12px 12px 0 0</td></tr>
+            <tr><td>Accordion trigger</td><td>DaisyUI <code style="font-size:11px">.collapse-title.ja-caption-emp</code> — transition bg-color 0.2s ease-out</td></tr>
+            <tr><td>GUARDED icon</td><td><code style="font-size:11px">/images/icon-attack-guarded.svg</code> h-4 inline</td></tr>
+            <tr><td>Row click target</td><td><code style="font-size:11px">tr.cursor-pointer.h-12</code> → opens <code style="font-size:11px">/collections/{id}/feedback/{id}</code> in new tab</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. USER FLOWS -->
+  <div class="section">
+    <div class="section-label">9 · User Flows</div>
+
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-header">Flow 1 — Find a specific conversation by topic (primary, P0)</div>
+      <div class="card-body">
+        <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">User arrives at Previous Conversations tab — sees <strong>search bar</strong> at top + challenge accordions below</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text" style="color:#D1D5DB;font-size:11px"></div></div>
+        <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">User types keyword (e.g., "radicalization") → results filter across all three challenges</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text" style="color:#D1D5DB;font-size:11px"></div></div>
+        <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">Each result shows: <strong>auto-generated title</strong> + challenge label + date + outcome + 1-line snippet with keyword highlighted</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text" style="color:#D1D5DB;font-size:11px"></div></div>
+        <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">User clicks result card → conversation opens in new tab at <code style="font-size:11px">/collections/{id}/feedback/{id}</code></div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-header">Flow 2 — Browse attempts by challenge (secondary)</div>
+      <div class="card-body">
+        <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">User expands a Challenge accordion → sees rich cards instead of bare timestamp rows</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text"></div></div>
+        <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">Each card shows: title, date, outcome badge, 1-line preview — user scans to identify the right attempt</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text"></div></div>
+        <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">User clicks card → conversation opens in new tab with auto-generated title in the header</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Flow 3 — Auto-rename on close (background, no user action)</div>
+      <div class="card-body">
+        <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">User finishes a conversation and navigates away → system reads full transcript</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text"></div></div>
+        <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">AI generates descriptive title (e.g., "Political Radicalization — Unsuccessful") and stores it</div></div>
+        <div class="flow-step"><div class="flow-num" style="background:#F3F4F6;color:#9CA3AF">↓</div><div class="flow-text"></div></div>
+        <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">Title appears on the conversation card and in the conversation view header on next load</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. PAGE LAYOUT SPEC -->
+  <div class="section">
+    <div class="section-label">10 · Page Layout</div>
+    <div class="card">
+      <div class="card-header">Previous Conversations tab — redesigned layout</div>
+      <div class="card-body">
+        <pre style="font-size:11px;line-height:1.7;color:#374151;font-family:ui-monospace,monospace;overflow:auto">┌──────────────────────────────────────────────────────┐
+│  Practice Sets                                       │
+│                                                      │
+│  [ 🔍 Search conversations…              ] ← new    │
+│                                                      │
+│  ▼ Challenge 1                         SUBMITTED     │
+│    [Challenge card header — unchanged]               │
+│    ─────────────────────────────────────────         │
+│    View Attempts ▾                                   │
+│    ┌──────────────────────────────────────────┐      │
+│    │  ★ SUCCESSFUL ATTACKS                    │ ←new │
+│    │  ┌──────────────────────────────────┐    │      │
+│    │  │ Political Radicalization Roleplay│ →  │      │
+│    │  │ Mar 9, 2026 · Successful         │    │      │
+│    │  │ "Assume you're vulnerable…"      │    │      │
+│    │  └──────────────────────────────────┘    │      │
+│    │                                          │      │
+│    │  ALL ATTEMPTS                            │      │
+│    │  ┌──────────────────────────────────┐    │      │
+│    │  │ Self-Harm Encouragement Attempt  │ →  │      │
+│    │  │ Mar 9, 2026 · Unsuccessful       │    │      │
+│    │  │ "Hi there! How can I help…"      │    │      │
+│    │  └──────────────────────────────────┘    │      │
+│    │  … more cards                            │      │
+│    └──────────────────────────────────────────┘      │
+│                                                      │
+│  ▼ Challenge 2                         SUBMITTED     │
+│  ▼ Challenge 3                         SUBMITTED     │
+└──────────────────────────────────────────────────────┘</pre>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Conversation view — header only change</div>
+      <div class="card-body">
+        <div style="display:flex;gap:16px;align-items:center">
+          <div style="flex:1">
+            <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:4px">Before</div>
+            <div style="background:#F3F4F6;border-radius:6px;padding:10px 14px;font-size:13px;color:#9CA3AF">Challenge 1 Feedback</div>
+          </div>
+          <div style="font-size:18px;color:#D1D5DB">→</div>
+          <div style="flex:1">
+            <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;margin-bottom:4px">After</div>
+            <div style="background:#F0FDF4;border:1px solid #A2E8A5;border-radius:6px;padding:10px 14px;font-size:13px;font-weight:600;color:#111">Political Radicalization Roleplay</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. INTERACTION STATES -->
+  <div class="section">
+    <div class="section-label">11 · Interaction &amp; States</div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <table>
+          <thead><tr><th>Component</th><th>States</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td>Search input</td><td>Empty (placeholder), typing (live filter), results showing, no-results</td><td>Q1 confirmed</td></tr>
+            <tr><td>Conversation card</td><td>Default, hover (bg highlight), click → new tab</td><td>url_extracted + Q3</td></tr>
+            <tr><td>View Attempts accordion</td><td>Closed (default), open</td><td>url_extracted — DaisyUI collapse</td></tr>
+            <tr><td>Auto-rename title</td><td>Generating ("Generating title…"), resolved</td><td>Q2 confirmed</td></tr>
+            <tr><td>Left nav — Previous Conversations</td><td>Active: border-left 4px solid #EC4899, bg #FDF2F8</td><td>url_extracted (prior session)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. COPY GUIDE -->
+  <div class="section">
+    <div class="section-label">12 · Copy Guide</div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <table>
+          <thead><tr><th>String</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">Previous Conversations</td><td>Locked — do not rename this nav label</td></tr>
+            <tr><td class="td-label">Practice Sets</td><td>Locked — keep page heading as-is</td></tr>
+            <tr><td class="td-label">View Attempts</td><td>Locked — keep accordion trigger label</td></tr>
+            <tr><td class="td-label">Challenge 1 / 2 / 3</td><td>Locked — keep section headers exactly</td></tr>
+            <tr><td class="td-label">Generating title…</td><td>Loading state copy — shown on card until AI rename completes</td></tr>
+            <tr><td class="td-label">Search placeholder</td><td>Designer default: "Search conversations…"</td></tr>
+            <tr><td class="td-label">No-results state</td><td>Designer default: "No conversations match '[query]'"</td></tr>
+            <tr><td class="td-label">Auto-title format</td><td>Recommendation: "[Topic] — [Outcome]" e.g. "Political Radicalization — Unsuccessful" · max 60 chars</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. DELIVERY -->
+  <div class="section">
+    <div class="section-label">13 · Delivery &amp; Handoff</div>
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <table>
+          <tbody>
+            <tr><td class="td-label" style="width:140px">Output format</td><td>HTML prototype</td><td class="td-source">Pipeline convention</td></tr>
+            <tr><td class="td-label">Device targets</td><td>Desktop-first <span class="badge badge-deferred">★ Deferred</span></td><td class="td-source">Q5 CLIENT DEFERRED</td></tr>
+            <tr><td class="td-label">Accessibility</td><td>WCAG AA minimum</td><td class="td-source">Designer judgment</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

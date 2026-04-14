@@ -1,0 +1,187 @@
+{
+  "navClass": "navbar bg-white w-full px-ja-md rounded-b-2xl sticky top-0 z-[2147483647] border-2 border-ja-tide",
+  "navBg": "rgb(255, 255, 255)",
+  "navHeight": 76,
+  "elements": [
+    {
+      "tag": "A",
+      "text": "july ai",
+      "cls": "no-underline font-calistoga text-2xl text-ja-deep-sea mr-8",
+      "href": "/home",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(16, 32, 75)",
+      "fontSize": "24px",
+      "fontWeight": "400",
+      "borderRadius": "0px",
+      "padding": "0px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "block",
+      "rect": {
+        "x": 26,
+        "y": 22,
+        "w": 66,
+        "h": 32
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Home",
+      "cls": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-900 font-medium after:absolute after:bottom-0 after:left-0 after:",
+      "href": null,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(17, 24, 39)",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "flex",
+      "rect": {
+        "x": 128,
+        "y": 18,
+        "w": 176,
+        "h": 40
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Data Portfolio",
+      "cls": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "href": null,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(75, 85, 99)",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "flex",
+      "rect": {
+        "x": 304,
+        "y": 18,
+        "w": 176,
+        "h": 40
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Payment",
+      "cls": "flex items-center justify-center px-4 py-2 transition-colors relative w-44 text-gray-600 hover:text-gray-800 ",
+      "href": null,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(75, 85, 99)",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "borderRadius": "8px",
+      "padding": "8px 16px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "flex",
+      "rect": {
+        "x": 480,
+        "y": 18,
+        "w": 176,
+        "h": 40
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Home",
+      "cls": "flex items-center text-blue-600 font-medium",
+      "href": null,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(37, 99, 235)",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "borderRadius": "8px",
+      "padding": "4px 12px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "flex",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Data Portfolio",
+      "cls": "flex items-center ",
+      "href": null,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "borderRadius": "8px",
+      "padding": "4px 12px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "flex",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Payment",
+      "cls": "flex items-center ",
+      "href": null,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "borderRadius": "8px",
+      "padding": "4px 12px",
+      "border": "0px solid rgb(229, 231, 235)",
+      "display": "flex",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Admin",
+      "cls": "btn btn-sm btn-secondary ml-3",
+      "href": null,
+      "bg": "oklch(0.6971 0.329 342.55)",
+      "color": "oklch(0.9871 0.0106 342.55)",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "borderRadius": "8px",
+      "padding": "0px 12px",
+      "border": "1px solid oklch(0.6971 0.329 342.55)",
+      "display": "flex",
+      "rect": {
+        "x": 1147,
+        "y": 22,
+        "w": 70,
+        "h": 32
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "text": "FE Admin",
+      "cls": "btn btn-sm btn-accent ml-3",
+      "href": null,
+      "bg": "oklch(0.7676 0.184 183.61)",
+      "color": "oklch(0.15352 0.0368 183.61)",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "borderRadius": "8px",
+      "padding": "0px 12px",
+      "border": "1px solid oklch(0.7676 0.184 183.61)",
+      "display": "flex",
+      "rect": {
+        "x": 1228,
+        "y": 22,
+        "w": 90,
+        "h": 32
+      }
+    }
+  ]
+}

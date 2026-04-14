@@ -1,0 +1,135 @@
+{
+  "allText": [
+    {
+      "tag": "A",
+      "text": "july ai",
+      "cls": "no-underline font-calistoga text-2xl text-ja-deep-sea mr-8",
+      "color": "rgb(16, 32, 75)",
+      "fontSize": "24px",
+      "fontWeight": "400",
+      "bg": "rgba(0, 0, 0, 0)",
+      "x": 26,
+      "y": 22,
+      "w": 66
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Admin",
+      "cls": "btn btn-sm btn-secondary ml-3",
+      "color": "oklch(0.9871 0.0106 342.55)",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "bg": "oklch(0.6971 0.329 342.55)",
+      "x": 1147,
+      "y": 22,
+      "w": 70
+    },
+    {
+      "tag": "BUTTON",
+      "text": "FE Admin",
+      "cls": "btn btn-sm btn-accent ml-3",
+      "color": "oklch(0.15352 0.0368 183.61)",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "bg": "oklch(0.7676 0.184 183.61)",
+      "x": 1228,
+      "y": 22,
+      "w": 90
+    },
+    {
+      "tag": "SPAN",
+      "text": "If you’re new…",
+      "cls": "text-[#4A78D6]",
+      "color": "rgb(74, 120, 214)",
+      "fontSize": "48px",
+      "fontWeight": "700",
+      "bg": "rgba(0, 0, 0, 0)",
+      "x": 564,
+      "y": 251,
+      "w": 313
+    },
+    {
+      "tag": "STRONG",
+      "text": "red team strategies",
+      "cls": "text-ja-ocean",
+      "color": "rgb(8, 51, 134)",
+      "fontSize": "18px",
+      "fontWeight": "700",
+      "bg": "rgba(0, 0, 0, 0)",
+      "x": 555,
+      "y": 455,
+      "w": 168
+    },
+    {
+      "tag": "STRONG",
+      "text": "hire-ready",
+      "cls": "text-ja-ocean",
+      "color": "rgb(8, 51, 134)",
+      "fontSize": "18px",
+      "fontWeight": "700",
+      "bg": "rgba(0, 0, 0, 0)",
+      "x": 866,
+      "y": 455,
+      "w": 92
+    },
+    {
+      "tag": "STRONG",
+      "text": "Note:",
+      "cls": "text-gray-700",
+      "color": "rgb(55, 65, 81)",
+      "fontSize": "12px",
+      "fontWeight": "700",
+      "bg": "rgba(0, 0, 0, 0)",
+      "x": 488,
+      "y": 529,
+      "w": 32
+    },
+    {
+      "tag": "A",
+      "text": "here",
+      "cls": "text-ja-ocean underline hover:text-ja-ocean-dark",
+      "color": "rgb(8, 51, 134)",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "bg": "rgba(0, 0, 0, 0)",
+      "x": 743,
+      "y": 577,
+      "w": 25
+    }
+  ],
+  "structure": [
+    {
+      "cls": "bg-white rounded-2xl px-8 py-14 md:px-16 md:py-20 max-w-2xl w-full mx-4 text-center",
+      "bg": "rgb(255, 255, 255)",
+      "rect": {
+        "x": 384,
+        "y": 152,
+        "w": 672,
+        "h": 632
+      },
+      "childCount": 4,
+      "childBgs": [
+        {
+          "cls": "text-4xl md:text-5xl font-bold leading-tight mb-6",
+          "bg": "rgba(0, 0, 0, 0)",
+          "h": 144
+        },
+        {
+          "cls": "text-lg text-[#4A78D6] mb-6 max-w-lg mx-auto",
+          "bg": "rgba(0, 0, 0, 0)",
+          "h": 56
+        },
+        {
+          "cls": "bg-gray-50 rounded-xl px-6 py-5 mb-8 max-w-lg mx-auto text-left",
+          "bg": "rgb(249, 250, 251)",
+          "h": 112
+        },
+        {
+          "cls": "flex flex-col sm:flex-row gap-4 justify-center",
+          "bg": "rgba(0, 0, 0, 0)",
+          "h": 56
+        }
+      ]
+    }
+  ]
+}

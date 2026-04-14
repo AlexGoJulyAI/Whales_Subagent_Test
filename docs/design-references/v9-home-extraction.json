@@ -1,0 +1,17 @@
+{
+  "title": "Home - July AI",
+  "url": "https://app.gojuly.ai/home",
+  "timestamp": "2026-04-12T19:23:02.200Z",
+  "navbar": {
+    "tag": "DIV",
+    "cls": "navbar bg-white w-full px-ja-md rounded-b-2xl sticky top-0 z-[2147483647] border-2 border-ja-tide",
+    "height": 76,
+    "bg": "rgb(255, 255, 255)",
+    "border": "2px solid rgb(218, 222, 231)",
+    "position": "sticky",
+    "zIndex": "2147483647"
+  },
+  "trackCards": [],
+  "pageBg": "rgb(238, 238, 238)",
+  "collapseStates": []
+}

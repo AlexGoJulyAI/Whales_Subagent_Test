@@ -1,0 +1,56 @@
+{
+  "sidebar": {
+    "bg": "rgb(255, 255, 255)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "width": "256px",
+    "padding": "16px 0px 0px",
+    "fontFamily": "Inter, sans-serif",
+    "borderRight": "1px solid rgb(229, 231, 235)"
+  },
+  "navItems": [
+    {
+      "tag": "BUTTON",
+      "text": "",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "padding": "6px",
+      "borderRadius": "6px",
+      "className": "rounded-md hover:bg-gray-100 transition p-1.5"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "className": "flex-shrink-0"
+    },
+    {
+      "tag": "LI",
+      "text": "Learning Material - Beginner",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "className": "my-0 border-b border-tide"
+    },
+    {
+      "tag": "LI",
+      "text": "Red Teaming BeginnerPrevious ConversationsPRACTICERequiremen",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "oklch(0.278078 0.029596 256.848)",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "className": "my-0 border-b border-tide"
+    }
+  ]
+}

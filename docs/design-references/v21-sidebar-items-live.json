@@ -1,0 +1,30 @@
+[
+  {
+    "text": "Learning Material - Beginner",
+    "className": "my-0 border-b border-tide",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontFamily": "arial",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "padding": "0px",
+    "borderLeft": "0px solid rgb(229, 231, 235)",
+    "borderBottom": "1px solid rgb(229, 231, 235)",
+    "height": "73px",
+    "imgSrc": "icon-SectionComplete_small.svg"
+  },
+  {
+    "text": "Red Teaming BeginnerPrevious ConversationsPRACTICERequiremen",
+    "className": "my-0 border-b border-tide",
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "oklch(0.278078 0.029596 256.848)",
+    "fontFamily": "arial",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "padding": "0px",
+    "borderLeft": "0px solid rgb(229, 231, 235)",
+    "borderBottom": "1px solid rgb(229, 231, 235)",
+    "height": "574px",
+    "imgSrc": "icon-SectioInProgress_small.svg"
+  }
+]

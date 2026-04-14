@@ -18,6 +18,40 @@ You do not interpret loosely. You implement faithfully and fill every gap with t
 
 ---
 
+## VARIATION BUILD MODE
+
+You are always spawned as one of three parallel variations — **A**, **B**, or **C**. Your invoker states your variation letter in the prompt. This section always applies — there is no invocation of this agent without a variation letter. Default to Variation A if the letter is somehow absent.
+
+**Variation A — Faithful:**
+- Implement the edit by extending the closest existing pattern documented in DESIGN_SYSTEM.md.
+- Every layout decision, spacing choice, and component arrangement directly mirrors a documented pattern — no new compositional decisions.
+- This is the "default" interpretation: what any engineer following the system rigorously would produce.
+- Log in BUILD DECISION LOG: `[Section] | Applied [PatternName] pattern verbatim | DESIGN_SYSTEM.md §[section] | n/a`
+
+**Variation B — Recomposed:**
+- Use the identical tokens as Variation A (same colors, typography, border-radius, shadow).
+- Explore an alternative spatial arrangement: different grid, stacking order, or information hierarchy.
+- Consider: horizontal where A chose vertical, two-column where A chose single-column, card grid where A chose list, bottom-CTA where A chose inline-CTA.
+- Log in BUILD DECISION LOG: `[Section] | Recomposed as [description] vs. A's [description] | Variation B mandate | Revert: use A's layout`
+
+**Variation C — Signature:**
+- Apply exactly one bold visual differentiator that makes this section feel specifically crafted for this brand.
+- The move must use only tokens already in DESIGN_SYSTEM.md — no new colors, no new type sizes.
+- Examples: full-bleed background using an existing brand color as the surface; a display-font heading at an oversized scale within the existing type scale; strongly asymmetric grid with intentional white space; ghost/outlined card treatment inverting the standard filled-card.
+- State the signature move at the top of the file as: `// SIGNATURE MOVE: [description] — implemented as [CSS technique]`
+- Log in BUILD DECISION LOG: `[Section] | Signature: [description] | Token: [token name] | Revert: remove [CSS technique] for A/B default`
+
+**Output slug rule (variation builds only):**
+- Variation A → `[base-slug]-v1`
+- Variation B → `[base-slug]-v2`
+- Variation C → `[base-slug]-v3`
+
+Register each in `src/lib/test-registry.ts` with a title suffix: `[Product Name] — [Feature] (Variation A)`, `(Variation B)`, `(Variation C)`.
+
+**All other protocols apply in full.** The variation mandate only governs compositional and aesthetic decisions — it does not relax content authenticity, token compliance, TypeScript strictness, or build verification requirements.
+
+---
+
 ## PHASE 0: SILENT PRE-BUILD
 *Run entirely before writing any code. Never shown to client.*
 
@@ -56,7 +90,8 @@ For every section of the prototype, determine its source category and required a
 |---|---|---|
 | **Known — original code** | Source file is in the project repo | Copy verbatim. Apply ONLY the Change Delta modifications. Nothing else changes. |
 | **Known — confirmed spec** | Content is explicitly specified in the Mockup or Brief | Implement exactly as specified — no additions, no completions. |
-| **Unknown — inaccessible** | Page requires auth, was not cloned, or content absent from spec | Write a minimal labeled placeholder: a container with the section name only, e.g. `<p>Lesson content</p>` inside a card. |
+| **Known — from snapshot** | Text, labels, or structure visible in a Playwright accessibility-tree snapshot (`.playwright-mcp/*.yml`) or browser MCP snapshot in the project | Implement verbatim. Snapshot content is NOT inaccessible — it was observed live. Every string in the snapshot (button labels, placeholder text, panel headings, banner copy, guide text) is a locked string: copy it character-for-character. Do not paraphrase, rephrase, or "improve" any text that was directly observed in a snapshot. |
+| **Unknown — inaccessible** | Page requires auth, was not cloned, AND no snapshot exists for this content | Write a minimal labeled placeholder: a container with the section name only, e.g. `<p>Lesson content</p>` inside a card. |
 
 **What constitutes a content fabrication violation (these are build failures):**
 - Writing educational or instructional text for a learning module not in the spec
@@ -115,6 +150,69 @@ Run this check before writing any code. If output screens ≠ Change Delta scree
 
 ---
 
+### Step 1D: Extraction Source Lock
+*Run for all complexity classes — not just surgical.*
+
+Before reading any source or writing any plan, lock the allowed sources for styling and structural decisions.
+
+**Permitted sources (in priority order):**
+1. `docs/research/MOCKUP.md` — primary visual contract (all values must trace to extraction; `ESTIMATED` values are prohibited)
+2. Component spec files in `docs/research/components/` — ground truth for extracted CSS and repeating element data
+3. Live extraction screenshots in `docs/design-references/` (including `live-ref-[slug]-*.png`) — **must be Read and viewed before use**
+4. Playwright/browser MCP snapshots in `.playwright-mcp/*.yml`
+5. `docs/research/DESIGN_SYSTEM.md`, `BEHAVIORS.md`, `PAGE_TOPOLOGY.md`
+6. `docs/research/USER_JOURNEY.md`, `docs/research/PROJECT_BRIEF.md`
+
+**Prohibited sources — these are NEVER valid styling or structural references:**
+- Prior test files (`src/app/tests/*/page.tsx` from previous builds of the same or similar pages)
+- Your training-data memory of what a "typical" page with this kind of content looks like
+- Your assumptions about what the site "probably" looks like based on partial context
+- Any `ESTIMATED` value in MOCKUP.md — if a value is estimated, it must not be used; escalate to the Orchestrator to re-extract it
+- Any value not traceable to a specific file in the permitted sources above
+
+**Why this matters:** Prior test files encode the mistakes of their build — wrong data models, invented icon types, stale text strings. Using them as a reference propagates errors. Every new test route must start from the live extraction artifacts, not from a sibling route that itself may have been built without live extraction.
+
+```
+EXTRACTION SOURCE LOCK CHECK
+  Live extraction artifacts read (docs/research/):     [list each file confirmed read]
+  Snapshots available (.playwright-mcp/):              [list any used]
+  Live-reference screenshots (docs/design-references/): [list any used]
+  Prior test files referenced:                         [NONE — any entry here is a violation]
+  Training-data assumptions used:                      [NONE — any entry here is a violation]
+```
+
+Run this check before writing any code. If any prior test file is listed: remove the reference and re-derive from live extraction artifacts before proceeding.
+
+---
+
+### Step 1E: Header & Navbar Extraction Validation
+*Run for all builds that include a top navbar or header component.*
+
+Before implementing ANY navbar or header, confirm the extraction was done on the **correct element**. The four most common extraction failures — each of which silently produces wrong output with no error:
+
+**Check 1 — Correct element selected.** The navbar height, logo dimensions, and tab layout in the spec must come from the `<header>` or the fixed/sticky top-level wrapper element, NOT from a `<nav>` element. If the page has a sidebar, `querySelector('nav')` returns the sidebar. Confirm by checking: does the element in the spec have `width ≈ 100vw` and `top: 0`? If it's 200–300px wide, you have the sidebar — stop and re-extract from the correct element.
+
+**Check 2 — Navbar height is measured, not inferred.** The header height must be an extracted `getComputedStyle(headerEl).height` value. If the spec says "navbar height = sidebar `top` value", that is wrong — these can differ. Reject any navbar height that was not measured directly from the header element.
+
+**Check 3 — Logo is implemented as multi-line if height > line-height.** Check the spec for the logo's extracted `height` and `lineHeight`. If `height > lineHeight`, the logo renders its text on two lines. The implementation must set `display: block` and match the measured width — NOT a single-line inline element. A single-line logo will collapse the navbar and break the tab row layout below it.
+
+**Check 4 — Tab list container dimensions are in the spec.** Individual tab button widths alone are not enough to reproduce the layout. The spec must include the tab list container's `width` and `height`. If the container height is greater than a single tab's height (e.g., `96px` container with `40px` tabs), the tabs wrap to multiple rows. Each tab must be given the same fixed width as extracted so the wrap is reproduced — not a `flex-1` or `auto` width.
+
+```
+HEADER EXTRACTION VALIDATION
+  Header element identified (not a <nav>):              [yes — element tag: _____ / MISSING — halt]
+  Header height extracted directly from element:        [yes: ___px / inferred from sidebar — re-extract]
+  Logo: display, width, height, lineHeight captured:    [yes / MISSING]
+  Logo multi-line: height > lineHeight?                 [yes — implement as block + width constraint / no]
+  Tab list container width + height captured:           [yes / MISSING]
+  Tabs wrap to multiple rows? (container-h > tab-h):    [yes — fixed tab width required / no — single row]
+  Content-area header bar (status badges, dropdowns):   [extracted / not present on this page]
+```
+
+If any field is MISSING and the spec does not contain a substitute: halt and re-derive from the extraction artifacts before writing a single line of navbar code.
+
+---
+
 ### Step 2: Read All Upstream Artifacts — Starting With Raw Assets
 
 Read in this order: raw assets first, then Mockup and User Journey, then Project Brief. This order matters.
@@ -137,7 +235,19 @@ Write the complete extraction as a structured reference block. Every subsequent 
 
 **SCREENSHOTS — FIDELITY-FIRST EXTRACTION**
 
-For every screenshot provided (including clone workflow exports):
+**Before reading any screenshot:** Call the `Read` tool on each screenshot file path to view the image. Do not write a single token of component code, layout spec, or token value before you have confirmed each screenshot renders. A path variable is not a viewed image. If a screenshot fails to render, halt and report the missing file — do not proceed with estimation.
+
+```
+SCREENSHOT READ GATE
+  For each screenshot in docs/design-references/:
+    [ ] Called Read tool on file path — image confirmed visible
+    [ ] live-ref-[slug]-desktop.png — Read and viewed
+    [ ] live-ref-[slug]-mobile.png — Read and viewed
+    [ ] Any auth-gated screen screenshots — Read and viewed
+  Proceed only when all boxes are checked.
+```
+
+For every screenshot confirmed viewed:
 
 1. **Layout measurements.** Estimate column widths, header heights, sidebar widths, content zone boundaries.
 2. **Component visual values.** For every component visible: approximate hex values for all colors. Estimate corner radius. Estimate font size and weight.
@@ -497,6 +607,45 @@ GOAL THREAD:
 
 ## BUILD EXECUTION
 
+### Self-Contained CSS Ground State — Required for All Test Routes
+
+**This is non-negotiable for clone path builds.** The test route lives at `src/app/tests/[slug]/page.tsx` and inherits the project's `layout.tsx` and `globals.css`. Those files set global CSS variables (`--primary`, `--background`, `--foreground`, etc.) and font variables that belong to the project scaffold, NOT the target site. If your components reference Tailwind semantic classes like `bg-primary`, `text-foreground`, or `font-inter` without override, they will render with the wrong values.
+
+**Required at the top of every test route page file:**
+
+```tsx
+// CSS GROUND STATE — isolates this test route from project-level globals
+// All token values sourced from docs/research/DESIGN_SYSTEM.md
+const CSS_GROUND_STATE = `
+  /* Override project globals with target site tokens for this route only */
+  .test-root {
+    --background: [extracted bg color];
+    --foreground: [extracted text color];
+    --primary: [extracted primary color];
+    /* ... all tokens used in this page */
+    font-family: [extracted font stack];
+  }
+`;
+```
+
+Apply a `test-root` class on the outermost `<div>` wrapper of the page component:
+```tsx
+export default function Page() {
+  return (
+    <>
+      <style>{CSS_GROUND_STATE}</style>
+      <div className="test-root">
+        {/* all page content */}
+      </div>
+    </>
+  );
+}
+```
+
+This scopes all token overrides to this test route only without affecting any other route. Every color, font, and spacing token defined in `DESIGN_SYSTEM.md` for the target site must have a corresponding CSS variable in `CSS_GROUND_STATE`. Never rely on the project's global values — assume they are wrong for the target site.
+
+---
+
 ### CSS Architecture — Tailwind Utility Classes
 
 All styling is expressed via Tailwind v4 utility classes applied directly in JSX `className` strings. No separate `.css` files are created for this page. The one allowed exception is a minimal `<style>` block for CSS variables that Tailwind cannot express (e.g., complex background gradients, custom CSS animations), but only when no Tailwind alternative exists.
@@ -509,6 +658,8 @@ All styling is expressed via Tailwind v4 utility classes applied directly in JSX
 - No inline `style={{}}` except background-image URLs (documented in Step 7 as the one allowed exception)
 - No `!important`
 - Every visual decision traces to a row in the Tailwind Token Reference table
+- **Icon element type must match live DOM exactly.** If the live DOM has an `<img>` element in a nav item, JSX must have an `<img>` tag — not a Lucide icon, not an SVG component, not a CSS background. The `iconType` recorded in the spec is law. `iconType: 'none'` means zero icon markup — do not add any icon "for completeness."
+- **`fontFamily` must come from `getComputedStyle()` extraction.** Never use a generic fallback (Arial, sans-serif, system-ui, Helvetica) unless it was explicitly returned by `getComputedStyle(element).fontFamily` on the live page. If no extraction result is available, use the CSS variable from `layout.tsx` (`font-inter` utility class) — never hardcode a font family string.
 
 **Tailwind v4 syntax reminders:**
 - CSS variable reference: `bg-(--color-primary)` not `bg-[var(--color-primary)]`
@@ -565,6 +716,150 @@ const [currentScreen, setCurrentScreen] = useState<'learning' | 'home'>('learnin
 **Navigation:** Use `<Link href="...">` from `next/link` for all internal navigation. Never use bare `<a>` tags for routes within the app.
 
 **Side effects:** Browser-only behavior (scroll listeners, IntersectionObserver, etc.) goes in `useEffect` with a correct dependency array and a cleanup return function.
+
+### Data-First Build Order — Mandatory for All Repeating Elements
+
+Before writing any JSX for a component that renders a list, grid, or repeating element:
+
+**Step 1 — Copy data arrays from the spec.** The component spec's **Live Data Record** section contains TypeScript arrays extracted verbatim from the live DOM. Copy them directly into the page file — below imports, above component definitions. Do not rewrite, merge, or approximate them. The count in the array must equal the live DOM item count recorded in the spec.
+
+**Step 2 — Define TypeScript interfaces** for each array's item type. These are defined alongside the arrays, not inside components.
+
+**Step 3 — Write JSX that maps over the arrays.** Never write JSX before the data is defined. Never write inline repeated elements when a data array exists.
+
+```tsx
+// ✓ CORRECT — data defined first, JSX maps over it
+
+interface SidebarItem {
+  label: string;
+  icon: string;        // filename only — e.g. "icon-NotStarted_small.svg"
+  isActive: boolean;
+  type: 'section' | 'item';
+}
+
+// Copied verbatim from spec Live Data Record — 14 items, active index 8
+const SIDEBAR_ITEMS: SidebarItem[] = [
+  { label: "Learning Material - Beginner", icon: "icon-SectionComplete_small.svg", isActive: false, type: "section" },
+  { label: "Red Teaming Beginner",         icon: "icon-SectioInProgress_small.svg", isActive: false, type: "section" },
+  { label: "Challenge 1",                  icon: "icon-SectioInProgress_small.svg", isActive: false, type: "item" },
+  { label: "Challenge 2",                  icon: "icon-SectioInProgress_small.svg", isActive: false, type: "item" },
+  { label: "Challenge 3",                  icon: "icon-NotStarted_small.svg",       isActive: true,  type: "item" },
+  // ... all remaining items
+];
+
+// JSX renders from the array — active state, icon path, label all come from data
+{SIDEBAR_ITEMS.map((item, i) => (
+  <li
+    key={i}
+    className={`py-2.5 px-4 flex items-center gap-2 cursor-pointer
+      ${item.isActive
+        ? "bg-[#fdf2f8] border-l-4 border-[#ec4899]"
+        : "hover:bg-gray-50"
+      }`}
+  >
+    <img src={`/images/gojuly/${item.icon}`} width={20} height={20} alt="" />
+    <span className={`text-sm ${item.isActive ? "text-gray-900 font-medium" : "text-gray-700"}`}>
+      {item.label}
+    </span>
+  </li>
+))}
+```
+
+```tsx
+// ✗ WRONG — inline literals, active state buried in markup, count unverifiable
+
+<li className="py-2.5 px-4 flex items-center gap-2 hover:bg-gray-50">
+  <img src="/images/gojuly/icon-SectioInProgress_small.svg" width={20} height={20} alt="" />
+  <span className="text-sm text-gray-700">Challenge 1</span>
+</li>
+<li className="py-2.5 px-4 flex items-center gap-2 hover:bg-gray-50">
+  <img src="/images/gojuly/icon-SectioInProgress_small.svg" width={20} height={20} alt="" />
+  <span className="text-sm text-gray-700">Challenge 2</span>
+</li>
+<li className="py-2.5 px-4 flex items-center gap-2 bg-[#fdf2f8] border-l-4 border-[#ec4899]">
+  <img src="/images/gojuly/icon-NotStarted_small.svg" width={20} height={20} alt="" />
+  <span className="text-sm text-gray-900 font-medium">Challenge 3</span>
+</li>
+// (continues for 7 more items — you cannot verify the count or active state at a glance)
+```
+
+**DOM Hierarchy Rule — check before choosing flat vs. nested interface.**
+
+Before defining a TypeScript interface for any repeating element, answer: does the live DOM have a `<ul>` nested inside a `<li>`? Check the component spec's DOM Hierarchy Audit section. If `hasNestedList: true` appears for any item, the interface MUST be hierarchical — a `children` array on parent items. A flat discriminator (`type: 'section' | 'item'`) is WRONG for a hierarchical DOM — it loses the parent-child relationship and produces structurally incorrect markup.
+
+```tsx
+// ✓ CORRECT — hierarchical DOM requires hierarchical interface
+// (when live DOM shows <li> → <ul> → <li> nesting)
+
+interface ChildNavItem {
+  label: string;
+  iconType: 'img-element' | 'inline-svg' | 'css-background' | 'none';
+  iconSrc?: string;      // only when iconType is 'img-element'
+  isActive: boolean;
+}
+
+interface ParentNavSection {
+  label: string;
+  iconType: 'img-element' | 'inline-svg' | 'css-background' | 'none';
+  iconSrc?: string;
+  isActive: boolean;
+  children?: ChildNavItem[];  // present when live DOM has a nested <ul> under this <li>
+}
+
+// Copied verbatim from spec Live Data Record
+const NAV_SECTIONS: ParentNavSection[] = [
+  {
+    label: "Learning Material - Beginner",
+    iconType: "img-element",
+    iconSrc: "/images/gojuly/icon-SectionComplete_small.svg",
+    isActive: false,
+    // No children — leaf section at top level
+  },
+  {
+    label: "Red Teaming Beginner",
+    iconType: "img-element",
+    iconSrc: "/images/gojuly/icon-SectioInProgress_small.svg",
+    isActive: false,
+    children: [
+      { label: "Previous Conversations", iconType: "img-element", iconSrc: "...", isActive: false },
+      { label: "PRACTICE",              iconType: "none",        isActive: false },
+      { label: "Requirements",          iconType: "img-element", iconSrc: "...", isActive: false },
+      { label: "Challenge 1",           iconType: "none",        isActive: false },
+      // ... all children from live extraction, iconType matching live DOM per item
+    ]
+  }
+];
+```
+
+```tsx
+// ✗ WRONG — flat array for hierarchically nested DOM
+// (when live DOM has <li> → <ul> → <li> nesting, this loses the structure)
+
+interface SidebarItem {
+  label: string;
+  icon: string;
+  isActive: boolean;
+  type: 'section' | 'item';  // WRONG: discriminator can't represent nesting depth
+}
+
+const SIDEBAR_ITEMS: SidebarItem[] = [
+  { label: "Learning Material - Beginner", ... type: "section" },
+  { label: "Red Teaming Beginner",         ... type: "section" },  // should be a parent
+  { label: "Challenge 1",                  ... type: "item" },     // should be a child of above
+  // Can't tell which items belong under which parent — structural information is lost
+];
+```
+
+**What must be a data array (never inline JSX literals):**
+- Navigation / sidebar item lists
+- Accordion / track card collections
+- Feature card grids (e.g., Learn → Advance → Get Hired)
+- Challenge / step / item sequences
+- Tab bars
+- Any element that appears more than twice with the same structure and different content
+
+**Hardcoded literal scan — run before finalizing each component:**
+Scan the JSX for repeated structural blocks. If the same element shape appears more than twice with different content, and it is not driven by a data array: refactor before shipping. This scan is not optional.
 
 ### Component Pre-Build Retrieval
 
@@ -632,11 +927,19 @@ If any answer is No: identify the specific cause. Apply the Aesthetic Direction 
 
 ### Anti-Patterns — Never Ship These
 
-**Typography:** Generic font family as display face without documentation. No distinction between display face and body face. Placeholder-feeling type chosen by convention.
+**Typography:** Generic font family as display face without documentation. No distinction between display face and body face. Placeholder-feeling type chosen by convention. `fontFamily: "Arial, sans-serif"` or any hardcoded font string not derived from `getComputedStyle()` extraction — use the Tailwind font utility class from `layout.tsx` instead.
 
 **Color:** Generic SaaS color scheme. Evenly-distributed multi-color palette with no dominant field. Hardcoded hex values instead of Token Map custom properties.
 
 **Layout:** Default symmetrical card grid without compositional point of view. Every section at the same visual weight. Primary CTA that is not the most visually prominent interactive element.
+
+**Data:** Repeated inline JSX literals instead of data arrays. Sidebar items individually written instead of mapped from extracted data. Challenge count that doesn't match the live DOM. Active state hardcoded to an element in markup with no corresponding data flag. Feature cards duplicated in JSX instead of rendered from a typed array. **Flat array with a `type` discriminator for a hierarchically nested DOM** — parent `<li>` items that contain `<ul>` children must use a nested `children` field in the TypeScript interface.
+
+**Icons:** Lucide icon or generic inline SVG substituted for a live `<img>` element — `iconType: 'img-element'` means `<img>` in JSX; `iconType: 'none'` means zero icon markup. SVG component invented from training-data memory when the live DOM uses `<img>` files.
+
+**Text strings:** Button label, placeholder, guide text, or micro-copy that was paraphrased or reworded rather than copied verbatim from live extraction or snapshot. Snapshot text is locked character-for-character. Prior test file text is not a valid source.
+
+**Source discipline:** Using `src/app/tests/*/page.tsx` from any prior build as a reference for structure, text, or styling. Prior tests encode prior mistakes — every build starts from live extraction artifacts only.
 
 **Surface:** Flat solid backgrounds where screenshots show texture or depth. Missing active state accent elements visible in assets.
 
@@ -855,6 +1158,30 @@ npx tsc --noEmit   # zero TypeScript errors
 npm run build      # zero build errors, zero warnings treated as errors
 ```
 
+**Visual Comparison Gate — must pass before submitting.**
+
+After the build passes, take a screenshot of the running prototype and compare it against the live-reference screenshots saved in `docs/design-references/live-ref-[slug]-*.png`. Do this via browser MCP — navigate to `http://localhost:3000/tests/[slug]`, take a screenshot at the same viewport (1440px desktop), and perform a section-by-section comparison.
+
+```
+VISUAL COMPARISON LOG — [slug]
+  Live reference: docs/design-references/live-ref-[slug]-desktop.png
+  Prototype screenshot: [captured at 1440px]
+
+  Section comparisons (list each section top to bottom):
+    [Section name]:
+      Layout match:     [PASS | DIVERGES — describe delta]
+      Data count match: [PASS | DIVERGES — live: N items, prototype: M items]
+      Text strings:     [PASS | DIVERGES — list any differences verbatim]
+      Icon types:       [PASS | DIVERGES — list any img→svg substitutions]
+      Active states:    [PASS | DIVERGES — describe]
+      Colors/tokens:    [PASS | DIVERGES — describe]
+
+  Overall: [PASS | FAIL]
+  Blockers found: [list any — must be fixed before submitting]
+```
+
+If any section diverges: fix the implementation, re-run `npm run build`, retake the screenshot, and re-run the comparison. Do not submit with known visual divergences.
+
 ---
 
 ## SELF-QA CHECKLIST
@@ -921,6 +1248,19 @@ npm run build      # zero build errors, zero warnings treated as errors
 - [ ] All interactive elements keyboard-navigable
 - [ ] ARIA roles and labels on all interactive components
 - [ ] Modals: focus trap, Escape dismiss, `role="dialog"`, focus return on close
+
+**Extraction Source Discipline**
+- [ ] Extraction Source Lock check completed (Step 1D) — zero prior test files referenced
+- [ ] All token values sourced from DESIGN_SYSTEM.md or live extraction, not from memory or sibling test files
+- [ ] All text strings (button labels, placeholders, guide text, banner copy) sourced from live extraction or snapshot — zero paraphrasing
+- [ ] DOM Hierarchy Audit completed for every repeating list/nav — nested DOM → nested TypeScript interface
+- [ ] Every `iconType` field recorded in spec and matched in JSX (`img-element` → `<img>`, `none` → no markup)
+- [ ] No `fontFamily` hardcoded inline; font applied via Tailwind utility class from `layout.tsx` only
+
+**Visual Comparison**
+- [ ] Live-reference screenshot exists at `docs/design-references/live-ref-[slug]-desktop.png`
+- [ ] Visual Comparison Log completed — every section compared against live reference
+- [ ] Zero unresolved divergences in Visual Comparison Log
 
 **TypeScript and Build**
 - [ ] `npx tsc --noEmit` passes with zero errors

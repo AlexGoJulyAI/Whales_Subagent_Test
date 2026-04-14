@@ -152,6 +152,20 @@ After the Designer Agent produces `docs/research/MOCKUP.md`, it becomes the bind
 
 The Mockup also defines every interaction state, every hover transition property, every active-state accent element. Builders who receive a complete Mockup produce complete components.
 
+### 13. Data-First — No Inline Literals for Repeating Elements
+
+Every list, grid, sidebar, accordion, or carousel on the target page has real data behind it. That data must be extracted as a typed TypeScript array during Phase 3, written into the component spec's **Live Data Record** section, and then copied verbatim into the implementation. It is never reconstructed from memory or approximated.
+
+**The rule:** If more than two items share the same component structure (same shape, different content), they come from a data array — never from repeated inline JSX literals.
+
+This covers: sidebar nav item lists, track/accordion card collections, feature card grids, challenge lists, tab arrays, step sequences, pricing tiers, testimonial collections, nav menus — any repeating element.
+
+**Why it matters.** A hardcoded `<li>Challenge 3</li>` active state buried in markup is invisible at review time. A typed `CHALLENGES` array at the top of the file is auditable in 10 seconds: count the items, check which has `active: true`, verify it matches the live page. Inline JSX hides the data; a data array surfaces it.
+
+**What "extracted verbatim" means.** During Phase 3 Step 1, run the Repeating Element Extraction script (see below) on every list or grid. The JSON output IS the data. Copy it into a TypeScript array in the spec file. The builder copies that array into the page file. No reinvention, no recounting, no guessing the active item.
+
+**The count must match.** If the live DOM has 10 sidebar challenges, the TypeScript array has exactly 10 entries. If the home page has 6 accordion cards, the `TRACKS` array has exactly 6 entries. A mismatch between the extracted count and the implemented array is a correctness failure.
+
 ### 10. Preserve the Design System for Edits
 
 **This is what separates clone-and-edit from clone-only.** During extraction, you are not just building a one-off replica — you are capturing a **design system** that will be reused for future edits. Every design decision you extract becomes a reusable token or pattern.
@@ -298,6 +312,16 @@ Extract these from the page before doing anything else:
 **Favicons & Meta** — Download favicons, apple-touch-icons, OG images, webmanifest to `public/seo/`. Update `layout.tsx` metadata.
 
 **Global UI patterns** — Identify any site-wide CSS or JS: custom scrollbar hiding, scroll-snap on the page container, global keyframe animations, backdrop filters, gradients used as overlays, **smooth scroll libraries** (Lenis, Locomotive Scroll — check for `.lenis`, `.locomotive-scroll`, or custom scroll container classes). Add these to `globals.css` and note any libraries that need to be installed.
+
+**Header / Top Navbar** — Extract the top header element before any component work. Four common mistakes to avoid:
+
+1. **Wrong element selector.** The top header is rarely a `<nav>` element — it is typically `<header>`, or a `<div>` with `position: fixed; top: 0`. `document.querySelector('nav')` will silently return the SIDEBAR navigation if one exists on the page, producing wrong dimensions and wrong HTML. Identify the header element explicitly: `document.querySelector('header')`, or search by its sticky/fixed+top-0 class pattern. Confirm you have the right element by checking its computed `top` (should be `0px`) and that its height spans the full viewport width.
+
+2. **Navbar height.** Extract `getComputedStyle(headerEl).height` directly from the header element. **Never infer navbar height from the sidebar's `top` value** — a sidebar with `top: 64px` tells you where the sidebar starts, not how tall the header is. These can differ if the header has bottom padding, a bottom border, or a `border-radius` that adds visual bulk below the content.
+
+3. **Logo multi-line rendering.** The logo anchor may display its text across two lines even though the HTML is a single string with no `<br>`. This happens when `display: block` is set on the anchor and its computed `width` is narrower than the full text. Extract `display`, `width`, `height`, and `lineHeight` from the logo element — if `height > lineHeight`, the logo is multi-line. Reproduce this by setting the same `display` and `width` constraint, not by inserting a line break. Using `display: inline` with no width constraint will collapse it to one line and break the navbar layout.
+
+4. **Tab container wrapping.** Extracting only individual tab button styles is insufficient when tabs wrap to multiple rows. Also extract the styles of the **tab list container** (the `<ul>` or wrapper `<div>` that holds all the tab buttons): `display`, `flexWrap`, `width`, `height`, and each tab's `width`. If `(tab count × tab width) > container width`, tabs will wrap to a second row regardless of the outer `flex-wrap` computed value. Confirm by checking the container height: a container that is `N × tab-height` tall has `N` rows. Reproduce the same wrap by giving each tab a matching fixed width.
 
 ### Mandatory Interaction Sweep
 
@@ -500,9 +524,144 @@ Record the diff explicitly: "Property X changes from VALUE_A to VALUE_B, trigger
 
 4. **Extract real content** — all text, alt attributes, aria labels, placeholder text. Use `element.textContent` for each text node. For tabbed/stateful content, **click each tab and extract content per state**.
 
+   **Locked string rule — no paraphrasing permitted.** Every string in the following categories is locked: button labels, input placeholder text, guide/hint text, panel headings, banner messages, tooltip copy, error messages, and any instructional micro-copy. These strings are verbatim character-for-character — do NOT rephrase, simplify, reword, capitalize differently, or add/remove punctuation. Extract them by reading `element.textContent.trim()` or `element.getAttribute('placeholder')` directly from the live DOM. If a string appears in a Playwright accessibility-tree snapshot (`.playwright-mcp/*.yml`), that appearance confirms the verbatim text; copy it exactly. "Reset Conversation" is not "Reset". "Type your prompt here..." is not "Type your content here...". The 🚀 emoji in a challenge banner is not optional — it is part of the string.
+
+   **Icon type discrimination — required per element.** For every icon or image in the section, classify its DOM type before implementing it in JSX:
+   - `img-element` — an `<img>` tag in the live DOM (has `src` attribute on the element). Implement as `<img src="..." />` in JSX. Never substitute with an SVG component or Lucide icon.
+   - `css-background` — background-image on a non-`<img>` element (no `<img>` tag, but `getComputedStyle(el).backgroundImage` returns a URL). Implement via `style={{ backgroundImage: "url(...)" }}`.
+   - `inline-svg` — an `<svg>` element in the DOM. Extract the full `<svg>` outerHTML and add to `src/components/icons.tsx` as a named React component.
+   - `none` — element has no icon (no `<img>`, no background image, no `<svg>`). Do not add any icon placeholder.
+
+   Record the `iconType` for every icon slot in the spec. A `none` type means **zero icon markup** — do not add a Lucide icon or generic SVG "for completeness."
+
 5. **Identify assets** this section uses — which downloaded images/videos from `public/`, which icon components from `icons.tsx`. Check for **layered images** (multiple `<img>` or background-images stacked in the same container).
 
-6. **Assess complexity** — how many distinct sub-components does this section contain? A distinct sub-component is an element with its own unique styling, structure, and behavior (e.g., a card, a nav item, a search panel).
+6. **Extract all repeating elements as structured data** — for every list, nav, grid, accordion, or carousel in this section, run the following script via browser MCP. This produces the raw data for the **Live Data Record** in the spec file and becomes the TypeScript array in the implementation.
+
+```javascript
+// Repeating element extraction — replace CONTAINER and ITEM selectors
+// Run once per repeating element (sidebar nav, track list, challenge list, feature cards, etc.)
+(function(containerSelector, itemSelector) {
+  const container = document.querySelector(containerSelector);
+  if (!container) return JSON.stringify({ error: 'Container not found: ' + containerSelector });
+  const items = [...container.querySelectorAll(itemSelector)];
+  return JSON.stringify({
+    containerSelector,
+    itemSelector,
+    totalCount: items.length,
+    items: items.map((item, index) => {
+      const cs = getComputedStyle(item);
+      const img = item.querySelector('img');
+      // Active state detection — checks multiple signals
+      const isActive =
+        item.getAttribute('aria-selected') === 'true' ||
+        item.getAttribute('aria-current') === 'true' ||
+        item.getAttribute('data-active') === 'true' ||
+        [...item.classList].some(c =>
+          c.includes('active') || c.includes('selected') || c.includes('current')
+        ) ||
+        (cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && cs.backgroundColor !== 'rgb(255, 255, 255)') ||
+        parseFloat(cs.borderLeftWidth) >= 3;
+      return {
+        index,
+        // Text
+        labelText: item.textContent.trim().replace(/\s+/g, ' ').slice(0, 200),
+        directText: [...item.childNodes]
+          .filter(n => n.nodeType === 3).map(n => n.textContent.trim()).filter(Boolean)[0] || null,
+        // Icon / image
+        iconSrc: img?.getAttribute('src') || null,
+        iconFilename: img?.getAttribute('src')?.split('/').pop() || null,
+        iconAlt: img?.getAttribute('alt') || null,
+        iconWidth: img?.getAttribute('width') || null,
+        // Icon type discrimination — MUST be recorded for every item
+        // 'img-element': <img> tag present in DOM → implement as <img> in JSX
+        // 'css-background': no <img> but getComputedStyle shows background-image URL
+        // 'inline-svg': <svg> element present, no <img>
+        // 'none': no icon of any kind → zero icon markup in JSX
+        iconType: (() => {
+          if (img) return 'img-element';
+          if (item.querySelector('svg')) return 'inline-svg';
+          const bg = getComputedStyle(item).backgroundImage;
+          if (bg && bg !== 'none') return 'css-background';
+          return 'none';
+        })(),
+        // State
+        isActive,
+        classes: item.className?.toString() || '',
+        // Computed state indicators
+        backgroundColor: cs.backgroundColor,
+        borderLeftWidth: cs.borderLeftWidth,
+        borderLeftColor: cs.borderLeftColor,
+        fontWeight: cs.fontWeight,
+        // Children count (helps detect header vs. leaf items)
+        childElementCount: item.childElementCount,
+        hasChevron: !!item.querySelector('svg'),
+        // Data attributes (often carry state)
+        dataAttrs: [...item.attributes]
+          .filter(a => a.name.startsWith('data-'))
+          .reduce((acc, a) => ({ ...acc, [a.name]: a.value }), {}),
+      };
+    })
+  }, null, 2);
+})('CONTAINER_SELECTOR', 'ITEM_SELECTOR');
+```
+
+Record the full JSON output in the spec file's **Live Data Record** section. Then convert it to a TypeScript array — this is not documentation, it IS the implementation data. Builders copy it verbatim.
+
+**DOM Hierarchy Audit — run immediately after the repeating element extraction script.**
+
+After you receive the extraction output, check whether any item contains a nested `<ul>` or `<ol>` as a direct child (or grandchild) — indicating a parent → children hierarchy in the live DOM. Use this script:
+
+```javascript
+// DOM Hierarchy Audit — run after repeating element extraction
+// Replace ITEM_SELECTOR with the same item selector used above
+(function(itemSelector) {
+  const items = [...document.querySelectorAll(itemSelector)];
+  return JSON.stringify(items.map((item, index) => ({
+    index,
+    labelText: item.textContent.trim().slice(0, 80),
+    hasNestedList: !!item.querySelector('ul, ol'),
+    nestedItemCount: item.querySelectorAll('li').length,
+    // Distinguish parent-level vs leaf-level items
+    isParent: !!item.querySelector('ul, ol'),
+    // Direct text (excludes child element text) — identifies the parent label
+    directText: [...item.childNodes]
+      .filter(n => n.nodeType === 3).map(n => n.textContent.trim()).filter(Boolean)[0] || null,
+  })));
+})(ITEM_SELECTOR);
+```
+
+**Hierarchy Rule:** If ANY item has `hasNestedList: true`, the TypeScript interface for this component MUST model hierarchy explicitly — never collapse parent + children into a flat array. Required structure:
+
+```typescript
+// When live DOM has parent items containing nested <ul> children:
+interface ChildItem {
+  label: string;
+  iconType: 'img-element' | 'inline-svg' | 'css-background' | 'none';
+  iconSrc?: string;       // only if iconType is 'img-element' or 'css-background'
+  isActive: boolean;
+}
+
+interface ParentItem {
+  label: string;
+  iconType: 'img-element' | 'inline-svg' | 'css-background' | 'none';
+  iconSrc?: string;
+  isActive: boolean;
+  children?: ChildItem[];  // present when live DOM has a nested <ul> under this <li>
+}
+```
+
+A flat array (`type: 'section' | 'item'`) is WRONG when the live DOM has true nested lists. Flat type discriminators lose the parent-child relationship and produce structurally incorrect markup. If the hierarchy audit shows nesting, use a nested interface. No exceptions.
+
+**Repeating elements that always require this extraction:**
+- Sidebar / navigation item lists (every item, in DOM order)
+- Accordion / track card collections (every card with its title, icon path, badge, open/closed state)
+- Feature card grids (every card with icon, heading, description)
+- Challenge / step / item lists (every item with its label, icon, status, active flag)
+- Tab bars (every tab with its label and whether it is the selected tab)
+- Any other element that appears more than twice with the same structure
+
+7. **Assess complexity** — how many distinct sub-components does this section contain? A distinct sub-component is an element with its own unique styling, structure, and behavior (e.g., a card, a nav item, a search panel).
 
 ### Step 2: Write the Component Spec File
 
@@ -570,6 +729,43 @@ For each section (or sub-component, if you're breaking it up), create a spec fil
 ## Text Content (verbatim)
 <All text content, copy-pasted from the live site>
 
+## Live Data Record (repeating elements — extracted verbatim, becomes TypeScript arrays)
+
+*Complete this section for every list, grid, nav, accordion, or carousel in this component. If there are no repeating elements, write "N/A — no repeating elements."*
+
+*This section is NOT documentation. It IS the implementation data. Builders copy the TypeScript arrays verbatim into the page file.*
+
+### [Repeating Element Name, e.g., "Sidebar Navigation Items"]
+
+**Extraction query:** `containerSelector: '...'`, `itemSelector: '...'`
+**Live DOM item count:** [N] — *builder's array MUST have exactly this many entries*
+**Active/selected item index:** [N, or "none"]
+
+Raw extraction output (paste the full JSON from the Repeating Element Extraction script):
+```json
+[
+  { "index": 0, "labelText": "...", "iconFilename": "...", "isActive": false, ... },
+  { "index": 1, "labelText": "...", "iconFilename": "...", "isActive": false, ... }
+]
+```
+
+TypeScript data array (builder copies this verbatim into the component file — do not rewrite, do not approximate):
+```typescript
+interface [ItemTypeName] {
+  label: string;
+  icon: string;       // filename only — prepend "/images/[dir]/" in JSX
+  isActive: boolean;
+  // ...other fields extracted above
+}
+
+const [ITEMS_CONST_NAME]: [ItemTypeName][] = [
+  // N entries — must match live DOM item count above
+];
+```
+
+### [Next repeating element, if any]
+...
+
 ## Responsive Behavior
 - **Desktop (1440px):** <layout description>
 - **Tablet (768px):** <what changes — e.g., "maintains 2-column, gap reduces to 16px">
@@ -631,11 +827,42 @@ After assembly, do NOT declare the clone complete. Take side-by-side comparison 
 5. Test all interactive behaviors: scroll through the page, click every button/tab, hover over interactive elements
 6. Verify smooth scroll feels right, header transitions work, tab switching works, animations play
 
-Only after this visual QA pass is the Next.js clone complete.
+**Live Reference Screenshots — mandatory before spawning the Prototyper Agent.**
+
+At the end of Phase 5, while the live site is open via browser MCP, capture and save canonical reference screenshots that the Prototyper will use for visual ground-truth:
+
+- Desktop (1440px): save to `docs/design-references/live-ref-[slug]-desktop.png`
+- Mobile (390px): save to `docs/design-references/live-ref-[slug]-mobile.png`
+- For any auth-gated secondary screens: save each screen as `live-ref-[slug]-[screen-name]-desktop.png`
+
+These files MUST exist before the Prototyper Agent is invoked. The Prototyper receives these paths explicitly in its prompt and must compare its build output against them section-by-section. If the Prototyper cannot find a live-reference file, it must halt and report the missing file rather than building without ground-truth.
+
+Only after this visual QA pass and screenshot save is the Next.js clone complete.
 
 ## Phase 6: Test Route
 
 **Run after Visual QA.** Spawn the Prototyper Agent to build a Next.js App Router test route — a live, interactive deliverable the reviewer can open via `npm run dev` and navigate as a real page.
+
+### Extraction Completeness Gate — MUST pass before invoking Prototyper
+
+Before spawning the Prototyper Agent, verify that every required extraction artifact exists on disk. The Prototyper builds from these files — if any are absent, it will fill gaps from memory, producing invented content, wrong structure, or stale data from prior sessions.
+
+```
+EXTRACTION COMPLETENESS GATE
+  docs/research/PROJECT_BRIEF.md             [exists | MISSING — block]
+  docs/research/DESIGN_SYSTEM.md             [exists | MISSING — block]
+  docs/research/BEHAVIORS.md                 [exists | MISSING — block]
+  docs/research/PAGE_TOPOLOGY.md             [exists | MISSING — block]
+  docs/research/USER_JOURNEY.md              [exists | MISSING — block]
+  docs/research/MOCKUP.md                    [exists | MISSING — block]
+  docs/design-references/ (≥1 screenshot)    [exists | MISSING — block]
+  live-ref-[slug]-desktop.png (Phase 5)      [exists | MISSING — block]
+  docs/research/components/ (≥1 spec file)   [exists | MISSING — block]
+```
+
+**If ANY artifact is MISSING:** Do NOT spawn the Prototyper. Return to the phase that produces the missing artifact and complete it. The Prototyper receiving an incomplete context is the root cause of invented content, fabricated data models, and wrong text strings in the prototype. There are no shortcuts — a placeholder or stub artifact is not a substitute for the real artifact.
+
+**If the page is auth-gated and live extraction was not possible:** The component spec files MUST contain extracted Playwright snapshot data (`.playwright-mcp/*.yml` content) for every nav, sidebar, and repeating element. Snapshot data is the fallback for live extraction — it is not optional, it is the minimum. If no snapshot exists, capture one before proceeding.
 
 ### How to invoke
 
@@ -683,6 +910,62 @@ When the user asks for a change (e.g., "add a testimonials section", "change the
    - **Style tweak** — color, spacing, font adjustments within existing components. Reference the token table.
    - **New component** — a section or element that doesn't exist yet. Must be built using the design system.
    - **Layout change** — reordering, adding/removing sections, changing responsive behavior.
+
+### Three-Variation Edit Mode
+
+**Trigger:** When the edit is classified as **new component** or **layout change**, do NOT implement a single version. Instead, spawn three Prototyper Agents in parallel — each building a distinct variation of the edit simultaneously.
+
+**Why:** New components and layout changes involve compositional judgment calls that the design system alone cannot resolve. Generating three options in parallel lets the user see the decision space and pick their preferred direction rather than committing to the first reasonable interpretation.
+
+**Skip variation mode for:**
+- **Content changes** — only one correct answer (the right text/data)
+- **Style tweaks** — only one correct answer (the right token value)
+
+#### Variation Mode Protocol
+
+1. **Determine the base slug** for this edit (e.g., `hero-cta`, `testimonials`, `footer-v2`).
+
+2. **Write three variation briefs** — one per Prototyper Agent. Each brief contains the full edit description PLUS a variation mandate:
+
+   | Variation | Route slug | Mandate |
+   |---|---|---|
+   | **A — Faithful** | `[slug]-v1` | Extend the closest existing pattern in DESIGN_SYSTEM.md. Every choice directly applies a documented pattern. No new spatial decisions. |
+   | **B — Recomposed** | `[slug]-v2` | Same tokens as A, but explore an alternative layout or information hierarchy. Change the grid structure, stacking order, or spatial grouping while keeping the visual language identical. |
+   | **C — Signature** | `[slug]-v3` | Apply one bold, intentional visual differentiator — an unexpected background treatment, strong typographic hierarchy, asymmetric layout, or color field inversion — that makes this section feel specifically crafted. Must still use only design-system tokens. Document the signature move in the Build Decision Log. |
+
+3. **Spawn three Prototyper Agents in parallel** — one per variation. Each agent:
+   - Receives the full Project Brief, DESIGN_SYSTEM.md, MOCKUP.md, and BEHAVIORS.md inline
+   - Receives its variation brief (mandate A, B, or C) prepended to the prompt
+   - Runs in its own worktree branch
+   - Produces one route: `src/app/tests/[slug]-v[1|2|3]/page.tsx`, registered in `src/lib/test-registry.ts`
+
+4. **After all three agents complete**, take a screenshot of each variation at 1440px viewport. Present a comparison to the user:
+
+   ```
+   THREE-VARIATION COMPARISON — [edit description]
+
+     Variation A ([slug]-v1): localhost:3000/tests/[slug]-v1
+       Mandate: Faithful — [one sentence: what existing pattern was extended]
+       Screenshot: [saved to docs/design-references/[slug]-v1.png]
+
+     Variation B ([slug]-v2): localhost:3000/tests/[slug]-v2
+       Mandate: Recomposed — [one sentence: what spatial decision was made]
+       Screenshot: [saved to docs/design-references/[slug]-v2.png]
+
+     Variation C ([slug]-v3): localhost:3000/tests/[slug]-v3
+       Mandate: Signature — [one sentence: what the signature move is]
+       Screenshot: [saved to docs/design-references/[slug]-v3.png]
+
+   Which variation would you like to keep? (A/B/C, or describe a direction to explore further)
+   ```
+
+5. **After the user selects a variation:**
+   - Promote the selected route to the canonical slug by renaming the directory and updating the test-registry entry
+   - Delete the other two variation routes and their registry entries
+   - Update DESIGN_SYSTEM.md if the selected variation introduced new patterns (Variation C especially may add a pattern worth documenting)
+   - Run `npm run build` to verify the final state
+
+**Directional preference shortcut:** If the user expresses a clear creative direction before building (e.g., "I want something bold" or "keep it minimal"), tune the variation briefs to cluster around that preference rather than defaulting to the three mandates above verbatim. But never ask for a preference when the request is unambiguous — build all three and let the screenshots answer the question.
 
 3. **For new components, derive styles from the design system:**
    - Headings → use the typography scale from `DESIGN_SYSTEM.md` (pick the closest existing size/weight)

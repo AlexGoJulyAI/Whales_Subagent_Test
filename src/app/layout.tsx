@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Calistoga } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Calistoga, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,6 +23,12 @@ const calistoga = Calistoga({
   subsets: ["latin"],
 });
 
+const sourceSansPro = Source_Sans_3({
+  variable: "--font-source-sans-pro",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "Frontend Test Lab",
   description: "Independent front-end test scenarios for evaluating design capabilities",
@@ -36,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${calistoga.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${calistoga.variable} ${sourceSansPro.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
