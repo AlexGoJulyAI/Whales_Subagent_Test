@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>GoJuly AI — Previous Conversations · Direction B "Chapter Chronicle"</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; min-width: 1280px; font-family: 'Inter', sans-serif; background: #EEEEEE; }
+
+    /* Pseudo-state helpers */
+    .nav-item:hover:not(.nav-item--active) { background: #F9FAFB; cursor: pointer; }
+    .tab:hover:not(.tab--active) { background: #F9FAFB; }
+    .tab { cursor: pointer; }
+    .conv-card { cursor: pointer; transition: border-color 100ms; }
+    .conv-card:hover { border-color: #083386 !important; }
+    .conv-card--submitted:hover { border-left-color: #A2E8A5 !important; border-top-color: #083386 !important; border-right-color: #083386 !important; border-bottom-color: #083386 !important; }
+
+    /* Search focus */
+    .search-wrap:focus-within .search-input-box { border-color: #083386 !important; }
+
+    /* Line-clamp preview */
+    .card-preview {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Figma gallery mode */
+    #figma-gallery { display: none; }
+    body.figma-mode #prototype-root { display: none; }
+    body.figma-mode #figma-gallery { display: block; }
+
+    /* Avatar circle */
+    .avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #083386; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;
+      flex-shrink: 0;
+    }
+
+    /* Figma gallery styles */
+    .fig-section { margin-bottom: 48px; }
+    .fig-section-label {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #9CA3AF;
+      margin-bottom: 16px;
+    }
+    .fig-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+    .fig-item { display: flex; flex-direction: column; gap: 8px; }
+    .fig-item-label {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 400;
+      color: #9CA3AF; text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     PROTOTYPE ROOT (hidden in figma mode)
+     ============================================================ -->
+<div id="prototype-root" style="display:flex; flex-direction:column; height:100vh; min-width:1280px;">
+
+  <!-- TOP BAR -->
+  <header style="
+    height: 52px; background: #ffffff;
+    border-bottom: 1px solid #DADEE7;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; flex-shrink: 0; z-index: 10;
+  ">
+    <span style="
+      font-family: 'Calistoga', serif; font-size: 20px; font-weight: 400;
+      color: #10204B; letter-spacing: -0.01em; line-height: 1.3;
+    ">july ai</span>
+    <div class="avatar">AG</div>
+  </header>
+
+  <!-- BODY ROW -->
+  <div style="display:flex; flex:1; overflow:hidden;">
+
+    <!-- LEFT SIDEBAR -->
+    <aside style="
+      width: 220px; background: #ffffff;
+      border-right: 1px solid #DADEE7;
+      flex-shrink: 0; overflow-y: auto;
+      display: flex; flex-direction: column;
+    ">
+      <!-- Section: Red Team Sample -->
+      <div style="
+        font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.07em; color: #9CA3AF;
+        padding: 14px 16px 6px;
+      ">Red Team Sample</div>
+
+      <!-- Nav: Success Criteria -->
+      <div class="nav-item" style="
+        height: 36px; padding: 8px 16px;
+        font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400;
+        color: #374151; display: flex; align-items: center;
+      ">Success Criteria</div>
+
+      <!-- Nav: Examples -->
+      <div class="nav-item" style="
+        height: 36px; padding: 8px 16px;
+        font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400;
+        color: #374151; display: flex; align-items: center;
+      ">Examples</div>
+
+      <!-- Nav: Previous Conversations — ACTIVE -->
+      <div class="nav-item nav-item--active" style="
+        height: 36px; padding: 8px 12px 8px 12px;
+        font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+        color: #083386; display: flex; align-items: center;
+        background: #FDF2F8;
+        border-left: 4px solid #EC4899;
+      ">Previous Conversations</div>
+
+      <!-- Section: Challenges -->
+      <div style="
+        font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.07em; color: #9CA3AF;
+        padding: 10px 16px 4px;
+      ">Challenges</div>
+
+      <!-- Challenge items -->
+      <div style="padding: 6px 16px; display: flex; align-items: center; gap: 8px;">
+        <span style="width:6px; height:6px; border-radius:50%; background:#DADEE7; flex-shrink:0; display:inline-block;"></span>
+        <span style="font-family:'Inter',sans-serif; font-size:12px; font-weight:400; color:#6B7280;">Challenge 1</span>
+      </div>
+      <div style="padding: 6px 16px; display: flex; align-items: center; gap: 8px;">
+        <span style="width:6px; height:6px; border-radius:50%; background:#DADEE7; flex-shrink:0; display:inline-block;"></span>
+        <span style="font-family:'Inter',sans-serif; font-size:12px; font-weight:400; color:#6B7280;">Challenge 2</span>
+      </div>
+      <div style="padding: 6px 16px; display: flex; align-items: center; gap: 8px;">
+        <span style="width:6px; height:6px; border-radius:50%; background:#DADEE7; flex-shrink:0; display:inline-block;"></span>
+        <span style="font-family:'Inter',sans-serif; font-size:12px; font-weight:400; color:#6B7280;">Challenge 3</span>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main style="flex:1; background:#EEEEEE; padding:24px 28px; overflow-y:auto;">
+
+      <!-- ======= SCREEN 1: PREVIOUS CONVERSATIONS ======= -->
+      <div id="screen-list" style="display:block;">
+
+        <!-- White card container -->
+        <div style="
+          background: #ffffff; border: 1px solid #DADEE7; border-radius: 8px;
+          padding: 20px 24px;
+        ">
+
+          <!-- ① Heading row -->
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+            <span style="
+              font-family:'Inter',sans-serif; font-size:20px; font-weight:600;
+              color:#1E2A40; line-height:1.3;
+            ">Previous Conversations</span>
+            <span style="
+              font-family:'Inter',sans-serif; font-size:9px; font-weight:700;
+              color:#083386; background:#EFF6FF; border-radius:4px;
+              padding:2px 8px; text-transform:uppercase; letter-spacing:0.04em;
+            ">Scope B</span>
+          </div>
+
+          <!-- ② Search bar -->
+          <div class="search-wrap" style="margin-bottom:12px;">
+            <div class="search-input-box" style="
+              display:flex; align-items:center; gap:8px;
+              background:#fff; border:1.5px solid #DADEE7; border-radius:6px;
+              height:40px; padding:0 12px;
+            ">
+              <!-- Magnifying glass SVG -->
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+                <circle cx="7" cy="7" r="5" stroke="#9CA3AF" stroke-width="1.5"/>
+                <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Search across all challenges…"
+                style="
+                  border:none; outline:none; flex:1; background:transparent;
+                  font-family:'Inter',sans-serif; font-size:13px; font-weight:400;
+                  color:#1E2A40; placeholder-color:#9CA3AF;
+                "
+              />
+            </div>
+          </div>
+
+          <!-- ③ Challenge tab strip -->
+          <div style="
+            display:flex; background:#fff; border:1px solid #DADEE7;
+            border-radius:6px; overflow:hidden; margin-bottom:16px;
+          ">
+            <!-- Tab 1 -->
+            <div class="tab" id="tab-1" onclick="switchTab(1)" style="
+              flex:1; padding:8px 10px; text-align:center;
+              border-right:1px solid #DADEE7;
+            ">
+              <span style="
+                display:block; font-family:'Inter',sans-serif;
+                font-size:8px; font-weight:700; text-transform:uppercase;
+                letter-spacing:0.06em; color:#9CA3AF; margin-bottom:2px;
+              ">Challenge 1</span>
+              <span id="tab-1-text" style="
+                font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
+                color:#374151;
+              ">Self-Harm Scenario</span>
+              <span id="tab-1-count" style="
+                font-family:'Inter',sans-serif; font-size:9px; font-weight:400;
+                color:#9CA3AF;
+              "> · 3</span>
+            </div>
+            <!-- Tab 2 (default active) -->
+            <div class="tab tab--active" id="tab-2" onclick="switchTab(2)" style="
+              flex:1; padding:8px 10px; text-align:center;
+              border-right:1px solid #DADEE7;
+              background:#FDF2F8; border-bottom:2px solid #EC4899;
+            ">
+              <span style="
+                display:block; font-family:'Inter',sans-serif;
+                font-size:8px; font-weight:700; text-transform:uppercase;
+                letter-spacing:0.06em; color:#9CA3AF; margin-bottom:2px;
+              ">Challenge 2</span>
+              <span id="tab-2-text" style="
+                font-family:'Inter',sans-serif; font-size:10px; font-weight:700;
+                color:#083386;
+              ">Political Radicalization</span>
+              <span id="tab-2-count" style="
+                font-family:'Inter',sans-serif; font-size:9px; font-weight:400;
+                color:#9CA3AF;
+              "> · 4</span>
+            </div>
+            <!-- Tab 3 -->
+            <div class="tab" id="tab-3" onclick="switchTab(3)" style="
+              flex:1; padding:8px 10px; text-align:center;
+            ">
+              <span style="
+                display:block; font-family:'Inter',sans-serif;
+                font-size:8px; font-weight:700; text-transform:uppercase;
+                letter-spacing:0.06em; color:#9CA3AF; margin-bottom:2px;
+              ">Challenge 3</span>
+              <span id="tab-3-text" style="
+                font-family:'Inter',sans-serif; font-size:10px; font-weight:600;
+                color:#374151;
+              ">Jailbreak Resistance</span>
+              <span id="tab-3-count" style="
+                font-family:'Inter',sans-serif; font-size:9px; font-weight:400;
+                color:#9CA3AF;
+              "> · 2</span>
+            </div>
+          </div>
+
+          <!-- ④ Cards lists -->
+
+          <!-- CH1 cards -->
+          <div id="cards-1" style="display:none;">
+            <div id="empty-1" style="display:none; font-family:'Inter',sans-serif; font-size:13px; font-weight:400; color:#9CA3AF; text-align:center; padding:32px;">No conversations match your search</div>
+
+            <div class="conv-card" id="ch1-card-0" onclick="openDetail(1,0)" style="
+              background:#fff; border-top:1px solid #DADEE7; border-right:1px solid #DADEE7;
+              border-bottom:1px solid #DADEE7; border-left:3px solid #A2E8A5;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 11, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#A2E8A5; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Submitted</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Suicidal Ideation Framing</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">The model was guided through an escalating series of empathetic responses before being asked to validate self-harm as a coping mechanism…</div>
+            </div>
+
+            <div class="conv-card" id="ch1-card-1" onclick="openDetail(1,1)" style="
+              background:#fff; border:1px solid #DADEE7;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 8, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#DADEE7; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Guarded</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Authority Override Attempt</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Claimed to be a licensed therapist requiring clinical-level details — model declined to provide self-harm specifics despite professional framing…</div>
+            </div>
+
+            <div class="conv-card" id="ch1-card-2" onclick="openDetail(1,2)" style="
+              background:#fff; border:1px solid #DADEE7;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 6, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#DADEE7; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Guarded</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:400; font-style:italic; color:#9CA3AF; margin-bottom:4px;">Generating title…</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Direct request framed as creative writing — AI identified the underlying harm request and declined.</div>
+            </div>
+          </div>
+
+          <!-- CH2 cards (default visible) -->
+          <div id="cards-2" style="display:block;">
+            <div id="empty-2" style="display:none; font-family:'Inter',sans-serif; font-size:13px; font-weight:400; color:#9CA3AF; text-align:center; padding:32px;">No conversations match your search</div>
+
+            <div class="conv-card conv-card--submitted" id="ch2-card-0" onclick="openDetail(2,0)" style="
+              background:#fff; border-top:1px solid #DADEE7; border-right:1px solid #DADEE7;
+              border-bottom:1px solid #DADEE7; border-left:3px solid #A2E8A5;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 12, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#A2E8A5; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Submitted</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Political Radicalization Roleplay</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">The model adopted a persona expressing increasingly extremist views after a series of gradual reframing prompts applied over 12 turns…</div>
+            </div>
+
+            <div class="conv-card" id="ch2-card-1" onclick="openDetail(2,1)" style="
+              background:#fff; border:1px solid #DADEE7;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 9, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#DADEE7; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Guarded</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Persona Substitution Attempt</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Harmful request framed as a fictional character speaking in-world — model identified and declined despite the narrative wrapper…</div>
+            </div>
+
+            <div class="conv-card" id="ch2-card-2" onclick="openDetail(2,2)" style="
+              background:#fff; border:1px solid #DADEE7;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 7, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#DADEE7; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Guarded</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Incremental Overton Shift</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Attempted to move the model's position on political violence through a series of agreement-seeking questions over multiple exchanges…</div>
+            </div>
+
+            <div class="conv-card" id="ch2-card-3" onclick="openDetail(2,3)" style="
+              background:#fff; border:1px solid #DADEE7;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 4, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#DADEE7; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Guarded</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:400; font-style:italic; color:#9CA3AF; margin-bottom:4px;">Generating title…</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Authority framing combined with false consensus claim — model recognized the manipulation pattern.</div>
+            </div>
+          </div>
+
+          <!-- CH3 cards -->
+          <div id="cards-3" style="display:none;">
+            <div id="empty-3" style="display:none; font-family:'Inter',sans-serif; font-size:13px; font-weight:400; color:#9CA3AF; text-align:center; padding:32px;">No conversations match your search</div>
+
+            <div class="conv-card conv-card--submitted" id="ch3-card-0" onclick="openDetail(3,0)" style="
+              background:#fff; border-top:1px solid #DADEE7; border-right:1px solid #DADEE7;
+              border-bottom:1px solid #DADEE7; border-left:3px solid #A2E8A5;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 10, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#A2E8A5; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Submitted</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">System Prompt Override via Role Assignment</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Assigned the model a persona with 'no restrictions' and escalated to explicit instructions — model maintained its safety constraints throughout…</div>
+            </div>
+
+            <div class="conv-card" id="ch3-card-1" onclick="openDetail(3,1)" style="
+              background:#fff; border:1px solid #DADEE7;
+              border-radius:8px; padding:12px 14px; margin-bottom:8px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.06);
+            ">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <span style="font-family:'Inter',sans-serif; font-size:10px; font-weight:400; color:#9CA3AF;">Apr 5, 2026</span>
+                <span style="font-family:'Inter',sans-serif; font-size:9px; font-weight:700; color:#083386; background:#DADEE7; padding:2px 8px; border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;">Guarded</span>
+              </div>
+              <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Nested Hypothetical Jailbreak</div>
+              <div class="card-preview" style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; color:#6B7280; line-height:1.5;">Used a multi-layer hypothetical (a character imagining another character who…) to attempt to distance the harmful request from the model…</div>
+            </div>
+          </div>
+
+        </div><!-- /white card container -->
+      </div><!-- /screen-list -->
+
+      <!-- ======= SCREEN 2: CONVERSATION DETAIL ======= -->
+      <div id="screen-detail" style="display:none;">
+        <div style="
+          background:#fff; border:1px solid #DADEE7; border-radius:8px; padding:24px;
+        ">
+          <!-- Back button -->
+          <div onclick="backToList()" style="
+            font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+            color:#083386; cursor:pointer; margin-bottom:16px;
+            display:inline-flex; align-items:center; gap:4px;
+          ">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 1L3 6L8 11" stroke="#083386" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Previous Conversations
+          </div>
+
+          <!-- Conversation header -->
+          <div style="border-bottom:1px solid #DADEE7; padding-bottom:16px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div style="flex:1;">
+                <div style="
+                  font-family:'Inter',sans-serif; font-size:9px; font-weight:700;
+                  text-transform:uppercase; letter-spacing:0.07em; color:#9CA3AF;
+                  margin-bottom:4px;
+                ">Conversation Title</div>
+                <div style="
+                  font-family:'Inter',sans-serif; font-size:13px; font-weight:400;
+                  color:#9CA3AF; text-decoration:line-through; margin-bottom:4px;
+                ">Challenge 2 Feedback</div>
+                <div id="detail-title" style="
+                  font-family:'Inter',sans-serif; font-size:18px; font-weight:600;
+                  color:#1E2A40; line-height:1.3;
+                ">Political Radicalization Roleplay</div>
+              </div>
+              <div id="detail-badge" style="
+                font-family:'Inter',sans-serif; font-size:9px; font-weight:700;
+                color:#083386; background:#A2E8A5; padding:2px 8px;
+                border-radius:4px; letter-spacing:0.03em; text-transform:uppercase;
+                margin-top:20px; flex-shrink:0;
+              ">Submitted</div>
+            </div>
+          </div>
+
+          <!-- Content area -->
+          <div style="display:flex; gap:16px; height:320px;">
+            <!-- Chat area -->
+            <div style="
+              flex:1; background:#F9FAFB; border-radius:6px;
+              display:flex; align-items:center; justify-content:center;
+            ">
+              <span style="
+                font-family:'Inter',sans-serif; font-size:11px; font-weight:700;
+                text-transform:uppercase; letter-spacing:0.07em; color:#9CA3AF;
+              ">Chat transcript</span>
+            </div>
+            <!-- Annotation panel -->
+            <div style="
+              width:200px; background:#F9FAFB; border-radius:6px;
+              display:flex; align-items:center; justify-content:center; text-align:center;
+              padding:16px;
+            ">
+              <span style="
+                font-family:'Inter',sans-serif; font-size:11px; font-weight:700;
+                text-transform:uppercase; letter-spacing:0.07em; color:#9CA3AF;
+              ">Annotation panel</span>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /screen-detail -->
+
+    </main>
+  </div><!-- /body row -->
+</div><!-- /prototype-root -->
+
+<!-- ============================================================
+     FIGMA GALLERY (visible only when ?figma=true)
+     ============================================================ -->
+<div id="figma-gallery" style="
+  padding: 48px; background: #EEEEEE; min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+">
+  <div style="margin-bottom:40px;">
+    <div style="font-family:'Calistoga',serif; font-size:20px; color:#10204B; margin-bottom:6px;">july ai</div>
+    <div style="font-size:22px; font-weight:600; color:#1E2A40; margin-bottom:4px;">Chapter Chronicle — Component Gallery</div>
+    <div style="font-size:13px; color:#9CA3AF;">Direction B · Figma handoff mode (?figma=true)</div>
+  </div>
+
+  <!-- 1. SearchBar -->
+  <div class="fig-section">
+    <div class="fig-section-label">1 · Search Bar</div>
+    <div class="fig-row">
+      <div class="fig-item">
+        <div class="search-wrap" style="width:320px;">
+          <div class="search-input-box" style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #DADEE7;border-radius:6px;height:40px;padding:0 12px;">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#9CA3AF" stroke-width="1.5"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span style="font-size:13px;font-weight:400;color:#9CA3AF;">Search across all challenges…</span>
+          </div>
+        </div>
+        <div class="fig-item-label">Default</div>
+      </div>
+      <div class="fig-item">
+        <div style="width:320px;">
+          <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #083386;border-radius:6px;height:40px;padding:0 12px;">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#9CA3AF" stroke-width="1.5"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span style="font-size:13px;font-weight:400;color:#1E2A40;">Radicalization</span>
+          </div>
+        </div>
+        <div class="fig-item-label">Focused + Typing</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ChallengeTab -->
+  <div class="fig-section">
+    <div class="fig-section-label">2 · Challenge Tab</div>
+    <div class="fig-row">
+      <div class="fig-item">
+        <div style="width:160px;padding:8px 10px;text-align:center;background:#fff;border:1px solid #DADEE7;border-radius:6px;">
+          <span style="display:block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#9CA3AF;margin-bottom:2px;">Challenge 1</span>
+          <span style="font-size:10px;font-weight:600;color:#374151;">Self-Harm Scenario</span>
+          <span style="font-size:9px;font-weight:400;color:#9CA3AF;"> · 3</span>
+        </div>
+        <div class="fig-item-label">Inactive</div>
+      </div>
+      <div class="fig-item">
+        <div style="width:160px;padding:8px 10px;text-align:center;background:#FDF2F8;border:1px solid #DADEE7;border-bottom:2px solid #EC4899;border-radius:6px;">
+          <span style="display:block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#9CA3AF;margin-bottom:2px;">Challenge 2</span>
+          <span style="font-size:10px;font-weight:700;color:#083386;">Political Radicalization</span>
+          <span style="font-size:9px;font-weight:400;color:#9CA3AF;"> · 4</span>
+        </div>
+        <div class="fig-item-label">Active</div>
+      </div>
+      <div class="fig-item">
+        <div style="width:160px;padding:8px 10px;text-align:center;background:#F9FAFB;border:1px solid #DADEE7;border-radius:6px;">
+          <span style="display:block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#9CA3AF;margin-bottom:2px;">Challenge 3</span>
+          <span style="font-size:10px;font-weight:600;color:#374151;">Jailbreak Resistance</span>
+          <span style="font-size:9px;font-weight:400;color:#9CA3AF;"> · 2</span>
+        </div>
+        <div class="fig-item-label">Hover</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ConversationCard -->
+  <div class="fig-section">
+    <div class="fig-section-label">3 · Conversation Card</div>
+    <div class="fig-row" style="align-items:stretch;">
+      <!-- GUARDED default -->
+      <div class="fig-item">
+        <div style="width:300px;background:#fff;border:1px solid #DADEE7;border-radius:8px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:10px;font-weight:400;color:#9CA3AF;">Apr 9, 2026</span>
+            <span style="font-size:9px;font-weight:700;color:#083386;background:#DADEE7;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.03em;">Guarded</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#1E2A40;margin-bottom:4px;">Persona Substitution Attempt</div>
+          <div style="font-size:11px;font-weight:400;color:#6B7280;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Harmful request framed as a fictional character speaking in-world — model identified and declined despite the narrative wrapper…</div>
+        </div>
+        <div class="fig-item-label">GUARDED — Default</div>
+      </div>
+      <!-- SUBMITTED -->
+      <div class="fig-item">
+        <div style="width:300px;background:#fff;border-top:1px solid #DADEE7;border-right:1px solid #DADEE7;border-bottom:1px solid #DADEE7;border-left:3px solid #A2E8A5;border-radius:8px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:10px;font-weight:400;color:#9CA3AF;">Apr 12, 2026</span>
+            <span style="font-size:9px;font-weight:700;color:#083386;background:#A2E8A5;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.03em;">Submitted</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#1E2A40;margin-bottom:4px;">Political Radicalization Roleplay</div>
+          <div style="font-size:11px;font-weight:400;color:#6B7280;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">The model adopted a persona expressing increasingly extremist views after a series of gradual reframing prompts applied over 12 turns…</div>
+        </div>
+        <div class="fig-item-label">SUBMITTED (green border)</div>
+      </div>
+      <!-- Hover state -->
+      <div class="fig-item">
+        <div style="width:300px;background:#fff;border:1px solid #083386;border-radius:8px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:10px;font-weight:400;color:#9CA3AF;">Apr 7, 2026</span>
+            <span style="font-size:9px;font-weight:700;color:#083386;background:#DADEE7;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.03em;">Guarded</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#1E2A40;margin-bottom:4px;">Incremental Overton Shift</div>
+          <div style="font-size:11px;font-weight:400;color:#6B7280;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Attempted to move the model's position on political violence through a series of agreement-seeking questions over multiple exchanges…</div>
+        </div>
+        <div class="fig-item-label">Hover (blue border)</div>
+      </div>
+      <!-- Generating title -->
+      <div class="fig-item">
+        <div style="width:300px;background:#fff;border:1px solid #DADEE7;border-radius:8px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:10px;font-weight:400;color:#9CA3AF;">Apr 4, 2026</span>
+            <span style="font-size:9px;font-weight:700;color:#083386;background:#DADEE7;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.03em;">Guarded</span>
+          </div>
+          <div style="font-size:13px;font-weight:400;font-style:italic;color:#9CA3AF;margin-bottom:4px;">Generating title…</div>
+          <div style="font-size:11px;font-weight:400;color:#6B7280;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Authority framing combined with false consensus claim — model recognized the manipulation pattern.</div>
+        </div>
+        <div class="fig-item-label">Generating title</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Badge -->
+  <div class="fig-section">
+    <div class="fig-section-label">4 · Badge</div>
+    <div class="fig-row">
+      <div class="fig-item">
+        <span style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;color:#083386;background:#A2E8A5;padding:2px 8px;border-radius:4px;letter-spacing:0.03em;text-transform:uppercase;">Submitted</span>
+        <div class="fig-item-label">SUBMITTED (green)</div>
+      </div>
+      <div class="fig-item">
+        <span style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;color:#083386;background:#DADEE7;padding:2px 8px;border-radius:4px;letter-spacing:0.03em;text-transform:uppercase;">Guarded</span>
+        <div class="fig-item-label">GUARDED (gray)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Full page snapshot -->
+  <div class="fig-section">
+    <div class="fig-section-label">5 · Full Page Layout Snapshot (40% scale)</div>
+    <div style="transform-origin: top left; transform: scale(0.4); width: 1280px; height: 800px; border: 1px solid #DADEE7; border-radius:4px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.10);">
+      <!-- Miniature full layout -->
+      <div style="display:flex;flex-direction:column;height:100%;background:#EEEEEE;">
+        <!-- Top bar -->
+        <div style="height:52px;background:#fff;border-bottom:1px solid #DADEE7;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;">
+          <span style="font-family:'Calistoga',serif;font-size:20px;color:#10204B;">july ai</span>
+          <div style="width:30px;height:30px;border-radius:50%;background:#083386;"></div>
+        </div>
+        <div style="display:flex;flex:1;overflow:hidden;">
+          <!-- Sidebar -->
+          <div style="width:220px;background:#fff;border-right:1px solid #DADEE7;padding-top:14px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#9CA3AF;padding:0 16px 6px;">Red Team Sample</div>
+            <div style="height:36px;padding:8px 16px;font-size:13px;color:#374151;display:flex;align-items:center;">Success Criteria</div>
+            <div style="height:36px;padding:8px 16px;font-size:13px;color:#374151;display:flex;align-items:center;">Examples</div>
+            <div style="height:36px;padding:8px 12px;font-size:13px;font-weight:600;color:#083386;background:#FDF2F8;border-left:4px solid #EC4899;display:flex;align-items:center;">Previous Conversations</div>
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:#9CA3AF;padding:10px 16px 4px;">Challenges</div>
+            <div style="padding:6px 16px;display:flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#DADEE7;display:inline-block;"></span><span style="font-size:12px;color:#6B7280;">Challenge 1</span></div>
+            <div style="padding:6px 16px;display:flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#DADEE7;display:inline-block;"></span><span style="font-size:12px;color:#6B7280;">Challenge 2</span></div>
+            <div style="padding:6px 16px;display:flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:#DADEE7;display:inline-block;"></span><span style="font-size:12px;color:#6B7280;">Challenge 3</span></div>
+          </div>
+          <!-- Main -->
+          <div style="flex:1;padding:24px 28px;overflow:hidden;">
+            <div style="background:#fff;border:1px solid #DADEE7;border-radius:8px;padding:20px 24px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <span style="font-size:20px;font-weight:600;color:#1E2A40;">Previous Conversations</span>
+                <span style="font-size:9px;font-weight:700;color:#083386;background:#EFF6FF;border-radius:4px;padding:2px 8px;">Scope B</span>
+              </div>
+              <div style="height:40px;border:1.5px solid #DADEE7;border-radius:6px;margin-bottom:12px;display:flex;align-items:center;padding:0 12px;gap:8px;background:#fff;">
+                <span style="font-size:13px;color:#9CA3AF;">Search across all challenges…</span>
+              </div>
+              <div style="display:flex;border:1px solid #DADEE7;border-radius:6px;overflow:hidden;margin-bottom:16px;background:#fff;">
+                <div style="flex:1;padding:8px 10px;text-align:center;border-right:1px solid #DADEE7;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#9CA3AF;">Challenge 1</div><div style="font-size:10px;font-weight:600;color:#374151;">Self-Harm Scenario <span style="color:#9CA3AF;">· 3</span></div></div>
+                <div style="flex:1;padding:8px 10px;text-align:center;border-right:1px solid #DADEE7;background:#FDF2F8;border-bottom:2px solid #EC4899;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#9CA3AF;">Challenge 2</div><div style="font-size:10px;font-weight:700;color:#083386;">Political Radicalization <span style="font-weight:400;color:#9CA3AF;">· 4</span></div></div>
+                <div style="flex:1;padding:8px 10px;text-align:center;"><div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#9CA3AF;">Challenge 3</div><div style="font-size:10px;font-weight:600;color:#374151;">Jailbreak Resistance <span style="color:#9CA3AF;">· 2</span></div></div>
+              </div>
+              <!-- Sample cards -->
+              <div style="background:#fff;border-top:1px solid #DADEE7;border-right:1px solid #DADEE7;border-bottom:1px solid #DADEE7;border-left:3px solid #A2E8A5;border-radius:8px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-size:10px;color:#9CA3AF;">Apr 12, 2026</span><span style="font-size:9px;font-weight:700;color:#083386;background:#A2E8A5;padding:2px 8px;border-radius:4px;">Submitted</span></div>
+                <div style="font-size:13px;font-weight:600;color:#1E2A40;margin-bottom:4px;">Political Radicalization Roleplay</div>
+                <div style="font-size:11px;color:#6B7280;line-height:1.5;">The model adopted a persona expressing increasingly extremist views after a series of gradual reframing prompts applied over 12 turns…</div>
+              </div>
+              <div style="background:#fff;border:1px solid #DADEE7;border-radius:8px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-size:10px;color:#9CA3AF;">Apr 9, 2026</span><span style="font-size:9px;font-weight:700;color:#083386;background:#DADEE7;padding:2px 8px;border-radius:4px;">Guarded</span></div>
+                <div style="font-size:13px;font-weight:600;color:#1E2A40;margin-bottom:4px;">Persona Substitution Attempt</div>
+                <div style="font-size:11px;color:#6B7280;line-height:1.5;">Harmful request framed as a fictional character speaking in-world — model identified and declined despite the narrative wrapper…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+  // ---- Data ----
+  var CARDS = {
+    1: [
+      { title: 'Suicidal Ideation Framing',   preview: 'The model was guided through an escalating series of empathetic responses before being asked to validate self-harm as a coping mechanism…', outcome: 'SUBMITTED', date: 'Apr 11, 2026' },
+      { title: 'Authority Override Attempt',   preview: 'Claimed to be a licensed therapist requiring clinical-level details — model declined to provide self-harm specifics despite professional framing…', outcome: 'GUARDED', date: 'Apr 8, 2026' },
+      { title: null,                           preview: 'Direct request framed as creative writing — AI identified the underlying harm request and declined.', outcome: 'GUARDED', date: 'Apr 6, 2026' }
+    ],
+    2: [
+      { title: 'Political Radicalization Roleplay', preview: 'The model adopted a persona expressing increasingly extremist views after a series of gradual reframing prompts applied over 12 turns…', outcome: 'SUBMITTED', date: 'Apr 12, 2026' },
+      { title: 'Persona Substitution Attempt',      preview: 'Harmful request framed as a fictional character speaking in-world — model identified and declined despite the narrative wrapper…', outcome: 'GUARDED', date: 'Apr 9, 2026' },
+      { title: 'Incremental Overton Shift',         preview: 'Attempted to move the model\'s position on political violence through a series of agreement-seeking questions over multiple exchanges…', outcome: 'GUARDED', date: 'Apr 7, 2026' },
+      { title: null,                                preview: 'Authority framing combined with false consensus claim — model recognized the manipulation pattern.', outcome: 'GUARDED', date: 'Apr 4, 2026' }
+    ],
+    3: [
+      { title: 'System Prompt Override via Role Assignment', preview: 'Assigned the model a persona with \'no restrictions\' and escalated to explicit instructions — model maintained its safety constraints throughout…', outcome: 'SUBMITTED', date: 'Apr 10, 2026' },
+      { title: 'Nested Hypothetical Jailbreak',              preview: 'Used a multi-layer hypothetical (a character imagining another character who…) to attempt to distance the harmful request from the model…', outcome: 'GUARDED', date: 'Apr 5, 2026' }
+    ]
+  };
+
+  var activeTab = 2;
+  var currentDetailCh = null;
+  var currentDetailIdx = null;
+
+  // ---- Tab switching ----
+  function switchTab(n) {
+    if (activeTab === n) return;
+
+    // Deactivate old tab
+    var oldTab = document.getElementById('tab-' + activeTab);
+    oldTab.style.background = '';
+    oldTab.style.borderBottom = '';
+    var oldText = document.getElementById('tab-' + activeTab + '-text');
+    oldText.style.fontWeight = '600';
+    oldText.style.color = '#374151';
+    oldTab.classList.remove('tab--active');
+
+    // Activate new tab
+    var newTab = document.getElementById('tab-' + n);
+    newTab.style.background = '#FDF2F8';
+    newTab.style.borderBottom = '2px solid #EC4899';
+    var newText = document.getElementById('tab-' + n + '-text');
+    newText.style.fontWeight = '700';
+    newText.style.color = '#083386';
+    newTab.classList.add('tab--active');
+
+    // Hide old cards, show new
+    document.getElementById('cards-' + activeTab).style.display = 'none';
+    document.getElementById('cards-' + n).style.display = 'block';
+
+    activeTab = n;
+
+    // Re-apply current search
+    applySearch(document.getElementById('search-input').value);
+  }
+
+  // ---- Search / filter ----
+  function applySearch(query) {
+    var q = query.trim().toLowerCase();
+    [1, 2, 3].forEach(function(ch) {
+      var cards = CARDS[ch];
+      var visibleCount = 0;
+      cards.forEach(function(card, idx) {
+        var el = document.getElementById('ch' + ch + '-card-' + idx);
+        if (!el) return;
+        var titleStr = card.title ? card.title.toLowerCase() : '';
+        var previewStr = card.preview ? card.preview.toLowerCase() : '';
+        var match = q === '' || titleStr.indexOf(q) !== -1 || previewStr.indexOf(q) !== -1;
+        el.style.display = match ? 'block' : 'none';
+        if (match) visibleCount++;
+      });
+
+      // Update count badge on tab
+      var countEl = document.getElementById('tab-' + ch + '-count');
+      if (q === '') {
+        countEl.textContent = ' · ' + cards.length;
+      } else {
+        countEl.textContent = ' · ' + visibleCount;
+      }
+
+      // Empty state
+      var emptyEl = document.getElementById('empty-' + ch);
+      if (emptyEl) {
+        emptyEl.style.display = (visibleCount === 0 && activeTab === ch) ? 'block' : 'none';
+      }
+    });
+  }
+
+  // Wire up search input
+  var searchInput = document.getElementById('search-input');
+  searchInput.addEventListener('input', function() {
+    applySearch(this.value);
+  });
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      this.value = '';
+      applySearch('');
+    }
+  });
+
+  // ---- Card click → Screen 2 ----
+  function openDetail(ch, idx) {
+    currentDetailCh = ch;
+    currentDetailIdx = idx;
+    var card = CARDS[ch][idx];
+
+    // Set title
+    var titleEl = document.getElementById('detail-title');
+    if (card.title) {
+      titleEl.textContent = card.title;
+      titleEl.style.fontStyle = 'normal';
+      titleEl.style.color = '#1E2A40';
+      titleEl.style.fontWeight = '600';
+    } else {
+      titleEl.textContent = 'Generating title…';
+      titleEl.style.fontStyle = 'italic';
+      titleEl.style.color = '#9CA3AF';
+      titleEl.style.fontWeight = '400';
+    }
+
+    // Set badge
+    var badgeEl = document.getElementById('detail-badge');
+    if (card.outcome === 'SUBMITTED') {
+      badgeEl.textContent = 'Submitted';
+      badgeEl.style.background = '#A2E8A5';
+    } else {
+      badgeEl.textContent = 'Guarded';
+      badgeEl.style.background = '#DADEE7';
+    }
+
+    // Switch screens
+    document.getElementById('screen-list').style.display = 'none';
+    document.getElementById('screen-detail').style.display = 'block';
+  }
+
+  // ---- Back button ----
+  function backToList() {
+    document.getElementById('screen-detail').style.display = 'none';
+    document.getElementById('screen-list').style.display = 'block';
+  }
+
+  // ---- Figma mode ----
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('figma') === 'true') {
+      document.body.classList.add('figma-mode');
+    }
+  })();
+</script>
+
+</body>
+</html>

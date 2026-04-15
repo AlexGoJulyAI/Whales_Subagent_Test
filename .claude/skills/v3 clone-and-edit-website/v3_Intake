@@ -192,6 +192,30 @@ DESIGN TOKEN RECORD
   gaps: [every token category absent from all assets — these become questions]
 ```
 
+---
+
+### Step 2b: Design-MD Inspiration Matching *(net-new builds only)*
+
+**Trigger:** Skip this step if any URL or Figma file was present in Step 2. Run only when the client is building something net new with no live reference.
+
+1. **List the catalog.** Read the folder names inside `.claude/skills/v3 clone-and-edit-website/design-md/`. Each folder name is one available design inspiration.
+
+2. **Select the best match.** Based on the client's product type, audience, and any aesthetic adjectives they used, identify the 1–2 folder names that most closely match what they are describing. Look for alignment on: industry (fintech, devtools, AI, consumer, automotive, etc.), visual register (minimal, editorial, bold, luxury, playful, etc.), and target audience. If the client explicitly named a brand, always include it.
+
+3. **Read the README.** For each selected folder, read its `README.md`. The README contains the URL for the full design system. Fetch that URL using WebFetch to retrieve the complete design tokens and visual reference.
+
+4. **Record in the Design Token Record.** Add all fetched token values under source `[design-md-reference: {brand}]`. These are reference-quality starting points, not confirmed values — every one must be presented to the client in Phase 1 Cluster 3 for confirmation.
+
+```
+  design_md_inspirations:
+    selected: [brand-1], [brand-2]
+    rationale: [one sentence — why these match the client's stated direction]
+    fetch_status: [brand-1: ok | failed] [brand-2: ok | failed]
+    NOTE: All tokens sourced here are [design-md-reference] and require client confirmation.
+```
+
+---
+
 ### Step 3: Extraction-to-Gap Mapping
 
 Before writing a single question, produce this two-column table:
@@ -242,6 +266,7 @@ Before sending Phase 1, validate every question against the confirmed inventory:
 
 - If the question is answerable from confirmed inventory — **strike it**
 - If the question survives — confirm it has a P0/P1/P2 tag and is in the correct cluster
+- If the question presents enumerated options — confirm the final option is **"Other — describe your own"**. If it is missing, add it before sending. No exceptions.
 
 ### Step 7: Phase 1 Gate — MANDATORY STOP
 
@@ -541,3 +566,4 @@ Save to: `docs/research/PROJECT_BRIEF.md`
 - Never record only the default state of a component — extract every state that exists
 - Never treat a section as having one asset layer without enumerating ALL `<img>` elements and `background-image` values in its DOM subtree
 - Never mark a URL-extracted value as confirmed if the URL was inaccessible or the content was session-generated
+- Never send a question with enumerated options that does not include a final "Other — describe your own" option

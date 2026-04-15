@@ -20,7 +20,7 @@ You do not interpret loosely. You implement faithfully and fill every gap with t
 
 ## VARIATION BUILD MODE
 
-When you are spawned as part of a Three-Variation Edit, your invoker will state your variation letter — **A**, **B**, or **C** — in the prompt. Apply the corresponding mandate below in addition to all standard build protocols. If no variation letter is given, skip this section entirely.
+You are always spawned as one of three parallel variations — **A**, **B**, or **C**. Your invoker states your variation letter in the prompt. This section always applies — there is no invocation of this agent without a variation letter. Default to Variation A if the letter is somehow absent.
 
 **Variation A — Faithful:**
 - Implement the edit by extending the closest existing pattern documented in DESIGN_SYSTEM.md.
@@ -156,17 +156,19 @@ Run this check before writing any code. If output screens ≠ Change Delta scree
 Before reading any source or writing any plan, lock the allowed sources for styling and structural decisions.
 
 **Permitted sources (in priority order):**
-1. Live extraction artifacts in `docs/research/` — DESIGN_SYSTEM.md, BEHAVIORS.md, component spec files
-2. Playwright/browser MCP snapshots in `.playwright-mcp/*.yml`
-3. Screenshots in `docs/design-references/` (including `live-ref-[slug]-*.png`)
-4. MOCKUP.md and USER_JOURNEY.md (produced by Designer Agent from live extraction)
-5. PROJECT_BRIEF.md
+1. `docs/research/MOCKUP.md` — primary visual contract (all values must trace to extraction; `ESTIMATED` values are prohibited)
+2. Component spec files in `docs/research/components/` — ground truth for extracted CSS and repeating element data
+3. Live extraction screenshots in `docs/design-references/` (including `live-ref-[slug]-*.png`) — **must be Read and viewed before use**
+4. Playwright/browser MCP snapshots in `.playwright-mcp/*.yml`
+5. `docs/research/DESIGN_SYSTEM.md`, `BEHAVIORS.md`, `PAGE_TOPOLOGY.md`
+6. `docs/research/USER_JOURNEY.md`, `docs/research/PROJECT_BRIEF.md`
 
 **Prohibited sources — these are NEVER valid styling or structural references:**
 - Prior test files (`src/app/tests/*/page.tsx` from previous builds of the same or similar pages)
 - Your training-data memory of what a "typical" page with this kind of content looks like
 - Your assumptions about what the site "probably" looks like based on partial context
-- MOCKUP.md "ESTIMATED" values when a live screenshot or snapshot contradicts them
+- Any `ESTIMATED` value in MOCKUP.md — if a value is estimated, it must not be used; escalate to the Orchestrator to re-extract it
+- Any value not traceable to a specific file in the permitted sources above
 
 **Why this matters:** Prior test files encode the mistakes of their build — wrong data models, invented icon types, stale text strings. Using them as a reference propagates errors. Every new test route must start from the live extraction artifacts, not from a sibling route that itself may have been built without live extraction.
 
@@ -233,7 +235,19 @@ Write the complete extraction as a structured reference block. Every subsequent 
 
 **SCREENSHOTS — FIDELITY-FIRST EXTRACTION**
 
-For every screenshot provided (including clone workflow exports):
+**Before reading any screenshot:** Call the `Read` tool on each screenshot file path to view the image. Do not write a single token of component code, layout spec, or token value before you have confirmed each screenshot renders. A path variable is not a viewed image. If a screenshot fails to render, halt and report the missing file — do not proceed with estimation.
+
+```
+SCREENSHOT READ GATE
+  For each screenshot in docs/design-references/:
+    [ ] Called Read tool on file path — image confirmed visible
+    [ ] live-ref-[slug]-desktop.png — Read and viewed
+    [ ] live-ref-[slug]-mobile.png — Read and viewed
+    [ ] Any auth-gated screen screenshots — Read and viewed
+  Proceed only when all boxes are checked.
+```
+
+For every screenshot confirmed viewed:
 
 1. **Layout measurements.** Estimate column widths, header heights, sidebar widths, content zone boundaries.
 2. **Component visual values.** For every component visible: approximate hex values for all colors. Estimate corner radius. Estimate font size and weight.
@@ -592,6 +606,45 @@ GOAL THREAD:
 ---
 
 ## BUILD EXECUTION
+
+### Self-Contained CSS Ground State — Required for All Test Routes
+
+**This is non-negotiable for clone path builds.** The test route lives at `src/app/tests/[slug]/page.tsx` and inherits the project's `layout.tsx` and `globals.css`. Those files set global CSS variables (`--primary`, `--background`, `--foreground`, etc.) and font variables that belong to the project scaffold, NOT the target site. If your components reference Tailwind semantic classes like `bg-primary`, `text-foreground`, or `font-inter` without override, they will render with the wrong values.
+
+**Required at the top of every test route page file:**
+
+```tsx
+// CSS GROUND STATE — isolates this test route from project-level globals
+// All token values sourced from docs/research/DESIGN_SYSTEM.md
+const CSS_GROUND_STATE = `
+  /* Override project globals with target site tokens for this route only */
+  .test-root {
+    --background: [extracted bg color];
+    --foreground: [extracted text color];
+    --primary: [extracted primary color];
+    /* ... all tokens used in this page */
+    font-family: [extracted font stack];
+  }
+`;
+```
+
+Apply a `test-root` class on the outermost `<div>` wrapper of the page component:
+```tsx
+export default function Page() {
+  return (
+    <>
+      <style>{CSS_GROUND_STATE}</style>
+      <div className="test-root">
+        {/* all page content */}
+      </div>
+    </>
+  );
+}
+```
+
+This scopes all token overrides to this test route only without affecting any other route. Every color, font, and spacing token defined in `DESIGN_SYSTEM.md` for the target site must have a corresponding CSS variable in `CSS_GROUND_STATE`. Never rely on the project's global values — assume they are wrong for the target site.
+
+---
 
 ### CSS Architecture — Tailwind Utility Classes
 

@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TreeHouse — SafeChat · Direction B: Chapter Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background-color: #E8E4DF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* ── PHONE SHELL ─────────────────────────────── */
+.phone {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  background-color: #1a1a1a;
+  border-radius: 54px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 40px 80px rgba(0,0,0,0.45),
+    0 12px 32px rgba(0,0,0,0.25),
+    inset 0 0 0 2px #2e2e2e;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* side buttons */
+.phone::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 130px;
+  width: 3px;
+  height: 32px;
+  background-color: #3a3a3a;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 44px 0 #3a3a3a, 0 88px 0 #3a3a3a;
+}
+.phone::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 164px;
+  width: 3px;
+  height: 64px;
+  background-color: #3a3a3a;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── SCREEN VIEWPORT ─────────────────────────── */
+.screen-viewport {
+  position: absolute;
+  inset: 0;
+  border-radius: 54px;
+  overflow: hidden;
+  background-color: #f5f4f2;
+}
+
+/* ── STATUS BAR ──────────────────────────────── */
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 54px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 28px 8px;
+  justify-content: space-between;
+}
+.status-time {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.02em;
+}
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── DYNAMIC ISLAND ──────────────────────────── */
+.dynamic-island {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 34px;
+  background-color: #000;
+  border-radius: 20px;
+  z-index: 200;
+}
+
+/* ── HOME INDICATOR ──────────────────────────── */
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background-color: rgba(0,0,0,0.20);
+  border-radius: 999px;
+  z-index: 100;
+}
+
+/* ── SCREEN SYSTEM ───────────────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  background-color: #f5f4f2;
+  display: flex;
+  flex-direction: column;
+  padding-top: 54px;
+  padding-bottom: 34px;
+  transition: transform 380ms cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 380ms ease;
+  will-change: transform;
+}
+.screen.hidden-right {
+  transform: translateX(100%);
+  pointer-events: none;
+}
+.screen.hidden-left {
+  transform: translateX(-28%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.screen.active {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── SCREEN SCROLL AREA ──────────────────────── */
+.screen-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.screen-scroll::-webkit-scrollbar { display: none; }
+
+/* ── SCREEN PADDING ──────────────────────────── */
+.screen-content {
+  padding: 20px 24px;
+}
+
+/* ── BACK NAV ────────────────────────────────── */
+.back-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 24px 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-nav:active { opacity: 0.6; }
+.back-nav-label {
+  font-size: 17px;
+  font-weight: 400;
+  color: #3D8D84;
+  letter-spacing: -0.01em;
+}
+
+/* ── GHOST CHAPTER NUMBER ────────────────────── */
+.chapter-context {
+  position: relative;
+  padding: 0 24px;
+  padding-top: 16px;
+  overflow: visible;
+  min-height: 76px;
+}
+.ghost-num {
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  font-size: 108px;
+  font-weight: 900;
+  color: #1C1C1E;
+  opacity: 0.055;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.chapter-label {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3D8D84;
+  margin-bottom: 6px;
+}
+.chapter-title {
+  position: relative;
+  z-index: 1;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1C1C1E;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+.chapter-sub {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 400;
+  color: #8E8E93;
+  line-height: 1.5;
+  margin-top: 8px;
+  letter-spacing: -0.01em;
+}
+
+/* ── CHAPTER DOT NAVIGATION ──────────────────── */
+.chapter-dots-wrap {
+  padding: 12px 24px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.chapter-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 999px;
+  padding: 8px 16px;
+}
+.ch-dot {
+  height: 6px;
+  border-radius: 999px;
+  transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: default;
+}
+.ch-dot.future {
+  width: 6px;
+  background-color: #D1D5DB;
+}
+.ch-dot.done {
+  width: 6px;
+  background-color: #3D8D84;
+  opacity: 0.45;
+  cursor: pointer;
+}
+.ch-dot.done:active { opacity: 0.8; }
+.ch-dot.active {
+  width: 28px;
+  background-color: #3D8D84;
+}
+
+/* ── PRIMARY CTA BUTTON ──────────────────────── */
+.cta-wrap {
+  padding: 0 24px 8px;
+  flex-shrink: 0;
+}
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  background-color: #3D8D84;
+  border: none;
+  border-radius: 999px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 160ms ease, transform 120ms ease;
+  box-shadow: 0 2px 12px rgba(61,141,132,0.35);
+}
+.btn-primary:active {
+  background-color: #337872;
+  transform: scale(0.98);
+}
+.btn-primary:disabled {
+  background-color: #D1D5DB;
+  color: #9CA3AF;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* ── TIER OVERVIEW CARDS ─────────────────────── */
+.tier-cards {
+  padding: 20px 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tier-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+}
+.tier-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.tier-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.tier-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.02em;
+}
+.tier-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8E8E93;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  padding-left: 20px;
+}
+
+/* ── CATEGORY CONFIG ─────────────────────────── */
+.category-list {
+  padding: 16px 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cat-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+}
+.cat-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.cat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cat-text { flex: 1; min-width: 0; }
+.cat-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cat-desc-short {
+  font-size: 11px;
+  font-weight: 400;
+  color: #8E8E93;
+  margin-top: 1px;
+  letter-spacing: -0.005em;
+}
+.cat-chevron {
+  flex-shrink: 0;
+  transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #C7C7CC;
+}
+.cat-chevron.open { transform: rotate(180deg); }
+
+/* Tier selector */
+.tier-selector {
+  display: flex;
+  margin: 0 16px 14px;
+  background-color: #F2F2F7;
+  border-radius: 10px;
+  padding: 2px;
+  gap: 2px;
+}
+.tier-opt {
+  flex: 1;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #8E8E93;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  letter-spacing: -0.01em;
+  user-select: none;
+}
+.tier-opt.selected {
+  background-color: #3D8D84;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(61,141,132,0.30);
+}
+
+/* Subcategory accordion */
+.sub-accordion {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sub-accordion.open { max-height: 400px; }
+.sub-list {
+  padding: 0 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.sub-divider {
+  height: 1px;
+  background-color: #F2F2F7;
+  margin: 0 16px 12px;
+}
+.sub-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #F2F2F7;
+}
+.sub-item:last-child { border-bottom: none; }
+.sub-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #3C3C43;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+.sub-desc {
+  font-size: 11px;
+  font-weight: 400;
+  color: #AEAEB2;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+}
+
+/* ── COMPLETION SCREEN ───────────────────────── */
+.completion-check {
+  width: 64px;
+  height: 64px;
+  background-color: #EBF6F5;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto 20px;
+}
+.summary-list {
+  background-color: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  margin: 20px 24px 0;
+}
+.summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #F2F2F7;
+}
+.summary-item:last-child { border-bottom: none; }
+.summary-cat {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3C3C43;
+  letter-spacing: -0.01em;
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px;
+}
+.summary-tier {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3D8D84;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+/* ── DASHBOARD ───────────────────────────────── */
+.dashboard-header {
+  padding: 8px 24px 16px;
+}
+.dash-wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: #3D8D84;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.summary-card {
+  margin: 0 24px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 8px 24px rgba(0,0,0,0.04);
+}
+.summary-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.child-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background-color: #3D8D84;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+.child-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.02em;
+}
+.child-since {
+  font-size: 12px;
+  color: #8E8E93;
+  margin-top: 1px;
+  letter-spacing: -0.01em;
+}
+.alert-badge {
+  margin-left: auto;
+  background-color: #DC2626;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.stats-row {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid #F2F2F7;
+  padding-top: 12px;
+}
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+.stat-item + .stat-item {
+  border-left: 1px solid #F2F2F7;
+}
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C1C1E;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #AEAEB2;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 3px;
+}
+
+/* Section headers */
+.section-header {
+  padding: 20px 24px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8E8E93;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.section-see-all {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3D8D84;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+/* Alert items */
+.alert-list {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.alert-item {
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.03);
+  cursor: pointer;
+}
+.alert-sev-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.alert-content { flex: 1; min-width: 0; }
+.alert-cat {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #AEAEB2;
+  margin-bottom: 3px;
+}
+.alert-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1C1C1E;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.alert-time {
+  font-size: 11px;
+  font-weight: 400;
+  color: #AEAEB2;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Conversation items */
+.conv-list {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.conv-item {
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.03);
+  cursor: pointer;
+}
+.conv-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background-color: #F2F2F7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.conv-meta { flex: 1; min-width: 0; }
+.conv-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.conv-detail {
+  font-size: 11px;
+  font-weight: 400;
+  color: #8E8E93;
+  margin-top: 2px;
+  letter-spacing: -0.005em;
+}
+.conv-time {
+  font-size: 11px;
+  color: #AEAEB2;
+  flex-shrink: 0;
+}
+
+/* ── CHILD LOGIN ─────────────────────────────── */
+.login-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px 24px;
+}
+.login-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3D8D84;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1C1C1E;
+  letter-spacing: -0.03em;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.login-sub {
+  font-size: 14px;
+  color: #8E8E93;
+  text-align: center;
+  margin-bottom: 32px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+.input-field {
+  width: 100%;
+  height: 50px;
+  background-color: #ffffff;
+  border: 1.5px solid #E5E5EA;
+  border-radius: 14px;
+  padding: 0 16px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1C1C1E;
+  outline: none;
+  transition: border-color 200ms ease;
+  letter-spacing: -0.01em;
+  -webkit-appearance: none;
+}
+.input-field:focus {
+  border-color: #3D8D84;
+  box-shadow: 0 0 0 3px rgba(61,141,132,0.12);
+}
+.input-field::placeholder { color: #C7C7CC; }
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.login-helper {
+  font-size: 12px;
+  color: #AEAEB2;
+  text-align: center;
+  margin-top: 20px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+.login-helper a {
+  color: #3D8D84;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ── CHATBOT ─────────────────────────────────── */
+.chat-topbar {
+  padding: 10px 24px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  background-color: rgba(245,244,242,0.95);
+}
+.chat-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1C1C1E;
+  letter-spacing: -0.02em;
+}
+.chat-status-dot {
+  width: 7px;
+  height: 7px;
+  background-color: #34C759;
+  border-radius: 999px;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 16px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-messages::-webkit-scrollbar { display: none; }
+.msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.msg-row.ai { align-self: flex-start; max-width: 82%; }
+.msg-row.child { align-self: flex-end; max-width: 82%; flex-direction: row-reverse; }
+
+.ai-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background-color: #EBF6F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3D8D84;
+}
+.msg-bubble {
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+.msg-bubble.ai {
+  background-color: #ffffff;
+  color: #1C1C1E;
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.msg-bubble.child {
+  background-color: #3D8D84;
+  color: #ffffff;
+  border-bottom-right-radius: 5px;
+}
+.chat-input-bar {
+  padding: 8px 16px 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(245,244,242,0.95);
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+.chat-input {
+  flex: 1;
+  height: 38px;
+  background-color: #ffffff;
+  border: 1.5px solid #E5E5EA;
+  border-radius: 20px;
+  padding: 0 14px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  color: #1C1C1E;
+  outline: none;
+  letter-spacing: -0.01em;
+  transition: border-color 200ms ease;
+  -webkit-appearance: none;
+}
+.chat-input:focus { border-color: #3D8D84; }
+.chat-input::placeholder { color: #C7C7CC; }
+.chat-send {
+  width: 36px;
+  height: 36px;
+  background-color: #3D8D84;
+  border: none;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 150ms ease, transform 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.chat-send:active { background-color: #337872; transform: scale(0.94); }
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #C7C7CC;
+  border-radius: 999px;
+  animation: typingPulse 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingPulse {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ── WELCOME SCREEN SPECIFIC ─────────────────── */
+.welcome-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 32px;
+  text-align: center;
+}
+.welcome-wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #3D8D84;
+  margin-bottom: 40px;
+}
+.welcome-headline {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1C1C1E;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.welcome-sub {
+  font-size: 15px;
+  font-weight: 400;
+  color: #8E8E93;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+.welcome-graphic {
+  width: 120px;
+  height: 120px;
+  margin: 28px auto;
+}
+
+/* Leaf illustration SVG placeholder */
+.welcome-orb {
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  background-color: #EBF6F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 28px auto;
+}
+
+/* Spacer */
+.spacer { flex: 1; }
+.h-spacer-sm { height: 8px; }
+.h-spacer-md { height: 16px; }
+.h-spacer-lg { height: 24px; }
+</style>
+</head>
+<body>
+
+<!-- ── PHONE SHELL ─────────────────────────────── -->
+<div class="phone">
+  <div class="screen-viewport">
+
+    <!-- Dynamic Island -->
+    <div class="dynamic-island"></div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <!-- Signal -->
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <rect x="0" y="6" width="3" height="6" rx="1" fill="#1C1C1E"/>
+          <rect x="4.5" y="4" width="3" height="8" rx="1" fill="#1C1C1E"/>
+          <rect x="9" y="2" width="3" height="10" rx="1" fill="#1C1C1E"/>
+          <rect x="13.5" y="0" width="3" height="12" rx="1" fill="#1C1C1E"/>
+        </svg>
+        <!-- Wifi -->
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M8 9.5C8.83 9.5 9.5 10.17 9.5 11S8.83 12.5 8 12.5 6.5 11.83 6.5 11 7.17 9.5 8 9.5Z" fill="#1C1C1E"/>
+          <path d="M8 6.5C9.79 6.5 11.36 7.28 12.45 8.5L13.86 7.09A7.48 7.48 0 0 0 8 4.5c-2.09 0-3.98.84-5.36 2.19L4.05 8.1A5.48 5.48 0 0 1 8 6.5Z" fill="#1C1C1E"/>
+          <path d="M8 3.5c2.73 0 5.18 1.12 6.95 2.91L16.36 5A9.48 9.48 0 0 0 8 1.5 9.48 9.48 0 0 0-.36 5l1.41 1.41C2.82 4.62 5.27 3.5 8 3.5Z" fill="#1C1C1E" opacity="0.4"/>
+        </svg>
+        <!-- Battery -->
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#1C1C1E" stroke-opacity="0.35"/>
+          <rect x="2" y="2" width="16" height="8" rx="2" fill="#1C1C1E"/>
+          <path d="M23 4v4a2 2 0 0 0 0-4Z" fill="#1C1C1E" fill-opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 1 — WELCOME (Chapter 01)
+    ───────────────────────────────────────────── -->
+    <div id="screen-welcome" class="screen active">
+      <div class="welcome-center">
+        <div class="welcome-wordmark">TreeHouse</div>
+
+        <!-- Leaf / tree icon — inline SVG -->
+        <div class="welcome-orb">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M24 8C16.27 8 10 14.27 10 22C10 27.52 13.1 32.29 17.73 34.84L16 40H32L30.27 34.84C34.9 32.29 38 27.52 38 22C38 14.27 31.73 8 24 8Z" fill="#3D8D84" opacity="0.18"/>
+            <path d="M24 12C18.48 12 14 16.48 14 22C14 26.18 16.5 29.75 20.06 31.5L18.5 37H29.5L27.94 31.5C31.5 29.75 34 26.18 34 22C34 16.48 29.52 12 24 12Z" fill="#3D8D84" opacity="0.38"/>
+            <path d="M24 16C20.69 16 18 18.69 18 22C18 24.97 20.02 27.46 22.75 28.17L21.5 34H26.5L25.25 28.17C27.98 27.46 30 24.97 30 22C30 18.69 27.31 16 24 16Z" fill="#3D8D84"/>
+            <rect x="22.5" y="34" width="3" height="6" rx="1.5" fill="#3D8D84" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <div class="welcome-headline">Choose how AI works for your family</div>
+        <div class="welcome-sub">SafeChat puts you in control.<br>This takes about 5 minutes.</div>
+      </div>
+
+      <!-- Chapter dots — ch 01 active -->
+      <div class="chapter-dots-wrap">
+        <div class="chapter-dots">
+          <div class="ch-dot active" data-chapter="0"></div>
+          <div class="ch-dot future" data-chapter="1"></div>
+          <div class="ch-dot future" data-chapter="2"></div>
+          <div class="ch-dot future" data-chapter="3"></div>
+        </div>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="btn-primary" onclick="goTo('screen-tier-overview')">Get started</button>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 2 — TIER OVERVIEW (Chapter 02)
+    ───────────────────────────────────────────── -->
+    <div id="screen-tier-overview" class="screen hidden-right">
+      <div class="back-nav" onclick="goBack('screen-welcome', 'screen-tier-overview')">
+        <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M8.5 1.5L1.5 8.5L8.5 15.5" stroke="#3D8D84" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="back-nav-label">Back</span>
+      </div>
+
+      <div class="chapter-context">
+        <div class="ghost-num">02</div>
+        <div class="chapter-label">Chapter 02</div>
+        <div class="chapter-title">How the settings work</div>
+        <div class="chapter-sub">Every category uses one of three tiers. Pick what feels right — you can change these anytime.</div>
+      </div>
+
+      <div class="screen-scroll">
+        <div class="tier-cards">
+          <!-- Off -->
+          <div class="tier-card">
+            <div class="tier-card-header">
+              <div class="tier-dot" style="background-color: #D1D5DB;"></div>
+              <div class="tier-name">Off</div>
+            </div>
+            <div class="tier-desc">SafeChat doesn't filter or flag anything. The AI responds freely.</div>
+          </div>
+          <!-- Balanced -->
+          <div class="tier-card">
+            <div class="tier-card-header">
+              <div class="tier-dot" style="background-color: #3D8D84;"></div>
+              <div class="tier-name">Balanced</div>
+            </div>
+            <div class="tier-desc">Filters mature and harmful content. Flags unusual patterns for your review.</div>
+          </div>
+          <!-- Strict -->
+          <div class="tier-card">
+            <div class="tier-card-header">
+              <div class="tier-dot" style="background-color: #1C1C1E;"></div>
+              <div class="tier-name">Strict</div>
+            </div>
+            <div class="tier-desc">Maximum safety. The AI redirects anything sensitive and flags it immediately.</div>
+          </div>
+        </div>
+        <div class="h-spacer-lg"></div>
+      </div>
+
+      <!-- Chapter dots — ch 01 done, ch 02 active -->
+      <div class="chapter-dots-wrap">
+        <div class="chapter-dots">
+          <div class="ch-dot done" data-chapter="0" onclick="goBack('screen-welcome', 'screen-tier-overview')"></div>
+          <div class="ch-dot active" data-chapter="1"></div>
+          <div class="ch-dot future" data-chapter="2"></div>
+          <div class="ch-dot future" data-chapter="3"></div>
+        </div>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="btn-primary" onclick="goTo('screen-configure')">Got it, let's go</button>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 3 — CONFIGURE (Chapter 03)
+    ───────────────────────────────────────────── -->
+    <div id="screen-configure" class="screen hidden-right">
+      <div class="back-nav" onclick="goBack('screen-tier-overview', 'screen-configure')">
+        <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <path d="M8.5 1.5L1.5 8.5L8.5 15.5" stroke="#3D8D84" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="back-nav-label">Back</span>
+      </div>
+
+      <div class="chapter-context">
+        <div class="ghost-num">03</div>
+        <div class="chapter-label">Chapter 03</div>
+        <div class="chapter-title">Configure SafeChat</div>
+        <div class="chapter-sub">There are no wrong answers — every family is different, and you can change any of these later.</div>
+      </div>
+
+      <div class="screen-scroll">
+        <div class="category-list">
+
+          <!-- Category 1: Content Moderation -->
+          <div class="cat-card">
+            <div class="cat-header" onclick="toggleAccordion('acc-1')">
+              <div class="cat-icon" style="background-color: #FEF3C7;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M9 1.5L11.06 6.26L16.25 6.65L12.5 9.92L13.73 15L9 12.27L4.27 15L5.5 9.92L1.75 6.65L6.94 6.26L9 1.5Z" fill="#D97706"/>
+                </svg>
+              </div>
+              <div class="cat-text">
+                <div class="cat-name">Content Moderation</div>
+                <div class="cat-desc-short">Language, themes &amp; mature content</div>
+              </div>
+              <svg class="cat-chevron" id="chevron-1" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M4 6L8 10L12 6" stroke="#C7C7CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="tier-selector">
+              <div class="tier-opt" data-cat="1" data-tier="Off" onclick="selectTier(this)">Off</div>
+              <div class="tier-opt selected" data-cat="1" data-tier="Balanced" onclick="selectTier(this)">Balanced</div>
+              <div class="tier-opt" data-cat="1" data-tier="Strict" onclick="selectTier(this)">Strict</div>
+            </div>
+            <div class="sub-accordion" id="acc-1">
+              <div class="sub-divider"></div>
+              <div class="sub-list">
+                <div class="sub-item">
+                  <div class="sub-name">Profanity filter</div>
+                  <div class="sub-desc">Blocks or replaces strong language in AI responses</div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-name">Mature themes</div>
+                  <div class="sub-desc">Violence, adult content, disturbing scenarios</div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-name">Hate speech</div>
+                  <div class="sub-desc">Discriminatory or dehumanizing language</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category 2: Behavioral Monitoring -->
+          <div class="cat-card">
+            <div class="cat-header" onclick="toggleAccordion('acc-2')">
+              <div class="cat-icon" style="background-color: #EDE9FE;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <circle cx="9" cy="9" r="7" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+                  <path d="M5.5 9.5C6.5 11.5 11.5 11.5 12.5 9.5" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="6.5" cy="7" r="1" fill="#7C3AED"/>
+                  <circle cx="11.5" cy="7" r="1" fill="#7C3AED"/>
+                </svg>
+              </div>
+              <div class="cat-text">
+                <div class="cat-name">Behavioral Monitoring</div>
+                <div class="cat-desc-short">Patterns across conversations</div>
+              </div>
+              <svg class="cat-chevron" id="chevron-2" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M4 6L8 10L12 6" stroke="#C7C7CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="tier-selector">
+              <div class="tier-opt selected" data-cat="2" data-tier="Off" onclick="selectTier(this)">Off</div>
+              <div class="tier-opt" data-cat="2" data-tier="Balanced" onclick="selectTier(this)">Balanced</div>
+              <div class="tier-opt" data-cat="2" data-tier="Strict" onclick="selectTier(this)">Strict</div>
+            </div>
+            <div class="sub-accordion" id="acc-2">
+              <div class="sub-divider"></div>
+              <div class="sub-list">
+                <div class="sub-item">
+                  <div class="sub-name">AI dependency</div>
+                  <div class="sub-desc">Alerts if your child is relying heavily on AI for emotional support</div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-name">Radicalization signals</div>
+                  <div class="sub-desc">Detects extremist language patterns across sessions</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category 3: AI Personality -->
+          <div class="cat-card">
+            <div class="cat-header" onclick="toggleAccordion('acc-3')">
+              <div class="cat-icon" style="background-color: #ECFDF5;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <rect x="2" y="2" width="14" height="14" rx="4" stroke="#059669" stroke-width="1.5" fill="none"/>
+                  <path d="M6 9h6M9 6v6" stroke="#059669" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="cat-text">
+                <div class="cat-name">AI Personality</div>
+                <div class="cat-desc-short">Tone, personality &amp; interaction style</div>
+              </div>
+              <svg class="cat-chevron" id="chevron-3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M4 6L8 10L12 6" stroke="#C7C7CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="tier-selector">
+              <div class="tier-opt" data-cat="3" data-tier="Off" onclick="selectTier(this)">Off</div>
+              <div class="tier-opt selected" data-cat="3" data-tier="Balanced" onclick="selectTier(this)">Balanced</div>
+              <div class="tier-opt" data-cat="3" data-tier="Strict" onclick="selectTier(this)">Strict</div>
+            </div>
+            <div class="sub-accordion" id="acc-3">
+              <div class="sub-divider"></div>
+              <div class="sub-list">
+                <div class="sub-item">
+                  <div class="sub-name">Emotional tone</div>
+                  <div class="sub-desc">Sets how warm or neutral the AI presents itself</div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-name">Persuasion limits</div>
+                  <div class="sub-desc">Prevents the AI from encouraging repetitive behavior</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category 4: Academic Integrity -->
+          <div class="cat-card">
+            <div class="cat-header" onclick="toggleAccordion('acc-4')">
+              <div class="cat-icon" style="background-color: #EFF6FF;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M3 5.5L9 2L15 5.5V12C15 14 12 16 9 16.5C6 16 3 14 3 12V5.5Z" stroke="#2563EB" stroke-width="1.5" fill="none"/>
+                  <path d="M6.5 9L8.5 11L11.5 7.5" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="cat-text">
+                <div class="cat-name">Academic Integrity</div>
+                <div class="cat-desc-short">Homework help &amp; original work</div>
+              </div>
+              <svg class="cat-chevron" id="chevron-4" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M4 6L8 10L12 6" stroke="#C7C7CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="tier-selector">
+              <div class="tier-opt" data-cat="4" data-tier="Off" onclick="selectTier(this)">Off</div>
+              <div class="tier-opt selected" data-cat="4" data-tier="Balanced" onclick="selectTier(this)">Balanced</div>
+              <div class="tier-opt" data-cat="4" data-tier="Strict" onclick="selectTier(this)">Strict</div>
+            </div>
+            <div class="sub-accordion" id="acc-4">
+              <div class="sub-divider"></div>
+              <div class="sub-list">
+                <div class="sub-item">
+                  <div class="sub-name">Essay writing</div>
+                  <div class="sub-desc">Guides vs. generates — sets how directly AI assists with written work</div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-name">Answer reveal</div>
+                  <div class="sub-desc">Whether the AI shows answers or just hints</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category 5: Data & Privacy -->
+          <div class="cat-card">
+            <div class="cat-header" onclick="toggleAccordion('acc-5')">
+              <div class="cat-icon" style="background-color: #FFF1F2;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <rect x="4" y="8" width="10" height="8" rx="2" stroke="#E11D48" stroke-width="1.5" fill="none"/>
+                  <path d="M6 8V6C6 4.34 7.34 3 9 3S12 4.34 12 6V8" stroke="#E11D48" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="9" cy="12" r="1.5" fill="#E11D48"/>
+                </svg>
+              </div>
+              <div class="cat-text">
+                <div class="cat-name">Data &amp; Privacy</div>
+                <div class="cat-desc-short">What SafeChat stores &amp; shares</div>
+              </div>
+              <svg class="cat-chevron" id="chevron-5" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M4 6L8 10L12 6" stroke="#C7C7CC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="tier-selector">
+              <div class="tier-opt" data-cat="5" data-tier="Off" onclick="selectTier(this)">Off</div>
+              <div class="tier-opt selected" data-cat="5" data-tier="Balanced" onclick="selectTier(this)">Balanced</div>
+              <div class="tier-opt" data-cat="5" data-tier="Strict" onclick="selectTier(this)">Strict</div>
+            </div>
+            <div class="sub-accordion" id="acc-5">
+              <div class="sub-divider"></div>
+              <div class="sub-list">
+                <div class="sub-item">
+                  <div class="sub-name">Conversation logs</div>
+                  <div class="sub-desc">How long chat history is retained</div>
+                </div>
+                <div class="sub-item">
+                  <div class="sub-name">Personal data</div>
+                  <div class="sub-desc">Whether the AI can remember facts about your child between sessions</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="h-spacer-lg"></div>
+      </div>
+
+      <!-- Chapter dots — ch 01-02 done, ch 03 active -->
+      <div class="chapter-dots-wrap">
+        <div class="chapter-dots">
+          <div class="ch-dot done" data-chapter="0" onclick="goBack('screen-welcome', 'screen-configure')"></div>
+          <div class="ch-dot done" data-chapter="1" onclick="goBack('screen-tier-overview', 'screen-configure')"></div>
+          <div class="ch-dot active" data-chapter="2"></div>
+          <div class="ch-dot future" data-chapter="3"></div>
+        </div>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="btn-primary" id="btn-configure" onclick="goTo('screen-completion')">Save &amp; continue</button>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 4 — COMPLETION (Chapter 04)
+    ───────────────────────────────────────────── -->
+    <div id="screen-completion" class="screen hidden-right">
+      <div class="screen-scroll">
+        <div class="chapter-context" style="padding-top: 24px;">
+          <div class="ghost-num">04</div>
+          <div class="chapter-label">Chapter 04</div>
+          <div class="chapter-title">You're all set!</div>
+          <div class="chapter-sub">Your choices take effect immediately.</div>
+        </div>
+
+        <div class="completion-check">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M6 14L11.5 19.5L22 8.5" stroke="#3D8D84" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="summary-list">
+          <div class="summary-item">
+            <div class="summary-cat">Content Moderation</div>
+            <div class="summary-tier" id="sum-1">Balanced</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-cat">Behavioral Monitoring</div>
+            <div class="summary-tier" id="sum-2">Off</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-cat">AI Personality</div>
+            <div class="summary-tier" id="sum-3">Balanced</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-cat">Academic Integrity</div>
+            <div class="summary-tier" id="sum-4">Balanced</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-cat">Data &amp; Privacy</div>
+            <div class="summary-tier" id="sum-5">Balanced</div>
+          </div>
+        </div>
+
+        <div class="h-spacer-lg"></div>
+      </div>
+
+      <!-- Chapter dots — all done -->
+      <div class="chapter-dots-wrap">
+        <div class="chapter-dots">
+          <div class="ch-dot done" data-chapter="0"></div>
+          <div class="ch-dot done" data-chapter="1"></div>
+          <div class="ch-dot done" data-chapter="2" onclick="goBack('screen-configure', 'screen-completion')"></div>
+          <div class="ch-dot active" data-chapter="3"></div>
+        </div>
+      </div>
+
+      <div class="cta-wrap">
+        <button class="btn-primary" onclick="goTo('screen-dashboard')">Go to dashboard</button>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 5 — PARENT DASHBOARD
+    ───────────────────────────────────────────── -->
+    <div id="screen-dashboard" class="screen hidden-right">
+      <div class="screen-scroll">
+        <div class="dashboard-header">
+          <div class="dash-wordmark">TreeHouse</div>
+        </div>
+
+        <!-- Summary card -->
+        <div class="summary-card">
+          <div class="summary-card-top">
+            <div class="child-avatar">E</div>
+            <div>
+              <div class="child-name">Emma</div>
+              <div class="child-since">Active today · 8:12 AM</div>
+            </div>
+            <div class="alert-badge">2</div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-value">14</div>
+              <div class="stat-label">Convos</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Alerts</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">47m</div>
+              <div class="stat-label">Today</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts section -->
+        <div class="section-header">
+          <div class="section-title">Recent alerts</div>
+          <div class="section-see-all">See all</div>
+        </div>
+        <div class="alert-list">
+          <div class="alert-item">
+            <div class="alert-sev-dot" style="background-color: #DC2626;"></div>
+            <div class="alert-content">
+              <div class="alert-cat">Content Moderation</div>
+              <div class="alert-text">Profanity detected — 4 instances in one conversation</div>
+            </div>
+            <div class="alert-time">2h ago</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-sev-dot" style="background-color: #D97706;"></div>
+            <div class="alert-content">
+              <div class="alert-cat">Academic Integrity</div>
+              <div class="alert-text">Essay written entirely by AI — no original input detected</div>
+            </div>
+            <div class="alert-time">Yesterday</div>
+          </div>
+        </div>
+
+        <!-- Conversations section -->
+        <div class="section-header">
+          <div class="section-title">Recent conversations</div>
+          <div class="section-see-all">See all</div>
+        </div>
+        <div class="conv-list">
+          <div class="conv-item">
+            <div class="conv-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M2 3.5C2 2.67 2.67 2 3.5 2H12.5C13.33 2 14 2.67 14 3.5V10.5C14 11.33 13.33 12 12.5 12H9L6 14V12H3.5C2.67 12 2 11.33 2 10.5V3.5Z" stroke="#8E8E93" stroke-width="1.2" fill="none"/>
+              </svg>
+            </div>
+            <div class="conv-meta">
+              <div class="conv-title">Help with science homework</div>
+              <div class="conv-detail">23 messages · No alerts</div>
+            </div>
+            <div class="conv-time">Today</div>
+          </div>
+          <div class="conv-item">
+            <div class="conv-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M2 3.5C2 2.67 2.67 2 3.5 2H12.5C13.33 2 14 2.67 14 3.5V10.5C14 11.33 13.33 12 12.5 12H9L6 14V12H3.5C2.67 12 2 11.33 2 10.5V3.5Z" stroke="#8E8E93" stroke-width="1.2" fill="none"/>
+              </svg>
+            </div>
+            <div class="conv-meta">
+              <div class="conv-title">Asking about social media</div>
+              <div class="conv-detail">8 messages · 1 alert</div>
+            </div>
+            <div class="conv-time">Yesterday</div>
+          </div>
+          <div class="conv-item">
+            <div class="conv-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M2 3.5C2 2.67 2.67 2 3.5 2H12.5C13.33 2 14 2.67 14 3.5V10.5C14 11.33 13.33 12 12.5 12H9L6 14V12H3.5C2.67 12 2 11.33 2 10.5V3.5Z" stroke="#8E8E93" stroke-width="1.2" fill="none"/>
+              </svg>
+            </div>
+            <div class="conv-meta">
+              <div class="conv-title">Creative writing ideas</div>
+              <div class="conv-detail">34 messages · No alerts</div>
+            </div>
+            <div class="conv-time">Mon</div>
+          </div>
+        </div>
+
+        <div class="h-spacer-lg"></div>
+
+        <!-- Child view switcher -->
+        <div style="padding: 0 24px 8px;">
+          <button class="btn-primary" style="background-color: #ffffff; color: #3D8D84; border: 1.5px solid #E5E5EA; box-shadow: none;" onclick="goTo('screen-child-login')">
+            Switch to child view
+          </button>
+        </div>
+        <div class="h-spacer-md"></div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 6 — CHILD LOGIN
+    ───────────────────────────────────────────── -->
+    <div id="screen-child-login" class="screen hidden-right" style="background-color: #ffffff;">
+      <div class="login-wrap">
+        <div class="login-logo">TreeHouse</div>
+        <div class="login-title">Log in to your account</div>
+        <div class="login-sub">Enter the details your parent set up for you.</div>
+
+        <div class="input-group">
+          <input class="input-field" type="text" placeholder="Email or username" autocomplete="off">
+          <input class="input-field" type="password" placeholder="Password">
+        </div>
+
+        <button class="btn-primary" onclick="goTo('screen-chatbot')" style="width:100%;">Log in</button>
+
+        <div class="login-helper">
+          Don't have an account? <a href="#">Ask your parent to set one up.</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────
+         SCREEN 7 — CHILD CHATBOT
+    ───────────────────────────────────────────── -->
+    <div id="screen-chatbot" class="screen hidden-right" style="background-color: #F7F7F8;">
+      <div class="chat-topbar">
+        <div class="chat-name">Sage</div>
+        <div class="chat-status-dot"></div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages-list">
+
+        <!-- AI greeting -->
+        <div class="msg-row ai">
+          <div class="ai-avatar">S</div>
+          <div class="msg-bubble ai">Hi! I'm Sage. What's on your mind today?</div>
+        </div>
+
+        <!-- Child message -->
+        <div class="msg-row child">
+          <div class="msg-bubble child">Can you help me with my science homework? We're studying the water cycle.</div>
+        </div>
+
+        <!-- AI response -->
+        <div class="msg-row ai">
+          <div class="ai-avatar">S</div>
+          <div class="msg-bubble ai">Of course! The water cycle has four main stages: evaporation, condensation, precipitation, and collection. Which part are you working on?</div>
+        </div>
+
+        <!-- Child message -->
+        <div class="msg-row child">
+          <div class="msg-bubble child">I need to explain what condensation is</div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="msg-row ai" id="typing-row">
+          <div class="ai-avatar">S</div>
+          <div class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chat-input-bar">
+        <input class="chat-input" type="text" id="chat-input-field" placeholder="Message Sage…" onkeydown="handleChatKey(event)">
+        <button class="chat-send" onclick="sendMessage()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M2 8L8 2L14 8" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 2V14" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Home Indicator -->
+    <div class="home-indicator"></div>
+
+  </div><!-- /screen-viewport -->
+</div><!-- /phone -->
+
+<script>
+// ── MODE SWITCH ───────────────────────────────
+const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
+if (FIGMA_MODE) {
+  document.querySelector('.phone').style.display = 'none';
+}
+
+// ── SCREEN NAVIGATION ─────────────────────────
+let screenHistory = ['screen-welcome'];
+
+function goTo(targetId) {
+  const current = screenHistory[screenHistory.length - 1];
+  const currentEl = document.getElementById(current);
+  const targetEl = document.getElementById(targetId);
+  if (!targetEl || currentEl === targetEl) return;
+
+  currentEl.classList.remove('active');
+  currentEl.classList.add('hidden-left');
+
+  targetEl.classList.remove('hidden-right', 'hidden-left');
+  targetEl.classList.add('active');
+
+  screenHistory.push(targetId);
+
+  // Update summary on completion screen
+  if (targetId === 'screen-completion') {
+    updateSummary();
+  }
+
+  // Scroll chat to bottom on chatbot open
+  if (targetId === 'screen-chatbot') {
+    setTimeout(scrollChatToBottom, 400);
+    setTimeout(showTypingThenRespond, 1400);
+  }
+}
+
+function goBack(targetId, currentId) {
+  const currentEl = document.getElementById(currentId);
+  const targetEl = document.getElementById(targetId);
+  if (!targetEl || !currentEl) return;
+
+  currentEl.classList.remove('active');
+  currentEl.classList.add('hidden-right');
+
+  targetEl.classList.remove('hidden-left', 'hidden-right');
+  targetEl.classList.add('active');
+
+  const idx = screenHistory.lastIndexOf(currentId);
+  if (idx > -1) screenHistory.splice(idx);
+}
+
+// ── TIER SELECTOR ─────────────────────────────
+const selectedTiers = { 1: 'Balanced', 2: 'Off', 3: 'Balanced', 4: 'Balanced', 5: 'Balanced' };
+
+function selectTier(el) {
+  const cat = el.dataset.cat;
+  const tier = el.dataset.tier;
+  selectedTiers[cat] = tier;
+
+  // Update visual state
+  const siblings = el.parentElement.querySelectorAll('.tier-opt');
+  siblings.forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function updateSummary() {
+  const names = {
+    1: 'Content Moderation',
+    2: 'Behavioral Monitoring',
+    3: 'AI Personality',
+    4: 'Academic Integrity',
+    5: 'Data & Privacy'
+  };
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('sum-' + i);
+    if (el) el.textContent = selectedTiers[i];
+  }
+}
+
+// ── ACCORDION ─────────────────────────────────
+function toggleAccordion(id) {
+  const acc = document.getElementById(id);
+  const num = id.replace('acc-', '');
+  const chevron = document.getElementById('chevron-' + num);
+  const isOpen = acc.classList.contains('open');
+
+  // Close all first
+  document.querySelectorAll('.sub-accordion').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.cat-chevron').forEach(c => c.classList.remove('open'));
+
+  if (!isOpen) {
+    acc.classList.add('open');
+    chevron.classList.add('open');
+  }
+}
+
+// ── CHAT ──────────────────────────────────────
+let chatResponded = false;
+
+function scrollChatToBottom() {
+  const list = document.getElementById('chat-messages-list');
+  if (list) list.scrollTop = list.scrollHeight;
+}
+
+function showTypingThenRespond() {
+  if (chatResponded) return;
+  chatResponded = true;
+  setTimeout(() => {
+    const typingRow = document.getElementById('typing-row');
+    if (!typingRow) return;
+    typingRow.outerHTML = `
+      <div class="msg-row ai">
+        <div class="ai-avatar">S</div>
+        <div class="msg-bubble ai">Condensation is when water vapor — the invisible gas form of water — cools down and turns back into liquid droplets. You can see it on a cold glass on a warm day. ☁️</div>
+      </div>
+    `;
+    scrollChatToBottom();
+  }, 1800);
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input-field');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const list = document.getElementById('chat-messages-list');
+  const msgEl = document.createElement('div');
+  msgEl.className = 'msg-row child';
+  msgEl.innerHTML = `<div class="msg-bubble child">${text}</div>`;
+  list.appendChild(msgEl);
+  input.value = '';
+  scrollChatToBottom();
+
+  // Add typing + response
+  setTimeout(() => {
+    const typingEl = document.createElement('div');
+    typingEl.className = 'msg-row ai';
+    typingEl.innerHTML = `
+      <div class="ai-avatar">S</div>
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    `;
+    list.appendChild(typingEl);
+    scrollChatToBottom();
+
+    setTimeout(() => {
+      typingEl.outerHTML = `
+        <div class="msg-row ai">
+          <div class="ai-avatar">S</div>
+          <div class="msg-bubble ai">That's a great question! Keep exploring — curiosity is the best learning tool.</div>
+        </div>
+      `;
+      scrollChatToBottom();
+    }, 1600);
+  }, 600);
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter') sendMessage();
+}
+</script>
+
+<!-- FIGMA GALLERY (rendered at ?figma=true) -->
+<div id="figma-gallery" style="
+  display: none;
+  flex-direction: column;
+  gap: 64px;
+  padding: 64px;
+  background-color: #f5f4f2;
+  min-height: 100vh;
+  font-family: 'DM Sans', system-ui, sans-serif;
+">
+  <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #999;">
+    COMPONENT STATE GALLERY — Direction B: Chapter Guide — Import at ?figma=true
+  </div>
+
+  <!-- Tier Selector States -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #E5E7EB;">Tier Selector</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Default (Off selected)</div>
+        <div style="display: flex; background-color: #F2F2F7; border-radius: 10px; padding: 2px; gap: 2px; width: 220px;">
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:600; background-color:#3D8D84; color:#ffffff; box-shadow: 0 1px 4px rgba(61,141,132,0.30);">Off</div>
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:500; color:#8E8E93;">Balanced</div>
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:500; color:#8E8E93;">Strict</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Balanced selected</div>
+        <div style="display: flex; background-color: #F2F2F7; border-radius: 10px; padding: 2px; gap: 2px; width: 220px;">
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:500; color:#8E8E93;">Off</div>
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:600; background-color:#3D8D84; color:#ffffff; box-shadow: 0 1px 4px rgba(61,141,132,0.30);">Balanced</div>
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:500; color:#8E8E93;">Strict</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Strict selected</div>
+        <div style="display: flex; background-color: #F2F2F7; border-radius: 10px; padding: 2px; gap: 2px; width: 220px;">
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:500; color:#8E8E93;">Off</div>
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:500; color:#8E8E93;">Balanced</div>
+          <div style="flex:1; height:30px; display:flex; align-items:center; justify-content:center; border-radius:8px; font-size:12px; font-weight:600; background-color:#3D8D84; color:#ffffff; box-shadow: 0 1px 4px rgba(61,141,132,0.30);">Strict</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter Dot Navigation States -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #E5E7EB;">Chapter Dot Navigation</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Chapter 01 active</div>
+        <div style="display: flex; align-items: center; gap: 8px; background-color: rgba(0,0,0,0.04); border-radius: 999px; padding: 8px 16px;">
+          <div style="width:28px; height:6px; background-color:#3D8D84; border-radius:999px;"></div>
+          <div style="width:6px; height:6px; background-color:#D1D5DB; border-radius:999px;"></div>
+          <div style="width:6px; height:6px; background-color:#D1D5DB; border-radius:999px;"></div>
+          <div style="width:6px; height:6px; background-color:#D1D5DB; border-radius:999px;"></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Chapter 02 active</div>
+        <div style="display: flex; align-items: center; gap: 8px; background-color: rgba(0,0,0,0.04); border-radius: 999px; padding: 8px 16px;">
+          <div style="width:6px; height:6px; background-color:#3D8D84; border-radius:999px; opacity:0.45;"></div>
+          <div style="width:28px; height:6px; background-color:#3D8D84; border-radius:999px;"></div>
+          <div style="width:6px; height:6px; background-color:#D1D5DB; border-radius:999px;"></div>
+          <div style="width:6px; height:6px; background-color:#D1D5DB; border-radius:999px;"></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Chapter 03 active</div>
+        <div style="display: flex; align-items: center; gap: 8px; background-color: rgba(0,0,0,0.04); border-radius: 999px; padding: 8px 16px;">
+          <div style="width:6px; height:6px; background-color:#3D8D84; border-radius:999px; opacity:0.45;"></div>
+          <div style="width:6px; height:6px; background-color:#3D8D84; border-radius:999px; opacity:0.45;"></div>
+          <div style="width:28px; height:6px; background-color:#3D8D84; border-radius:999px;"></div>
+          <div style="width:6px; height:6px; background-color:#D1D5DB; border-radius:999px;"></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Chapter 04 active</div>
+        <div style="display: flex; align-items: center; gap: 8px; background-color: rgba(0,0,0,0.04); border-radius: 999px; padding: 8px 16px;">
+          <div style="width:6px; height:6px; background-color:#3D8D84; border-radius:999px; opacity:0.45;"></div>
+          <div style="width:6px; height:6px; background-color:#3D8D84; border-radius:999px; opacity:0.45;"></div>
+          <div style="width:6px; height:6px; background-color:#3D8D84; border-radius:999px; opacity:0.45;"></div>
+          <div style="width:28px; height:6px; background-color:#3D8D84; border-radius:999px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Button States -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #E5E7EB;">Primary CTA Button</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Default</div>
+        <div style="display:flex; align-items:center; justify-content:center; width:220px; height:52px; background-color:#3D8D84; border-radius:999px; font-size:16px; font-weight:600; color:#fff; letter-spacing:-0.01em; box-shadow: 0 2px 12px rgba(61,141,132,0.35);">Get started</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Pressed</div>
+        <div style="display:flex; align-items:center; justify-content:center; width:220px; height:52px; background-color:#337872; border-radius:999px; font-size:16px; font-weight:600; color:#fff; letter-spacing:-0.01em; transform:scale(0.98);">Get started</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; color: #999;">Disabled</div>
+        <div style="display:flex; align-items:center; justify-content:center; width:220px; height:52px; background-color:#D1D5DB; border-radius:999px; font-size:16px; font-weight:600; color:#9CA3AF; letter-spacing:-0.01em;">Save &amp; continue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Item States -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #E5E7EB;">Alert Item</div>
+    <div style="display: flex; flex-direction: column; gap: 12px; max-width: 342px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 11px; color: #999;">High severity</div>
+        <div style="background-color:#ffffff; border-radius:14px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.03);">
+          <div style="width:8px; height:8px; border-radius:999px; background-color:#DC2626; flex-shrink:0; margin-top:4px;"></div>
+          <div style="flex:1;">
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#AEAEB2; margin-bottom:3px;">Content Moderation</div>
+            <div style="font-size:13px; font-weight:500; color:#1C1C1E; line-height:1.4; letter-spacing:-0.01em;">Profanity detected — 4 instances in one conversation</div>
+          </div>
+          <div style="font-size:11px; color:#AEAEB2; flex-shrink:0; margin-top:2px;">2h ago</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 11px; color: #999;">Medium severity</div>
+        <div style="background-color:#ffffff; border-radius:14px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.03);">
+          <div style="width:8px; height:8px; border-radius:999px; background-color:#D97706; flex-shrink:0; margin-top:4px;"></div>
+          <div style="flex:1;">
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#AEAEB2; margin-bottom:3px;">Academic Integrity</div>
+            <div style="font-size:13px; font-weight:500; color:#1C1C1E; line-height:1.4; letter-spacing:-0.01em;">Essay written entirely by AI — no original input</div>
+          </div>
+          <div style="font-size:11px; color:#AEAEB2; flex-shrink:0; margin-top:2px;">Yesterday</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /figma-gallery -->
+
+<script>
+if (FIGMA_MODE) {
+  document.getElementById('figma-gallery').style.display = 'flex';
+}
+</script>
+
+</body>
+</html>

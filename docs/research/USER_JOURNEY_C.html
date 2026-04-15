@@ -3,176 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction C — Category-by-Category — SafeChat User Journey</title>
+  <title>Direction C — Master-Detail Column · User Journey</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Inter, system-ui, sans-serif; background: #FAF8F4; color: #1E2A40; padding-bottom: 48px; }
+    body { font-family: Inter, system-ui, sans-serif; background: #F1F5F9; color: #1E2A40; padding: 32px 16px 64px; }
+    .wrap { max-width: 660px; margin: 0 auto; }
 
-    .header { background: #083386; color: #fff; padding: 28px 32px 24px; border-radius: 10px; margin: 24px auto; max-width: 600px; }
-    .header__eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; opacity: .55; margin-bottom: 5px; }
-    .header__title   { font-size: 22px; font-weight: 700; margin-bottom: 5px; }
-    .header__stance  { font-size: 12px; opacity: .70; max-width: 500px; margin-bottom: 18px; line-height: 1.6; }
-    .chips { display: flex; gap: 7px; flex-wrap: wrap; }
-    .chip  { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.85); }
+    /* ── HEADER ─────────────────────────────────────────────── */
+    .header { background: #083386; border-radius: 12px; padding: 28px 32px; margin-bottom: 28px; }
+    .hdr-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.82); margin-bottom: 22px; }
+    .hdr-blocks { margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; }
+    .hdr-block-eyebrow { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+    .hdr-block-prob .hdr-block-eyebrow { color: #F87171; }
+    .hdr-block-sol  .hdr-block-eyebrow { color: #4ADE80; }
+    .hdr-block-body { font-size: 13px; color: rgba(255,255,255,.88); line-height: 1.6; margin: 0; }
+    .hdr-divider { height: 1px; background: rgba(255,255,255,.12); margin: 0 0 14px; }
+    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.38); margin-bottom: 12px; }
+    .hdr-shapes { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+    .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .hdr-shape-item span { font-size: 9px; color: rgba(255,255,255,.55); font-weight: 600; white-space: nowrap; }
+    .hs-start { width: 52px; height: 22px; background: #111827; border-radius: 999px; border: 2px solid rgba(255,255,255,.20); }
+    .hs-click { width: 44px; height: 22px; background: #7C3AED; border-radius: 10px; }
+    .hs-type  { width: 44px; height: 22px; background: #7C3AED; border-radius: 0; }
+    .hs-view  { width: 44px; height: 22px; background: #7C3AED; border-radius: 999px; }
+    .hs-sys   { width: 52px; height: 22px; background: #0284C7; border-radius: 6px; }
+    .hs-dec-wrap { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+    .hs-dec { width: 27px; height: 27px; background: #2563EB; transform: rotate(45deg); border-radius: 3px; }
+    .hs-end { width: 52px; height: 22px; background: #15803D; border-radius: 999px; }
 
-    .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+    /* ── FLOW SECTION ───────────────────────────────────────── */
+    .flow-block { margin-bottom: 32px; }
+    .flow-header { background: #1E2A40; border-radius: 10px 10px 0 0; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+    .flow-num { font-size: 36px; font-weight: 900; color: rgba(255,255,255,.10); line-height: 1; flex-shrink: 0; }
+    .flow-meta { }
+    .flow-purpose { font-size: 13px; font-weight: 700; color: #fff; }
+    .flow-subtitle { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; }
+    .flow-steps { border: 1px solid #E5E7EB; border-top: none; border-radius: 0 0 10px 10px; padding: 28px 20px 24px; background: #F8FAFC; }
 
-    .flow-label { display: flex; align-items: center; gap: 12px; margin: 28px 0 14px; }
-    .flow-label__text { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9CA3AF; white-space: nowrap; }
-    .flow-label__rule { flex: 1; height: 1px; background: #E5E7EB; }
+    /* ── FLOWCHART ──────────────────────────────────────────── */
+    .fc { display: flex; flex-direction: column; align-items: center; }
+    .nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
+    .n-start { background: #111827; color: #fff; border-radius: 999px; padding: 10px 28px; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
+    .n-end   { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 10px 28px; color: #14532D; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
+    .n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+    .n-click .nt { color: #7C3AED; }
+    .n-type  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+    .n-type .nt  { color: #7C3AED; }
+    .n-view  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 10px 24px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+    .n-view .nt  { color: #7C3AED; }
+    .n-sys   { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; padding: 10px 16px; color: #0C4A6E; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+    .n-sys .nt   { color: #0284C7; }
+    .n-dec-wrap  { width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .n-dec       { width: 96px; height: 96px; background: #BFDBFE; border: 2px solid #2563EB; border-radius: 8px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; }
+    .n-dec-text  { transform: rotate(-45deg); color: #1D4ED8; font-size: 10px; font-weight: 700; text-align: center; max-width: 70px; line-height: 1.35; }
 
-    .step { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
-    .step__meta  { display: flex; justify-content: space-between; padding: 7px 16px; border-bottom: 1px solid #F3F4F6; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9CA3AF; }
-    .step__title { font-size: 14px; font-weight: 700; color: #1E2A40; padding: 12px 16px 5px; }
-    .step__body  { font-size: 12px; color: #4B5563; padding: 0 16px 14px; line-height: 1.6; }
+    /* Connectors */
+    .fc-conn { display: flex; flex-direction: column; align-items: center; padding: 2px 0; }
+    .fc-conn-line  { width: 2px; height: 24px; background: #CBD5E1; }
+    .fc-conn-arrow { font-size: 11px; color: #94A3B8; margin-top: -2px; }
 
-    .arrow { text-align: center; font-size: 18px; color: #9CA3AF; padding: 3px 0; }
-
-    .decision { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
-    .decision__tag   { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 6px; }
-    .decision__q     { font-size: 14px; font-weight: 700; color: #1E2A40; margin-bottom: 10px; }
-    .decision__paths { display: flex; gap: 10px; }
-    .dpath { flex: 1; background: #FAF8F4; border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px 12px; }
-    .dpath__lbl  { font-size: 10px; font-weight: 700; color: #1E2A40; margin-bottom: 4px; }
-    .dpath__body { font-size: 11px; color: #4B5563; line-height: 1.5; }
-
-    .whn-lbl   { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 8px; }
-    .whn-cards { display: flex; gap: 10px; }
-    .whn-card  { flex: 1; background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
-    .whn-card__lbl  { font-size: 11px; font-weight: 700; color: #1E2A40; margin-bottom: 4px; }
-    .whn-card__body { font-size: 11px; color: #4B5563; line-height: 1.5; }
-
-    .footnote { background: #fff; border: 1px solid #E5E7EB; border-left: 3px solid #083386; border-radius: 6px; padding: 10px 14px; font-size: 11px; color: #6B7280; line-height: 1.5; margin-top: 20px; }
+    /* Branches */
+    .fc-branches { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; justify-content: center; width: 100%; }
+    .fc-branch   { display: flex; flex-direction: column; align-items: center; }
+    .fc-bl-y { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #16A34A; margin-bottom: 8px; }
+    .fc-bl-n { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #DC2626; margin-bottom: 8px; }
+    .fc-branch .n-click, .fc-branch .n-type, .fc-branch .n-view, .fc-branch .n-sys, .fc-branch .n-end { max-width: 220px; }
   </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
+  <!-- ── DOCUMENT HEADER ────────────────────────────────────── -->
   <div class="header">
-    <div class="header__eyebrow">Direction C · User Journey · SafeChat · 2026-04-14</div>
-    <div class="header__title">Category-by-Category</div>
-    <div class="header__stance">One category per screen — the most granular step model. Each screen focuses on a single risk topic: what it is, a real example of when it would trigger, and the three tier options. 11 category screens total before the summary review. Built for parents who want to understand each setting before committing to it.</div>
-    <div class="chips">
-      <span class="chip">Interaction: micro-step</span>
-      <span class="chip">13 parent screens</span>
-      <span class="chip">2 child states</span>
-      <span class="chip">Pattern: quiz/survey onboarding</span>
+    <div class="hdr-kicker">Direction C &middot; Master-Detail Column &middot; User Journey &middot; GoJuly AI — Previous Conversations</div>
+    <div class="hdr-blocks">
+      <div class="hdr-block hdr-block-prob">
+        <div class="hdr-block-eyebrow">The Problem</div>
+        <p class="hdr-block-body">To find any past conversation, users must click into every attempt and read the full transcript. There is no way to compare attempts across challenges — each is siloed behind an accordion. A researcher wanting to reference a specific exchange must navigate away, then come back. There is no quick-reference view.</p>
+      </div>
+      <div class="hdr-block hdr-block-sol">
+        <div class="hdr-block-eyebrow">Solution</div>
+        <p class="hdr-block-body">A fixed left column (280px) lists all challenges with scenario names, attempt counts, and aggregate outcome summaries. Selecting a challenge updates the right-column feed without any page navigation. Attempt entries can expand inline to show the first exchange — a quick-reference that never leaves the page. A search bar in the left column filters both the challenge list and the attempt feed simultaneously.</p>
+      </div>
+    </div>
+    <div class="hdr-divider"></div>
+    <div class="hdr-legend-title">How to read this diagram:</div>
+    <div class="hdr-shapes">
+      <div class="hdr-shape-item"><div class="hs-start"></div><span>Start / End</span></div>
+      <div class="hdr-shape-item"><div class="hs-click"></div><span>Click</span></div>
+      <div class="hdr-shape-item"><div class="hs-type"></div><span>Type</span></div>
+      <div class="hdr-shape-item"><div class="hs-view"></div><span>View</span></div>
+      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System response</span></div>
+      <div class="hdr-shape-item"><div class="hs-dec-wrap"><div class="hs-dec"></div></div><span>Decision</span></div>
+      <div class="hdr-shape-item"><div class="hs-end"></div><span>Outcome</span></div>
     </div>
   </div>
 
-  <!-- FLOW 1: PARENT -->
-  <div class="flow-label">
-    <span class="flow-label__text">Flow 1 — Parent Setup</span>
-    <div class="flow-label__rule"></div>
-  </div>
-
-  <div class="step">
-    <div class="step__meta"><span>Step 1</span><span>New</span></div>
-    <div class="step__title">Parent lands on the Welcome screen</div>
-    <div class="step__body">Brand, five-minute time promise, and a brief explanation that each screen will cover one topic at a time. The parent sees the total number of decisions ahead: 11 categories.</div>
-  </div>
-  <div class="arrow">↓</div>
-
-  <div class="step">
-    <div class="step__meta"><span>Step 2</span><span>New</span></div>
-    <div class="step__title">Parent taps "Get started" — a numbered progress bar shows 11 steps</div>
-    <div class="step__body">A compact progress bar at the top counts individual categories (1 of 11, 2 of 11…) rather than section groups. The parent always knows their exact position.</div>
-  </div>
-  <div class="arrow">↓</div>
-
-  <div class="step">
-    <div class="step__meta"><span>Steps 3–13</span><span>New</span></div>
-    <div class="step__title">One category per screen — name, example, and three tier choices</div>
-    <div class="step__body">Each screen shows the category name, emoji, a plain-language description, and one concrete example of when the AI would intervene. Below that: three large, tappable tier cards (Off / Balanced / Strict) with one-sentence descriptions for each. Tapping a card immediately advances to the next category.</div>
-  </div>
-  <div class="arrow">↓</div>
-
-  <div class="decision">
-    <div class="decision__tag">Decision point</div>
-    <div class="decision__q">Does the parent want to go back and change a previous selection?</div>
-    <div class="decision__paths">
-      <div class="dpath"><div class="dpath__lbl">If yes</div><div class="dpath__body">They tap the back chevron. The previous category screen reloads with their prior selection still highlighted. Changing it and tapping a new tier moves them forward again.</div></div>
-      <div class="dpath"><div class="dpath__lbl">If no</div><div class="dpath__body">They proceed forward. Each tap advances them one category at a time until all 11 are complete.</div></div>
+  <!-- ── FLOW 1: RESEARCHER — CHALLENGE SELECTOR + TITLE SCAN ─ -->
+  <div class="flow-block">
+    <div class="flow-header">
+      <div class="flow-num">01</div>
+      <div class="flow-meta">
+        <div class="flow-purpose">Researcher selects a challenge from the left column and scans AI titles to find a specific attempt</div>
+        <div class="flow-subtitle">Direction C — left column always visible · challenge + feed update in place · no page navigation</div>
+      </div>
     </div>
-  </div>
-  <div class="arrow">↓</div>
+    <div class="flow-steps">
+      <div class="fc">
 
-  <div class="step">
-    <div class="step__meta"><span>Step 14</span><span>New</span></div>
-    <div class="step__title">Summary review screen shows all 11 selections at once before saving</div>
-    <div class="step__body">A compact table lists every category with the chosen tier highlighted. The parent can tap any row to jump back and change that category. When satisfied, they tap "Save settings."</div>
-  </div>
-  <div class="arrow">↓</div>
+        <div class="n-start">Researcher opens "Previous Conversations"</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-  <div class="step">
-    <div class="step__meta"><span>Step 15</span><span>New</span></div>
-    <div class="step__title">Completion screen confirms all settings are live</div>
-    <div class="step__body">Green success indicator, the same 3-bullet "what happens next" list, and the locked reassurance: "Think of SafeChat as a seatbelt, not a substitute for conversation."</div>
-  </div>
-  <div class="arrow">↓</div>
+        <div class="n-sys"><span class="nt">System</span>Two-column layout loads — left: challenge list with scenario names + attempt counts + aggregate badges; right: first challenge's attempt feed pre-loaded</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-  <div class="whn-lbl">What happens next</div>
-  <div class="whn-cards">
-    <div class="whn-card">
-      <div class="whn-card__lbl">Parent taps Done</div>
-      <div class="whn-card__body">Settings go live immediately. The parent exits to their dashboard. Their child can begin using the AI chat.</div>
-    </div>
-    <div class="whn-card">
-      <div class="whn-card__lbl">Parent wants to revisit settings later</div>
-      <div class="whn-card__body">They return via the parent dashboard, which takes them to the summary review screen where any category can be tapped and changed individually.</div>
+        <div class="n-view"><span class="nt">View</span>Left column — "Self-Harm" · 9 attempts · "3 GUARDED · 2 RESET" badge summary; "Persuasion" · 6 attempts; "Vulnerable User" · 4 attempts</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-click"><span class="nt">Click</span>Target challenge row in left column — row highlights pink-50 with 4px left border</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-sys"><span class="nt">System</span>Right column updates — attempt feed for selected challenge; 150ms transition, no page navigation</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-view"><span class="nt">View</span>Attempt entries — AI title (600 weight) · date · status badges · expand chevron on each row</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Target found by title?</div></div></div>
+
+        <div class="fc-branches">
+          <div class="fc-branch">
+            <div class="fc-bl-y">Yes</div>
+            <div class="n-click"><span class="nt">Click</span>Target attempt row — navigates to conversation detail</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Found by title scan — under 5 seconds ✓</div>
+          </div>
+          <div class="fc-branch">
+            <div class="fc-bl-n">No</div>
+            <div class="n-click"><span class="nt">Click</span>Expand chevron on likely attempt — inline preview opens below row</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-view"><span class="nt">View</span>First exchange inline — user message + AI response — confirms or rules out the attempt</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Found via inline preview — never left the page ✓</div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- FLOW 2: CHILD -->
-  <div class="flow-label">
-    <span class="flow-label__text">Flow 2 — Child Chat Interface</span>
-    <div class="flow-label__rule"></div>
-  </div>
-
-  <div class="step">
-    <div class="step__meta"><span>Step 1</span><span>New</span></div>
-    <div class="step__title">Child opens the AI chat — same experience as Directions A and B</div>
-    <div class="step__body">A "SafeChat ✓" badge in the header is the only visible indicator. The chat interface itself is identical regardless of which setup direction the parent used.</div>
-  </div>
-  <div class="arrow">↓</div>
-
-  <div class="step">
-    <div class="step__meta"><span>Step 2</span><span>New</span></div>
-    <div class="step__title">Child sends a message — AI response is evaluated before delivery</div>
-    <div class="step__body">Every reply is checked against the parent's configured tiers. This is invisible to the child and happens before the response appears.</div>
-  </div>
-  <div class="arrow">↓</div>
-
-  <div class="decision">
-    <div class="decision__tag">Decision point</div>
-    <div class="decision__q">Does the AI's response trigger any configured policy?</div>
-    <div class="decision__paths">
-      <div class="dpath"><div class="dpath__lbl">If no</div><div class="dpath__body">The response appears normally. The conversation continues.</div></div>
-      <div class="dpath"><div class="dpath__lbl">If yes</div><div class="dpath__body">The response is blocked. A warm redirect message appears in its place.</div></div>
+  <!-- ── FLOW 2: LEARNER — ORIENTATION VIA LEFT COLUMN ─────── -->
+  <div class="flow-block">
+    <div class="flow-header">
+      <div class="flow-num">02</div>
+      <div class="flow-meta">
+        <div class="flow-purpose">Learner reads aggregate outcomes per challenge and builds a picture of their full history</div>
+        <div class="flow-subtitle">Direction C — outcome summaries on left column cards · no drilling required</div>
+      </div>
     </div>
-  </div>
-  <div class="arrow">↓</div>
+    <div class="flow-steps">
+      <div class="fc">
 
-  <div class="step">
-    <div class="step__meta"><span>Step 3 — blocked path</span><span>New</span></div>
-    <div class="step__title">Child reads the redirect — empathetic, not an error</div>
-    <div class="step__body">The message leads with acknowledgment, redirects to a trusted adult, and for self-harm triggers includes a crisis resource. The input field stays active so the child can keep chatting.</div>
-  </div>
-  <div class="arrow">↓</div>
+        <div class="n-start">Learner opens "Previous Conversations" — wants to understand their progress</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-  <div class="whn-lbl">What happens next</div>
-  <div class="whn-cards">
-    <div class="whn-card">
-      <div class="whn-card__lbl">Child continues the conversation</div>
-      <div class="whn-card__body">They change the subject and the AI responds normally. The parent receives a background alert with context.</div>
-    </div>
-    <div class="whn-card">
-      <div class="whn-card__lbl">Child closes the app</div>
-      <div class="whn-card__body">The parent alert is sent regardless. No required action unless the parent chooses to follow up.</div>
+        <div class="n-view"><span class="nt">View</span>Left column — challenge cards with scenario name, attempt count, and aggregate badge summary ("3 GUARDED · 2 RESET") — full picture before any click</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-view"><span class="nt">View</span>Right column pre-loaded with first challenge's attempt feed — AI titles + badges visible immediately</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-click"><span class="nt">Click</span>Second challenge row in left column — "Persuasion · 6 attempts · 4 SUBMITTED"</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-sys"><span class="nt">System</span>Right column replaces with Persuasion attempt feed — left column row highlights, right column scrolls to top</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-view"><span class="nt">View</span>Attempt entries for Persuasion — titles, dates, badges — challenge identity and outcome clear</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-end">Full history understood — scenarios named, outcomes legible, zero clicks into transcripts ✓</div>
+
+      </div>
     </div>
   </div>
 
-  <div class="footnote">Direction C's distinctive move: the parent encounters each category in full focus before moving on — with a real example of what would trigger it. This maximizes informed decision-making at the cost of a longer setup time (13 screens vs. 6 in Direction A). Best suited for parents who want to understand what they are agreeing to, not just set it and forget it.</div>
+  <!-- ── FLOW 3: SEARCH — FILTERS BOTH COLUMNS ─────────────── -->
+  <div class="flow-block">
+    <div class="flow-header">
+      <div class="flow-num">03</div>
+      <div class="flow-meta">
+        <div class="flow-purpose">User searches by keyword — left column and attempt feed filter simultaneously</div>
+        <div class="flow-subtitle">Direction C — single search filters challenge list + attempt feed · no context switch needed</div>
+      </div>
+    </div>
+    <div class="flow-steps">
+      <div class="fc">
+
+        <div class="n-start">User has a keyword in mind — wants to find a specific passage</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-view"><span class="nt">View</span>Search bar at top of left column — placeholder "Search all conversations…"</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-type"><span class="nt">Type</span>Keyword into search bar — both columns update as each character is typed</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-sys"><span class="nt">System</span>Left column shows only challenges containing matches; right column shows matching attempts with keyword highlighted in title/excerpt</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Match found in feed?</div></div></div>
+
+        <div class="fc-branches">
+          <div class="fc-branch">
+            <div class="fc-bl-y">Yes</div>
+            <div class="n-click"><span class="nt">Click</span>Matching attempt row — opens conversation detail at matched passage</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Specific exchange found — keyword highlighted ✓</div>
+          </div>
+          <div class="fc-branch">
+            <div class="fc-bl-n">No results</div>
+            <div class="n-view"><span class="nt">View</span>Left column shows "No matches" — empty right column with zero-state message</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>Clear search — restores full list; tries different keyword</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Search refined — attempt located ✓</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </div>
 </body>

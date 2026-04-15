@@ -1,375 +1,521 @@
-# TREEHOUSE PROJECT BRIEF
+# WHALES PROJECT BRIEF — SafeChat
 
 | Field | Value |
 |---|---|
-| **Client** | Tree House |
-| **Date** | 2026-04-14 |
-| **Engagement ID** | treehouse_safechat_setup_2026_04_14 |
-| **Confirmation status** | All values client-confirmed or designer-judgment (marked where applied) |
+| **Client** | [Client] |
+| **Product Name** | SafeChat |
+| **Date** | 2026-04-15 |
+| **Engagement ID** | treehouse_safechat_mobile_2026_04_15 |
+| **Confirmation status** | All P0 and P1 questions client-confirmed. Zero unanswered questions. |
 
 ---
 
 ## 1. Product Vision
 
-SafeChat by Tree House is a parental AI configuration layer that lets parents define how an AI assistant behaves when interacting with their child. Parents go through a structured 5-minute setup flow to configure safety policies across four categories — content moderation, behavioral monitoring, AI personality, and academic integrity — selecting one of three sensitivity tiers per category (Off / Balanced / Strict). Once configured, those settings govern the child's AI chat experience in real time: blocking or redirecting harmful responses, monitoring behavioral patterns over time, and alerting parents when something is flagged.
+SafeChat is a mobile parental-control application for iOS that gives parents meaningful, real-time oversight of their child's AI chatbot interactions. The core insight is that AI chatbots are becoming a permanent fixture in children's digital lives — yet parents currently have no structured way to configure what those AIs will and won't discuss, monitor patterns over time, or review concerning conversations.
 
-Success in this engagement means: every state in the parent setup flow and child chat interface is fully documented — selected/unselected, default/triggered, normal/blocked — so a developer can build from the spec without ambiguity.
+SafeChat solves this in two layers:
+
+1. **Parent layer** — A guided onboarding wizard lets parents configure per-category safety settings (Off / Balanced / Strict) across five thematic sections. A persistent dashboard surfaces alerts, flagged patterns, and conversation excerpts so parents can stay informed without becoming surveillance machines.
+
+2. **Child layer** — A first-class ChatGPT-style AI chatbot interface built directly into the app, designed for children. Every conversation flows through the parent's configured safety settings in real time.
+
+**Product north star:** Every parent who completes onboarding should feel they understand exactly what SafeChat will and won't allow — and feel confident, not anxious, handing the app to their child.
 
 ---
 
 ## 2. Problem Statements
 
-**Parent side:** Parents want meaningful control over their child's AI experience but don't want to become AI safety experts to get it. The current landscape offers no child-specific AI safety layer with plain-language configuration. SafeChat fills that gap with a 5-minute, guided setup that explains each risk category and its tradeoffs in plain terms.
+**Problem 1 — Parents have no structured control over AI chatbot behavior for children.**
+Current consumer AI chatbots offer minimal parental configuration. Parents must either block AI entirely or allow unconstrained access. SafeChat introduces a granular, category-by-category control model.
 
-**Child side:** Children using AI should be able to have natural, helpful conversations — but with guardrails operating silently in the background. When a guardrail triggers, the child should receive a safe, age-appropriate redirect rather than a confusing error or abrupt cutoff.
+**Problem 2 — The AI safety configuration space is overwhelming when presented all at once.**
+Twelve content categories, four behavioral monitoring dimensions, and multiple other settings presented on a single screen causes decision fatigue and drop-off. SafeChat's multi-page onboarding wizard presents one thematic section per page, reducing cognitive load.
 
-**Framing note:** The PRD contains both a parent-facing UX spec and a backend classifier build plan. This engagement is scoped to the UI layer only (parent setup flow + child chat interface). The classifier/backend is out of scope here.
+**Problem 3 — Parents have no visibility into what their child discusses with AI.**
+Without a dashboard, concerning patterns (escalating self-harm language, radicalization vectors, excessive schoolwork shortcuts) go undetected. SafeChat's parent dashboard surfaces both aggregate analytics and the ability to view relevant conversation context when an alert is triggered.
+
+**Problem 4 — Children's AI interfaces are designed for adults.**
+Most AI chat UIs assume adult literacy, attention span, and intent. The SafeChat child chatbot is designed to feel safe, simple, and age-appropriate while still being a capable AI conversation partner.
 
 ---
 
 ## 3. Target Users
 
-**Primary User A — Parent (Configurer)**
-- Role: Parent or legal guardian of a middle-school-age child (~ages 10–14)
-- Context: Completing setup on their phone, likely in one sitting
-- Technical fluency: General consumer; not an AI expert
-- Emotional state: Cautious and care-driven. Wants to feel in control without feeling overwhelmed. Mild anxiety about AI risks for their child; drawn to plain-language explanations and clear tradeoffs.
+### Persona A — The Parent
 
-**Primary User B — Child (Configured)**
-- Role: Middle-school student using an AI chat assistant
-- Context: Using the AI for homework help, general curiosity, or conversation — on mobile
-- Technical fluency: High digital fluency, low AI-literacy nuance
-- Emotional state: Casual and curious. Not expecting safety rails. If content is blocked, the experience should feel natural and non-shaming.
+**Name:** Morgan, 38  
+**Context:** Parent of a 10-year-old who has started asking to use AI for homework help, creative writing, and general curiosity. Morgan is tech-literate but not deeply technical. They want to say "yes" to their child's AI use, but only if they can feel genuinely informed about what's happening.
+
+**Goals:**
+- Configure AI safety settings once, then not have to think about it constantly
+- Know when something concerning happens — not every conversation, just the ones that matter
+- Be able to check in on flagged conversations without reading every exchange
+- Trust that the settings they chose are actually being enforced
+
+**Frustrations:**
+- Parental controls that are either all-or-nothing (block/allow) with no middle ground
+- Dashboards that surface so much data they become noise
+- Onboarding flows that require reading a manual before making a choice
+
+---
+
+### Persona B — The Child
+
+**Name:** Kai, 10  
+**Context:** Curious, uses AI for help with school projects, creative storytelling, and asking questions they feel embarrassed to ask adults. Uses the app on the family iPad or their own iPhone.
+
+**Goals:**
+- Get answers to questions quickly
+- Have a conversational partner for creative projects
+- Not feel "surveilled" or restricted in a jarring way
+
+**Frustrations:**
+- AI interfaces that feel clinical or adult-oriented
+- Being told "I can't help with that" without any friendly explanation
+- Interfaces that are hard to read or navigate on a phone
 
 ---
 
 ## 4. Success Metrics
 
-A complete design spec with all states documented across the parent setup flow and child chat interface — sufficient for a developer to build from without asking design questions.
-
 **Goal Thread:**
 
-| Field | Value |
-|---|---|
-| **Primary metric** | Every interactive component in both flows has all its states documented (unselected / selected, default / triggered, normal / blocked / alerted) |
-| **Secondary metrics** | Parent flow covers all 4 categories + completion screen; Child flow covers normal chat + blocked state |
-| **Proxy signals** | No ambiguous state left undocumented; no component with only a default state shown |
+| Metric | Target | Type |
+|---|---|---|
+| Parent onboarding completion rate | ≥ 80% of parents who start the wizard complete it | Primary |
+| Time to complete onboarding | ≤ 5 minutes (matches locked copy promise) | Primary |
+| Dashboard alert-to-context navigation | Parent taps an alert and reaches conversation context in ≤ 2 taps | Primary |
+| Child chatbot session start rate | ≥ 70% of child users start a chat within first session | Secondary |
+| Parent setting revision rate (30-day) | ≥ 40% of parents return to adjust at least one setting | Secondary — indicates engagement, not failure |
+| Copy comprehension | ≥ 90% of parents can correctly describe what "Balanced" means for a given category after completing onboarding | Proxy |
 
 ---
 
 ## 5. Key Features & Scope
 
-**In Scope:**
+### In Scope
 
-| Screen / Feature | Description |
-|---|---|
-| Parent — Welcome/Intro | Explains SafeChat, what setup involves, and sets expectations |
-| Parent — Content Settings | Per-category selector for 4 content moderation items (self-harm, drugs, eating disorders, illegal activities). Off / Balanced / Strict with plain-language descriptions per option |
-| Parent — Behavioral Monitoring | Per-category selector for 3 behavioral watch items (loneliness & AI dependency, radicalization, sharing PII). Explains "pattern over time" vs. per-message logic |
-| Parent — AI Personality | Two setting panels: honesty level (natural / honest / gentle) and relational boundaries (natural / tool / warm) |
-| Parent — Learning Settings | Per-category selector for 2 academic integrity items (homework completion, over-reliance). Tutor-mode logic explained |
-| Parent — Completion Screen | Confirms settings are live, links to dashboard, sets expectations on alert volume |
-| Child — Chat Interface (default) | Standard mobile AI chat UI with message bubbles, input, send button |
-| Child — Blocked Content State | What the child sees when a response is intercepted: safe redirect message, non-shaming tone |
+| Feature | Description | Platform |
+|---|---|---|
+| Parent onboarding wizard | 7-page guided flow (intro + 5 category pages + completion screen). One category section per page. Per-row Off/Balanced/Strict selector. | iOS |
+| Parent dashboard | Alert/flag feed with aggregate category analytics and flag counts. Tap an alert to view the relevant conversation excerpt in context. | iOS |
+| Child login screen | Simple, age-appropriate entry point for the child to access the chatbot. | iOS |
+| Child AI chatbot | Full ChatGPT-style conversational interface, enforcing the parent's configured safety settings in real time. | iOS |
+| Sidebar drawer navigation | Parent-side navigation via a sidebar drawer pattern. | iOS |
 
-**Out of Scope:**
+### Out of Scope (V1)
 
 | Item | Reason |
 |---|---|
-| Backend classifier / prompt engineering | Engineering layer, not UI |
-| Full 12-category content moderation (v2) | Client confirmed Trimmed version (A) only |
-| Parent dashboard (post-setup alerts view) | Not scoped in this engagement |
-| Child login / account creation | Not part of setup flow |
-| Data & privacy settings screen | Present in full version only; trimmed version omits this |
+| Android | iOS-only confirmed by client |
+| Backend / API services | Design engagement only; engineering builds backend in parallel |
+| Authentication services | Out of scope for design phase |
+| Push notifications | Deferred to V2 |
+| Real-time data streaming | Deferred to V2 |
+| Full conversation transcript browser | Tap-to-view from an alert is in scope; a standalone full transcript library is a P1 feature deferred to V2 |
+| Web / tablet breakpoints | iOS mobile only |
+| Dark mode | Light mode only confirmed by client |
+| Manual configuration import/export | Out of scope |
 
 ---
 
 ## 6. Constraints
 
-- **Platform:** Mobile web only (390px viewport target)
-- **Output format:** HTML mockup
-- **Timeline:** No hard deadline stated
-- **Accessibility:** Not specified by client — applying WCAG AA as default best practice *(designer judgment)*
-- **No existing brand assets** — visual system established from scratch per this brief
+- **Platform:** iOS only. All layouts, interaction patterns, and component choices target iOS Human Interface Guidelines conventions (safe areas, bottom sheet patterns, swipe gestures).
+- **Light mode only:** No dark mode support in V1. Color system designed for light backgrounds only.
+- **No locked brand color:** Design team has full latitude to recommend a primary color palette. Recommendation documented in Section 8.
+- **Mobile-first, mobile-only:** Single breakpoint. No tablet or desktop layouts required.
+- **Soft radius system:** 12–16px corner radius on cards; fully-rounded pill buttons.
+- **Motion:** Moderate register (200–350ms) — matches the "calm, trustworthy" aesthetic direction. No entrance animation libraries.
+- **Onboarding structure:** Five category sections, each on its own page. Page order is fixed (see Section 12). Content within each section is derived from the uploaded product specification.
+- **Copy:** Locked strings from the product spec must appear verbatim. See Section 11.
 
 ---
 
 ## 7. References & Aesthetic Direction
 
-| Reference | Draw from |
+### Reference Table
+
+| Reference | What to draw from |
 |---|---|
-| Duolingo | Step-by-step onboarding structure: one decision per screen, persistent progress indicator, large tappable option cards, clear primary CTA anchored to bottom of screen |
+| Calm app (iOS) | Overall calm, trustworthy, wellness-adjacent visual register. Large readable type, generous whitespace, muted palette with one warm accent. Gentle onboarding progression. |
+| Family safety apps (e.g., Screen Time, Google Family Link) | Functional clarity — parents must understand settings at a glance. Avoid over-designing functional controls. |
+| ChatGPT iOS app | Conversational UI structure for the child chatbot. Message bubble layout, input bar positioning, avatar system. |
 
-**Aesthetic keywords translated:**
+### Aesthetic Translation Table
 
-| Keyword | Pixel decision | Confirmed by |
-|---|---|---|
-| Calm | Muted blue-gray palette, ample whitespace (24px+ section gaps), no bold shadows or gradients, soft 12px radius on cards | Client — "calm and trustworthy" |
-| Trustworthy | High-contrast legible type hierarchy, consistent iconography, clear visual feedback on selection, no ambiguous interactive states | Client — "calm and trustworthy" |
+| Aesthetic keyword | Pixel decision |
+|---|---|
+| Calm | Muted palette, generous line-height (1.5–1.6×), no aggressive drop shadows, soft gradients only as texture |
+| Trustworthy | No dark patterns, clear affordances, settings state always visible and legible |
+| Minimal | Single-function screens, no decorative elements that don't carry meaning |
+| Intuitive | iOS HIG conventions, familiar navigation metaphors, zero novel interaction patterns |
+| Sleek | Clean card surfaces, consistent 8px spacing grid, no rogue margins |
+| Age-appropriate (child side) | Slightly larger touch targets (44pt minimum per HIG), warmer tone, friendly rounded shapes, no data-dense layouts |
 
 ---
 
 ## 8. Design System
 
-*Greenfield — all tokens established by designer judgment, based on client's confirmed aesthetic direction: calm, trustworthy, mobile-first, Duolingo-style setup flow.*
+### Design Token Record
 
-**Design Token Record:**
+All tokens marked [designer-recommended] are the design team's recommendation, not client-locked values. They may be revised before implementation begins.
 
-| Category | Token | Value | Usage | Source |
+| Category | Token | Value | Source | Confirmed |
 |---|---|---|---|---|
-| Color | `--color-bg` | `#F8F9FB` | Page background | Designer judgment — calm, cool-white surface |
-| Color | `--color-surface` | `#FFFFFF` | Cards, sheets | Designer judgment |
-| Color | `--color-primary` | `#4B7BE5` | Primary action, selected state accent | Designer judgment — calm blue, trustworthy |
-| Color | `--color-primary-light` | `#EEF3FC` | Selected card background tint | Designer judgment |
-| Color | `--color-text-primary` | `#1C1C28` | Headings, body copy | Designer judgment |
-| Color | `--color-text-secondary` | `#6B7280` | Supporting descriptions, labels | Designer judgment |
-| Color | `--color-text-muted` | `#9CA3AF` | Captions, inactive states | Designer judgment |
-| Color | `--color-border` | `#E5E7EB` | Card borders, dividers | Designer judgment |
-| Color | `--color-border-active` | `#4B7BE5` | Selected card ring | Designer judgment |
-| Color | `--color-tier-off` | `#9CA3AF` | "Off" tier badge | Designer judgment — neutral/inactive |
-| Color | `--color-tier-balanced` | `#F59E0B` | "Balanced" tier badge | Designer judgment — moderate caution |
-| Color | `--color-tier-strict` | `#EF4444` | "Strict" tier badge | Designer judgment — high attention |
-| Color | `--color-success` | `#10B981` | Completion state, "all set" screen | Designer judgment |
-| Color | `--color-blocked-bg` | `#FFF7ED` | Child blocked-content message bg | Designer judgment — warm, non-alarming |
-| Typography | `--font-family` | `DM Sans` | All text | Designer judgment — approachable, clean, free via Google Fonts |
-| Typography | `--text-heading-lg` | `DM Sans 600 / 24px / 32px` | Screen titles | Designer judgment |
-| Typography | `--text-heading-md` | `DM Sans 600 / 18px / 24px` | Category section headers | Designer judgment |
-| Typography | `--text-body` | `DM Sans 400 / 16px / 24px` | Descriptions, explanations | Designer judgment |
-| Typography | `--text-label` | `DM Sans 500 / 14px / 20px` | Tier labels, form labels | Designer judgment |
-| Typography | `--text-caption` | `DM Sans 400 / 13px / 18px` | Fine print, hints | Designer judgment |
-| Spacing | `--space-screen-x` | `20px` | Horizontal screen padding | Designer judgment |
-| Spacing | `--space-section` | `24px` | Between major sections | Designer judgment |
-| Spacing | `--space-card` | `16px` | Internal card padding | Designer judgment |
-| Spacing | `--space-gap-sm` | `8px` | Between tier option cards | Designer judgment |
-| Spacing | `--space-gap-md` | `12px` | Between category items | Designer judgment |
-| Radius | `--radius-card` | `12px` | Setting cards, option tiles | Designer judgment |
-| Radius | `--radius-button` | `12px` | CTA buttons | Designer judgment |
-| Radius | `--radius-badge` | `20px` | Tier badge pills | Designer judgment |
-| Shadow | `--shadow-card` | `0 1px 3px rgba(0,0,0,0.08)` | Elevated cards | Designer judgment |
-| Motion | `--transition-default` | `200ms ease-out` | All interactive transitions | Designer judgment — moderate, not snappy |
-
-**Component Variant Record:**
-
-| Component | Variant Properties | Confirmed States | Unconfirmed States |
-|---|---|---|---|
-| SettingCard (tier selector) | tier: off \| balanced \| strict | unselected, selected | disabled |
-| CategoryRow | type: content \| behavioral \| personality \| learning | default, expanded (description visible) | — |
-| ProgressBar | step: 1–5 | current step highlighted, completed steps filled | — |
-| CTAButton | variant: primary \| ghost | default, pressed | loading |
-| CompletionScreen | — | success state | — |
-| ChatBubble | sender: user \| ai \| system | default | — |
-| BlockedMessage | — | blocked/intercepted | — |
-
-**Active State Visual Record:**
-
-| Component | Active State Treatment | Source |
-|---|---|---|
-| SettingCard selected | Border: 2px solid `--color-border-active`; Background: `--color-primary-light`; Label weight: 600 | Designer judgment |
-| SettingCard unselected | Border: 1px solid `--color-border`; Background: `--color-surface` | Designer judgment |
-| ProgressBar step (current) | Filled circle, `--color-primary`, step number in white | Designer judgment — Duolingo reference |
-| ProgressBar step (completed) | Filled circle, `--color-success`, checkmark icon | Designer judgment |
-| ProgressBar step (upcoming) | Empty circle, `--color-border` | Designer judgment |
-| CTAButton pressed | Background: `--color-primary` at 85% opacity, scale: 0.98 | Designer judgment |
+| Color | primary | #3D8D84 (muted sage-teal) | designer-recommended | [designer-recommended] |
+| Color | primary-light | #EAF4F3 (sage-teal tint, 10%) | designer-recommended | [designer-recommended] |
+| Color | primary-dark | #2C6B64 | designer-recommended | [designer-recommended] |
+| Color | body-bg | #F7F8FA (near-white warm gray) | designer-recommended | [designer-recommended] |
+| Color | surface-white | #FFFFFF | designer-recommended | [designer-recommended] |
+| Color | surface-card | #FFFFFF | designer-recommended | [designer-recommended] |
+| Color | border-default | #E2E8F0 | designer-recommended | [designer-recommended] |
+| Color | text-primary | #1A1F2E | designer-recommended | [designer-recommended] |
+| Color | text-secondary | #64748B | designer-recommended | [designer-recommended] |
+| Color | text-muted | #94A3B8 | designer-recommended | [designer-recommended] |
+| Color | setting-off | #F1F5F9 (chip background) | designer-recommended | [designer-recommended] |
+| Color | setting-balanced | #FEF3C7 (amber-50 equivalent) | designer-recommended | [designer-recommended] |
+| Color | setting-strict | #DCFCE7 (green-100 equivalent) | designer-recommended | [designer-recommended] |
+| Color | alert-flag | #FEE2E2 (red-100) | designer-recommended | [designer-recommended] |
+| Color | alert-flag-text | #DC2626 (red-600) | designer-recommended | [designer-recommended] |
+| Typography | typeface | DM Sans | designer-recommended (confirmed direction from prior prototype iteration) | [designer-recommended] |
+| Typography | h1 | DM Sans 28px/34px weight 700 | designer-recommended | [designer-recommended] |
+| Typography | h2 | DM Sans 22px/28px weight 600 | designer-recommended | [designer-recommended] |
+| Typography | h3 | DM Sans 18px/24px weight 600 | designer-recommended | [designer-recommended] |
+| Typography | body | DM Sans 16px/24px weight 400 | designer-recommended | [designer-recommended] |
+| Typography | body-small | DM Sans 14px/20px weight 400 | designer-recommended | [designer-recommended] |
+| Typography | caption | DM Sans 12px/16px weight 400 | designer-recommended | [designer-recommended] |
+| Typography | label | DM Sans 12px/16px weight 600 | designer-recommended | [designer-recommended] |
+| Typography | button | DM Sans 16px/20px weight 600 | designer-recommended | [designer-recommended] |
+| Spacing | base-unit | 8px | designer-recommended | [designer-recommended] |
+| Spacing | screen-horizontal-padding | 20px | designer-recommended | [designer-recommended] |
+| Spacing | card-padding | 16px | designer-recommended | [designer-recommended] |
+| Spacing | section-gap | 24px | designer-recommended | [designer-recommended] |
+| Spacing | item-gap | 12px | designer-recommended | [designer-recommended] |
+| Spacing | button-height | 52px (pill, fully-rounded) | client-confirmed radius direction | [designer-recommended] |
+| Radius | card | 14px | client-confirmed (12–16px range) | client-confirmed |
+| Radius | button | 9999px (fully-rounded pill) | client-confirmed | client-confirmed |
+| Radius | input | 12px | designer-recommended | [designer-recommended] |
+| Radius | badge | 9999px (pill) | designer-recommended | [designer-recommended] |
+| Radius | sheet / bottom-sheet | 20px top corners | designer-recommended | [designer-recommended] |
+| Motion | standard-duration | 250ms | designer-recommended | [designer-recommended] |
+| Motion | standard-easing | cubic-bezier(0.4, 0, 0.2, 1) | designer-recommended | [designer-recommended] |
+| Motion | page-transition | 300ms ease-in-out | designer-recommended | [designer-recommended] |
 
 ---
 
 ## 9. Brand Identity
 
-Tree House / SafeChat — greenfield. No existing logo, color system, or typeface to carry forward.
-
-**Established for this engagement:**
-- Wordmark: "SafeChat" — typeset in DM Sans 600, `--color-primary`
-- Product family: "by Tree House" in DM Sans 400, `--color-text-secondary`
-- Visual tone: calm, institutional-grade trust without clinical coldness
-- No mascot or illustration system in scope for this engagement
+- **Product name:** SafeChat — locked, do not alter casing
+- **Tagline direction:** Safety-adjacent, calm reassurance — not surveillance language
+- **Voice:** Warm, direct, reassuring. Never clinical. Never alarmist.
+- **Logo:** To be designed. Recommend wordmark + small icon (shield or leaf form factor). Primary color: sage-teal.
+- **Icon system:** SF Symbols preferred for iOS-native feel; supplement with custom icons where needed
+- **Tone for parent-facing copy:** Like a trusted pediatrician — authoritative but approachable, never fear-mongering
+- **Tone for child-facing copy:** Like a friendly older sibling — helpful, non-judgmental, warm
 
 ---
 
 ## 10. Visual Design Language
 
-**Aesthetic direction:** Calm / trustworthy — soft surface, clear hierarchy, no visual noise.
+**Surface and tone:** White card surfaces on near-white warm gray body (#F7F8FA). No dark mode. Cards use a subtle border (#E2E8F0) rather than drop shadow — clean, not flat. Generous whitespace signals calm.
 
-**Surfaces:** Off-white background (`#F8F9FB`) with white cards. No gradients. No decorative backgrounds. Cards use a 1px border + subtle shadow to lift from surface without drama.
+**Color system:** Muted sage-teal primary (#3D8D84) as the single chromatic accent. Used for primary CTAs, progress indicators, active states, and selected setting chips. Functional colors for the three setting states (Off = neutral gray, Balanced = warm amber, Strict = soft green). Alert states use standard semantic red.
 
-**Color system:** Monochromatic blue-gray base with a single primary action color (`#4B7BE5`). Tier severity expressed with neutral → amber → red badge system, distinct from primary brand color so severity reads independently.
+**Typography:** DM Sans throughout. Geometric, friendly, highly legible at small sizes. Weight differentiates hierarchy (700 for display/h1, 600 for h2/h3/labels, 400 for body). Size scale: 12 · 14 · 16 · 18 · 22 · 28px.
 
-**Typography:** DM Sans throughout — friendly but precise. Clear weight distinction between headings (600) and body (400). No serif, no display face. Type does the hierarchy work; decoration does not.
+**Setting control pattern:** Each row in the onboarding wizard shows the category name and description on the left, with an Off / Balanced / Strict three-segment selector control on the right (or below on narrow screens). Selected segment uses the token color for that level. This control is the visual signature of the onboarding experience.
 
-**Components:** Card-based layout. Each setting category is a card. Each tier option (Off / Balanced / Strict) is a tappable card tile within the category. One category decision occupies the majority of the visible screen at a time — Duolingo-patterned focus.
+**Child chatbot surface:** Slightly warmer, with rounded message bubbles. Child messages in a tinted primary-light bubble; AI messages in white. Larger touch targets throughout. No data or statistics visible to the child.
 
-**Progress:** Persistent top progress indicator across all setup steps. Parents always know where they are and how much is left.
+**Navigation:** Sidebar drawer for parent. Standard iOS back navigation for drill-down flows. Bottom tab bar considered but sidebar drawer confirmed by client.
 
-**Motion:** Functional only. Tier card selection: 200ms ease-out border + background transition. Screen-to-screen: simple horizontal slide at 250ms. No decorative animation.
-
-**Child interface:** Warmer than the parent interface. Chat bubbles use rounded corners (18px). Blocked content uses a warm orange-tint surface (`#FFF7ED`) with a soft icon and plain-language explanation — never a hard error state.
+**Motion:** Moderate register — 200–350ms, cubic-bezier standard easing. Page transitions slide left/right (push navigation). Onboarding wizard pages animate as a horizontal slide sequence. No spring physics, no bounce. Calming, not playful.
 
 ---
 
 ## 11. Copy Guide
 
-**Tone descriptors:**
+### Tone Descriptors
 
-| Adjective | Writing rule | Confirmed by |
+| Adjective | Writing rule |
+|---|---|
+| Warm | Use "you" and "your child" not "the user" or "the child" |
+| Direct | No filler words. Every sentence earns its space. |
+| Reassuring | Frame settings as positive choices, not restrictions |
+| Calm | Never exclamation marks in settings or dashboard copy |
+| Age-appropriate (child) | Short sentences. Active voice. Friendly AI persona name TBD. |
+
+### Locked Strings (verbatim from product specification)
+
+| String ID | Copy | Context |
 |---|---|---|
-| Plain | No jargon. Every setting explained as if the parent has never thought about AI safety before | PRD copy — all setting descriptions are written in plain consumer language |
-| Calm | No alarm language. Even strict settings are framed as choices, not warnings | PRD tone — "there are no wrong answers" |
-| Honest | Acknowledge tradeoffs directly (more alerts = more false positives, etc.) | PRD — "there's always a tradeoff" |
+| PRODUCT_NAME | SafeChat | Product name everywhere |
+| ONBOARDING_HEADER | Your Setup Guide | Onboarding wizard screen header |
+| ONBOARDING_SUBHEAD | Choose how AI works for your family. | Onboarding intro subheadline |
+| ONBOARDING_TIME | This takes about 5 minutes. | Onboarding intro body |
+| COMPLETION_HEADLINE | You're all set! | Completion screen headline |
+| COMPLETION_BODY | Your choices take effect immediately. Every chat your child has through SafeChat will follow these settings. | Completion screen body |
+| SETTING_LEVEL_0 | Off | Setting level label |
+| SETTING_LEVEL_1 | Balanced | Setting level label |
+| SETTING_LEVEL_2 | Strict | Setting level label |
 
-**Locked strings (from PRD):**
-- "SafeChat puts you in control of your child's AI experience."
-- "This takes about 5 minutes."
-- "There are no wrong answers — every family is different, and you can change any of these later."
-- "Think of SafeChat as a seatbelt, not a substitute for conversation."
-- Tier descriptions: "Off / The AI won't filter or flag anything in this category." — "Balanced / The AI steps in when it's fairly confident something's not right." — "Strict / The AI catches anything that even hints at this category."
+### Category Names (locked from product specification)
 
-**Blocked content (child-facing):**
-- Tone: gentle, non-shaming, redirecting
-- Never says "blocked" or "error"
-- Example: "I can't help with that, but I can help you find someone who can. Want to talk to a trusted adult?"
+All category names and descriptions are locked as written in the uploaded product specification document. Do not paraphrase or simplify category names in the UI. Designer may adjust visual treatment (size, weight, truncation) but not the text content.
 
-**Terminology rules:**
-- "Your child" not "the user" or "the minor"
-- "Setting" not "policy" (policy is internal/technical)
-- "Alert" not "notification" (alert carries appropriate gravity without being alarming)
-- "Tier" not "level" in internal spec; "option" in parent-facing UI copy
+**Section 1 — Content Moderation (12 categories):**
+Violence and Gore, Sexual Content, Hate Speech and Discrimination, Self-Harm and Suicide, Substance Abuse, Profanity and Crude Language, Privacy and Personal Information, Misinformation and Conspiracy Theories, Radicalization and Extremism, Cyberbullying and Harassment, Explicit Horror or Disturbing Content, Commercial and Advertising Content
+
+**Section 2 — Behavioral Monitoring (4 categories):**
+[Names as written in the uploaded specification]
+
+**Section 3 — AI Personality (2 settings):**
+[Names as written in the uploaded specification]
+
+**Section 4 — Schoolwork and Learning (2 settings):**
+[Names as written in the uploaded specification]
+
+**Section 5 — Data and Privacy (1 setting):**
+[Names as written in the uploaded specification]
 
 ---
 
 ## 12. User Flows
 
-**Flow 1 — Parent Setup (primary)**
+### Flow A — Parent Onboarding Wizard
 
-1. Welcome screen → reads intro, taps "Get started"
-2. Content settings screen → reads section intro → selects Off/Balanced/Strict for each of 4 categories → taps "Next"
-3. Behavioral monitoring screen → reads "pattern over time" explainer → selects tier for 3 categories → taps "Next"
-4. AI personality screen → selects honesty level → selects relational boundary → taps "Next"
-5. Learning settings screen → selects tier for 2 categories → taps "Next"
-6. Completion screen → sees confirmation, reads what happens next, taps "Go to dashboard" (out of scope) or "Done"
+**Entry:** Parent downloads SafeChat, creates account (auth out of scope for design), lands on onboarding entry point.
 
-**Flow 2 — Child chat with blocked content (secondary)**
-
-1. Child opens chat interface (normal state)
-2. Child sends a message that triggers a content policy
-3. AI response is intercepted — child sees the blocked message component in place of the AI's response
-4. Child reads the redirect message
-5. Child can continue chatting on a different topic (input remains active)
-
----
-
-## 13. Page Design & Layout
-
-**Mobile canvas:** 390px width, standard iOS/Android safe areas respected.
-
-**Parent Setup — all screens share:**
-- Top: Progress bar (step X of 5), back chevron
-- Middle: Scrollable content area (heading + description + setting cards)
-- Bottom: Fixed CTA button ("Next" / "Get started" / "Done"), 20px horizontal padding, 32px bottom safe area
-
-**Welcome Screen:**
-- Large heading: "Choose how AI works for your family."
-- Subheading: "This takes about 5 minutes."
-- Body: SafeChat value prop paragraph (from locked strings)
-- 3-row visual summary of Off/Balanced/Strict (icon + label + one-line description)
-- Primary CTA: "Get started"
-
-**Settings Screens (Content / Behavioral / Learning):**
-- Section intro card: icon + headline + 1–2 sentence explanation of the category type
-- Per-category cards stacked vertically — each card contains: emoji + category name + one-line description
-- Tier selector within each card: 3 horizontal tile options (Off / Balanced / Strict) with tier color badge
-- Selected tier tile: highlighted with primary border + tinted background
-- "What does this mean?" expandable tooltip per category (collapsed by default)
-
-**Personality Screen:**
-- Two separate setting groups, each with 3 vertical radio-card options
-- Each option: title + 2-line description
-- Clear visual grouping between the two settings
-
-**Completion Screen:**
-- Success icon (checkmark in `--color-success` circle)
-- Heading: "You're all set!"
-- Body: 3-bullet "what happens next" summary
-- Reassurance copy: "You can change these anytime."
-- Primary CTA: "Done"
-
-**Child Chat Interface:**
-- Standard mobile chat layout: messages scroll upward, input fixed at bottom
-- User bubble: right-aligned, `--color-primary` background, white text, 18px radius
-- AI bubble: left-aligned, `--color-surface` background, `--color-text-primary` text, 18px radius, 1px border
-- Blocked message: left-aligned, `--color-blocked-bg` background, warm border, lock icon, redirect copy
-
----
-
-## 14. Interaction & States
-
-| Component | States |
-|---|---|
-| SettingCard (tier tile) | unselected (default), selected (border + tint), hover/focus (border darkens) |
-| CategoryRow | collapsed (tier selector visible), expanded (description panel visible) |
-| CTAButton | default, pressed (scale 0.98 + opacity 85%), disabled (muted, when no tier selected) |
-| ProgressBar step | upcoming (empty circle), current (filled primary), completed (checkmark) |
-| ChatBubble | user message, AI message, system/blocked message |
-| Input field | default, focused (border color → primary), disabled |
-| Tooltip / expand | collapsed, expanded (smooth height transition, 200ms) |
-
-**Active state visual treatments (detailed):**
-
-| Component | Active treatment |
-|---|---|
-| SettingCard — selected | `border: 2px solid #4B7BE5`, `background: #EEF3FC`, tier label `font-weight: 600` |
-| SettingCard — unselected | `border: 1px solid #E5E7EB`, `background: #FFFFFF` |
-| SettingCard — hover | `border: 1px solid #B0C4F5`, `background: #F8F9FB` |
-| CTAButton — default | `background: #4B7BE5`, `color: #FFFFFF`, `border-radius: 12px` |
-| CTAButton — pressed | `background: rgba(75,123,229,0.85)`, `transform: scale(0.98)` |
-| CTAButton — disabled | `background: #E5E7EB`, `color: #9CA3AF`, `cursor: not-allowed` |
-| BlockedMessage | `background: #FFF7ED`, `border: 1px solid #FDE68A`, lock icon left, warm gray body text |
-
----
-
-## 15. Delivery & Handoff
-
-| Field | Value | Source |
+| Step | Screen | Key action |
 |---|---|---|
-| **Output format** | HTML mockup | Client-confirmed |
-| **Device targets** | Mobile web — 390px viewport | Client-confirmed |
-| **Accessibility** | WCAG AA (min 4.5:1 contrast on body text, 3:1 on UI components) | Designer judgment default |
-| **Font loading** | Google Fonts — DM Sans (weights 400, 500, 600) | Designer judgment |
-| **Icons** | Lucide React (already in repo) supplemented by emoji per PRD copy | Existing repo stack |
+| 1 | Intro / Overview | Parent reads the "Your Setup Guide" intro. Sees the three setting levels explained (Off / Balanced / Strict). Taps "Get Started." |
+| 2 | Page 1 — Content Moderation | Parent configures Off/Balanced/Strict for each of the 12 content moderation categories. Progress indicator shows 1/5. Taps "Next." |
+| 3 | Page 2 — Behavioral Monitoring | Parent configures 4 behavioral monitoring settings. Progress indicator shows 2/5. Taps "Next." |
+| 4 | Page 3 — AI Personality | Parent configures 2 AI personality settings. Progress indicator shows 3/5. Taps "Next." |
+| 5 | Page 4 — Schoolwork and Learning | Parent configures 2 schoolwork/learning settings. Progress indicator shows 4/5. Taps "Next." |
+| 6 | Page 5 — Data and Privacy | Parent configures 1 data/privacy setting. Progress indicator shows 5/5. Taps "Finish Setup." |
+| 7 | Completion screen | Shows "You're all set!" headline and locked completion body copy. CTA: "Go to Dashboard." |
+
+**Back navigation:** Each page has a back arrow that returns to the previous page without losing settings. Progress persists within session.
+
+**Default states:** All categories default to "Balanced" at wizard start (designer recommendation — avoids cognitive burden of starting at "Off").
 
 ---
 
-## Designer Notes
+### Flow B — Parent Dashboard
+
+**Entry:** Parent completes onboarding and taps "Go to Dashboard," or returns to the app and is routed to Dashboard.
+
+| Step | Action | Description |
+|---|---|---|
+| 1 | View dashboard | Alert/flag feed visible. Each alert card shows: category name, flag count or summary, timestamp, severity indicator. Aggregate analytics panel (flag counts by category, trend indicators) visible above or alongside the feed. |
+| 2 | Tap an alert | Parent taps a specific alert card. |
+| 3 | View conversation excerpt | Relevant conversation excerpt is displayed in context — the message(s) that triggered the flag, with surrounding context (a few turns before and after). Parent can see what was said. |
+| 4 | Take action (deferred) | Actions from the transcript view (e.g., adjust settings, flag for review) are V2 features. V1 is read-only context. |
+
+**Sidebar drawer access:** Parent can open the sidebar drawer from any screen to navigate to Dashboard, Settings (return to wizard), and other top-level destinations.
+
+---
+
+### Flow C — Child Login
+
+**Entry:** Child opens SafeChat on their device.
+
+| Step | Action | Description |
+|---|---|---|
+| 1 | Child login screen | Simple, age-appropriate screen. Child authenticates (PIN, Face ID, or parent-managed credential — auth method out of scope for design; design shows a PIN pattern as placeholder). |
+| 2 | Success | Child lands directly on the chatbot screen. |
+
+---
+
+### Flow D — Child Chatbot
+
+**Entry:** Child authenticates and lands on the chatbot.
+
+| Step | Action | Description |
+|---|---|---|
+| 1 | Chatbot home | Clean, minimal chat interface. AI greeting message visible. Input bar at bottom. |
+| 2 | Child types message | Standard iOS keyboard, text input. Send button. |
+| 3 | AI responds | AI response appears. All responses filtered through parent's configured settings in real time. |
+| 4 | Continued conversation | Standard chat thread scrolls up. Older messages accessible by scrolling. |
+| 5 | Off-limits response | If a topic falls outside parent's settings, AI responds with a friendly, age-appropriate decline message (copy TBD — not locked). |
+
+---
+
+## 13. Page Design and Layout
+
+### Overview — Screen Inventory
+
+| Screen ID | Name | User | Description |
+|---|---|---|---|
+| P-00 | Onboarding Intro / Overview | Parent | Entry to wizard. Explains Off/Balanced/Strict levels. "Get Started" CTA. |
+| P-01 | Onboarding — Content Moderation | Parent | 12-row category list with Off/Balanced/Strict selector per row. Page 1 of 5. |
+| P-02 | Onboarding — Behavioral Monitoring | Parent | 4-row category list. Page 2 of 5. |
+| P-03 | Onboarding — AI Personality | Parent | 2-setting page. Page 3 of 5. |
+| P-04 | Onboarding — Schoolwork and Learning | Parent | 2-setting page. Page 4 of 5. |
+| P-05 | Onboarding — Data and Privacy | Parent | 1-setting page. Page 5 of 5. |
+| P-06 | Onboarding Completion | Parent | "You're all set!" confirmation. "Go to Dashboard" CTA. |
+| P-07 | Parent Dashboard | Parent | Alert feed + analytics panel. Sidebar drawer accessible. |
+| P-08 | Conversation Context View | Parent | Triggered from dashboard alert tap. Shows conversation excerpt. |
+| P-09 | Settings (return flow) | Parent | Returns parent to the wizard in edit mode (not first-run mode). Same pages, pre-populated with saved settings. |
+| C-01 | Child Login | Child | PIN / auth entry point. Age-appropriate design. |
+| C-02 | Child Chatbot | Child | Full-screen chat interface. AI conversation. |
+
+---
+
+### Screen Design Notes
+
+**P-00 — Onboarding Intro:**
+Full-bleed layout. Prominent "Your Setup Guide" heading (h1, DM Sans 700). "Choose how AI works for your family." as subheadline (h2 or large body). "This takes about 5 minutes." as body copy. Three-item visual legend showing Off / Balanced / Strict with short descriptions (max 1 sentence each). Large pill CTA button: "Get Started." Soft illustration or icon to anchor the screen visually (designer to recommend).
+
+**P-01 through P-05 — Onboarding Category Pages:**
+Consistent page shell: back arrow (top left) · progress indicator (5-segment, current segment highlighted) · section title (h2) · optional section description (body-small). List of categories, each as a card row: category name (body, 600 weight) · category description (body-small, text-secondary) · Off/Balanced/Strict selector (3-segment control, full width or right-aligned). "Next" pill CTA button pinned to bottom. Page P-01 (Content Moderation) has 12 rows — this page will scroll. All others are likely above-fold on a standard 390px-wide iOS screen.
+
+**P-06 — Completion Screen:**
+Centered layout. Celebratory but calm. "You're all set!" headline (h1). Body copy verbatim. Summary of chosen settings (optional — designer recommendation: show a compact count like "12 content settings · 4 behavior monitors configured" without listing every row). "Go to Dashboard" pill CTA.
+
+**P-07 — Parent Dashboard:**
+Top section: analytics panel — flag counts by category, possibly a simple bar or ring chart, time range selector (7d / 30d / all). Below: scrollable alert feed. Each alert card: category icon + name, timestamp, brief excerpt or description of the flagged content, severity chip. Sidebar drawer accessible via hamburger or swipe-from-left. Floating or pinned navigation to child chatbot (if parent also uses the chatbot interface — TBD).
+
+**P-08 — Conversation Context View:**
+Modal or pushed screen (push preferred — sidebar + back arrow navigation). Shows a short excerpt of the flagged conversation: AI message + child message that triggered the flag, with 2–3 turns of context before and after. Flags the specific flagged message visually (border, background highlight). Read-only in V1.
+
+**C-01 — Child Login:**
+Simple, full-screen entry. App icon prominent. "Hi [Child name]" greeting. PIN entry or biometric prompt. No dashboard link, no settings access — child interface is scoped to chatbot only.
+
+**C-02 — Child Chatbot:**
+Full-screen chat layout. Safe-area aware (bottom bar, notch). AI messages: white bubbles, left-aligned. Child messages: sage-teal-tinted bubbles, right-aligned. Bottom input bar: text field + send button. Keyboard pushes input bar up (standard iOS behavior). AI name/persona displayed at top (TBD name). No visible mention of parental monitoring in the child UI.
+
+---
+
+## 14. Interaction and States
+
+| Component | States | Notes |
+|---|---|---|
+| Off/Balanced/Strict selector | unselected · selected (highlighted with token color) · disabled | Selected segment uses setting-level color token. |
+| Onboarding page | entering (slide in from right) · active · exiting (slide out to left) | 300ms page transition. |
+| Progress indicator | 5 segments, filled up to current page | Primary color fill for completed + current segments. |
+| Pill button (primary) | default · pressed (scale-down 0.97, opacity 0.9) · disabled | No hover state (iOS). |
+| Alert card | default · pressed (scale-down 0.98, opacity 0.9) · tapped → push to P-08 | |
+| Sidebar drawer | closed · opening (slide in from left, 250ms) · open · closing | Backdrop scrim behind drawer. |
+| Chat message bubble | default · sending (opacity 0.6) · sent · error state | |
+| Chat input bar | empty · typing · send button active (when input non-empty) | |
+| Setting selector (return mode) | pre-populated with saved value · editing | Same component as wizard, different entry state. |
+| Dashboard analytics | loading skeleton · loaded | 200ms fade-in on load. |
+
+---
+
+## 15. Delivery and Handoff
+
+| Field | Value |
+|---|---|
+| **Output format** | HTML interactive prototypes per screen (iOS mobile viewport, 390px wide) |
+| **Prototype fidelity** | High-fidelity — color, typography, spacing, and interactions as specified |
+| **Review gate** | Client reviews prototype before implementation handoff |
+| **Device targets** | iOS mobile, 390px viewport (iPhone 14/15 standard) |
+| **Accessibility baseline** | WCAG 2.1 AA minimum; iOS Dynamic Type considered for body copy |
+| **Handoff format** | Prototype files + annotated design spec |
+| **Implementation stack** | Not in scope for this engagement (design only) |
+
+---
+
+## 16. Designer Notes
 
 *For the Designer Agent — not shown to client.*
 
-**Question Status Tracker:**
+### Pipeline Rationale
 
-| Q-ID | Priority | Question | Status | Client's Answer |
+This brief was compiled from a complete intake run (8 questions, all confirmed). No questions are deferred or estimated. All P0 and P1 items are locked.
+
+The engagement is a ground-up mobile product design, not a website clone. No live URL extraction is possible. All design tokens in Section 8 are designer-recommended based on the aesthetic direction (Calm app reference, sage-teal, DM Sans) and must be validated against a mockup before locking.
+
+---
+
+### Typeface Note — DM Sans
+
+DM Sans was confirmed as the direction in a prior prototype iteration of this product. It is documented here as a confirmed designer direction, not a locked client choice. The designer may substitute a similar humanist sans-serif (e.g., Inter, Plus Jakarta Sans) if DM Sans presents technical constraints (e.g., Expo/React Native font loading), but should default to DM Sans unless there is a specific reason to change.
+
+---
+
+### Q3 Interpretation — Onboarding Page Structure
+
+The client's answer was "categorize the content moderation categories and put each category on different pages." After careful reading, the intent is that each major **section** (not each individual row within a section) gets its own page. The onboarding wizard therefore has:
+
+- Intro page (not a category page — a settings legend)
+- Page 1: Content Moderation (all 12 rows on one scrollable page)
+- Page 2: Behavioral Monitoring (4 rows)
+- Page 3: AI Personality (2 settings)
+- Page 4: Schoolwork and Learning (2 settings)
+- Page 5: Data and Privacy (1 setting)
+- Completion page
+
+**Important:** Content Moderation (Page 1) will scroll. This is intentional. A scrollable page within the wizard is preferable to splitting the 12 content categories across multiple pages, which would fragment a logically unified section. The progress indicator shows "1/5" for this page — not a sub-progress for the 12 rows.
+
+---
+
+### Q4 Interpretation — Dashboard Data Model
+
+Client confirmed "Combination of A + B" (transcripts + analytics). V1 scoping decision:
+
+- **In V1:** Alert feed + tap-to-view conversation excerpt (the flagged messages in context). This gives parents the most actionable value with the least engineering complexity.
+- **Deferred to V2:** Full conversation transcript browser (scroll through an entire conversation start-to-finish without a triggering alert).
+- Analytics panel: aggregate flag counts, category breakdown, time range selector. Simple chart visualization (bar or donut). Full trend analysis and pattern summaries are V2.
+
+The designer should design the V1 dashboard as if it could grow into V2 — leave room for the transcript browser entry point to be added without a full redesign.
+
+---
+
+### Q6 — Primary Color Recommendation
+
+The recommended primary color is **#3D8D84** (muted sage-teal). Rationale:
+
+- Aligns with the Calm app aesthetic reference: muted, trustworthy, wellness-adjacent
+- Distinctively non-corporate — avoids the "enterprise blue" or "medical green" associations of competing safety/monitoring products
+- High contrast on white backgrounds (passes WCAG AA at 16px+)
+- Works in both flat and subtle gradient treatments
+- Pairs well with warm neutral backgrounds (the recommended #F7F8FA body bg)
+
+Alternative if sage-teal tests poorly in user feedback: deep periwinkle (#5B6AB0) or slate-blue (#4A6FA5). Both carry similar trust/calm signals.
+
+---
+
+### Tensions and Trade-offs
+
+**Tension 1 — Page 1 scrolls, other pages don't.** The 12-category Content Moderation page will require scrolling on any standard iPhone. This breaks the "one clean page" pattern of the rest of the wizard. Options: (a) accept the scroll and add a visual indicator at the bottom of the visible area that more content exists below; (b) introduce a sub-scroll container within the page shell so the progress bar and "Next" button remain pinned. Recommendation: option (b) — scroll the category list, pin the chrome.
+
+**Tension 2 — Child visibility of parental monitoring.** The child chatbot must not show any indication of monitoring to the child (per design principle — avoid making the child feel surveilled). This means all alert/flag triggers are invisible at the child UI layer. Ensure no "You are being monitored" language or visible indicators appear in C-02.
+
+**Tension 3 — Dashboard data sensitivity.** Conversation excerpts shown to parents contain potentially sensitive content (the flagged material). The dashboard UI should treat this content with care — no preview text visible in the alert card itself (just the category and flag count), full content only after the parent actively taps through. This protects against over-the-shoulder exposure.
+
+---
+
+### Deferred Items Log
+
+| Item | Deferred to | Notes |
+|---|---|---|
+| Full transcript browser | V2 | Entry point should be stubbed in V1 dashboard design |
+| Push notifications | V2 | Design the alert card as if it could arrive via push; don't design for push-first in V1 |
+| Android | Out of scope | iOS patterns used throughout; no cross-platform accommodation needed |
+| Dark mode | Out of scope | Light mode only; do not include dark mode token variants in V1 |
+| Parent-child account linking flow | Out of scope | Assume account structure exists; do not design auth flows |
+| AI persona name | TBD | Child chatbot AI has no locked name. Designer should use a placeholder (e.g., "Sage") that can be swapped. "Sage" recommended — aligned with sage-teal color, calm/wise connotation. |
+| Child decline message copy | TBD | The message the AI shows when a topic is off-limits. Tone guide exists (friendly, age-appropriate) but exact copy not locked. |
+
+---
+
+### Question Status Tracker (final)
+
+| Q-ID | Priority | Question | Status | Client Answer |
 |---|---|---|---|---|
-| Q1 | P0 | What needs to be built? | confirmed | Parent-facing setup AND child-facing setup |
-| Q2 | P0 | Which version of settings? | confirmed | Trimmed (A): 4 content + 3 behavioral + personality + learning |
-| Q3 | P0 | Child-facing UI in scope? | confirmed | B — Both parent and child interfaces |
-| Q4 | P0 | Output format? | confirmed | HTML mockup |
-| Q5 | P0 | Device targets? | confirmed | Mobile web only |
-| Q6 | P1 | Existing brand assets? | confirmed | B — Greenfield |
-| Q7 | P1 | Visual direction? | confirmed | Calm / trustworthy |
-| Q8 | P1 | Reference product? | confirmed | Duolingo |
-| Q9 | P1 | Success criteria? | confirmed | B — Design spec with all states documented |
-| Q10 | P1 | Hard constraints? | confirmed | None |
+| Q1 | P0 | Child chatbot scope | confirmed | In scope as full deliverable |
+| Q2 | P0 | iOS-only vs cross-platform | confirmed | iOS only |
+| Q3 | P0 | Category list (4 vs 12) | confirmed | C: Categorize into sections, one page per section |
+| Q4 | P0 | Dashboard data model | confirmed | Combination: transcripts + analytics |
+| Q5 | P1 | Dark/light mode | confirmed | Light mode only |
+| Q6 | P1 | Brand color | confirmed | Open — designer recommends |
+| Q7 | P1 | Corner radius | confirmed | Soft (12–16px cards, fully-rounded pill buttons) |
+| Q8 | P1 | Navigation pattern | confirmed | Sidebar drawer |
 
-**Counter-Hypothesis Log:**
-- Client's stated problem: Create a project brief for SafeChat.
-- Alternative reading: The classifier build plan section might imply backend scope.
-- Evidence: Classifier section is engineering-spec level (eval datasets, Bloom, temperature).
-- Decision: Proceed with UI framing only; classifier is out of scope.
-- Rationale: Client confirmed parent + child UI when asked about scope. No backend scope mentioned.
-
-**Designer-judgment calls (applied due to greenfield, client confirmed open direction):**
-- Full color palette derived from "calm/trustworthy" — primary blue `#4B7BE5`, off-white surface `#F8F9FB`
-- DM Sans chosen over Inter/Roboto for slightly warmer, more approachable feel on mobile
-- Tier severity color system (gray / amber / red) kept visually separate from brand primary to avoid conflating "strict = bad brand action"
-- Child blocked-message uses warm orange tint rather than red or gray — avoids alarm on child side
-- WCAG AA applied as default even though not stated
-
-**Trimmed scope clarification:** The "trimmed" parent guide contains 4 sections (not 5). The data/privacy section (section 5 in full version) is excluded. The content section has 4 items (vs 12 in full). All other trimmed sections (personality, learning) are included as written.
-
-**Child-facing interpretation:** "Child-facing setup" interpreted as the child's chat interface (not a separate child onboarding flow), since the PRD describes no child-side configuration — only the parent configures. Child scope = default chat state + blocked content state.
+All questions confirmed. No open items. Brief is complete and ready for Designer Agent handoff.

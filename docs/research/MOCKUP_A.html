@@ -3,949 +3,368 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mockup A — Compact List | Previous Conversations Redesign</title>
+<title>Direction A — Enhanced Accordion | GoJuly AI Previous Conversations Mockup</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: #FAF8F4;
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 14px;
-    color: #1E2A40;
-    min-height: 100vh;
-  }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #1C1C1E; background: #F1F5F9; min-height: 100vh; }
 
-  /* PAGE HEADER BAND */
-  .page-header {
-    background: #083386;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    padding: 0 32px;
-    gap: 16px;
-  }
-  .page-header .direction-tag {
-    background: rgba(255,255,255,0.18);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 4px;
-  }
-  .page-header .screen-name {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0.85;
-  }
+  /* ── PAGE HEADER ── */
+  .page-header { background: #083386; padding: 18px 32px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .page-header-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .direction-tag { background: rgba(255,255,255,0.18); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; white-space: nowrap; }
+  .direction-concept-badge { background: #1D4ED8; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; white-space: nowrap; }
+  .header-sub { color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 400; }
+  .goal-thread { margin-top: 8px; background: rgba(29,78,216,0.20); border: 1px solid rgba(29,78,216,0.45); border-radius: 6px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+  .goal-thread strong { color: #fff; }
 
-  /* TWO-COLUMN BODY */
-  .body-columns {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 0;
-    align-items: flex-start;
-  }
+  /* ── WHAT THIS CHANGES ── */
+  .what-changes { background: #fff; border-radius: 8px; margin: 16px 24px 0; padding: 14px 20px; border: 1px solid #E5E7EB; }
+  .what-changes-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #083386; margin-bottom: 10px; }
+  .bullet-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #374151; line-height: 1.5; margin-bottom: 8px; }
+  .bullet-row:last-child { margin-bottom: 0; }
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #D97706; color: #fff; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
-  /* LEFT COLUMN */
-  .left-col {
-    flex: 0 0 58%;
-    padding: 32px 24px 48px 32px;
-  }
+  /* ── BODY COLUMNS ── */
+  .body-cols { display: flex; gap: 0; padding: 20px 24px; align-items: flex-start; }
+  .col-render { flex: 0 0 58%; padding-right: 24px; }
+  .col-spec { flex: 0 0 42%; }
 
-  /* RIGHT COLUMN */
-  .right-col {
-    flex: 0 0 42%;
-    padding: 32px 32px 48px 24px;
-    position: sticky;
-    top: 0;
-    max-height: 100vh;
-    overflow-y: auto;
-    background: #FAF8F4;
-  }
+  /* ── SCREEN FRAME ── */
+  .screen-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6B7280; margin-bottom: 8px; }
+  .screen-frame { background: #fff; border: 1.5px solid #DADEe7; border-radius: 8px; overflow: hidden; }
 
-  /* ===== SCREEN RENDERS ===== */
-  .screen-frame {
-    background: #fff;
-    border: 1px solid #E5E7EB;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    margin-bottom: 24px;
-  }
+  /* ── NAVBAR (existing — unchanged) ── */
+  .mock-navbar { background: #fff; border-bottom: 1px solid rgb(218,222,231); height: 44px; display: flex; align-items: center; padding: 0 16px; gap: 12px; }
+  .mock-logo { font-size: 13px; font-weight: 700; color: rgb(16,32,75); letter-spacing: -0.01em; }
+  .mock-nav-spacer { flex: 1; }
+  .mock-nav-btn { height: 24px; background: rgb(218,222,231); border-radius: 6px; width: 48px; font-size: 9px; display: flex; align-items: center; justify-content: center; color: #6B7280; font-weight: 600; }
 
-  /* App header */
-  .app-header {
-    background: #fff;
-    height: 56px;
-    border-bottom: 1px solid #E5E7EB;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    flex-shrink: 0;
-  }
-  .app-wordmark {
-    font-size: 16px;
-    font-weight: 700;
-    color: #083386;
-    letter-spacing: -0.01em;
-  }
+  /* ── LAYOUT: sidebar + content ── */
+  .mock-layout { display: flex; min-height: 320px; }
+  .mock-sidebar { width: 140px; background: #fff; border-right: 1px solid rgb(218,222,231); padding: 8px 0; flex-shrink: 0; }
+  .mock-nav-item { padding: 6px 10px; font-size: 9px; color: #374151; display: flex; align-items: center; gap: 6px; }
+  .mock-nav-item.active { background: rgb(253,242,248); border-left: 3px solid rgb(219,39,119); color: rgb(37,99,235); font-weight: 600; }
+  .mock-nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.4; flex-shrink: 0; }
+  .mock-content { flex: 1; padding: 14px 14px 10px; overflow: hidden; }
 
-  /* App body: sidebar + main */
-  .app-body {
-    display: flex;
-    min-height: 480px;
-  }
+  /* ── CONTENT AREA ── */
+  .mock-page-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 12px; }
 
-  /* Sidebar */
-  .sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    border-right: 1px solid #E5E7EB;
-    background: #fff;
-    padding: 16px 0;
-  }
-  .sidebar-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: #6B7280;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0 16px 8px;
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    padding: 7px 16px;
-    font-size: 12px;
-    color: #374151;
-    cursor: pointer;
-    gap: 8px;
-  }
-  .nav-item.active {
-    border-left: 4px solid #EC4899;
-    background: #FDF2F8;
-    color: #831843;
-    font-weight: 600;
-    padding-left: 12px;
-  }
-  .nav-section-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: #9CA3AF;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 12px 16px 4px;
-  }
-  .challenge-item {
-    display: flex;
-    align-items: center;
-    padding: 6px 16px;
-    font-size: 12px;
-    color: #374151;
-    gap: 6px;
-  }
-  .challenge-item.active { color: #EC4899; font-weight: 600; }
+  /* ── CHALLENGE CARD (Direction A) ── */
+  .mock-challenge-card { border: 2px solid rgb(218,222,231); border-radius: 12px 12px 0 0; margin-bottom: 0; overflow: hidden; }
+  .mock-challenge-card + .mock-challenge-card { margin-top: 10px; border-radius: 12px 12px 0 0; }
+  .mock-card-header { background: rgb(238,238,238); padding: 8px 10px; }
+  .mock-card-title { font-size: 10px; font-weight: 600; color: #111827; }
+  .mock-card-subtitle { font-size: 8px; color: #6B7280; margin-top: 1px; }
+  .mock-card-body { background: #fff; border: 2px solid rgb(218,222,231); border-top: none; border-radius: 0 0 12px 12px; }
 
-  /* Main content */
-  .main-content {
-    flex: 1;
-    padding: 20px;
-    background: #F9FAFB;
-    overflow: hidden;
-  }
-  .main-heading {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1E2A40;
-    margin-bottom: 14px;
-  }
+  /* ── SEARCH BAR (Direction A new) ── */
+  .mock-search { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-bottom: 1px solid rgb(218,222,231); }
+  .mock-search-bar { flex: 1; height: 22px; border: 1.5px solid rgb(218,222,231); border-radius: 6px; background: #fff; display: flex; align-items: center; padding: 0 8px; }
+  .mock-search-text { font-size: 8px; color: #9CA3AF; }
 
-  /* Callout badge */
-  .callout-badge {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #D97706;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    vertical-align: middle;
-  }
-  .new-element-wrapper {
-    border-left: 4px solid #D97706;
-    padding-left: 10px;
-    margin-bottom: 4px;
-  }
-  .callout-annotation {
-    font-size: 10px;
-    color: #D97706;
-    font-weight: 600;
-    margin: 3px 0 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+  /* ── ATTEMPT TABLE (Direction A — enhanced rows) ── */
+  .mock-attempt-table { width: 100%; }
+  .mock-attempt-thead { display: flex; padding: 4px 10px; border-bottom: 1px solid rgb(218,222,231); }
+  .mock-attempt-thead span { font-size: 7px; font-weight: 700; text-transform: uppercase; color: rgba(30,42,64,0.6); }
+  .mock-attempt-thead .col-title { flex: 1; }
+  .mock-attempt-thead .col-date { width: 56px; }
+  .mock-attempt-thead .col-badge { width: 52px; }
 
-  /* MOCKUP A specific — Search bar */
-  .search-bar-a {
-    height: 38px;
-    border: 1px solid #DADEE7;
-    border-radius: 4px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    gap: 8px;
-    width: 100%;
-  }
-  .search-icon {
-    width: 14px;
-    height: 14px;
-    border: 1.5px solid #9CA3AF;
-    border-radius: 50%;
-    flex-shrink: 0;
-    position: relative;
-  }
-  .search-icon::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    right: -4px;
-    width: 5px;
-    height: 1.5px;
-    background: #9CA3AF;
-    transform: rotate(45deg);
-  }
-  .search-placeholder {
-    font-size: 13px;
-    color: #9CA3AF;
-  }
+  .mock-attempt-row { display: flex; align-items: center; padding: 6px 10px; border-bottom: 1px solid rgb(218,222,231); cursor: pointer; }
+  .mock-attempt-row:last-child { border-bottom: none; }
+  .mock-attempt-row:hover { background: rgb(249,250,251); }
+  .mock-attempt-title { flex: 1; font-size: 9px; font-weight: 600; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mock-attempt-date { width: 56px; font-size: 8px; color: #9CA3AF; }
+  .mock-badge { display: inline-flex; align-items: center; height: 16px; padding: 0 6px; border-radius: 6px; font-size: 7px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .mock-badge.pos { background: rgb(162,232,165); color: rgb(8,51,134); }
+  .mock-badge.def { background: rgb(218,222,231); color: rgb(8,51,134); }
 
-  /* Challenge card (existing — gray box) */
-  .challenge-card-existing {
-    background: #E5E7EB;
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-bottom: 8px;
-  }
-  .challenge-card-existing-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #6B7280;
-  }
+  .mock-card-collapsed { border: 2px solid rgb(218,222,231); border-radius: 12px; padding: 8px 10px; background: #fff; display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .mock-card-collapsed-title { font-size: 10px; font-weight: 600; color: #111827; }
+  .mock-card-collapsed-sub { font-size: 8px; color: #6B7280; margin-top: 1px; }
+  .mock-chevron { font-size: 8px; color: #9CA3AF; }
 
-  /* Accordion open */
-  .accordion-open {
-    background: #fff;
-    border: 1px solid #E5E7EB;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .accordion-header {
-    padding: 9px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #374151;
-    background: #F9FAFB;
-    border-bottom: 1px solid #E5E7EB;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .accordion-body { padding: 0; }
+  /* ── SPATIAL SUMMARY ── */
+  .spatial-summary { background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px 12px; margin-top: 12px; font-size: 11px; color: #374151; line-height: 1.6; }
+  .spatial-summary dt { font-weight: 700; color: #1E2A40; display: inline; }
+  .spatial-summary dd { display: inline; margin-left: 4px; }
+  .spatial-summary .row { margin-bottom: 4px; }
 
-  /* MOCKUP A — Sub-section divider */
-  .subsection-divider-a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px 4px;
-  }
-  .subsection-label-a {
-    font-size: 10px;
-    font-weight: 700;
-    color: #9CA3AF;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-  }
-  .subsection-rule {
-    flex: 1;
-    height: 1px;
-    background: #E5E7EB;
-  }
+  /* ── SPEC PANEL ── */
+  .spec-section { margin-bottom: 20px; }
+  .spec-section-title { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #083386; margin-bottom: 8px; border-bottom: 2px solid #EFF6FF; padding-bottom: 4px; }
+  .spec-bullets { list-style: none; padding: 0; }
+  .spec-bullets li { font-size: 12px; color: #374151; line-height: 1.55; padding: 3px 0; padding-left: 12px; position: relative; }
+  .spec-bullets li::before { content: "•"; position: absolute; left: 0; color: #083386; }
 
-  /* MOCKUP A — Conversation card */
-  .conv-card-a {
-    display: flex;
-    align-items: center;
-    height: 52px;
-    padding: 0 12px;
-    background: #fff;
-    border-bottom: 1px solid #F3F4F6;
-    gap: 10px;
-  }
-  .conv-card-a.success {
-    border-left: 3px solid #A2E8A5;
-  }
-  .conv-card-a.other {
-    border-left: 3px solid #F3F4F6;
-  }
-  .conv-card-info { flex: 1; overflow: hidden; }
-  .conv-card-title-a {
-    font-size: 13px;
-    font-weight: 600;
-    color: #111;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
-  }
-  .conv-card-meta-a {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 1px;
-  }
-  .conv-date-a {
-    font-size: 11px;
-    color: #6B7280;
-  }
-  .badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 7px;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .badge-positive {
-    background: #A2E8A5;
-    color: #166534;
-  }
-  .badge-default {
-    background: #DADEE7;
-    color: #374151;
-  }
+  .spec-kv { font-size: 11px; line-height: 1.6; }
+  .spec-kv .row { display: flex; gap: 8px; padding: 2px 0; border-bottom: 1px solid #F3F4F6; }
+  .spec-kv .row:last-child { border-bottom: none; }
+  .spec-kv .key { flex: 0 0 120px; font-weight: 700; color: #374151; }
+  .spec-kv .val { flex: 1; color: #1F2937; }
 
-  /* Spatial summary */
-  .spatial-summary {
-    background: #F3F4F6;
-    border-radius: 6px;
-    padding: 14px 16px;
-    margin-top: 16px;
-    font-size: 11px;
-    line-height: 1.7;
-  }
-  .spatial-summary-title {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6B7280;
-    margin-bottom: 6px;
-  }
-  .spatial-row {
-    display: flex;
-    gap: 8px;
-  }
-  .spatial-key {
-    color: #6B7280;
-    width: 170px;
-    flex-shrink: 0;
-    font-weight: 500;
-  }
-  .spatial-val { color: #1E2A40; }
+  .spec-comp-title { font-size: 12px; font-weight: 700; color: #1E2A40; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .spec-comp-badge { font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 700; letter-spacing: 0.05em; }
+  .p0-badge { background: #FEF3C7; color: #92400E; }
+  .p1-badge { background: #DBEAFE; color: #1E40AF; }
 
-  /* Screen divider */
-  .screen-divider {
-    background: #F3F4F6;
-    border-radius: 4px;
-    padding: 9px 16px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #6B7280;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin: 20px 0 16px;
-  }
-
-  /* Screen 2 */
-  .conversation-header-area {
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid #E5E7EB;
-    background: #fff;
-  }
-  .conv-header-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: #9CA3AF;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 4px;
-  }
-  .conv-header-before {
-    font-size: 13px;
-    color: #9CA3AF;
-    text-decoration: line-through;
-    margin-bottom: 2px;
-  }
-  .conv-header-after {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1E2A40;
-  }
-  .gray-placeholder {
-    background: #E5E7EB;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9CA3AF;
-    font-size: 11px;
-    font-weight: 500;
-  }
-  .screen2-body {
-    display: flex;
-    gap: 0;
-    min-height: 260px;
-  }
-  .screen2-sidebar-placeholder {
-    width: 200px;
-    flex-shrink: 0;
-    background: #E5E7EB;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9CA3AF;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    border-right: 1px solid #D1D5DB;
-  }
-  .screen2-main {
-    flex: 1;
-    background: #F9FAFB;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .screen2-content {
-    display: flex;
-    flex: 1;
-  }
-  .chat-placeholder {
-    flex: 1;
-    background: #E5E7EB;
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9CA3AF;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .right-panel-placeholder {
-    width: 160px;
-    flex-shrink: 0;
-    background: #E5E7EB;
-    border-left: 1px solid #D1D5DB;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9CA3AF;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    text-align: center;
-    padding: 8px;
-  }
-
-  /* ===== RIGHT COLUMN SPEC ===== */
-  .spec-section {
-    margin-bottom: 24px;
-  }
-  .spec-section-title {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #083386;
-    margin-bottom: 10px;
-    padding-bottom: 4px;
-    border-bottom: 2px solid #083386;
-  }
-  .spec-bullets {
-    list-style: none;
-    padding: 0;
-  }
-  .spec-bullets li {
-    font-size: 12px;
-    color: #374151;
-    padding: 3px 0;
-    display: flex;
-    gap: 6px;
-    line-height: 1.5;
-  }
-  .spec-bullets li::before {
-    content: '•';
-    color: #083386;
-    flex-shrink: 0;
-  }
-  .spec-above-fold ol {
-    padding-left: 0;
-    list-style: none;
-  }
-  .spec-above-fold ol li {
-    font-size: 12px;
-    color: #374151;
-    padding: 3px 0;
-    counter-increment: item;
-    display: flex;
-    gap: 8px;
-    line-height: 1.5;
-  }
-  .spec-above-fold ol { counter-reset: item; }
-  .spec-above-fold ol li::before {
-    content: counter(item) 'st';
-    color: #6B7280;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-    min-width: 28px;
-  }
-  .spec-above-fold ol li:nth-child(2)::before { content: '2nd'; }
-  .spec-above-fold ol li:nth-child(3)::before { content: '3rd'; }
-
-  .spec-component {
-    margin-bottom: 20px;
-  }
-  .spec-component-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: #1E2A40;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .spec-badge-new {
-    font-size: 9px;
-    font-weight: 700;
-    background: #D97706;
-    color: #fff;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-transform: uppercase;
-  }
-  .spec-badge-p0 {
-    font-size: 9px;
-    font-weight: 700;
-    background: #083386;
-    color: #fff;
-    padding: 1px 6px;
-    border-radius: 3px;
-  }
-  .spec-badge-p1 {
-    font-size: 9px;
-    font-weight: 700;
-    background: #6B7280;
-    color: #fff;
-    padding: 1px 6px;
-    border-radius: 3px;
-  }
-  .spec-badge-modified {
-    font-size: 9px;
-    font-weight: 700;
-    background: #7C3AED;
-    color: #fff;
-    padding: 1px 6px;
-    border-radius: 3px;
-    text-transform: uppercase;
-  }
-  .spec-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 11px;
-  }
-  .spec-table tr {
-    border-bottom: 1px solid #F3F4F6;
-  }
-  .spec-table td {
-    padding: 5px 8px 5px 0;
-    vertical-align: top;
-    line-height: 1.5;
-  }
-  .spec-table td:first-child {
-    color: #6B7280;
-    font-weight: 600;
-    width: 38%;
-    padding-right: 12px;
-  }
-  .spec-table td:last-child {
-    color: #1E2A40;
-    width: 62%;
-  }
-  .spec-warning {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    font-size: 11px;
-    color: #92400E;
-    background: #FEF3C7;
-    border: 1px solid #FCD34D;
-    border-radius: 4px;
-    padding: 7px 10px;
-    margin-bottom: 6px;
-    line-height: 1.5;
-  }
-  .spec-warning-icon { flex-shrink: 0; }
-
-  .screen-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #6B7280;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  /* ── DIVIDER ── */
+  .section-divider { height: 1px; background: #E5E7EB; margin: 24px 0; }
 </style>
 </head>
 <body>
 
-<!-- PAGE HEADER BAND -->
+<!-- PAGE HEADER -->
 <div class="page-header">
-  <span class="direction-tag">Mockup A</span>
-  <span class="screen-name">Compact List — Previous Conversations Redesign</span>
+  <div class="page-header-top">
+    <span class="direction-tag">Mockup A</span>
+    <span class="direction-concept-badge">Enhanced Accordion</span>
+    <span style="color:#fff;font-size:16px;font-weight:700;letter-spacing:-0.01em;">GoJuly AI — Previous Conversations</span>
+    <span style="color:rgba(255,255,255,0.55);font-size:13px;">1 screen · Scope A (right panel)</span>
+  </div>
+  <div class="header-sub">Desktop 1280px+ · Attempt list redesign + AI titles + per-challenge search · Accordion structure preserved</div>
+  <div class="goal-thread">
+    <strong>Goal thread:</strong> Direction A serves §4's primary metric (conversation found in under 5 seconds) by making titles the primary scannable identity per row — replacing §2 Problem 1's date-only labels. The accordion structure satisfies the §6 constraint that sidebar and top navigation remain unchanged. Scope A leaves the IA bug (duplicate nav + heading mismatch) out of scope per §2 framing note.
+  </div>
 </div>
 
-<div style="background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:14px 20px;margin:16px 24px;">
-  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#083386;margin-bottom:6px;">What this changes</div>
-  <p style="font-size:13px;color:#374151;line-height:1.6;margin:0;">The Previous Conversations tab currently shows a flat list of timestamps with no way to search or distinguish outcomes at a glance. This direction adds a search bar above the challenge accordions and replaces the plain rows with compact flat cards that show an AI-generated title, date, and status badges — with a green left-border accent on any conversation where the attack succeeded. The layout stays dense and familiar, just far easier to scan.</p>
+<!-- WHAT THIS CHANGES -->
+<div class="what-changes">
+  <div class="what-changes-title">What this changes</div>
+  <div class="bullet-row"><span class="num">1</span><span><strong>Challenge card subtitle</strong> — scenario name ("Self-Harm Scenario") added below "Challenge 1" so users identify the challenge before expanding</span></div>
+  <div class="bullet-row"><span class="num">2</span><span><strong>Per-challenge search bar</strong> — appears inside the expanded accordion; searches transcript content for that challenge only</span></div>
+  <div class="bullet-row"><span class="num">3</span><span><strong>Attempt row — AI title</strong> — replaces date-only label; Inter 14px/600, truncated at ~40 chars</span></div>
+  <div class="bullet-row"><span class="num">4</span><span><strong>Attempt row — status badge</strong> — SUBMITTED (green) / GUARDED / RESET (gray) visible without clicking in</span></div>
 </div>
 
-<div class="body-columns">
+<!-- BODY COLUMNS -->
+<div class="body-cols">
 
-  <!-- ===== LEFT COLUMN: VISUAL RENDERS ===== -->
-  <div class="left-col">
-
-    <div class="screen-label">Screen 1 — Practice Sets Page</div>
-
+  <!-- LEFT: VISUAL RENDER -->
+  <div class="col-render">
+    <div class="screen-label">Screen 1 — Practice Sets (right panel, Challenge 1 expanded)</div>
     <div class="screen-frame">
-      <!-- App header -->
-      <div class="app-header">
-        <div class="app-wordmark">july ai</div>
+
+      <!-- Navbar (existing — unchanged) -->
+      <div class="mock-navbar">
+        <span class="mock-logo">july ai</span>
+        <div class="mock-nav-spacer"></div>
+        <div class="mock-nav-btn">Home</div>
+        <div class="mock-nav-btn">Data</div>
       </div>
 
-      <div class="app-body">
-        <!-- Sidebar -->
-        <div class="sidebar">
-          <div class="sidebar-title">Red Team Sample</div>
-          <div class="nav-item">Success Criteria</div>
-          <div class="nav-item">Examples of Successful Attacks</div>
-          <div class="nav-item active">Previous Conversations</div>
-          <div class="nav-section-label">Challenges</div>
-          <div class="challenge-item active">Challenge 1</div>
-          <div class="challenge-item">Challenge 2</div>
-          <div class="challenge-item">Challenge 3</div>
+      <!-- Layout -->
+      <div class="mock-layout">
+
+        <!-- Sidebar (existing — unchanged) -->
+        <div class="mock-sidebar">
+          <div class="mock-nav-item" style="font-size:8px;font-weight:700;color:#9CA3AF;padding:8px 10px 4px;">Red Team Sample</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Sample Submission</div>
+          <div class="mock-nav-item active"><div class="mock-nav-dot"></div>Previous Conv.</div>
+          <div style="height:1px;background:rgb(218,222,231);margin:4px 0;"></div>
+          <div class="mock-nav-item" style="font-size:8px;font-weight:700;color:#9CA3AF;padding:8px 10px 4px;">Challenges</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Challenge 1</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Challenge 2</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Challenge 3</div>
         </div>
 
         <!-- Main content -->
-        <div class="main-content">
-          <div class="main-heading">Practice Sets</div>
+        <div class="mock-content">
+          <div class="mock-page-title">Practice Sets</div>
 
-          <!-- ① Search Bar (NEW) -->
-          <div class="new-element-wrapper" style="margin-bottom:2px;">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-              <span class="callout-badge">①</span>
-              <div class="search-bar-a">
-                <div class="search-icon"></div>
-                <span class="search-placeholder">Search conversations…</span>
+          <!-- Challenge 1 — EXPANDED -->
+          <div class="mock-challenge-card">
+            <div class="mock-card-header" style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div class="mock-card-title" style="display:flex;align-items:center;gap:6px;">
+                  Challenge 1
+                  <!-- callout 1 -->
+                  <span class="num" style="margin-left:auto;">1</span>
+                </div>
+                <!-- subtitle — new, callout 1 -->
+                <div class="mock-card-subtitle">Self-Harm Scenario</div>
+              </div>
+              <span class="mock-chevron">▲</span>
+            </div>
+            <div class="mock-card-body">
+              <!-- Search bar — new, callout 2 -->
+              <div class="mock-search">
+                <div class="mock-search-bar" style="position:relative;">
+                  <span class="mock-search-text">Search transcripts…</span>
+                </div>
+                <span class="num">2</span>
+              </div>
+              <!-- Attempt table — new rows, callouts 3 + 4 -->
+              <div class="mock-attempt-table">
+                <div class="mock-attempt-thead">
+                  <span class="col-title">TITLE</span>
+                  <span class="col-date">DATE</span>
+                  <span class="col-badge">STATUS</span>
+                </div>
+                <div class="mock-attempt-row">
+                  <div class="mock-attempt-title" style="display:flex;align-items:center;gap:4px;">
+                    Political Radicalization Attempt
+                    <span class="num" style="margin-left:auto;">3</span>
+                  </div>
+                  <div class="mock-attempt-date">Mar 9, 2026</div>
+                  <div style="display:flex;align-items:center;gap:4px;"><span class="mock-badge pos">SUBMITTED</span><span class="num">4</span></div>
+                </div>
+                <div class="mock-attempt-row">
+                  <div class="mock-attempt-title">Authority Figure Impersonation</div>
+                  <div class="mock-attempt-date">Mar 8, 2026</div>
+                  <span class="mock-badge def">GUARDED</span>
+                </div>
+                <div class="mock-attempt-row">
+                  <div class="mock-attempt-title">Emotional Manipulation Scenario</div>
+                  <div class="mock-attempt-date">Mar 6, 2026</div>
+                  <span class="mock-badge def">RESET</span>
+                </div>
+                <div class="mock-attempt-row">
+                  <div class="mock-attempt-title">Suicide Ideation Scenario</div>
+                  <div class="mock-attempt-date">Feb 14, 2026</div>
+                  <span class="mock-badge pos">SUBMITTED</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="callout-annotation">
-            <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">①</span>
-            Full-text search across all conversation transcripts
-          </div>
 
-          <!-- Challenge 1 card (existing) -->
-          <div class="challenge-card-existing">
-            <div class="challenge-card-existing-label">Challenge 1 — Jailbreak Resistance</div>
-          </div>
-
-          <!-- Accordion open -->
-          <div class="accordion-open" style="margin-top:8px;">
-            <div class="accordion-header">
-              <span>▾</span> View Attempts
+          <!-- Challenge 2 — COLLAPSED (existing) -->
+          <div class="mock-card-collapsed">
+            <div>
+              <div class="mock-card-collapsed-title">Challenge 2</div>
+              <div class="mock-card-collapsed-sub">Persuasion &amp; Manipulation — 6 attempts</div>
             </div>
-            <div class="accordion-body">
-
-              <!-- ② Status sub-section header (NEW) -->
-              <div class="new-element-wrapper" style="margin:0;border-left-color:#D97706;">
-                <div style="display:flex;align-items:center;gap:6px;padding:6px 12px 2px;">
-                  <span class="callout-badge">②</span>
-                  <div class="subsection-divider-a" style="padding:0;flex:1;">
-                    <span class="subsection-label-a">Successful Attacks (1)</span>
-                    <div class="subsection-rule"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="callout-annotation" style="margin-left:28px;margin-top:2px;">
-                <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">②</span>
-                Status sub-group header — groups successes at top
-              </div>
-
-              <!-- ③ Conversation card (SUCCESS) -->
-              <div class="new-element-wrapper" style="margin:0 0 0 0; border-left:none;">
-                <div style="display:flex;align-items:center;gap:4px; padding: 0 0 0 8px;">
-                  <span class="callout-badge" style="flex-shrink:0;margin-right:2px;">③</span>
-                  <div class="conv-card-a success" style="flex:1;border-radius:0;">
-                    <div class="conv-card-info">
-                      <div class="conv-card-title-a">Political Radicalization Roleplay</div>
-                      <div class="conv-card-meta-a">
-                        <span class="conv-date-a">Apr 10, 2026</span>
-                        <span class="badge badge-positive">Success</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- All Attempts sub-section header (NEW) -->
-              <div class="new-element-wrapper" style="margin:4px 0 0;border-left-color:#D97706;">
-                <div style="display:flex;align-items:center;gap:6px;padding:4px 12px 2px;">
-                  <span class="callout-badge">②</span>
-                  <div class="subsection-divider-a" style="padding:0;flex:1;">
-                    <span class="subsection-label-a">All Attempts</span>
-                    <div class="subsection-rule"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ③ Conversation cards (OTHER) -->
-              <div class="new-element-wrapper" style="margin:2px 0 0;border-left:none;">
-                <div style="display:flex;align-items:center;gap:4px; padding:0 0 0 8px;">
-                  <span class="callout-badge" style="flex-shrink:0;opacity:0;">③</span>
-                  <div class="conv-card-a other" style="flex:1;border-radius:0;">
-                    <div class="conv-card-info">
-                      <div class="conv-card-title-a">Persona Substitution Attempt</div>
-                      <div class="conv-card-meta-a">
-                        <span class="conv-date-a">Apr 9, 2026</span>
-                        <span class="badge badge-default">Blocked</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="display:flex;align-items:center;gap:4px; padding:0 0 0 8px;">
-                  <span class="callout-badge" style="flex-shrink:0;opacity:0;">③</span>
-                  <div class="conv-card-a other" style="flex:1;border-radius:0;border-bottom:none;">
-                    <div class="conv-card-info">
-                      <div class="conv-card-title-a">Generating title…</div>
-                      <div class="conv-card-meta-a">
-                        <span class="conv-date-a">Apr 8, 2026</span>
-                        <span class="badge badge-default">Blocked</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+            <span class="mock-chevron">▼</span>
           </div>
 
-        </div><!-- /main-content -->
-      </div><!-- /app-body -->
-    </div><!-- /screen-frame -->
-
-    <!-- SPATIAL SUMMARY -->
-    <div class="spatial-summary">
-      <div class="spatial-summary-title">Spatial Summary</div>
-      <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">Compact List</span></div>
-      <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Dense flat rows; no shadows; information-first hierarchy</span></div>
-      <div class="spatial-row"><span class="spatial-key">Distinctive layout move:</span><span class="spatial-val">Left-border color accent (green vs. gray) is the only status signal — no section tinting</span></div>
-      <div class="spatial-row"><span class="spatial-key">New / changed zones:</span><span class="spatial-val">Search bar ①, Status sub-groups ②, Conversation cards ③, Conversation header ④</span></div>
-      <div class="spatial-row"><span class="spatial-key">Proportional note:</span><span class="spatial-val">Card heights and sidebar width are representative proportions</span></div>
-    </div>
-
-    <!-- SCREEN 2 DIVIDER -->
-    <div class="screen-divider">Screen 2 — Conversation View (Header Update)</div>
-
-    <!-- SCREEN 2 -->
-    <div class="screen-frame">
-      <div class="app-header">
-        <div class="app-wordmark">july ai</div>
-      </div>
-      <div class="screen2-body">
-        <div class="screen2-sidebar-placeholder">Sidebar</div>
-        <div class="screen2-main">
-          <!-- ④ Auto-generated title (MODIFIED) -->
-          <div class="conversation-header-area">
-            <div style="display:flex;align-items:flex-start;gap:8px;">
-              <span class="callout-badge" style="margin-top:2px;flex-shrink:0;">④</span>
-              <div style="flex:1;">
-                <div class="conv-header-label">Conversation Title</div>
-                <div class="conv-header-before">Challenge 1 Feedback</div>
-                <div class="conv-header-after">Political Radicalization Roleplay</div>
-              </div>
+          <!-- Challenge 3 — COLLAPSED (existing) -->
+          <div class="mock-card-collapsed">
+            <div>
+              <div class="mock-card-collapsed-title">Challenge 3</div>
+              <div class="mock-card-collapsed-sub">Vulnerable User Scenario — 4 attempts</div>
             </div>
-            <div class="callout-annotation" style="margin-top:4px;">
-              <span class="callout-badge" style="width:14px;height:14px;font-size:8px;">④</span>
-              Auto-generated title replaces generic "Challenge N Feedback"
-            </div>
+            <span class="mock-chevron">▼</span>
           </div>
-          <div class="screen2-content">
-            <div class="chat-placeholder">Chat Area (unchanged)</div>
-            <div class="right-panel-placeholder">Right Panel<br>Annotation &amp;<br>Feedback<br>(unchanged)</div>
-          </div>
+
         </div>
       </div>
     </div>
 
-  </div><!-- /left-col -->
+    <!-- SPATIAL SUMMARY -->
+    <div class="spatial-summary">
+      <div class="row"><dt>Direction:</dt><dd>A — Enhanced Accordion</dd></div>
+      <div class="row"><dt>Layout:</dt><dd>Existing accordion shell preserved; attempt rows replaced in-place with richer horizontal entries</dd></div>
+      <div class="row"><dt>Distinctive layout move:</dt><dd>Search bar lives inside the expanded accordion — scoped to that challenge, no global search</dd></div>
+      <div class="row"><dt>New/changed zones:</dt><dd>① Challenge subtitle · ② Search bar · ③ Attempt title column · ④ Status badge column</dd></div>
+      <div class="row"><dt>Proportional note:</dt><dd>Sidebar width 140px [estimated from screenshot]; actual 256px per §8 Design Token Record</dd></div>
+    </div>
+  </div>
 
-  <!-- ===== RIGHT COLUMN: TEXT SPEC ===== -->
-  <div class="right-col">
+  <!-- RIGHT: SPEC PANEL -->
+  <div class="col-spec">
 
     <div class="spec-section">
       <div class="spec-section-title">Direction at a Glance</div>
       <ul class="spec-bullets">
-        <li>Visual character: dense, flat, shadowless — data over decoration</li>
-        <li>Distinctive layout move: 3px left-border color (green vs. light-gray) is the sole status differentiator per card</li>
-        <li>What client will remember: fastest scannable list; feels like a power-user tool</li>
+        <li>Minimum layout disruption — accordion shell, sidebar, and heading all unchanged</li>
+        <li>Titles replace dates as the primary identifier; researcher reads down the list, not into each session</li>
+        <li>Search is scoped per challenge — forces the user to commit to a challenge before searching</li>
       </ul>
     </div>
 
-    <div class="spec-section spec-above-fold">
-      <div class="spec-section-title">Above the Fold</div>
-      <ol>
-        <li>Search bar — draws the eye immediately, sets expectation of findability</li>
-        <li>Challenge 1 card — existing orientation anchor</li>
-        <li>View Attempts accordion + Status sub-groups</li>
-      </ol>
+    <div class="spec-section">
+      <div class="spec-section-title">Strategy</div>
+      <div style="font-size:12px;color:#374151;line-height:1.65;">
+        Direction A exists because the brief's §6 Scope A constraint is a hard boundary — the accordion structure, sidebar, and top navigation must survive. The core §2 Problem 1 (no meaningful identity per attempt) is solved by a single, high-impact row change: the title column. The §4 primary metric (found in under 5 seconds) is served by scannability of that title at the list level — no click-in required for orientation. By preserving the accordion, this direction also has the lowest implementation risk and the fastest path to a shipped improvement.
+      </div>
     </div>
 
     <div class="spec-section">
-      <div class="spec-section-title">Components</div>
-
-      <div class="spec-component">
-        <div class="spec-component-title">
-          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">①</span>
-          Component ① — Search Bar
-          <span class="spec-badge-new">NEW</span>
-          <span class="spec-badge-p0">P0</span>
-        </div>
-        <table class="spec-table">
-          <tr><td>Source</td><td>New</td></tr>
-          <tr><td>Background</td><td>#ffffff (white fill)</td></tr>
-          <tr><td>Border</td><td>1px solid #DADEE7</td></tr>
-          <tr><td>Height</td><td>38px</td></tr>
-          <tr><td>Border-radius</td><td>4px (flat, minimal)</td></tr>
-          <tr><td>Placeholder</td><td>"Search conversations…" — brief §12</td></tr>
-          <tr><td>Font</td><td>Inter 14px / 400 · color #6B7280</td></tr>
-          <tr><td>Focus state</td><td>border-color: #083386; outline: none</td></tr>
-          <tr><td>Results</td><td>Conversation cards filter in real-time; non-matching sections collapse</td></tr>
-          <tr><td>Animation</td><td>Filter transition 150ms ease-out</td></tr>
-          <tr><td>Copy</td><td>"Search conversations…" placeholder; "No conversations match '[query]'" empty state</td></tr>
-        </table>
+      <div class="spec-section-title">Above the Fold</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">1st</span><span class="val">Challenge cards — three collapsed accordions with scenario subtitle; user immediately sees which challenge covers which scenario</span></div>
+        <div class="row"><span class="key">2nd</span><span class="val">Expanded attempt list — AI title + date + status visible before any scroll</span></div>
+        <div class="row"><span class="key">3rd</span><span class="val">Search bar — inside the expanded card, above the table</span></div>
       </div>
+    </div>
 
-      <div class="spec-component">
-        <div class="spec-component-title">
-          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">②</span>
-          Component ② — Status Sub-Group Headers
-          <span class="spec-badge-new">NEW</span>
-          <span class="spec-badge-p1">P1</span>
-        </div>
-        <table class="spec-table">
-          <tr><td>Source</td><td>New</td></tr>
-          <tr><td>Successful header</td><td>"SUCCESSFUL ATTACKS (N)" — 10px caps gray text + 1px #E5E7EB rule extending right</td></tr>
-          <tr><td>All Attempts header</td><td>"ALL ATTEMPTS" — same treatment, no count badge</td></tr>
-          <tr><td>Font</td><td>10px / 700 / uppercase / #9CA3AF</td></tr>
-          <tr><td>Margin</td><td>8px top / 4px bottom</td></tr>
-          <tr><td>Behavior</td><td>"Successful Attacks (N)" count updates dynamically with search filter</td></tr>
-        </table>
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ① Challenge Card Subtitle — P1</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">New — Scope A addition</span></div>
+        <div class="row"><span class="key">Text</span><span class="val">Scenario name from brief §12 (e.g., "Self-Harm Scenario")</span></div>
+        <div class="row"><span class="key">Font</span><span class="val">Inter 12px / weight 400</span></div>
+        <div class="row"><span class="key">Color</span><span class="val">rgb(107,114,128) — gray-500</span></div>
+        <div class="row"><span class="key">Position</span><span class="val">Below "Challenge N" heading inside the card header</span></div>
+        <div class="row"><span class="key">Visibility</span><span class="val">Always — both collapsed and expanded states</span></div>
       </div>
+    </div>
 
-      <div class="spec-component">
-        <div class="spec-component-title">
-          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">③</span>
-          Component ③ — Conversation Card
-          <span class="spec-badge-new">NEW</span>
-          <span class="spec-badge-p0">P0</span>
-        </div>
-        <table class="spec-table">
-          <tr><td>Source</td><td>Replaces existing tr.cursor-pointer.h-12 table row</td></tr>
-          <tr><td>Background</td><td>#ffffff (both states)</td></tr>
-          <tr><td>Border (success)</td><td>border-left: 3px solid #A2E8A5; border-bottom: 1px solid #F3F4F6</td></tr>
-          <tr><td>Border (other)</td><td>border-left: 3px solid #F3F4F6; border-bottom: 1px solid #F3F4F6</td></tr>
-          <tr><td>Border-radius</td><td>0px (flush rows)</td></tr>
-          <tr><td>Height</td><td>52px</td></tr>
-          <tr><td>Title</td><td>13px / 600 / #111 — auto-generated by AI</td></tr>
-          <tr><td>Date</td><td>11px / 400 / #6B7280</td></tr>
-          <tr><td>Outcome badge</td><td>.badge.ja-badge — existing token system; on same line as date</td></tr>
-          <tr><td>Preview</td><td>NOT shown (compact mode — title + date + badge fills row)</td></tr>
-          <tr><td>Loading state</td><td>Title shows "Generating title…" in #9CA3AF while AI processes</td></tr>
-          <tr><td>Click target</td><td>Entire card — opens /collections/{id}/feedback/{id} in new tab</td></tr>
-          <tr><td>Share button</td><td>btn.btn-ghost — existing DaisyUI, preserved from current UI</td></tr>
-        </table>
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ② Per-Challenge Search Bar — P0</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">New — Scope A addition</span></div>
+        <div class="row"><span class="key">Placeholder</span><span class="val">"Search transcripts…"</span></div>
+        <div class="row"><span class="key">Background</span><span class="val">rgb(255,255,255) — surface-white</span></div>
+        <div class="row"><span class="key">Border</span><span class="val">1.5px solid rgb(218,222,231) — border-tide</span></div>
+        <div class="row"><span class="key">Border radius</span><span class="val">6px — button token §8</span></div>
+        <div class="row"><span class="key">Height</span><span class="val">32px</span></div>
+        <div class="row"><span class="key">Padding</span><span class="val">0 12px</span></div>
+        <div class="row"><span class="key">Font</span><span class="val">Inter 14px / weight 400</span></div>
+        <div class="row"><span class="key">Focus</span><span class="val">Border color shifts to rgb(37,99,235) — nav-active-link</span></div>
+        <div class="row"><span class="key">Visibility</span><span class="val">Only when accordion is expanded</span></div>
+        <div class="row"><span class="key">Scope</span><span class="val">Filters attempt list for this challenge only</span></div>
+        <div class="row"><span class="key">Animation</span><span class="val">List updates on each keypress — 0ms debounce (realtime)</span></div>
       </div>
+    </div>
 
-      <div class="spec-component">
-        <div class="spec-component-title">
-          <span class="callout-badge" style="width:18px;height:18px;font-size:9px;">④</span>
-          Component ④ — Conversation View Header
-          <span class="spec-badge-modified">Modified</span>
-          <span class="spec-badge-p1">P1</span>
-        </div>
-        <table class="spec-table">
-          <tr><td>Source</td><td>Modified — replaces "Challenge 1 Feedback" generic title</td></tr>
-          <tr><td>Before</td><td>"Challenge 1 Feedback" (static, generic)</td></tr>
-          <tr><td>After</td><td>Auto-generated title e.g. "Political Radicalization Roleplay"</td></tr>
-          <tr><td>Font</td><td>Inherit existing header styles — only the string changes</td></tr>
-          <tr><td>Scope</td><td>Header text only — no other changes to conversation view layout</td></tr>
-        </table>
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ③ Attempt Row — AI Title — P0</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">New — replaces date-only label (§2 Problem 1)</span></div>
+        <div class="row"><span class="key">Font</span><span class="val">Inter 14px / weight 600 — table-cell token §8</span></div>
+        <div class="row"><span class="key">Color</span><span class="val">rgb(17,24,39) — gray-900</span></div>
+        <div class="row"><span class="key">Truncation</span><span class="val">text-overflow: ellipsis at ~40 chars per §12</span></div>
+        <div class="row"><span class="key">Column width</span><span class="val">flex: 1 (fills remaining space after date + badge)</span></div>
+        <div class="row"><span class="key">Copy source</span><span class="val">AI-generated from transcript at submission time — brief §12 auto-naming rule</span></div>
+        <div class="row"><span class="key">Hover</span><span class="val">Row bg shifts to rgb(249,250,251) — gray-50 per §14</span></div>
       </div>
+    </div>
 
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ④ Attempt Row — Status Badge — P0</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">Existing ja-badge pattern — new position in table</span></div>
+        <div class="row"><span class="key">SUBMITTED bg</span><span class="val">rgb(162,232,165) — badge-positive-bg §8</span></div>
+        <div class="row"><span class="key">GUARDED bg</span><span class="val">rgb(218,222,231) — badge-default-bg §8</span></div>
+        <div class="row"><span class="key">RESET bg</span><span class="val">rgb(218,222,231) — badge-default-bg §8</span></div>
+        <div class="row"><span class="key">Text color</span><span class="val">rgb(8,51,134) — badge-text §8 (all states)</span></div>
+        <div class="row"><span class="key">Font</span><span class="val">Inter 10px / weight 600 / ALL CAPS — badge token §8</span></div>
+        <div class="row"><span class="key">Padding</span><span class="val">0 9px — badge-padding §8</span></div>
+        <div class="row"><span class="key">Border radius</span><span class="val">6px — badge token §8</span></div>
+      </div>
     </div>
 
     <div class="spec-section">
       <div class="spec-section-title">Integration</div>
       <ul class="spec-bullets">
-        <li>Token family coherence: uses existing .badge.ja-badge token; search bar uses same #DADEE7 border as existing form elements</li>
-        <li>Attention path: search bar → filtered accordion list → green left-border → card click → conversation header ④</li>
-        <li>Visual differentiator from B and C: no shadows, no tinted backgrounds, no grid zones — pure row density</li>
+        <li>Uses the same border-tide color (rgb(218,222,231)) and 12px/16px cell padding as existing table-zebra rows — visually continuous with the platform</li>
+        <li>Attempt titles earn visual priority via weight-600 — same weight signal used for table-cell throughout the platform (§8)</li>
+        <li>Direction A is the only option where search is challenge-scoped rather than global — appropriate for a researcher who already knows which challenge they're looking in</li>
       </ul>
     </div>
 
     <div class="spec-section">
       <div class="spec-section-title">Open Questions</div>
-      <div class="spec-warning">
-        <span class="spec-warning-icon">⚠</span>
-        Auto-title character limit — recommend 60 chars max — confirm before build
-      </div>
-      <div class="spec-warning">
-        <span class="spec-warning-icon">⚠</span>
-        Search latency — confirm debounce ms and whether results are real-time or on-submit
-      </div>
+      <ul class="spec-bullets">
+        <li>⚠ Active left-border color on sidebar nav item — brief §8 Designer Notes flags this as truncated in extraction. Likely pink-500 or pink-600. Confirm via getComputedStyle before implementation.</li>
+        <li>⚠ "Practice Sets" heading not corrected in Scope A per §2 framing note — confirm with client before shipping.</li>
+      </ul>
     </div>
 
-  </div><!-- /right-col -->
+  </div>
+</div>
 
-</div><!-- /body-columns -->
 </body>
 </html>

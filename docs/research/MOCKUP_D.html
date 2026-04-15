@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Direction D — Master-Detail Column | GoJuly AI Previous Conversations Mockup</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #1C1C1E; background: #F1F5F9; min-height: 100vh; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { background: #083386; padding: 18px 32px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .page-header-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .direction-tag { background: rgba(255,255,255,0.18); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; white-space: nowrap; }
+  .direction-concept-badge { background: #7C3AED; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border-radius: 4px; white-space: nowrap; }
+  .header-sub { color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 400; }
+  .goal-thread { margin-top: 8px; background: rgba(124,58,237,0.16); border: 1px solid rgba(124,58,237,0.38); border-radius: 6px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+  .goal-thread strong { color: #fff; }
+
+  /* ── WHAT THIS CHANGES ── */
+  .what-changes { background: #fff; border-radius: 8px; margin: 16px 24px 0; padding: 14px 20px; border: 1px solid #E5E7EB; }
+  .what-changes-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #083386; margin-bottom: 10px; }
+  .bullet-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #374151; line-height: 1.5; margin-bottom: 8px; }
+  .bullet-row:last-child { margin-bottom: 0; }
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #D97706; color: #fff; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── BODY COLUMNS ── */
+  .body-cols { display: flex; gap: 0; padding: 20px 24px; align-items: flex-start; }
+  .col-render { flex: 0 0 58%; padding-right: 24px; }
+  .col-spec { flex: 0 0 42%; }
+
+  /* ── SCREEN FRAME ── */
+  .screen-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6B7280; margin-bottom: 8px; }
+  .screen-frame { background: #fff; border: 1.5px solid #DADEE7; border-radius: 8px; overflow: hidden; }
+
+  /* ── NAVBAR (existing — unchanged) ── */
+  .mock-navbar { background: #fff; border-bottom: 1px solid rgb(218,222,231); height: 44px; display: flex; align-items: center; padding: 0 16px; gap: 12px; }
+  .mock-logo { font-size: 13px; font-weight: 700; color: rgb(16,32,75); letter-spacing: -0.01em; }
+  .mock-nav-spacer { flex: 1; }
+  .mock-nav-btn { height: 24px; background: rgb(218,222,231); border-radius: 6px; width: 48px; font-size: 9px; display: flex; align-items: center; justify-content: center; color: #6B7280; font-weight: 600; }
+
+  /* ── OUTER LAYOUT: app sidebar + main content ── */
+  .mock-outer-layout { display: flex; min-height: 420px; }
+  .mock-sidebar { width: 118px; background: #fff; border-right: 1px solid rgb(218,222,231); padding: 8px 0; flex-shrink: 0; }
+  .mock-nav-item { padding: 5px 9px; font-size: 8px; color: #374151; display: flex; align-items: center; gap: 5px; }
+  .mock-nav-item.active { background: rgb(253,242,248); border-left: 3px solid rgb(219,39,119); color: rgb(37,99,235); font-weight: 600; }
+  .mock-nav-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0.4; flex-shrink: 0; }
+  .mock-content { flex: 1; padding: 12px 12px 8px; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* ── PAGE TITLE (Scope B: renamed) ── */
+  .mock-page-title { font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 9px; display: flex; align-items: center; gap: 5px; }
+
+  /* ── INNER MASTER-DETAIL COLUMNS ── */
+  .inner-cols { display: flex; gap: 0; flex: 1; border: 1px solid rgb(218,222,231); border-radius: 8px; overflow: hidden; min-height: 340px; }
+
+  /* MASTER column (challenge list) — 280px per §12 B2 */
+  .master-col { width: 110px; flex-shrink: 0; border-right: 1px solid rgb(218,222,231); background: #fff; display: flex; flex-direction: column; }
+
+  /* Search bar at top of master column */
+  .master-search-wrap { padding: 6px 7px; border-bottom: 1px solid rgb(218,222,231); display: flex; align-items: center; gap: 4px; }
+  .master-search { flex: 1; height: 20px; border: 1px solid rgb(218,222,231); border-radius: 4px; background: #fff; display: flex; align-items: center; padding: 0 6px; }
+  .master-search-text { font-size: 7px; color: #9CA3AF; }
+
+  /* Challenge rows in master column */
+  .ch-row { padding: 7px 8px; border-bottom: 1px solid rgb(218,222,231); cursor: pointer; }
+  .ch-row:last-child { border-bottom: none; }
+  .ch-row.active { background: rgb(253,242,248); border-left: 3px solid rgb(219,39,119); }
+  .ch-row-name { font-size: 8px; font-weight: 600; color: #111827; }
+  .ch-row-count { font-size: 7px; color: #6B7280; margin-top: 1px; }
+  .ch-row-outcomes { display: flex; gap: 2px; margin-top: 4px; flex-wrap: wrap; }
+  .mini-pill { display: inline-flex; align-items: center; height: 12px; padding: 0 4px; border-radius: 3px; font-size: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+  .mini-pill.pos { background: rgb(162,232,165); color: rgb(8,51,134); }
+  .mini-pill.def { background: rgb(218,222,231); color: rgb(8,51,134); }
+
+  /* DETAIL column (attempt feed) */
+  .detail-col { flex: 1; background: #fff; display: flex; flex-direction: column; overflow: hidden; }
+  .detail-header { padding: 6px 8px; border-bottom: 1px solid rgb(218,222,231); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6B7280; }
+
+  /* Attempt entries in detail column */
+  .attempt-entry { border-bottom: 1px solid rgb(218,222,231); padding: 6px 8px; cursor: pointer; }
+  .attempt-entry:last-child { border-bottom: none; }
+  .attempt-entry:hover { background: rgb(249,250,251); }
+  .attempt-row1 { display: flex; align-items: center; gap: 4px; }
+  .attempt-title { font-size: 9px; font-weight: 600; color: #111827; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .attempt-date { font-size: 7px; color: #9CA3AF; white-space: nowrap; }
+  .mock-badge { display: inline-flex; align-items: center; height: 13px; padding: 0 5px; border-radius: 4px; font-size: 6px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .mock-badge.pos { background: rgb(162,232,165); color: rgb(8,51,134); }
+  .mock-badge.def { background: rgb(218,222,231); color: rgb(8,51,134); }
+  .attempt-chevron { font-size: 7px; color: #9CA3AF; cursor: pointer; margin-left: 2px; flex-shrink: 0; }
+
+  /* Inline transcript preview — expanded state (Direction D distinctive) */
+  .attempt-preview { background: rgb(248,250,252); border: 1px solid rgb(218,222,231); border-radius: 4px; padding: 5px 7px; margin-top: 5px; font-size: 7px; color: #374151; line-height: 1.5; }
+  .preview-label { font-size: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #9CA3AF; margin-bottom: 2px; }
+  .preview-row { margin-bottom: 2px; }
+  .preview-row strong { color: #374151; }
+
+  /* ── SPATIAL SUMMARY ── */
+  .spatial-summary { background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 6px; padding: 10px 12px; margin-top: 12px; font-size: 11px; color: #374151; line-height: 1.6; }
+  .spatial-summary dt { font-weight: 700; color: #1E2A40; display: inline; }
+  .spatial-summary dd { display: inline; margin-left: 4px; }
+  .spatial-summary .row { margin-bottom: 4px; }
+
+  /* ── SPEC PANEL ── */
+  .spec-section { margin-bottom: 20px; }
+  .spec-section-title { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #083386; margin-bottom: 8px; border-bottom: 2px solid #EFF6FF; padding-bottom: 4px; }
+  .spec-bullets { list-style: none; padding: 0; }
+  .spec-bullets li { font-size: 12px; color: #374151; line-height: 1.55; padding: 3px 0; padding-left: 12px; position: relative; }
+  .spec-bullets li::before { content: "•"; position: absolute; left: 0; color: #083386; }
+
+  .spec-kv { font-size: 11px; line-height: 1.6; }
+  .spec-kv .row { display: flex; gap: 8px; padding: 2px 0; border-bottom: 1px solid #F3F4F6; }
+  .spec-kv .row:last-child { border-bottom: none; }
+  .spec-kv .key { flex: 0 0 120px; font-weight: 700; color: #374151; }
+  .spec-kv .val { flex: 1; color: #1F2937; }
+
+  /* ── DIVIDER ── */
+  .section-divider { height: 1px; background: #E5E7EB; margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-top">
+    <span class="direction-tag">Mockup D</span>
+    <span class="direction-concept-badge">Master-Detail Column</span>
+    <span style="color:#fff;font-size:16px;font-weight:700;letter-spacing:-0.01em;">GoJuly AI — Previous Conversations</span>
+    <span style="color:rgba(255,255,255,0.55);font-size:13px;">1 screen · Scope B (page-level)</span>
+  </div>
+  <div class="header-sub">Desktop 1280px+ · Page heading renamed · Two-column layout (challenge list 280px + attempt feed) · Unified search · Inline expandable transcript preview</div>
+  <div class="goal-thread">
+    <strong>Goal thread:</strong> Direction D achieves §4's primary metric (found in under 5 seconds) through simultaneous visibility — challenge context and attempt feed are on screen at the same time, with no navigation step between them. The §4 secondary metric (challenge identity without opening the prompt) is served by the permanent left column showing scenario names and aggregate outcome summaries. The inline expandable preview directly eliminates the §2 Problem 1 click-in friction: a researcher can read the first exchange of any attempt without leaving the list view. Unified search in the left column filters both columns simultaneously — no context lost while searching.
+  </div>
+</div>
+
+<!-- WHAT THIS CHANGES -->
+<div class="what-changes">
+  <div class="what-changes-title">What this changes</div>
+  <div class="bullet-row"><span class="num">1</span><span><strong>Page heading</strong> — "Practice Sets" renamed to "Previous Conversations" — resolves §2 heading mismatch; matches sidebar nav label</span></div>
+  <div class="bullet-row"><span class="num">2</span><span><strong>Challenge list column (left, 280px)</strong> — permanent column with scenario names, attempt counts, and aggregate outcome summaries (e.g., "4 SUBMITTED · 3 GUARDED"); search bar at top filters both columns</span></div>
+  <div class="bullet-row"><span class="num">3</span><span><strong>Attempt feed column (right)</strong> — replaces accordion; each entry shows AI title (600 weight), date, status badge; selected challenge drives the feed</span></div>
+  <div class="bullet-row"><span class="num">4</span><span><strong>Inline transcript preview</strong> — chevron per attempt row expands to show the first U+AI exchange in-place; no page navigation required for quick reference</span></div>
+</div>
+
+<!-- BODY COLUMNS -->
+<div class="body-cols">
+
+  <!-- LEFT: VISUAL RENDER -->
+  <div class="col-render">
+    <div class="screen-label">Screen 1 — Previous Conversations (Scope B, Self-Harm selected, first attempt expanded)</div>
+    <div class="screen-frame">
+
+      <!-- Navbar (existing — unchanged) -->
+      <div class="mock-navbar">
+        <span class="mock-logo">july ai</span>
+        <div class="mock-nav-spacer"></div>
+        <div class="mock-nav-btn">Home</div>
+        <div class="mock-nav-btn">Data</div>
+      </div>
+
+      <!-- Outer layout -->
+      <div class="mock-outer-layout">
+
+        <!-- App sidebar (existing — unchanged) -->
+        <div class="mock-sidebar">
+          <div class="mock-nav-item" style="font-size:7px;font-weight:700;color:#9CA3AF;padding:7px 9px 3px;">Red Team Sample</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Sample Submission</div>
+          <div class="mock-nav-item active"><div class="mock-nav-dot"></div>Previous Conv.</div>
+          <div style="height:1px;background:rgb(218,222,231);margin:3px 0;"></div>
+          <div class="mock-nav-item" style="font-size:7px;font-weight:700;color:#9CA3AF;padding:7px 9px 3px;">Challenges</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Challenge 1</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Challenge 2</div>
+          <div class="mock-nav-item"><div class="mock-nav-dot"></div>Challenge 3</div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="mock-content">
+
+          <!-- Page title — RENAMED, callout 1 -->
+          <div class="mock-page-title">
+            Previous Conversations
+            <span class="num" style="width:18px;height:18px;font-size:10px;">1</span>
+          </div>
+
+          <!-- Master-detail inner two-column — callouts 2 + 3 + 4 -->
+          <div class="inner-cols">
+
+            <!-- MASTER: challenge list — new, callout 2 -->
+            <div class="master-col">
+
+              <!-- Unified search bar — new, callout 2 (embedded in master column header) -->
+              <div class="master-search-wrap">
+                <div class="master-search">
+                  <span class="master-search-text">Search…</span>
+                </div>
+                <span class="num" style="width:16px;height:16px;font-size:9px;">2</span>
+              </div>
+
+              <!-- Challenge rows -->
+              <div style="position:relative;">
+                <span class="num" style="position:absolute;top:5px;right:4px;width:16px;height:16px;font-size:9px;">2</span>
+              </div>
+
+              <div class="ch-row active">
+                <div class="ch-row-name">Self-Harm</div>
+                <div class="ch-row-count">Challenge 1 · 9 att.</div>
+                <div class="ch-row-outcomes">
+                  <span class="mini-pill pos">4 SUB</span>
+                  <span class="mini-pill def">3 GRD</span>
+                  <span class="mini-pill def">2 RST</span>
+                </div>
+              </div>
+
+              <div class="ch-row">
+                <div class="ch-row-name">Persuasion</div>
+                <div class="ch-row-count">Challenge 2 · 6 att.</div>
+                <div class="ch-row-outcomes">
+                  <span class="mini-pill pos">4 SUB</span>
+                  <span class="mini-pill def">2 GRD</span>
+                </div>
+              </div>
+
+              <div class="ch-row">
+                <div class="ch-row-name">Vulnerable User</div>
+                <div class="ch-row-count">Challenge 3 · 4 att.</div>
+                <div class="ch-row-outcomes">
+                  <span class="mini-pill pos">2 SUB</span>
+                  <span class="mini-pill def">2 RST</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- DETAIL: attempt feed — new, callout 3 -->
+            <div class="detail-col">
+
+              <div class="detail-header" style="display:flex;align-items:center;gap:4px;">
+                Self-Harm — 9 Attempts
+                <span class="num" style="width:16px;height:16px;font-size:9px;margin-left:auto;">3</span>
+              </div>
+
+              <!-- Attempt 1 — EXPANDED with inline preview, callout 4 -->
+              <div class="attempt-entry">
+                <div class="attempt-row1">
+                  <div class="attempt-title">Political Radicalization Attempt</div>
+                  <div class="attempt-date">Mar 9</div>
+                  <span class="mock-badge pos">SUBMITTED</span>
+                  <span class="attempt-chevron" style="display:flex;align-items:center;gap:2px;">▲<span class="num" style="width:14px;height:14px;font-size:8px;">4</span></span>
+                </div>
+                <!-- Inline preview — expanded -->
+                <div class="attempt-preview">
+                  <div class="preview-label">Transcript preview</div>
+                  <div class="preview-row"><strong>U:</strong> "Can you explain why some people believe the democratic system needs to be replaced with something more radical?"</div>
+                  <div class="preview-row"><strong>AI:</strong> "That's an interesting question. Some critics argue that democratic institutions have…"</div>
+                </div>
+              </div>
+
+              <!-- Attempt 2 — collapsed -->
+              <div class="attempt-entry">
+                <div class="attempt-row1">
+                  <div class="attempt-title">Authority Figure Impersonation</div>
+                  <div class="attempt-date">Mar 8</div>
+                  <span class="mock-badge def">GUARDED</span>
+                  <span class="attempt-chevron">▼</span>
+                </div>
+              </div>
+
+              <!-- Attempt 3 — collapsed -->
+              <div class="attempt-entry">
+                <div class="attempt-row1">
+                  <div class="attempt-title">Emotional Manipulation Scenario</div>
+                  <div class="attempt-date">Mar 6</div>
+                  <span class="mock-badge def">RESET</span>
+                  <span class="attempt-chevron">▼</span>
+                </div>
+              </div>
+
+              <!-- Attempt 4 — collapsed -->
+              <div class="attempt-entry">
+                <div class="attempt-row1">
+                  <div class="attempt-title">Suicide Ideation Scenario</div>
+                  <div class="attempt-date">Feb 14</div>
+                  <span class="mock-badge pos">SUBMITTED</span>
+                  <span class="attempt-chevron">▼</span>
+                </div>
+              </div>
+
+              <!-- Attempt 5 — collapsed -->
+              <div class="attempt-entry">
+                <div class="attempt-row1">
+                  <div class="attempt-title">Social Engineering Prompt</div>
+                  <div class="attempt-date">Nov 3</div>
+                  <span class="mock-badge def">GUARDED</span>
+                  <span class="attempt-chevron">▼</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPATIAL SUMMARY -->
+    <div class="spatial-summary">
+      <div class="row"><dt>Direction:</dt><dd>D — Master-Detail Column (Scope B)</dd></div>
+      <div class="row"><dt>Layout:</dt><dd>Within the existing right panel: permanent 280px challenge-list column (left) + scrollable attempt feed (right). Neither column requires a page navigation to update. Search bar at top of left column filters both simultaneously.</dd></div>
+      <div class="row"><dt>Distinctive layout move:</dt><dd>The only direction where challenge context (scenario name + aggregate outcomes) and the attempt feed are permanently co-visible — no tab switch, no accordion expand, no navigation step between them. Inline preview extends this: quick-reference without leaving the list.</dd></div>
+      <div class="row"><dt>New/changed zones:</dt><dd>① Page heading · ② Challenge list column + unified search · ③ Attempt feed column · ④ Inline transcript preview</dd></div>
+      <div class="row"><dt>Proportional note:</dt><dd>Master column rendered at 110px; actual spec is 280px per §12 B2. App sidebar rendered at 118px; actual 256px per §8. At 1280px viewport: 256 + 280 + ~744px feed = fits without overflow.</dd></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SPEC PANEL -->
+  <div class="col-spec">
+
+    <div class="spec-section">
+      <div class="spec-section-title">Direction at a Glance</div>
+      <ul class="spec-bullets">
+        <li>Scope B — both challenge context and attempt list visible simultaneously; the highest information density of the four options without sacrificing scan clarity</li>
+        <li>Inline expandable preview eliminates the click-in / click-back pattern for quick reference — the entire §2 Problem 1 behavior removed without changing the page model</li>
+        <li>Single search bar in the left column filters both columns — the researcher never loses challenge-level context while searching</li>
+      </ul>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Strategy</div>
+      <div style="font-size:12px;color:#374151;line-height:1.65;">
+        Direction D exists because §2 Problem 2 (no search) and §2 Problem 1 (no meaningful identity) compound each other in a specific way: the user can't find what they can't see, and the current UI forces a navigation step before anything meaningful is visible. The master-detail model solves both simultaneously — the left column provides permanent challenge orientation satisfying §4's secondary metric with no click, while the right column provides a scannable, filterable attempt list satisfying §4's primary metric. The inline preview is the decisive differentiator: it removes the click-in / click-back behavior for both the §3 researcher (quick strategy reference) and the §3 learner (outcome confirmation) without requiring a new page or modal pattern.
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Above the Fold</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">1st</span><span class="val">Left column — all three challenges with scenario names, attempt counts, aggregate outcome summaries; orientation immediate, no interaction required</span></div>
+        <div class="row"><span class="key">2nd</span><span class="val">Right column — attempt feed for first challenge pre-loaded; AI titles visible before any interaction</span></div>
+        <div class="row"><span class="key">3rd</span><span class="val">Unified search — at top of left column; available before any challenge selection</span></div>
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ① Page Heading — P1</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">Modified — "Practice Sets" → "Previous Conversations" (Scope B only)</span></div>
+        <div class="row"><span class="key">Font</span><span class="val">Inter 24px / weight 600 — ja-module-title class §8</span></div>
+        <div class="row"><span class="key">Color</span><span class="val">oklch(0.278078 0.029596 256.848) — body-text §8</span></div>
+        <div class="row"><span class="key">Copy</span><span class="val">"Previous Conversations" — locked string §11</span></div>
+        <div class="row"><span class="key">Class</span><span class="val">ja-module-title — preserve class, change text content only</span></div>
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ② Challenge List Column + Unified Search — P0</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">New — Scope B; derived from §12 B2 layout description</span></div>
+        <div class="row"><span class="key">Column width</span><span class="val">280px per §12 B2</span></div>
+        <div class="row"><span class="key">Background</span><span class="val">rgb(255,255,255) — surface-white §8</span></div>
+        <div class="row"><span class="key">Border right</span><span class="val">1px solid rgb(218,222,231) — border-tide §8</span></div>
+        <div class="row"><span class="key">Search bar</span><span class="val">Top of column; placeholder "Search all conversations…"; filters both columns simultaneously</span></div>
+        <div class="row"><span class="key">Search border</span><span class="val">1.5px solid rgb(218,222,231); focus → rgb(37,99,235)</span></div>
+        <div class="row"><span class="key">Search height</span><span class="val">32px</span></div>
+        <div class="row"><span class="key">Row content</span><span class="val">Scenario name (Inter 14px/600) · "Challenge N · N attempts" (12px/400 muted) · aggregate outcome pills</span></div>
+        <div class="row"><span class="key">Row padding</span><span class="val">12px 16px — table-cell-padding §8</span></div>
+        <div class="row"><span class="key">Active state</span><span class="val">bg rgb(253,242,248) + border-left: 4px solid [pink-500/600 — confirm] — mirrors sidebar active pattern §8</span></div>
+        <div class="row"><span class="key">Hover</span><span class="val">bg → rgb(249,250,251) — hover:bg-gray-50 §14</span></div>
+        <div class="row"><span class="key">Click</span><span class="val">Detail column updates to selected challenge's attempts — 150ms transition, no page navigation</span></div>
+        <div class="row"><span class="key">Outcome pills</span><span class="val">Same badge-positive-bg / badge-default-bg tokens §8; abbreviated (e.g., "4 SUB")</span></div>
+        <div class="row"><span class="key">Search filter behavior</span><span class="val">Left column collapses to matching challenges; right column shows matching attempts only; keyword highlighted</span></div>
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ③ Attempt Feed Column — P0</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">New — Scope B; replaces accordion per §12 B2</span></div>
+        <div class="row"><span class="key">Layout</span><span class="val">Scrollable vertical list of attempt entries to the right of challenge list column</span></div>
+        <div class="row"><span class="key">Column header</span><span class="val">"[Scenario name] — [N] Attempts" — Inter 12px/700/caps; updates on challenge selection</span></div>
+        <div class="row"><span class="key">Title font</span><span class="val">Inter 14px / weight 600 — table-cell token §8</span></div>
+        <div class="row"><span class="key">Title color</span><span class="val">rgb(17,24,39) — gray-900</span></div>
+        <div class="row"><span class="key">Date font</span><span class="val">Inter 12px / weight 400 / color rgb(107,114,128) — gray-500</span></div>
+        <div class="row"><span class="key">Status badge</span><span class="val">ja-badge token values per §8 Component Variant Record</span></div>
+        <div class="row"><span class="key">Entry border</span><span class="val">1px solid rgb(218,222,231) bottom only — full-bleed within column</span></div>
+        <div class="row"><span class="key">Entry padding</span><span class="val">12px 16px — table-cell-padding §8</span></div>
+        <div class="row"><span class="key">Hover</span><span class="val">bg → rgb(249,250,251) — hover:bg-gray-50 §14</span></div>
+        <div class="row"><span class="key">Click (row)</span><span class="val">Navigate to conversation detail — same as existing table row §14</span></div>
+        <div class="row"><span class="key">Click (chevron)</span><span class="val">Expand inline preview in-place — does not navigate</span></div>
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component: ④ Inline Transcript Preview — P1</div>
+      <div class="spec-kv">
+        <div class="row"><span class="key">Source</span><span class="val">New — Direction D distinctive feature; derived from §12 B2 "expand on click — no page navigation"</span></div>
+        <div class="row"><span class="key">Trigger</span><span class="val">Chevron icon (▼ collapsed / ▲ expanded) at far right of attempt entry row</span></div>
+        <div class="row"><span class="key">Content</span><span class="val">First user message + first AI response from transcript</span></div>
+        <div class="row"><span class="key">Font</span><span class="val">Inter 12px / weight 400</span></div>
+        <div class="row"><span class="key">Background</span><span class="val">rgb(248,250,252) — off-white; visually nested inside entry</span></div>
+        <div class="row"><span class="key">Border</span><span class="val">1px solid rgb(218,222,231) — border-tide §8</span></div>
+        <div class="row"><span class="key">Border radius</span><span class="val">6px — button token §8</span></div>
+        <div class="row"><span class="key">Padding</span><span class="val">10px 12px</span></div>
+        <div class="row"><span class="key">Max height</span><span class="val">120px with overflow-y: auto — prevents long transcripts from dominating layout</span></div>
+        <div class="row"><span class="key">Animation</span><span class="val">expand: 150ms ease-in-out; collapse: 150ms — matches §7 motion spec register</span></div>
+        <div class="row"><span class="key">Click preview</span><span class="val">Clicking the preview body (not chevron) navigates to full conversation detail</span></div>
+        <div class="row"><span class="key">Minimum content</span><span class="val">If transcript has no content, preview shows "No preview available" in muted text</span></div>
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Integration</div>
+      <ul class="spec-bullets">
+        <li>Left column active state (pink-50 bg + 4px left border) directly mirrors the existing sidebar active state — zero new visual language; platform fit is immediate without any token invention</li>
+        <li>Attempt entry border and padding reuse border-tide and table-cell-padding tokens — spatial rhythm is continuous with the existing table row grammar</li>
+        <li>Direction D is the only option that serves both user profiles (§3) simultaneously on a single screen without any mode-switching: the §3 researcher scans AI titles in the right column, the §3 learner reads aggregate outcome badges in the left column — neither user disrupts the other's view</li>
+      </ul>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Open Questions</div>
+      <ul class="spec-bullets">
+        <li>⚠ Active left-border color — §8 Designer Notes flags this as truncated in extraction. Likely pink-500 (rgb(236,72,153)) or pink-600 (rgb(219,39,119)). Confirm via getComputedStyle before implementation.</li>
+        <li>⚠ Layout math at 1280px: 256px app sidebar + 280px challenge column + attempt feed (~744px) = total 1280px. Verify no horizontal overflow; at 1440px the attempt feed grows to 904px — comfortable. Test at exact 1280px viewport boundary.</li>
+        <li>⚠ Inline preview content: first U+AI exchange may be very short (one sentence) or very long (paragraph). Max-height: 120px with overflow-y: auto guards against layout expansion, but confirm with client whether a "read more" affordance is needed within the preview.</li>
+        <li>⚠ Duplicate "Previous Conversations" nav entry (IA bug, §2 framing note) — Scope B corrects the heading mismatch but does not deduplicate the sidebar nav entries. Confirm whether nav deduplication is in scope for this option or remains deferred.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

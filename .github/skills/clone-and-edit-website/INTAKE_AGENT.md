@@ -375,7 +375,7 @@ If the client names a reference product (Notion, Linear, Stripe, etc.), retrieve
 ### Message Structure
 Send a **single, well-structured intake message** that covers all surviving unconfirmed values from the Extraction-to-Gap Map. Organize into no more than 4 clearly labeled clusters. P0 questions always lead. Use plain language — no jargon unless the client has already used it.
 
-**Question format:** All questions in this phase must follow **Shared Protocol: Ambiguity Resolution** (defined in SKILL.md). Mandatory format: observation → two options → recommendation → one-word-answerable question. Never send an open-ended question. Never present more than two options per question. If a question does not have a recommendation attached, it is not ready to send.
+**Question format:** All questions in this phase must follow **Shared Protocol: Ambiguity Resolution** (defined in SKILL.md). Mandatory format: observation → two named options (A and B) → Option C always present as "Other — describe your own" → recommendation → answerable in one word or short phrase. Never send an open-ended question without the A/B/C scaffold. Every question must have a recommendation attached before it is ready to send.
 
 If the client's response leaves anything still unconfirmed, send one follow-up message covering only those remaining gaps. Maximum two messages total before writing the brief.
 

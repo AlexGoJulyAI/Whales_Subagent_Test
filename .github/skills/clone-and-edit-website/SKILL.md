@@ -21,18 +21,18 @@ Every invocation of this skill uses five actors. Three are spawned sub-agents (i
 |---|---|---|---|---|---|
 | 1 | **Intake Agent** | `INTAKE_AGENT.md` | Sub-agent | Discovery, classification, brief | `docs/research/PROJECT_BRIEF.md` |
 | 2 | **Orchestrator** | `SKILL.md` (this file) | Direct work — not a sub-agent | Browser extraction (Phases 1–2) + merge coordination | `docs/research/DESIGN_SYSTEM.md`, `BEHAVIORS.md`, `PAGE_TOPOLOGY.md`, screenshots |
-| 3 | **Designer Agent** | `DESIGNER_AGENT.md` | Sub-agent | User journey + pixel-spec mockup | `docs/research/USER_JOURNEY.md` + `docs/research/MOCKUP.md` |
+| 3 | **Designer Agent** | `DESIGNER_AGENT.md` | Sub-agent | User journey + pixel-spec mockup — all values derived from live extraction, no estimation | `docs/research/USER_JOURNEY.md` + `docs/research/MOCKUP.md` |
 | 4 | **Builder Agents** | `BUILDER_AGENT.md` | Many parallel sub-agents (one per component) | Build individual React/TS components from spec | `src/components/[Name].tsx` per component |
-| 5 | **Prototyper Agent** | `PROTOTYPER_AGENT.md` | Sub-agent | Next.js App Router test route | `src/app/tests/[slug]/page.tsx` + registry entry |
+| 5 | **Prototyper Agent** | `PROTOTYPER_AGENT.md` | Sub-agent — **always spawned 3× in parallel (A/B/C)** | Three variations of the Next.js test route | `src/app/tests/[slug]-v1/`, `v2/`, `v3/` + registry entries |
 
 **Actor #2 — the Orchestrator — is not a sub-agent.** Phases 1–2 (browser extraction, asset download, `DESIGN_SYSTEM.md` compilation, foundation CSS/TypeScript) are performed directly by whoever is running this skill. This work requires real browser MCP access and touches many files simultaneously — it cannot be delegated to an isolated sub-agent.
 
 **When each actor runs:**
 - **Intake Agent** — ALWAYS first, regardless of input type.
 - **Orchestrator (Phases 1–2)** — ONLY when a URL is provided. Runs directly before Designer Agent is spawned.
-- **Designer Agent** — ALWAYS after intake (and after Phases 1–2 if a URL was provided).
+- **Designer Agent** — ALWAYS after Phase 2. Produces MOCKUP.md and USER_JOURNEY.md. Every value in MOCKUP.md must trace to a specific extraction artifact — `ESTIMATED` anywhere is a build failure.
 - **Builder Agents** — Dispatched in parallel during Phase 3. One per component or small component group. Each runs in its own worktree.
-- **Prototyper Agent** — ALWAYS last.
+- **Prototyper Agent** — ALWAYS last, ALWAYS spawned three times in parallel (Variation A, B, C). The user picks one; the other two are deleted.
 
 **How to invoke a sub-agent:** Read the agent's `.md` file, then call the `Agent` tool with that file's full contents as the system prompt. Always inline the spec contents in the prompt — never tell a sub-agent to "go read the spec file."
 
@@ -300,6 +300,7 @@ Navigate to the target URL with browser MCP.
 ### Screenshots
 - Take **full-page screenshots** at desktop (1440px) and mobile (390px) viewports
 - Save to `docs/design-references/` with descriptive names
+- **Immediately after saving each screenshot, call the `Read` tool on the saved file path and view the image before proceeding.** A path on disk is not a design reference. Only a viewed screenshot is. This is non-negotiable — do not write a single line of extraction notes until you have confirmed the image renders correctly via `Read`.
 - These are your master reference — builders will receive section-specific crops/screenshots later
 
 ### Global Extraction
@@ -380,33 +381,60 @@ Use browser MCP to enumerate all assets on the page:
 ```javascript
 // Run this via browser MCP to discover all assets
 JSON.stringify({
+  // <img> elements — including srcset and <picture> sources
   images: [...document.querySelectorAll('img')].map(img => ({
-    src: img.src || img.currentSrc,
+    src: img.src,
+    currentSrc: img.currentSrc,
+    srcset: img.getAttribute('srcset') || null,
+    sizes: img.getAttribute('sizes') || null,
     alt: img.alt,
     width: img.naturalWidth,
     height: img.naturalHeight,
-    // Include parent info to detect layered compositions
-    parentClasses: img.parentElement?.className,
+    // <picture> sibling <source> elements
+    pictureSources: img.closest('picture')
+      ? [...img.closest('picture').querySelectorAll('source')].map(s => ({
+          media: s.media, srcset: s.srcset, type: s.type
+        }))
+      : null,
+    parentClasses: img.parentElement?.className || '',
     siblings: img.parentElement ? [...img.parentElement.querySelectorAll('img')].length : 0,
     position: getComputedStyle(img).position,
     zIndex: getComputedStyle(img).zIndex
   })),
+  // <video> elements
   videos: [...document.querySelectorAll('video')].map(v => ({
     src: v.src || v.querySelector('source')?.src,
+    srcset: [...v.querySelectorAll('source')].map(s => ({ src: s.src, type: s.type, media: s.media })),
     poster: v.poster,
     autoplay: v.autoplay,
     loop: v.loop,
     muted: v.muted
   })),
+  // CSS background-image URLs — parse compound values (e.g. linear-gradient + url())
   backgroundImages: [...document.querySelectorAll('*')].filter(el => {
     const bg = getComputedStyle(el).backgroundImage;
     return bg && bg !== 'none';
-  }).map(el => ({
-    url: getComputedStyle(el).backgroundImage,
-    element: el.tagName + '.' + el.className?.split(' ')[0]
+  }).map(el => {
+    const bg = getComputedStyle(el).backgroundImage;
+    // Extract all url(...) references from compound values
+    const urls = [...bg.matchAll(/url\(["']?([^"')]+)["']?\)/g)].map(m => m[1]);
+    return {
+      rawValue: bg,
+      urls,
+      element: el.tagName + (el.id ? '#' + el.id : '') + '.' + (el.className?.toString().split(' ')[0] || '')
+    };
+  }),
+  // Inline SVGs — extract full outerHTML so icon paths are captured verbatim
+  inlineSvgs: [...document.querySelectorAll('svg')].map((svg, i) => ({
+    index: i,
+    outerHTML: svg.outerHTML.slice(0, 4000),
+    viewBox: svg.getAttribute('viewBox'),
+    width: svg.getAttribute('width') || getComputedStyle(svg).width,
+    height: svg.getAttribute('height') || getComputedStyle(svg).height,
+    parentClasses: svg.parentElement?.className || '',
+    ariaLabel: svg.getAttribute('aria-label') || svg.getAttribute('title') || null
   })),
-  svgCount: document.querySelectorAll('svg').length,
-  fonts: [...new Set([...document.querySelectorAll('*')].slice(0, 200).map(el => getComputedStyle(el).fontFamily))],
+  fonts: [...new Set([...document.querySelectorAll('*')].slice(0, 300).map(el => getComputedStyle(el).fontFamily))],
   favicons: [...document.querySelectorAll('link[rel*="icon"]')].map(l => ({ href: l.href, sizes: l.sizes?.toString() }))
 });
 ```
@@ -418,6 +446,8 @@ Then write a download script that fetches everything to `public/`. Use batched p
 **Run after Phase 2 Foundation Build, before dispatching any component builder agents.**
 
 Spawn the Designer Agent to produce the User Journey and Mockup. Component builders cannot start until the Mockup is complete — the Mockup is their visual contract.
+
+**No-estimation constraint:** The Designer Agent must derive every value in MOCKUP.md directly from the extraction artifacts produced in Phases 1–2 (DESIGN_SYSTEM.md, component spec files, screenshots, BEHAVIORS.md). The word `ESTIMATED` anywhere in MOCKUP.md is a build failure — if a value cannot be confirmed from extraction, the Designer Agent must go back to the browser MCP and extract it rather than estimate. This constraint is what keeps three-variation output faithful to the live site: all three variations share the same extracted token foundation; only their spatial and compositional decisions differ.
 
 ### How to invoke
 
@@ -463,7 +493,7 @@ This is the core loop. For each section in your page topology (top to bottom), y
 
 For each section, use browser MCP to extract everything:
 
-1. **Screenshot** the section in isolation (scroll to it, screenshot the viewport). Save to `docs/design-references/`.
+1. **Screenshot** the section in isolation (scroll to it, screenshot the viewport). Save to `docs/design-references/`. **Immediately call `Read` on the saved path and view the image before writing any extraction notes or spec content for this section.** If the image fails to render, recapture and retry before proceeding.
 
 2. **Extract CSS** for every element in the section. Use the extraction script below — don't hand-measure individual properties. Run it once per component container and capture the full output:
 
@@ -474,37 +504,89 @@ For each section, use browser MCP to extract everything:
   const el = document.querySelector(selector);
   if (!el) return JSON.stringify({ error: 'Element not found: ' + selector });
   const props = [
+    // Typography
     'fontSize','fontWeight','fontFamily','lineHeight','letterSpacing','color',
-    'textTransform','textDecoration','backgroundColor','background',
+    'textTransform','textDecoration','textAlign','fontStyle','fontVariationSettings',
+    'WebkitLineClamp','whiteSpace','textOverflow','wordBreak',
+    // Box model
     'padding','paddingTop','paddingRight','paddingBottom','paddingLeft',
     'margin','marginTop','marginRight','marginBottom','marginLeft',
     'width','height','maxWidth','minWidth','maxHeight','minHeight',
-    'display','flexDirection','justifyContent','alignItems','gap',
-    'gridTemplateColumns','gridTemplateRows',
+    // Flexbox / Grid
+    'display','flexDirection','flexWrap','justifyContent','alignItems','alignSelf',
+    'gap','columnGap','rowGap','flex','flexShrink','flexGrow',
+    'gridTemplateColumns','gridTemplateRows','gridColumn','gridRow',
+    // Background / Surface
+    'backgroundColor','background','backgroundImage','backgroundSize',
+    'backgroundPosition','backgroundRepeat','backgroundClip',
+    // Border / Shadow / Shape
     'borderRadius','border','borderTop','borderBottom','borderLeft','borderRight',
-    'boxShadow','overflow','overflowX','overflowY',
-    'position','top','right','bottom','left','zIndex',
-    'opacity','transform','transition','cursor',
+    'borderColor','borderWidth','borderStyle','outline','outlineOffset',
+    'boxShadow',
+    // Overflow / Scroll
+    'overflow','overflowX','overflowY','scrollSnapAlign','scrollSnapStop','scrollMargin',
+    // Positioning
+    'position','top','right','bottom','left','zIndex','isolation',
+    // Visual effects
+    'opacity','transform','transition','cursor','visibility','pointerEvents',
     'objectFit','objectPosition','mixBlendMode','filter','backdropFilter',
-    'whiteSpace','textOverflow','WebkitLineClamp'
+    'clipPath','maskImage','maskSize','maskPosition','maskRepeat',
+    // Misc
+    'willChange','userSelect','listStyle','tableLayout','verticalAlign'
   ];
   function extractStyles(element) {
     const cs = getComputedStyle(element);
     const styles = {};
-    props.forEach(p => { const v = cs[p]; if (v && v !== 'none' && v !== 'normal' && v !== 'auto' && v !== '0px' && v !== 'rgba(0, 0, 0, 0)') styles[p] = v; });
+    // Only filter out genuinely empty/unset values — keep intentional 0px, auto, normal, transparent
+    props.forEach(p => {
+      const v = cs[p];
+      if (v !== null && v !== undefined && v !== '') styles[p] = v;
+    });
+    // Also capture pseudo-element styles for ::before and ::after
+    const before = getComputedStyle(element, '::before');
+    const after = getComputedStyle(element, '::after');
+    const beforeContent = before.content;
+    const afterContent = after.content;
+    if (beforeContent && beforeContent !== 'none' && beforeContent !== '""') {
+      styles['::before'] = { content: beforeContent, display: before.display, width: before.width, height: before.height, backgroundColor: before.backgroundColor, position: before.position, top: before.top, left: before.left };
+    }
+    if (afterContent && afterContent !== 'none' && afterContent !== '""') {
+      styles['::after'] = { content: afterContent, display: after.display, width: after.width, height: after.height, backgroundColor: after.backgroundColor, position: after.position, top: after.top, left: after.left };
+    }
     return styles;
   }
   function walk(element, depth) {
-    if (depth > 4) return null;
+    if (depth > 8) return null; // increased from 4 — complex components can go deep
     const children = [...element.children];
+    // Extract inline SVG paths verbatim — do not just count them
+    const svgEl = element.tagName === 'SVG' ? element : null;
     return {
       tag: element.tagName.toLowerCase(),
-      classes: element.className?.toString().split(' ').slice(0, 5).join(' '),
-      text: element.childNodes.length === 1 && element.childNodes[0].nodeType === 3 ? element.textContent.trim().slice(0, 200) : null,
+      id: element.id || null,
+      classes: element.className?.toString() || '', // full className, not truncated
+      text: element.childNodes.length === 1 && element.childNodes[0].nodeType === 3 ? element.textContent.trim().slice(0, 500) : null,
+      allText: element.textContent.trim().slice(0, 500), // all descendant text for verification
       styles: extractStyles(element),
-      images: element.tagName === 'IMG' ? { src: element.src, alt: element.alt, naturalWidth: element.naturalWidth, naturalHeight: element.naturalHeight } : null,
+      // Image elements — full metadata
+      images: element.tagName === 'IMG' ? {
+        src: element.src, currentSrc: element.currentSrc,
+        srcset: element.getAttribute('srcset'),
+        alt: element.alt, naturalWidth: element.naturalWidth, naturalHeight: element.naturalHeight,
+        // Check for <picture> parent
+        pictureSource: element.closest('picture')
+          ? [...element.closest('picture').querySelectorAll('source')].map(s => ({ media: s.media, srcset: s.srcset, type: s.type }))
+          : null
+      } : null,
+      // Inline SVG — extract full outerHTML so paths/icons are captured verbatim
+      svg: element.tagName === 'SVG' ? {
+        outerHTML: element.outerHTML.slice(0, 4000), // full SVG markup
+        viewBox: element.getAttribute('viewBox'),
+        width: element.getAttribute('width'),
+        height: element.getAttribute('height')
+      } : null,
       childCount: children.length,
-      children: children.slice(0, 20).map(c => walk(c, depth + 1)).filter(Boolean)
+      // All children — no truncation. Depth limit controls the tree size.
+      children: children.map(c => walk(c, depth + 1)).filter(Boolean)
     };
   }
   return JSON.stringify(walk(el, 0), null, 2);
@@ -553,15 +635,27 @@ Record the diff explicitly: "Property X changes from VALUE_A to VALUE_B, trigger
       const cs = getComputedStyle(item);
       const img = item.querySelector('img');
       // Active state detection — checks multiple signals
+      // Active state detection — explicit signals only. NO background-color heuristics.
+      // Background color is NOT a reliable active signal: striped rows, hover states, and
+      // default card surfaces all produce non-white backgrounds without being active.
       const isActive =
         item.getAttribute('aria-selected') === 'true' ||
         item.getAttribute('aria-current') === 'true' ||
         item.getAttribute('data-active') === 'true' ||
+        item.getAttribute('data-selected') === 'true' ||
+        item.getAttribute('data-state') === 'active' ||
+        item.getAttribute('data-state') === 'selected' ||
         [...item.classList].some(c =>
-          c.includes('active') || c.includes('selected') || c.includes('current')
-        ) ||
-        (cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && cs.backgroundColor !== 'rgb(255, 255, 255)') ||
-        parseFloat(cs.borderLeftWidth) >= 3;
+          c === 'active' || c === 'selected' || c === 'current' ||
+          c.endsWith('-active') || c.endsWith('-selected') || c.endsWith('--active') || c.endsWith('--selected')
+        );
+      // Separately record raw background and border-left for the builder to verify visually
+      const rawActiveIndicators = {
+        backgroundColor: cs.backgroundColor,
+        borderLeftWidth: cs.borderLeftWidth,
+        borderLeftColor: cs.borderLeftColor,
+        borderLeftStyle: cs.borderLeftStyle,
+      };
       return {
         index,
         // Text
@@ -585,13 +679,11 @@ Record the diff explicitly: "Property X changes from VALUE_A to VALUE_B, trigger
           if (bg && bg !== 'none') return 'css-background';
           return 'none';
         })(),
-        // State
+        // State — from explicit DOM signals only (see isActive logic above)
         isActive,
+        // Raw computed indicators — builder must cross-reference with screenshot to confirm
+        rawActiveIndicators,
         classes: item.className?.toString() || '',
-        // Computed state indicators
-        backgroundColor: cs.backgroundColor,
-        borderLeftWidth: cs.borderLeftWidth,
-        borderLeftColor: cs.borderLeftColor,
         fontWeight: cs.fontWeight,
         // Children count (helps detect header vs. leaf items)
         childElementCount: item.childElementCount,
@@ -848,46 +940,80 @@ Only after this visual QA pass and screenshot save is the Next.js clone complete
 Before spawning the Prototyper Agent, verify that every required extraction artifact exists on disk. The Prototyper builds from these files — if any are absent, it will fill gaps from memory, producing invented content, wrong structure, or stale data from prior sessions.
 
 ```
-EXTRACTION COMPLETENESS GATE
+EXTRACTION COMPLETENESS GATE — CLONE PATH
   docs/research/PROJECT_BRIEF.md             [exists | MISSING — block]
-  docs/research/DESIGN_SYSTEM.md             [exists | MISSING — block]
+  docs/research/DESIGN_SYSTEM.md             [exists + no ESTIMATED values | MISSING or ESTIMATED — block]
   docs/research/BEHAVIORS.md                 [exists | MISSING — block]
   docs/research/PAGE_TOPOLOGY.md             [exists | MISSING — block]
-  docs/research/USER_JOURNEY.md              [exists | MISSING — block]
-  docs/research/MOCKUP.md                    [exists | MISSING — block]
-  docs/design-references/ (≥1 screenshot)    [exists | MISSING — block]
-  live-ref-[slug]-desktop.png (Phase 5)      [exists | MISSING — block]
-  docs/research/components/ (≥1 spec file)   [exists | MISSING — block]
+  docs/design-references/ (≥1 screenshot)    [exists + all screenshots confirmed Read | MISSING — block]
+  live-ref-[slug]-desktop.png (Phase 5)      [exists + confirmed Read | MISSING — block]
+  docs/research/components/ spec coverage:
+    Every section in PAGE_TOPOLOGY.md has a spec file  [yes | NO — list missing sections — block]
+    Every spec has Computed Styles section populated   [yes | ESTIMATED/empty — block]
+    Every repeating element has Live Data Record JSON  [yes | missing — block]
+    Live DOM item counts recorded in all specs         [yes | missing — block]
+  docs/research/USER_JOURNEY.md             [exists | MISSING — block]
+  docs/research/MOCKUP.md                    [exists + no ESTIMATED values | MISSING or ESTIMATED — block]
 ```
 
-**If ANY artifact is MISSING:** Do NOT spawn the Prototyper. Return to the phase that produces the missing artifact and complete it. The Prototyper receiving an incomplete context is the root cause of invented content, fabricated data models, and wrong text strings in the prototype. There are no shortcuts — a placeholder or stub artifact is not a substitute for the real artifact.
+**Content quality rules — file existence is not enough:**
+- A `DESIGN_SYSTEM.md` that contains the word `ESTIMATED` anywhere in the color, typography, or spacing sections is **incomplete** — re-extract those values from the live page before proceeding
+- A spec file where Computed Styles section says "see screenshot" or "approximately" is **incomplete** — run the extraction script and populate exact values
+- A Live Data Record that says "N/A" for a visible list or nav is **incorrect** — run the repeating element extraction script
 
-**If the page is auth-gated and live extraction was not possible:** The component spec files MUST contain extracted Playwright snapshot data (`.playwright-mcp/*.yml` content) for every nav, sidebar, and repeating element. Snapshot data is the fallback for live extraction — it is not optional, it is the minimum. If no snapshot exists, capture one before proceeding.
+**If the page is auth-gated and live extraction was not possible:** The component spec files MUST contain extracted Playwright accessibility-tree snapshot data for every nav, sidebar, and repeating element. To capture a snapshot via Playwright MCP, use `mcp__playwright__browser_snapshot` after navigating to the page (requires auth credentials). The snapshot YAML contains every visible text string, role, and hierarchy — copy it verbatim into the spec's Live Data Record. A snapshot is the minimum floor for auth-gated content; it is not optional. If no snapshot exists, capture one before proceeding.
 
-### How to invoke
+### How to invoke — always three Prototyper Agents in parallel
 
-1. Read `PROTOTYPER_AGENT.md` from this skill directory
-2. Use the `Agent` tool with that file's contents as the system prompt, passing:
-   - `docs/research/PROJECT_BRIEF.md`
-   - `docs/research/USER_JOURNEY.md`
-   - `docs/research/MOCKUP.md`
-   - All screenshots in `docs/design-references/`
-   - `docs/research/DESIGN_SYSTEM.md`
-   - Any Figma files or brand assets uploaded by the user
-   - The note: "The Next.js clone has been built and QA'd. Your deliverable is a Next.js App Router test route saved to `src/app/tests/[slug]/page.tsx`, registered in `src/lib/test-registry.ts`. Use the DESIGN_SYSTEM.md and MOCKUP.md as your primary token sources. TypeScript strict — `npx tsc --noEmit` and `npm run build` must pass."
-3. The Prototyper Agent runs its full pipeline (Phase 0 silent pre-build → build execution → self-QA → evaluation report)
-4. Output saved to: `src/app/tests/[slug]/page.tsx`; route registered in `src/lib/test-registry.ts`
+Spawn three Prototyper Agents simultaneously, one per variation. Each runs in its own worktree branch.
 
-### What the test route is
+For each variation (A, B, C), read `PROTOTYPER_AGENT.md` then call the `Agent` tool with:
+- `docs/research/PROJECT_BRIEF.md`
+- `docs/research/USER_JOURNEY.md`
+- `docs/research/MOCKUP.md`
+- All screenshots in `docs/design-references/`
+- `docs/research/DESIGN_SYSTEM.md`
+- Any Figma files or brand assets uploaded by the user
+- The variation mandate prepended to the prompt:
 
-The test route is NOT a simplified version of the Next.js clone. It is a purpose-built, fully interactive page with:
+| Variation | Route slug | Mandate to prepend |
+|---|---|---|
+| **A — Faithful** | `[slug]-v1` | `"You are building Variation A — Faithful. Extend the closest existing pattern in DESIGN_SYSTEM.md for every layout decision. No new spatial choices."` |
+| **B — Recomposed** | `[slug]-v2` | `"You are building Variation B — Recomposed. Use identical tokens as A but explore an alternative spatial arrangement: different grid, stacking order, or information hierarchy."` |
+| **C — Signature** | `[slug]-v3` | `"You are building Variation C — Signature. Apply exactly one bold visual differentiator using only tokens in DESIGN_SYSTEM.md. State it as // SIGNATURE MOVE: at the top of the file."` |
+
+All three agents receive identical extraction artifacts — they diverge only in spatial/compositional decisions, never in token values or content.
+
+After all three complete:
+1. Take a screenshot of each at 1440px viewport
+2. Present the comparison to the user:
+
+```
+THREE-VARIATION OUTPUT — [slug]
+
+  Variation A ([slug]-v1): localhost:3000/tests/[slug]-v1
+    Approach: [one sentence — which pattern was extended]
+
+  Variation B ([slug]-v2): localhost:3000/tests/[slug]-v2
+    Approach: [one sentence — what was recomposed vs. A]
+
+  Variation C ([slug]-v3): localhost:3000/tests/[slug]-v3
+    Approach: [one sentence — what the signature move is]
+
+Which variation would you like to keep? (A/B/C, or describe a direction to explore further)
+```
+
+3. After the user selects: promote the chosen route to the canonical slug (`[slug]`), delete the other two routes and their registry entries, update `DESIGN_SYSTEM.md` if Variation C introduced a new documented pattern.
+
+### What each test route is
+
+Each test route is a purpose-built, fully interactive page:
 - React functional components with hooks — TypeScript strict, no `any`
 - Full interactivity: every trigger-response pair from the User Journey implemented via `useState`/`useEffect`
 - Pixel-faithful rendering: every token from the Mockup applied via Tailwind utility classes
 - The complete primary flow navigable end-to-end
-- A detailed audit log in file header comments (handoff validation, asset inventory, delta log, build decision log)
 
-The reviewer opens it via `npm run dev` at `localhost:3000/tests/[slug]` — no separate build step, no browser-drag required.
+The reviewer opens any variation via `npm run dev` at `localhost:3000/tests/[slug]-v1` (or v2/v3).
 
 ---
 
@@ -913,13 +1039,9 @@ When the user asks for a change (e.g., "add a testimonials section", "change the
 
 ### Three-Variation Edit Mode
 
-**Trigger:** When the edit is classified as **new component** or **layout change**, do NOT implement a single version. Instead, spawn three Prototyper Agents in parallel — each building a distinct variation of the edit simultaneously.
+**Trigger:** Every edit — always. Regardless of whether the change is a new component, layout change, content swap, or style tweak, spawn three Prototyper Agents in parallel. The user always sees three options and picks one.
 
-**Why:** New components and layout changes involve compositional judgment calls that the design system alone cannot resolve. Generating three options in parallel lets the user see the decision space and pick their preferred direction rather than committing to the first reasonable interpretation.
-
-**Skip variation mode for:**
-- **Content changes** — only one correct answer (the right text/data)
-- **Style tweaks** — only one correct answer (the right token value)
+**Why:** Every implementation decision has a decision space, even content changes and style tweaks. Three parallel options make that space visible and let the user pick their preferred direction rather than committing to the first reasonable interpretation.
 
 #### Variation Mode Protocol
 
