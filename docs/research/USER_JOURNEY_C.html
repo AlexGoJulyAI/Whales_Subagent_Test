@@ -3,233 +3,415 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction C — Master-Detail Column · User Journey</title>
+  <title>Direction C — Portfolio Dashboard | Previous Conversations Redesign</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Inter, system-ui, sans-serif; background: #F1F5F9; color: #1E2A40; padding: 32px 16px 64px; }
-    .wrap { max-width: 660px; margin: 0 auto; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F8FAFC; color: #1E2A40; line-height: 1.5; }
+    .page { max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; }
 
-    /* ── HEADER ─────────────────────────────────────────────── */
-    .header { background: #083386; border-radius: 12px; padding: 28px 32px; margin-bottom: 28px; }
-    .hdr-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.82); margin-bottom: 22px; }
-    .hdr-blocks { margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .hdr-block-eyebrow { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
-    .hdr-block-prob .hdr-block-eyebrow { color: #F87171; }
-    .hdr-block-sol  .hdr-block-eyebrow { color: #4ADE80; }
-    .hdr-block-body { font-size: 13px; color: rgba(255,255,255,.88); line-height: 1.6; margin: 0; }
-    .hdr-divider { height: 1px; background: rgba(255,255,255,.12); margin: 0 0 14px; }
-    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.38); margin-bottom: 12px; }
-    .hdr-shapes { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+    /* ── HEADER ── */
+    .header { background: #1E2A40; border-radius: 14px; padding: 30px 32px 26px; margin-bottom: 32px; box-shadow: 0 4px 24px rgba(8,51,134,.18); }
+    .hdr-kicker { font-size: 11px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 6px; }
+    .hdr-direction { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 20px; line-height: 1.2; letter-spacing: -.01em; }
+    .hdr-direction span { color: #7C3AED; }
+
+    .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px; }
+    .callout-prob { background: rgba(239,68,68,.10); border-color: #EF4444; }
+    .callout-sol  { background: rgba(22,163,74,.10); border-color: #16A34A; }
+    .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
+    .callout-prob .callout-label { color: #FCA5A5; }
+    .callout-sol  .callout-label { color: #86EFAC; }
+    .callout-body { font-size: 12px; color: rgba(255,255,255,.82); line-height: 1.6; }
+
+    .hdr-divider { height: 1px; background: rgba(255,255,255,.10); margin: 20px 0 16px; }
+    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.32); margin-bottom: 12px; }
+    .hdr-shapes { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
     .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .hdr-shape-item span { font-size: 9px; color: rgba(255,255,255,.55); font-weight: 600; white-space: nowrap; }
-    .hs-start { width: 52px; height: 22px; background: #111827; border-radius: 999px; border: 2px solid rgba(255,255,255,.20); }
-    .hs-click { width: 44px; height: 22px; background: #7C3AED; border-radius: 10px; }
-    .hs-type  { width: 44px; height: 22px; background: #7C3AED; border-radius: 0; }
-    .hs-view  { width: 44px; height: 22px; background: #7C3AED; border-radius: 999px; }
-    .hs-sys   { width: 52px; height: 22px; background: #0284C7; border-radius: 6px; }
-    .hs-dec-wrap { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
-    .hs-dec { width: 27px; height: 27px; background: #2563EB; transform: rotate(45deg); border-radius: 3px; }
-    .hs-end { width: 52px; height: 22px; background: #15803D; border-radius: 999px; }
+    .hdr-shape-item span { font-size: 8px; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; white-space: nowrap; text-transform: uppercase; }
 
-    /* ── FLOW SECTION ───────────────────────────────────────── */
-    .flow-block { margin-bottom: 32px; }
-    .flow-header { background: #1E2A40; border-radius: 10px 10px 0 0; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
-    .flow-num { font-size: 36px; font-weight: 900; color: rgba(255,255,255,.10); line-height: 1; flex-shrink: 0; }
-    .flow-meta { }
-    .flow-purpose { font-size: 13px; font-weight: 700; color: #fff; }
-    .flow-subtitle { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; }
-    .flow-steps { border: 1px solid #E5E7EB; border-top: none; border-radius: 0 0 10px 10px; padding: 28px 20px 24px; background: #F8FAFC; }
+    /* Legend shapes */
+    .hs-start { width: 56px; height: 24px; background: #111827; border-radius: 999px; }
+    .hs-click { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; }
+    .hs-type  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
+    .hs-view  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
+    .hs-sys   { width: 56px; height: 24px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; }
+    .hs-dec-wrap { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+    .hs-dec { width: 28px; height: 28px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 3px; }
+    .hs-end { width: 56px; height: 24px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
 
-    /* ── FLOWCHART ──────────────────────────────────────────── */
+    /* ── FLOW WRAPPER ── */
+    .flow-section { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,42,64,.07); }
+    .flow-title-bar { background: #1E2A40; padding: 16px 24px; }
+    .flow-title-bar-kicker { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.42); margin-bottom: 3px; }
+    .flow-title-bar-label { font-size: 14px; font-weight: 800; color: #fff; }
+    .flow-body { padding: 32px 24px 28px; }
+
+    /* ── FLOWCHART ── */
     .fc { display: flex; flex-direction: column; align-items: center; }
     .nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
-    .n-start { background: #111827; color: #fff; border-radius: 999px; padding: 10px 28px; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
-    .n-end   { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 10px 28px; color: #14532D; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
-    .n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+
+    /* ── NODE CLASSES ── */
+    .n-start {
+      background: #111827; color: #fff;
+      border-radius: 999px;
+      padding: 11px 32px;
+      font-size: 12px; font-weight: 700;
+      text-align: center; max-width: 340px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.28);
+    }
+    .n-end {
+      background: #DCFCE7; border: 2px solid #16A34A;
+      border-radius: 999px;
+      padding: 11px 32px;
+      color: #14532D; font-size: 12px; font-weight: 700;
+      text-align: center; max-width: 340px;
+    }
+    .n-click {
+      background: #F3EEFF; border: 2px solid #7C3AED;
+      border-radius: 16px;
+      padding: 11px 18px;
+      color: #3B0764; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
     .n-click .nt { color: #7C3AED; }
-    .n-type  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
-    .n-type .nt  { color: #7C3AED; }
-    .n-view  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 10px 24px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
-    .n-view .nt  { color: #7C3AED; }
-    .n-sys   { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; padding: 10px 16px; color: #0C4A6E; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
-    .n-sys .nt   { color: #0284C7; }
-    .n-dec-wrap  { width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .n-dec       { width: 96px; height: 96px; background: #BFDBFE; border: 2px solid #2563EB; border-radius: 8px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; }
-    .n-dec-text  { transform: rotate(-45deg); color: #1D4ED8; font-size: 10px; font-weight: 700; text-align: center; max-width: 70px; line-height: 1.35; }
+    .n-type {
+      background: #F3EEFF; border: 2px solid #7C3AED;
+      border-radius: 0;
+      padding: 11px 18px;
+      color: #3B0764; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-type .nt { color: #7C3AED; }
+    .n-view {
+      background: #F3EEFF; border: 2px solid #7C3AED;
+      border-radius: 999px;
+      padding: 11px 26px;
+      color: #3B0764; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-view .nt { color: #7C3AED; }
+    .n-sys {
+      background: #E0F2FE; border: 2px solid #0284C7;
+      border-radius: 8px;
+      padding: 11px 18px;
+      color: #0C4A6E; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-sys .nt { color: #0284C7; }
+
+    /* ── DECISION DIAMOND ── */
+    .n-dec-wrap {
+      display: flex; align-items: center; justify-content: center;
+      width: 140px; height: 140px; flex-shrink: 0;
+    }
+    .n-dec {
+      width: 96px; height: 96px;
+      background: #BFDBFE; border: 2px solid #2563EB;
+      transform: rotate(45deg);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .n-dec-text {
+      transform: rotate(-45deg);
+      font-size: 10px; font-weight: 800; color: #1D4ED8;
+      text-align: center; line-height: 1.3;
+      max-width: 70px;
+    }
 
     /* Connectors */
     .fc-conn { display: flex; flex-direction: column; align-items: center; padding: 2px 0; }
-    .fc-conn-line  { width: 2px; height: 24px; background: #CBD5E1; }
+    .fc-conn-line { width: 2px; height: 24px; background: #CBD5E1; }
     .fc-conn-arrow { font-size: 11px; color: #94A3B8; margin-top: -2px; }
 
-    /* Branches */
-    .fc-branches { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; justify-content: center; width: 100%; }
-    .fc-branch   { display: flex; flex-direction: column; align-items: center; }
-    .fc-bl-y { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #16A34A; margin-bottom: 8px; }
-    .fc-bl-n { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #DC2626; margin-bottom: 8px; }
-    .fc-branch .n-click, .fc-branch .n-type, .fc-branch .n-view, .fc-branch .n-sys, .fc-branch .n-end { max-width: 220px; }
+    /* step number badge */
+    .step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px;
+      background: #083386; color: #fff;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 800;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    /* node with step badge layout */
+    .n-with-badge { display: flex; flex-direction: column; align-items: center; }
+
+    /* ── THREE-WAY BRANCH ── */
+    .fc-3branches {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+    }
+    .fc-branch { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 0; }
+    .fc-branch-label {
+      font-size: 9px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .06em; margin-bottom: 8px; white-space: nowrap;
+    }
+    .fc-branch-label.filter { color: #2563EB; }
+    .fc-branch-label.search { color: #7C3AED; }
+    .fc-branch-label.browse { color: #64748B; }
+
+    /* Branch nodes — narrower max-width for 3-col layout */
+    .fc-branch .n-click,
+    .fc-branch .n-type,
+    .fc-branch .n-view,
+    .fc-branch .n-sys { max-width: 180px; font-size: 11px; padding: 8px 12px; }
+
+    /* Merge connector: three lines converging to center */
+    .fc-merge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin-top: 0;
+    }
+    .fc-merge-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      width: 100%;
+      height: 36px;
+      position: relative;
+    }
+    /* The horizontal bar sits at the top of the merge-row */
+    .fc-merge-hbar {
+      position: absolute;
+      top: 0;
+      left: 16.67%;
+      right: 16.67%;
+      height: 2px;
+      background: #CBD5E1;
+    }
+    /* Three vertical drops from each branch to the bar */
+    .fc-merge-drop {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 36px;
+      background: #CBD5E1;
+    }
+    .fc-merge-drop.left   { left: calc(16.67% + 0px); transform: translateX(-50%); }
+    .fc-merge-drop.center { left: 50%;                transform: translateX(-50%); }
+    .fc-merge-drop.right  { right: calc(16.67% + 0px); transform: translateX(50%); }
+
+    /* Single vertical from bar to shared node */
+    .fc-merge-stem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Shared merge node (special — outlined navy, no fill) */
+    .n-shared {
+      background: #EFF6FF; border: 2px solid #083386; border-radius: 16px;
+      padding: 10px 16px; color: #083386; font-size: 12px; font-weight: 700;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-shared .nt { color: #083386; opacity: .5; }
   </style>
 </head>
 <body>
-<div class="wrap">
+<div class="page">
 
-  <!-- ── DOCUMENT HEADER ────────────────────────────────────── -->
+  <!-- ════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════ -->
   <div class="header">
-    <div class="hdr-kicker">Direction C &middot; Master-Detail Column &middot; User Journey &middot; GoJuly AI — Previous Conversations</div>
-    <div class="hdr-blocks">
-      <div class="hdr-block hdr-block-prob">
-        <div class="hdr-block-eyebrow">The Problem</div>
-        <p class="hdr-block-body">To find any past conversation, users must click into every attempt and read the full transcript. There is no way to compare attempts across challenges — each is siloed behind an accordion. A researcher wanting to reference a specific exchange must navigate away, then come back. There is no quick-reference view.</p>
-      </div>
-      <div class="hdr-block hdr-block-sol">
-        <div class="hdr-block-eyebrow">Solution</div>
-        <p class="hdr-block-body">A fixed left column (280px) lists all challenges with scenario names, attempt counts, and aggregate outcome summaries. Selecting a challenge updates the right-column feed without any page navigation. Attempt entries can expand inline to show the first exchange — a quick-reference that never leaves the page. A search bar in the left column filters both the challenge list and the attempt feed simultaneously.</p>
-      </div>
+    <div class="hdr-kicker">GoJuly · User Journey</div>
+    <div class="hdr-direction">Direction C — <span>Portfolio Dashboard</span></div>
+
+    <div class="callout callout-prob">
+      <div class="callout-label">Problem</div>
+      <div class="callout-body">The conversations list only shows dates — there's no way to see what was discussed without clicking into each entry. The three challenge sections are collapsed by default, requiring separate accordion interactions. There's no summary of a user's attempt history across all challenges.</div>
     </div>
+    <div class="callout callout-sol">
+      <div class="callout-label">Solution — Direction C</div>
+      <div class="callout-body">Challenge summary tiles at the top give an at-a-glance portfolio view — attempt counts, success rates, last activity. Below them, every attempt across all challenges loads in one unified list with AI-generated topic names. Users can filter by challenge tile, search by keyword, or simply scroll — all paths lead directly to the conversation.</div>
+    </div>
+
     <div class="hdr-divider"></div>
-    <div class="hdr-legend-title">How to read this diagram:</div>
+    <div class="hdr-legend-title">Node Legend</div>
     <div class="hdr-shapes">
-      <div class="hdr-shape-item"><div class="hs-start"></div><span>Start / End</span></div>
-      <div class="hdr-shape-item"><div class="hs-click"></div><span>Click</span></div>
-      <div class="hdr-shape-item"><div class="hs-type"></div><span>Type</span></div>
-      <div class="hdr-shape-item"><div class="hs-view"></div><span>View</span></div>
-      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System response</span></div>
-      <div class="hdr-shape-item"><div class="hs-dec-wrap"><div class="hs-dec"></div></div><span>Decision</span></div>
-      <div class="hdr-shape-item"><div class="hs-end"></div><span>Outcome</span></div>
+      <div class="hdr-shape-item">
+        <div class="hs-start"></div>
+        <span>START / END</span>
+      </div>
+      <div class="hdr-shape-item">
+        <div class="hs-click"></div>
+        <span>USER CLICKS</span>
+      </div>
+      <div class="hdr-shape-item">
+        <div class="hs-type"></div>
+        <span>USER TYPES</span>
+      </div>
+      <div class="hdr-shape-item">
+        <div class="hs-view"></div>
+        <span>USER VIEWS</span>
+      </div>
+      <div class="hdr-shape-item">
+        <div class="hs-sys"></div>
+        <span>SYSTEM</span>
+      </div>
+      <div class="hdr-shape-item">
+        <div class="hs-dec-wrap"><div class="hs-dec"></div></div>
+        <span>DECISION</span>
+      </div>
+      <div class="hdr-shape-item">
+        <div class="hs-end"></div>
+        <span>SUCCESS</span>
+      </div>
     </div>
   </div>
 
-  <!-- ── FLOW 1: RESEARCHER — CHALLENGE SELECTOR + TITLE SCAN ─ -->
-  <div class="flow-block">
-    <div class="flow-header">
-      <div class="flow-num">01</div>
-      <div class="flow-meta">
-        <div class="flow-purpose">Researcher selects a challenge from the left column and scans AI titles to find a specific attempt</div>
-        <div class="flow-subtitle">Direction C — left column always visible · challenge + feed update in place · no page navigation</div>
-      </div>
+  <!-- ════════════════════════════════════════
+       FLOW — Single unified journey
+  ════════════════════════════════════════ -->
+  <div class="flow-section">
+    <div class="flow-title-bar">
+      <div class="flow-title-bar-kicker">Full User Journey</div>
+      <div class="flow-title-bar-label">Locate a past conversation by topic — Portfolio Dashboard</div>
     </div>
-    <div class="flow-steps">
+    <div class="flow-body">
       <div class="fc">
 
-        <div class="n-start">Researcher opens "Previous Conversations"</div>
+        <!-- STEP 1 — START -->
+        <div class="n-start">User clicks "Previous Conversations" in sidebar</div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-        <div class="n-sys"><span class="nt">System</span>Two-column layout loads — left: challenge list with scenario names + attempt counts + aggregate badges; right: first challenge's attempt feed pre-loaded</div>
+        <!-- STEP 2 — SYSTEM: page loads -->
+        <div class="n-sys">
+          <span class="nt">System</span>
+          Page loads: row of 3 challenge summary tiles (attempt count, last attempt date, success indicator) + unified flat list of ALL attempts below — each row shows AI topic name, challenge badge, date, result
+        </div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-        <div class="n-view"><span class="nt">View</span>Left column — "Self-Harm" · 9 attempts · "3 GUARDED · 2 RESET" badge summary; "Persuasion" · 6 attempts; "Vulnerable User" · 4 attempts</div>
+        <!-- STEP 3 — VIEW: scan tiles -->
+        <div class="n-view">
+          <span class="nt">User Views</span>
+          Dashboard tiles — "Challenge 1: 8 attempts, last Mar 9" — portfolio overview loads in one glance before any interaction
+        </div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-        <div class="n-click"><span class="nt">Click</span>Target challenge row in left column — row highlights pink-50 with 4px left border</div>
+        <!-- STEP 4 — VIEW: scan list -->
+        <div class="n-view">
+          <span class="nt">User Views</span>
+          Unified list below tiles — topic names scannable immediately; challenge badge pills color-code each row (C1 blue / C2 purple / C3 green)
+        </div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
 
-        <div class="n-sys"><span class="nt">System</span>Right column updates — attempt feed for selected challenge; 150ms transition, no page navigation</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Attempt entries — AI title (600 weight) · date · status badges · expand chevron on each row</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Target found by title?</div></div></div>
-
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">Yes</div>
-            <div class="n-click"><span class="nt">Click</span>Target attempt row — navigates to conversation detail</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Found by title scan — under 5 seconds ✓</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">No</div>
-            <div class="n-click"><span class="nt">Click</span>Expand chevron on likely attempt — inline preview opens below row</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-view"><span class="nt">View</span>First exchange inline — user message + AI response — confirms or rules out the attempt</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Found via inline preview — never left the page ✓</div>
+        <!-- STEP 5 — DECISION: how to find? -->
+        <div class="n-dec-wrap">
+          <div class="n-dec">
+            <div class="n-dec-text">How to find the conversation?</div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
+        <!-- THREE-WAY BRANCHES -->
+        <div class="fc-3branches">
 
-  <!-- ── FLOW 2: LEARNER — ORIENTATION VIA LEFT COLUMN ─────── -->
-  <div class="flow-block">
-    <div class="flow-header">
-      <div class="flow-num">02</div>
-      <div class="flow-meta">
-        <div class="flow-purpose">Learner reads aggregate outcomes per challenge and builds a picture of their full history</div>
-        <div class="flow-subtitle">Direction C — outcome summaries on left column cards · no drilling required</div>
-      </div>
-    </div>
-    <div class="flow-steps">
-      <div class="fc">
-
-        <div class="n-start">Learner opens "Previous Conversations" — wants to understand their progress</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Left column — challenge cards with scenario name, attempt count, and aggregate badge summary ("3 GUARDED · 2 RESET") — full picture before any click</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Right column pre-loaded with first challenge's attempt feed — AI titles + badges visible immediately</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-click"><span class="nt">Click</span>Second challenge row in left column — "Persuasion · 6 attempts · 4 SUBMITTED"</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-sys"><span class="nt">System</span>Right column replaces with Persuasion attempt feed — left column row highlights, right column scrolls to top</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Attempt entries for Persuasion — titles, dates, badges — challenge identity and outcome clear</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-end">Full history understood — scenarios named, outcomes legible, zero clicks into transcripts ✓</div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ── FLOW 3: SEARCH — FILTERS BOTH COLUMNS ─────────────── -->
-  <div class="flow-block">
-    <div class="flow-header">
-      <div class="flow-num">03</div>
-      <div class="flow-meta">
-        <div class="flow-purpose">User searches by keyword — left column and attempt feed filter simultaneously</div>
-        <div class="flow-subtitle">Direction C — single search filters challenge list + attempt feed · no context switch needed</div>
-      </div>
-    </div>
-    <div class="flow-steps">
-      <div class="fc">
-
-        <div class="n-start">User has a keyword in mind — wants to find a specific passage</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Search bar at top of left column — placeholder "Search all conversations…"</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-type"><span class="nt">Type</span>Keyword into search bar — both columns update as each character is typed</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-sys"><span class="nt">System</span>Left column shows only challenges containing matches; right column shows matching attempts with keyword highlighted in title/excerpt</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Match found in feed?</div></div></div>
-
-        <div class="fc-branches">
+          <!-- BRANCH A: Filter by tile -->
           <div class="fc-branch">
-            <div class="fc-bl-y">Yes</div>
-            <div class="n-click"><span class="nt">Click</span>Matching attempt row — opens conversation detail at matched passage</div>
+            <div class="fc-branch-label filter">Filter</div>
+
+            <!-- 6A — CLICK tile -->
+            <div class="n-click">
+              <span class="nt">User Clicks</span>
+              Challenge tile (e.g., Challenge 1) at top of page
+            </div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Specific exchange found — keyword highlighted ✓</div>
+
+            <!-- 6A SYS — list filters -->
+            <div class="n-sys">
+              <span class="nt">System</span>
+              List filters to Challenge 1 only. Tile turns active (navy bg). Filter pill "Showing: Challenge 1 &times;" appears above list
+            </div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+            <!-- 6A VIEW — scans filtered list -->
+            <div class="n-view">
+              <span class="nt">User Views</span>
+              Only C1 attempts — topic names scannable in focused context
+            </div>
           </div>
+
+          <!-- BRANCH B: Search by keyword -->
           <div class="fc-branch">
-            <div class="fc-bl-n">No results</div>
-            <div class="n-view"><span class="nt">View</span>Left column shows "No matches" — empty right column with zero-state message</div>
+            <div class="fc-branch-label search">Search</div>
+
+            <!-- 6B — TYPE keyword -->
+            <div class="n-type">
+              <span class="nt">User Types</span>
+              Keyword in search bar above the list (e.g., "prompt injection")
+            </div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-click"><span class="nt">Click</span>Clear search — restores full list; tries different keyword</div>
+
+            <!-- 6B SYS — real-time filter -->
+            <div class="n-sys">
+              <span class="nt">System</span>
+              List filters in real-time; non-matching rows fade out. Match count shown in search bar
+            </div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Search refined — attempt located ✓</div>
+
+            <!-- 6B VIEW — scans results -->
+            <div class="n-view">
+              <span class="nt">User Views</span>
+              Matching topic names highlighted across all challenges simultaneously
+            </div>
+          </div>
+
+          <!-- BRANCH C: Browse all -->
+          <div class="fc-branch">
+            <div class="fc-branch-label browse">Browse</div>
+
+            <!-- 6C VIEW — scroll -->
+            <div class="n-view">
+              <span class="nt">User Views</span>
+              Scrolls through unified list — all attempts from all 3 challenges, newest first
+            </div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+            <!-- 6C VIEW — topic names visible -->
+            <div class="n-view">
+              <span class="nt">User Views</span>
+              Topic name (primary, large) + challenge badge pill — enough context per row without clicking into anything
+            </div>
+          </div>
+
+        </div>
+        <!-- END THREE-WAY BRANCHES -->
+
+        <!-- MERGE CONNECTOR -->
+        <div class="fc-merge">
+          <div class="fc-merge-row">
+            <div class="fc-merge-hbar"></div>
+            <div class="fc-merge-drop left"></div>
+            <div class="fc-merge-drop center"></div>
+            <div class="fc-merge-drop right"></div>
+          </div>
+          <div class="fc-merge-stem">
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
           </div>
         </div>
+
+        <!-- STEP 7 — CLICK: attempt row (shared) -->
+        <div class="n-shared">
+          <span class="nt">User Clicks</span>
+          Attempt row from filtered / searched / browsed list
+        </div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <!-- STEP 8 — SYSTEM: open feedback page -->
+        <div class="n-sys">
+          <span class="nt">System</span>
+          Conversation feedback page opens in new tab — full exchange + AI evaluation visible
+        </div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <!-- STEP 9 — END -->
+        <div class="n-end">User is viewing the conversation feedback page</div>
 
       </div>
     </div>

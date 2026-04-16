@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Brief — GoJuly AI — Previous Conversations Nav Fix</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
+    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
+
+    /* ── HEADER ── */
+    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
+    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
+    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
+    .brief-meta-item strong { color: #fff; }
+
+    /* ── SECTION CARDS ── */
+    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
+    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
+    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
+    .section-body { padding: 22px; }
+
+    /* ── TYPOGRAPHY INSIDE SECTIONS ── */
+    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
+    .section-body h4:first-child { margin-top: 0; }
+    .section-body ul { padding-left: 18px; margin-bottom: 12px; }
+    .section-body li { font-size: 14px; color: #374151; margin-bottom: 4px; }
+
+    /* ── TABLES ── */
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
+    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
+    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
+
+    /* ── ANNOTATED SCREENSHOT SYSTEM ── */
+    .screenshot-wrap { margin: 16px 0; }
+    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
+    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+    .annotated-img img { display: block; width: 100%; height: auto; }
+    .annotation-box {
+      position: absolute;
+      border: 2.5px solid #DC2626;
+      border-radius: 3px;
+      pointer-events: none;
+    }
+    .annotation-label {
+      position: absolute;
+      top: 0; left: 0;
+      background: #DC2626;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 0 0 3px 0;
+      white-space: nowrap;
+      line-height: 18px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── CALLOUTS ── */
+    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
+    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
+    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
+
+    /* ── COLOR SWATCHES ── */
+    .swatch-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 12px; }
+    .swatch { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #374151; }
+    .swatch-color { width: 32px; height: 32px; border-radius: 6px; border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+
+    /* ── PILLS ── */
+    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
+    .pill-blue { background: #DBEAFE; color: #1E40AF; }
+    .pill-green { background: #DCFCE7; color: #166534; }
+    .pill-gray { background: #F3F4F6; color: #374151; }
+    .pill-red { background: #FEE2E2; color: #991B1B; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="brief-header">
+    <div class="brief-kicker">Project Brief</div>
+    <div class="brief-title">GoJuly AI — Previous Conversations Navigation Fix</div>
+    <div class="brief-meta">
+      <div class="brief-meta-item"><strong>Engagement</strong> gojuly_prev_conversations_nav_fix_2026_04_15</div>
+      <div class="brief-meta-item"><strong>Date</strong> 2026-04-15</div>
+      <div class="brief-meta-item"><strong>Status</strong> All values client-confirmed or asset-extracted</div>
+    </div>
+  </div>
+
+  <!-- §1 Product Vision -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><div class="section-title">Product Vision</div></div>
+    <div class="section-body">
+      <p>July AI is an AI red teaming platform where users submit adversarial conversations designed to expose vulnerabilities in AI models. The platform organizes work into modules (e.g., "Red Team Sample Submission") with multiple challenges per module. Users make repeated attempts at each challenge, accumulating a history of conversations they return to for reference, learning, and iteration.</p>
+      <p>The <strong>Previous Conversations</strong> feature surfaces past attempts. Success means users can quickly locate and open any past conversation — by topic, by challenge, by outcome — without memorizing dates or clicking through multiple expanded views.</p>
+    </div>
+  </div>
+
+  <!-- §2 Problem Statements -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><div class="section-title">Problem Statements</div></div>
+    <div class="section-body">
+      <div class="callout-prob">
+        <div class="callout-label">Problem 1</div>
+        <strong>Attempts carry no topic identity.</strong> Every attempt row is identified solely by a timestamp (e.g., "Mar 9, 2026, 9:52 AM (PDT)"). Users cannot tell what a conversation was about without clicking into it. There is no AI-generated topic name, no user-editable label, and no summary.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Problem 2</div>
+        <strong>No search or filter exists.</strong> There is no input that lets users locate conversations by keyword, topic, date range, result (GUARDED / not guarded), or progress status. Users must manually scan every row across every challenge to find what they need.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Problem 3</div>
+        <strong>Attempts are siloed per challenge with no unified view.</strong> Each challenge requires a separate "View Attempts" click to reveal its rows. Users cannot see all their conversations in a single scrollable list.
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Previous Conversations page — desktop 1440px — problems annotated</div>
+        <div class="annotated-img">
+          <img src="../design-references/prev-conv-desktop-1440-viewport.png" alt="Previous Conversations page at 1440px desktop with all problems visible" />
+          <!-- Problem 1: date-only label on first attempt row -->
+          <div class="annotation-box" style="top: 42.16%; left: 32.92%; width: 12.99%; height: 6.69%;">
+            <span class="annotation-label">Date-only label — no topic name</span>
+          </div>
+          <!-- Problem 2: no search above table header -->
+          <div class="annotation-box" style="top: 34%; left: 32.92%; width: 51.94%; height: 3.5%;">
+            <span class="annotation-label">No search or filter here</span>
+          </div>
+          <!-- Problem 3: challenge card requires expand click -->
+          <div class="annotation-box" style="top: 15%; left: 32.92%; width: 51.94%; height: 18%;">
+            <span class="annotation-label">Separate expand click per challenge</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Attempt rows — only date/time visible, no topic label</div>
+        <div class="annotated-img">
+          <img src="../design-references/view-attempts-challenge1.png" alt="View Attempts expanded for Challenge 1 showing date-only rows" />
+          <div class="annotation-box" style="top: 37%; left: 32%; width: 53%; height: 57%;">
+            <span class="annotation-label">8 rows — all labeled by date only, no topic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 Target Users -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><div class="section-title">Target Users</div></div>
+    <div class="section-body">
+      <p><strong>Primary persona:</strong> Red team researchers and AI safety practitioners enrolled in a July AI module. They have moderate-to-high technical fluency.</p>
+      <p><strong>Context of use:</strong> Mid-session — the user wants to revisit an earlier conversation where they tried a specific attack vector (e.g., political radicalization) to either build on it or avoid repeating it. They know roughly what topic they explored. They do not remember the date.</p>
+    </div>
+  </div>
+
+  <!-- §4 Success Metrics -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><div class="section-title">Success Metrics</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Primary metric</td><td>Users locate a target past conversation in under 10 seconds from page load</td></tr>
+        <tr><td>Secondary metrics</td><td>Users can find a conversation by topic keyword without knowing the date; users do not need to expand individual challenge sections to scan all attempts</td></tr>
+        <tr><td>Proxy signals</td><td>In prototype: topic names are scannable without clicking; search input filters results; challenge groupings do not require interaction to reveal</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §5 Scope -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div class="section-title">Key Features &amp; Scope</div></div>
+    <div class="section-body">
+      <h4>In Scope</h4>
+      <table class="brief-table">
+        <tr><th>Screen / Feature</th><th>Description</th></tr>
+        <tr><td>Previous Conversations page</td><td>The <code>practice-overview</code> tab of Red Team Sample Submission module at 1440px desktop</td></tr>
+        <tr><td>AI-auto-generated topic names</td><td>Each attempt row gets an AI-generated name from conversation content (e.g., "Political Radicalization") — no user action required</td></tr>
+        <tr><td>Search feature</td><td>A search input that filters attempt rows by topic name keyword across all challenges simultaneously</td></tr>
+        <tr><td>Redesigned attempt list layout</td><td>Topic name as primary identifier; date/time demoted to secondary metadata; no expand-to-reveal friction per challenge</td></tr>
+      </table>
+      <h4>Out of Scope</h4>
+      <table class="brief-table">
+        <tr><th>Item</th><th>Reason</th></tr>
+        <tr><td>Mobile view (390px)</td><td>Client confirmed desktop only</td></tr>
+        <tr><td>Success Criteria, Examples of Successful Attacks tabs</td><td>Not requested</td></tr>
+        <tr><td>Conversation detail / feedback page</td><td>Not requested</td></tr>
+        <tr><td>Sidebar navigation</td><td>Not requested</td></tr>
+        <tr><td>Code implementation</td><td>Output is HTML brief only</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §6 Constraints -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><div class="section-title">Constraints</div></div>
+    <div class="section-body">
+      <ul>
+        <li><strong>Desktop only:</strong> 1440px viewport. Mobile out of scope (confirmed).</li>
+        <li><strong>Brand fidelity:</strong> Inter font, navy primary <code>oklch(0.278078 0.029596 256.848)</code>, pink active state <code>rgb(253, 242, 248)</code>.</li>
+        <li><strong>Output:</strong> HTML brief only — not a code implementation.</li>
+        <li><strong>Accessibility:</strong> Not specified. <span class="pill pill-gray">★ CLIENT DEFERRED</span></li>
+        <li><strong>Timeline:</strong> Not specified. <span class="pill pill-gray">★ CLIENT DEFERRED</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- §7 References & Aesthetic Direction -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">7</div><div class="section-title">References &amp; Aesthetic Direction</div></div>
+    <div class="section-body">
+      <div class="callout-note">
+        <div class="callout-label">Note</div>
+        No external reference product provided. Designer judgment applies, guided by "easy to navigate" as the sole direction.
+      </div>
+      <h4>Aesthetic keywords translated</h4>
+      <table class="brief-table">
+        <tr><th>Keyword</th><th>Pixel decision</th><th>Confirmed by</th></tr>
+        <tr><td>Easy to navigate</td><td>Topic name is the largest, highest-contrast text element in each row — date/time is visually subordinate (smaller, muted color)</td><td>Client Q2</td></tr>
+        <tr><td>Easy to navigate</td><td>Search bar placed at the top of the attempt list, prominent, with clear placeholder text</td><td>Client Q2</td></tr>
+        <tr><td>Easy to navigate</td><td>Challenge sections use clear headers — no expand/collapse required to see all attempts</td><td>Client Q2</td></tr>
+        <tr><td>Easy to navigate</td><td>Each row shows topic name, challenge badge, date, result in a scannable linear layout</td><td>Client Q2</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §8 Design System -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">8</div><div class="section-title">Design System</div></div>
+    <div class="section-body">
+      <h4>Color Palette (url_extracted via getComputedStyle)</h4>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background: rgb(8,51,134);"></div>
+          <div><strong>Navy primary</strong><br><code>rgb(8, 51, 134)</code><br>Buttons, badges, text</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: rgb(30,42,64);"></div>
+          <div><strong>Dark navy</strong><br><code>oklch(0.278078 0.029596 256.848)</code><br>Primary text</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: rgb(253,242,248); border: 1px solid #F9A8D4;"></div>
+          <div><strong>Pink-50 (active)</strong><br><code>rgb(253, 242, 248)</code><br>Sidebar active bg</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: rgb(162,232,165);"></div>
+          <div><strong>Green (SUBMITTED)</strong><br><code>rgb(162, 232, 165)</code><br>Progress badge</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: rgb(218,222,231);"></div>
+          <div><strong>Gray-blue (GUARDED)</strong><br><code>rgb(218, 222, 231)</code><br>Result badge</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: rgb(238,238,238);"></div>
+          <div><strong>Gray-200 (body)</strong><br><code>rgb(238, 238, 238)</code><br>Page background</div>
+        </div>
+      </div>
+
+      <h4>Design Token Record</h4>
+      <table class="brief-table">
+        <tr><th>Category</th><th>Token</th><th>Value</th><th>Source</th><th>Confirmed</th></tr>
+        <tr><td>Typography</td><td>Page heading</td><td>Inter 24px/30px weight 600</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>Table header</td><td>Inter 12px/16px weight 700, 60% opacity</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>Attempt row / date</td><td>Inter 14px/18px weight 600</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>Status badge text</td><td>Inter 10px/13px weight 600</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>Sidebar items</td><td>Inter 14px/20px weight 400</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>Table cell padding</td><td>12px 16px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>Sidebar item padding</td><td>10px 16px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Radius</td><td>Status badge</td><td>6px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Font</td><td>Primary</td><td>Inter, sans-serif</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Transition</td><td>Badge / interactive</td><td>color, bg-color, border-color 0.2s cubic-bezier(0,0,0.2,1)</td><td>url_extracted</td><td>yes</td></tr>
+      </table>
+
+      <h4>Component Variant Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Variant Properties</th><th>Confirmed States</th><th>Unconfirmed</th></tr>
+        <tr><td>Attempt row</td><td>progress: SUBMITTED | RESET; result: GUARDED | empty</td><td>default, hover (cursor-pointer)</td><td>focus, keyboard nav</td></tr>
+        <tr><td>Progress badge</td><td>SUBMITTED (green), RESET (gray-blue)</td><td>default</td><td>—</td></tr>
+        <tr><td>Result badge</td><td>GUARDED (gray-blue), empty</td><td>default</td><td>—</td></tr>
+        <tr><td>View Attempts toggle</td><td>collapsed, expanded</td><td>both</td><td>—</td></tr>
+        <tr><td>Sidebar nav item</td><td>active (pink-50 + left border), default</td><td>both</td><td>—</td></tr>
+      </table>
+
+      <h4>Active State Visual Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Active State Treatment</th><th>Source</th></tr>
+        <tr><td>Sidebar "Previous Conversations"</td><td><code>background: rgb(253,242,248)</code>, <code>border-left: 4px solid pink-500</code></td><td>url_extracted</td></tr>
+        <tr><td>Attempt row (hover)</td><td>cursor-pointer; opens conversation in new tab on click</td><td>url_extracted</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §9 Brand Identity -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">9</div><div class="section-title">Brand Identity</div></div>
+    <div class="section-body">
+      <ul>
+        <li><strong>Product name:</strong> July AI (stylized "july ai" in wordmark)</li>
+        <li><strong>Primary color:</strong> Navy <code>rgb(8, 51, 134)</code> — buttons, challenge cards, active states</li>
+        <li><strong>Accent / active:</strong> Pink-50 <code>rgb(253, 242, 248)</code> with pink left border for sidebar active</li>
+        <li><strong>Primary font:</strong> Inter, sans-serif</li>
+        <li><strong>Badge palette:</strong> Green <code>rgb(162, 232, 165)</code> for SUBMITTED; gray-blue <code>rgb(218, 222, 231)</code> for RESET/GUARDED</li>
+        <li><strong>Top nav:</strong> Home, Data Portfolio, Payment; Admin / FE Admin role buttons top-right</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- §10 Visual Design Language -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">10</div><div class="section-title">Visual Design Language</div></div>
+    <div class="section-body">
+      <p>The redesigned page must feel immediately navigable — a user should be able to scan the list and identify a target conversation within seconds without any clicking. The dominant visual treatment is a <strong>clean, text-forward list</strong> where each row's primary text is the AI-generated topic name in high-contrast navy, with the challenge identifier and date subordinate beneath it.</p>
+      <p>The search bar occupies a prominent position above the list — it is the first interactive element a user reaches. Challenge sections are visually separated by headers but do not require interaction to reveal their attempts; all attempts are visible in a single scrollable surface.</p>
+      <p>The existing brand palette is preserved: Inter throughout, navy primary, pink active/hover accent, green for SUBMITTED, gray-blue for GUARDED. Motion: snappy transitions (150–200ms ease) on search filter updates and row hover states. No dark mode. No mobile treatment.</p>
+    </div>
+  </div>
+
+  <!-- §11 Copy Guide -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">11</div><div class="section-title">Copy Guide</div></div>
+    <div class="section-body">
+      <h4>Tone descriptors</h4>
+      <table class="brief-table">
+        <tr><th>Adjective</th><th>Writing rule</th><th>Confirmed by</th></tr>
+        <tr><td>Professional</td><td>No casual language; short, task-oriented labels</td><td>url_extracted</td></tr>
+        <tr><td>Concise</td><td>Labels use minimum words to convey status</td><td>url_extracted</td></tr>
+      </table>
+      <h4>Locked strings</h4>
+      <p>"Previous Conversations" · "Attempted On" · "Progress" · "Result" · "Share" · "Challenge 1" · "Challenge 2" · "Challenge 3" · "SUBMITTED" · "RESET" · "GUARDED"</p>
+      <h4>Terminology rules</h4>
+      <ul>
+        <li>AI-generated topic names: title case (e.g., "Political Radicalization", "Self-Harm Encouragement")</li>
+        <li>Challenge labels: never abbreviated</li>
+        <li>Status badges: ALL CAPS, consistent with existing treatment</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- §12 User Tasks -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">12</div><div class="section-title">User Tasks</div></div>
+    <div class="section-body">
+      <p><strong>Task 1 — Locate a past conversation by topic.</strong> User needs to find a specific previous attempt where they explored a particular attack vector (e.g., political radicalization) without knowing which challenge it belongs to or what date it was made. The topic name must be visible without any additional interaction.</p>
+      <p><strong>Task 2 — Search across all conversations.</strong> User needs to enter a keyword and immediately see only the attempt rows whose topic names match — across all three challenges simultaneously.</p>
+    </div>
+  </div>
+
+  <!-- §13 Current Page State -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">13</div><div class="section-title">Current Page State</div></div>
+    <div class="section-body">
+      <p>The Previous Conversations page (URL: <code>type=practice-overview</code>) renders under the heading "Practice Sets." It contains three challenge cards displayed vertically. Each card has a "View Attempts" toggle that expands to reveal a table with four columns: <strong>Attempted On</strong> (date/time string), <strong>Progress</strong> (SUBMITTED or RESET badge), <strong>Result</strong> (GUARDED badge or empty), and <strong>Share</strong> (icon button). Clicking any attempt row opens the conversation feedback page in a new browser tab.</p>
+      <p><strong>Challenge 1 confirmed attempts (8 total):</strong> Mar 9 9:52 AM · Mar 9 9:46 AM · Mar 6 12:44 PM · Feb 14 3:51 PM · Feb 5 2:08 PM · Nov 1 3:00 PM · Oct 31 4:39 PM · Oct 13 9:34 AM</p>
+      <p>The sidebar shows two "Previous Conversations" entries — one inside the MENU tab group, one standalone — both using pink-50 background and 4px pink left border as the active state.</p>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Current state — desktop 1440px viewport — Challenge 1 expanded</div>
+        <div class="annotated-img">
+          <img src="../design-references/prev-conv-desktop-1440-viewport.png" alt="Current Previous Conversations page at 1440px" />
+        </div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Conversation detail — opened when clicking an attempt row</div>
+        <div class="annotated-img">
+          <img src="../design-references/conversation-detail-viewport.png" alt="Conversation detail feedback page" />
+        </div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Mobile 390px — sidebar and table clip and overflow (out of scope)</div>
+        <div class="annotated-img">
+          <img src="../design-references/prev-conv-mobile-390.png" alt="Mobile view at 390px — broken layout" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §14 Interaction & States -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">14</div><div class="section-title">Existing Interaction States</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Component</th><th>Observed States</th><th>Visual Treatment</th><th>Source</th></tr>
+        <tr><td>Challenge card "View Attempts"</td><td>collapsed (default), expanded</td><td>Chevron icon rotates; table appears below card</td><td>url_extracted</td></tr>
+        <tr><td>Attempt row</td><td>default, hover</td><td>cursor-pointer on hover</td><td>url_extracted</td></tr>
+        <tr><td>Attempt row click</td><td>→ opens new tab</td><td>Routes to <code>/collections/.../feedback/...</code></td><td>url_extracted</td></tr>
+        <tr><td>Progress badge SUBMITTED</td><td>default</td><td>bg <code>rgb(162,232,165)</code>, text <code>rgb(8,51,134)</code>, 6px radius, 10px Inter 600</td><td>url_extracted</td></tr>
+        <tr><td>Progress badge RESET</td><td>default</td><td>bg <code>rgb(218,222,231)</code>, text <code>rgb(8,51,134)</code>, same sizing</td><td>url_extracted</td></tr>
+        <tr><td>Result badge GUARDED</td><td>default</td><td>bg <code>rgb(218,222,231)</code>, icon + "GUARDED" text</td><td>url_extracted</td></tr>
+        <tr><td>Share button</td><td>default</td><td>Share icon, copies link on click</td><td>url_extracted</td></tr>
+        <tr><td>Sidebar "Previous Conversations"</td><td>active</td><td><code>background: rgb(253,242,248)</code>, <code>border-left: 4px solid pink</code></td><td>url_extracted</td></tr>
+      </table>
+
+      <h4>Active State Visual Treatments (existing only)</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Active treatment</th><th>Source</th></tr>
+        <tr><td>Sidebar nav item</td><td>Pink-50 background + 4px pink left border</td><td>url_extracted</td></tr>
+        <tr><td>Challenge expand toggle</td><td>Chevron rotates up; attempts table becomes visible</td><td>url_extracted</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §15 Delivery & Handoff -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">15</div><div class="section-title">Delivery &amp; Handoff</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th><th>Source</th></tr>
+        <tr><td>Output format</td><td>HTML brief</td><td>client-confirmed Q5</td></tr>
+        <tr><td>Device targets</td><td>Desktop 1440px only</td><td>client-confirmed Q4</td></tr>
+        <tr><td>Accessibility</td><td>Not specified <span class="pill pill-gray">★ CLIENT DEFERRED</span></td><td>—</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

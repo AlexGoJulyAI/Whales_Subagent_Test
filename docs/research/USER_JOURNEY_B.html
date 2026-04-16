@@ -3,234 +3,393 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction B — Tabbed Challenges · User Journey</title>
+  <title>Direction B — Command Search | Previous Conversations UX</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Inter, system-ui, sans-serif; background: #F1F5F9; color: #1E2A40; padding: 32px 16px 64px; }
-    .wrap { max-width: 660px; margin: 0 auto; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F8FAFC; color: #1E2A40; line-height: 1.5; }
+    .page { max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; }
 
-    /* ── HEADER ─────────────────────────────────────────────── */
-    .header { background: #083386; border-radius: 12px; padding: 28px 32px; margin-bottom: 28px; }
-    .hdr-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.82); margin-bottom: 22px; }
-    .hdr-blocks { margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .hdr-block-eyebrow { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
-    .hdr-block-prob .hdr-block-eyebrow { color: #F87171; }
-    .hdr-block-sol  .hdr-block-eyebrow { color: #4ADE80; }
-    .hdr-block-body { font-size: 13px; color: rgba(255,255,255,.88); line-height: 1.6; margin: 0; }
-    .hdr-divider { height: 1px; background: rgba(255,255,255,.12); margin: 0 0 14px; }
-    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.38); margin-bottom: 12px; }
-    .hdr-shapes { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+    /* ── HEADER ── */
+    .header { background: #1E2A40; border-radius: 14px; padding: 30px 32px 26px; margin-bottom: 32px; box-shadow: 0 4px 24px rgba(8,51,134,.18); }
+    .hdr-kicker { font-size: 11px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 6px; }
+    .hdr-direction { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 20px; line-height: 1.2; letter-spacing: -.01em; }
+    .hdr-direction span { color: #7C3AED; }
+
+    .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px; }
+    .callout-prob { background: rgba(239,68,68,.10); border-color: #EF4444; }
+    .callout-sol  { background: rgba(22,163,74,.10); border-color: #16A34A; }
+    .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
+    .callout-prob .callout-label { color: #FCA5A5; }
+    .callout-sol  .callout-label { color: #86EFAC; }
+    .callout-body { font-size: 12px; color: rgba(255,255,255,.82); line-height: 1.6; }
+
+    .hdr-divider { height: 1px; background: rgba(255,255,255,.10); margin: 20px 0 16px; }
+    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.32); margin-bottom: 12px; }
+    .hdr-shapes { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
     .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .hdr-shape-item span { font-size: 9px; color: rgba(255,255,255,.55); font-weight: 600; white-space: nowrap; }
-    .hs-start { width: 52px; height: 22px; background: #111827; border-radius: 999px; border: 2px solid rgba(255,255,255,.20); }
-    .hs-click { width: 44px; height: 22px; background: #7C3AED; border-radius: 10px; }
-    .hs-type  { width: 44px; height: 22px; background: #7C3AED; border-radius: 0; }
-    .hs-view  { width: 44px; height: 22px; background: #7C3AED; border-radius: 999px; }
-    .hs-sys   { width: 52px; height: 22px; background: #0284C7; border-radius: 6px; }
-    .hs-dec-wrap { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
-    .hs-dec { width: 27px; height: 27px; background: #2563EB; transform: rotate(45deg); border-radius: 3px; }
-    .hs-end { width: 52px; height: 22px; background: #15803D; border-radius: 999px; }
+    .hdr-shape-item span { font-size: 8px; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; white-space: nowrap; text-transform: uppercase; }
 
-    /* ── FLOW SECTION ───────────────────────────────────────── */
-    .flow-block { margin-bottom: 32px; }
-    .flow-header { background: #1E2A40; border-radius: 10px 10px 0 0; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
-    .flow-num { font-size: 36px; font-weight: 900; color: rgba(255,255,255,.10); line-height: 1; flex-shrink: 0; }
-    .flow-meta { }
-    .flow-purpose { font-size: 13px; font-weight: 700; color: #fff; }
-    .flow-subtitle { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; }
-    .flow-steps { border: 1px solid #E5E7EB; border-top: none; border-radius: 0 0 10px 10px; padding: 28px 20px 24px; background: #F8FAFC; }
+    /* Legend swatches */
+    .hs-start { width: 56px; height: 24px; background: #111827; border-radius: 999px; }
+    .hs-click { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; }
+    .hs-type  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
+    .hs-view  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
+    .hs-sys   { width: 56px; height: 24px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; }
+    .hs-dec-wrap { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+    .hs-dec { width: 28px; height: 28px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 3px; }
+    .hs-end { width: 56px; height: 24px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
 
-    /* ── FLOWCHART ──────────────────────────────────────────── */
+    /* ── FLOW ── */
     .fc { display: flex; flex-direction: column; align-items: center; }
-    .nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
-    .n-start { background: #111827; color: #fff; border-radius: 999px; padding: 10px 28px; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
-    .n-end   { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 10px 28px; color: #14532D; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
-    .n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+
+    /* mini type label */
+    .nt {
+      display: block; font-size: 8px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .07em; opacity: .55; margin-bottom: 5px; text-align: center;
+    }
+
+    /* connector */
+    .fc-conn { display: flex; flex-direction: column; align-items: center; }
+    .fc-conn-line { width: 2px; height: 24px; background: #CBD5E1; }
+    .fc-conn-arrow { font-size: 10px; color: #94A3B8; margin-top: -2px; line-height: 1; }
+
+    /* ── NODE CLASSES ── */
+    .n-start {
+      background: #111827; color: #fff;
+      border-radius: 999px;
+      padding: 11px 32px;
+      font-size: 12px; font-weight: 700;
+      text-align: center; max-width: 340px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.28);
+    }
+    .n-end {
+      background: #DCFCE7; border: 2px solid #16A34A;
+      border-radius: 999px;
+      padding: 11px 32px;
+      color: #14532D; font-size: 12px; font-weight: 700;
+      text-align: center; max-width: 340px;
+    }
+    .n-click {
+      background: #F3EEFF; border: 2px solid #7C3AED;
+      border-radius: 16px;
+      padding: 11px 18px;
+      color: #3B0764; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
     .n-click .nt { color: #7C3AED; }
-    .n-type  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
-    .n-type .nt  { color: #7C3AED; }
-    .n-view  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 10px 24px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
-    .n-view .nt  { color: #7C3AED; }
-    .n-sys   { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; padding: 10px 16px; color: #0C4A6E; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
-    .n-sys .nt   { color: #0284C7; }
-    .n-dec-wrap  { width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .n-dec       { width: 96px; height: 96px; background: #BFDBFE; border: 2px solid #2563EB; border-radius: 8px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; }
-    .n-dec-text  { transform: rotate(-45deg); color: #1D4ED8; font-size: 10px; font-weight: 700; text-align: center; max-width: 70px; line-height: 1.35; }
+    .n-type {
+      background: #F3EEFF; border: 2px solid #7C3AED;
+      border-radius: 0;
+      padding: 11px 18px;
+      color: #3B0764; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-type .nt { color: #7C3AED; }
+    .n-view {
+      background: #F3EEFF; border: 2px solid #7C3AED;
+      border-radius: 999px;
+      padding: 11px 26px;
+      color: #3B0764; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-view .nt { color: #7C3AED; }
+    .n-sys {
+      background: #E0F2FE; border: 2px solid #0284C7;
+      border-radius: 8px;
+      padding: 11px 18px;
+      color: #0C4A6E; font-size: 12px; font-weight: 600;
+      text-align: center; max-width: 300px; line-height: 1.4;
+    }
+    .n-sys .nt { color: #0284C7; }
 
-    /* Connectors */
-    .fc-conn { display: flex; flex-direction: column; align-items: center; padding: 2px 0; }
-    .fc-conn-line  { width: 2px; height: 24px; background: #CBD5E1; }
-    .fc-conn-arrow { font-size: 11px; color: #94A3B8; margin-top: -2px; }
+    /* ── DECISION DIAMOND ── */
+    .n-dec-wrap {
+      display: flex; align-items: center; justify-content: center;
+      width: 140px; height: 140px; flex-shrink: 0;
+    }
+    .n-dec {
+      width: 96px; height: 96px;
+      background: #BFDBFE; border: 2px solid #2563EB;
+      transform: rotate(45deg);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .n-dec-text {
+      transform: rotate(-45deg);
+      font-size: 10px; font-weight: 800; color: #1D4ED8;
+      text-align: center; line-height: 1.3;
+      max-width: 70px;
+    }
 
-    /* Branches */
-    .fc-branches { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; justify-content: center; width: 100%; }
-    .fc-branch   { display: flex; flex-direction: column; align-items: center; }
-    .fc-bl-y { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #16A34A; margin-bottom: 8px; }
-    .fc-bl-n { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #DC2626; margin-bottom: 8px; }
-    .fc-branch .n-click, .fc-branch .n-type, .fc-branch .n-view, .fc-branch .n-sys, .fc-branch .n-end { max-width: 220px; }
+    /* branch container */
+    .fc-branches { display: flex; gap: 24px; align-items: flex-start; justify-content: center; width: 100%; }
+    .fc-branch { display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 280px; }
+    .fc-branch-label-yes {
+      font-size: 9px; font-weight: 800; color: #16A34A; text-transform: uppercase;
+      letter-spacing: .07em; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .fc-branch-label-no {
+      font-size: 9px; font-weight: 800; color: #DC2626; text-transform: uppercase;
+      letter-spacing: .07em; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .fc-branch .n-click,
+    .fc-branch .n-type,
+    .fc-branch .n-view,
+    .fc-branch .n-sys,
+    .fc-branch .n-end { max-width: 100%; width: 100%; }
+
+    /* horizontal branch line from diamond */
+    .branch-h-rule {
+      width: 100%; max-width: 560px;
+      border: none; border-top: 2px dashed #CBD5E1;
+      margin: 0;
+    }
+    .branch-split-row {
+      display: flex; width: 100%; max-width: 560px; justify-content: space-between;
+      padding: 0 2px;
+    }
+    .branch-split-tick {
+      width: 2px; height: 16px; background: #CBD5E1;
+    }
+
+    /* merge-back connector */
+    .merge-note {
+      font-size: 9px; font-weight: 700; color: #64748B; text-transform: uppercase;
+      letter-spacing: .07em; margin: 4px 0 0; text-align: center;
+    }
+
+    /* ── FLOW WRAPPER ── */
+    .flow-section { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,42,64,.07); }
+    .flow-title-bar { background: #1E2A40; padding: 16px 24px; }
+    .flow-title-bar-kicker { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.42); margin-bottom: 3px; }
+    .flow-title-bar-label { font-size: 14px; font-weight: 800; color: #fff; }
+    .flow-body { padding: 32px 24px 28px; }
+
+    /* step number badge */
+    .step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px;
+      background: #083386; color: #fff;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 800;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    /* node with step badge layout */
+    .n-with-badge { display: flex; flex-direction: column; align-items: center; }
+
   </style>
 </head>
 <body>
-<div class="wrap">
+<div class="page">
 
-  <!-- ── DOCUMENT HEADER ────────────────────────────────────── -->
+  <!-- ══ HEADER ══ -->
   <div class="header">
-    <div class="hdr-kicker">Direction B &middot; Tabbed Challenges &middot; User Journey &middot; GoJuly AI — Previous Conversations</div>
-    <div class="hdr-blocks">
-      <div class="hdr-block hdr-block-prob">
-        <div class="hdr-block-eyebrow">The Problem</div>
-        <p class="hdr-block-body">The page heading says "Practice Sets" while the sidebar says "Previous Conversations" — a disorienting mismatch. "Challenge 1," "Challenge 2," "Challenge 3" carry no meaning. To find anything, users must open each attempt manually — there is no search, no preview, no cross-challenge lookup.</p>
-      </div>
-      <div class="hdr-block hdr-block-sol">
-        <div class="hdr-block-eyebrow">Solution</div>
-        <p class="hdr-block-body">The heading becomes "Previous Conversations," matching the sidebar. Three tabs replace the accordion — each tab labeled with the actual scenario name and attempt count. A global search bar above the tabs searches all challenges at once and tags every result with its challenge. Attempt cards show AI title, 2-line excerpt, date, and status badge without any clicking in.</p>
-      </div>
+    <div class="hdr-kicker">GoJuly · User Journey</div>
+    <div class="hdr-direction">Direction B — <span>Command Search</span></div>
+
+    <div class="callout callout-prob">
+      <div class="callout-label">Problem</div>
+      <p class="callout-body">The conversations list only shows dates — there's no way to tell what a conversation covered without clicking into each one. With no search bar and three separate accordion sections to expand, finding a specific conversation requires opening every wrong one first.</p>
     </div>
+
+    <div class="callout callout-sol">
+      <div class="callout-label">Solution — Command Search</div>
+      <p class="callout-body">A dominant search bar sits at the top of the page as the primary UI element — the first thing a user's eye lands on. Below it, every attempt from every challenge loads immediately with its AI-generated topic name. Typing a keyword filters the list in real-time. No accordion clicks, no date-memory required.</p>
+    </div>
+
     <div class="hdr-divider"></div>
-    <div class="hdr-legend-title">How to read this diagram:</div>
+    <div class="hdr-legend-title">Node Legend</div>
     <div class="hdr-shapes">
-      <div class="hdr-shape-item"><div class="hs-start"></div><span>Start / End</span></div>
-      <div class="hdr-shape-item"><div class="hs-click"></div><span>Click</span></div>
-      <div class="hdr-shape-item"><div class="hs-type"></div><span>Type</span></div>
-      <div class="hdr-shape-item"><div class="hs-view"></div><span>View</span></div>
-      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System response</span></div>
+      <div class="hdr-shape-item"><div class="hs-start"></div><span>Start/End</span></div>
+      <div class="hdr-shape-item"><div class="hs-click"></div><span>User Clicks</span></div>
+      <div class="hdr-shape-item"><div class="hs-type"></div><span>User Types</span></div>
+      <div class="hdr-shape-item"><div class="hs-view"></div><span>User Views</span></div>
+      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System</span></div>
       <div class="hdr-shape-item"><div class="hs-dec-wrap"><div class="hs-dec"></div></div><span>Decision</span></div>
-      <div class="hdr-shape-item"><div class="hs-end"></div><span>Outcome</span></div>
+      <div class="hdr-shape-item"><div class="hs-end"></div><span>Success</span></div>
     </div>
   </div>
 
-  <!-- ── FLOW 1: GLOBAL SEARCH ─────────────────────────────── -->
-  <div class="flow-block">
-    <div class="flow-header">
-      <div class="flow-num">01</div>
-      <div class="flow-meta">
-        <div class="flow-purpose">Researcher finds a specific attempt using global search across all challenges</div>
-        <div class="flow-subtitle">Direction B — global search above tabs · cross-challenge results tagged by scenario · no accordion drilling</div>
-      </div>
+  <!-- ══ FLOW ══ -->
+  <div class="flow-section">
+    <div class="flow-title-bar">
+      <div class="flow-title-bar-kicker">Full User Journey</div>
+      <div class="flow-title-bar-label">Locate a specific practice conversation in under 10 seconds</div>
     </div>
-    <div class="flow-steps">
-      <div class="fc">
+    <div class="flow-body">
+    <div class="fc">
 
-        <div class="n-start">Researcher opens "Previous Conversations"</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+      <!-- START -->
+      <div class="n-start">
+        <span class="nt" style="color:rgba(255,255,255,.55);">Start</span>
+        User clicks "Previous Conversations" in sidebar
+      </div>
 
-        <div class="n-sys"><span class="nt">System</span>Page loads — heading "Previous Conversations," global search bar, three tabs: "Self-Harm · 9" · "Persuasion · 6" · "Vulnerable User · 4"</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+      <div class="fc-conn">
+        <div class="fc-conn-line"></div>
+        <div class="fc-conn-arrow">▼</div>
+      </div>
 
-        <div class="n-view"><span class="nt">View</span>First tab active — attempt cards: AI title · challenge tag · date · status badge · 2-line transcript excerpt</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+      <!-- SYSTEM: page load -->
+      <div class="n-sys">
+        <span class="nt">System</span>
+        Page loads — hero search bar at top (full-width, prominent)<br>
+        All attempts from all challenges pre-loaded as unified list:<br>
+        AI topic name · Challenge badge · Date · Result badge
+      </div>
 
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Knows which challenge?</div></div></div>
+      <div class="fc-conn">
+        <div class="fc-conn-line"></div>
+        <div class="fc-conn-arrow">▼</div>
+      </div>
 
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">Yes</div>
-            <div class="n-click"><span class="nt">Click</span>Matching challenge tab — e.g. "Persuasion · 6"</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-view"><span class="nt">View</span>Tab's attempt feed — AI titles + excerpts scannable</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-click"><span class="nt">Click</span>Target attempt card — opens conversation detail</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Found by tab + title scan ✓</div>
+      <!-- VIEW: sees full list -->
+      <div class="n-view">
+        <span class="nt">User Views</span>
+        Full list of attempts — topic names visible, no expansion needed
+      </div>
+
+      <div class="fc-conn">
+        <div class="fc-conn-line"></div>
+        <div class="fc-conn-arrow">▼</div>
+      </div>
+
+      <!-- DECISION -->
+      <div class="n-dec-wrap">
+        <div class="n-dec">
+          <div class="n-dec-text">Know what to search for?</div>
+        </div>
+      </div>
+
+      <!-- branch split tick marks -->
+      <div class="branch-split-row">
+        <div class="branch-split-tick"></div>
+        <div class="branch-split-tick"></div>
+      </div>
+      <hr class="branch-h-rule">
+      <div class="branch-split-row">
+        <div class="branch-split-tick"></div>
+        <div class="branch-split-tick"></div>
+      </div>
+
+      <!-- TWO BRANCHES -->
+      <div class="fc-branches">
+
+        <!-- ── YES branch: TYPE keyword ── -->
+        <div class="fc-branch">
+          <div class="fc-branch-label-yes">&#10003;&nbsp; Yes — specific topic</div>
+
+          <div class="n-type">
+            <span class="nt">User Types</span>
+            Keyword in hero search bar
           </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">No</div>
-            <div class="n-type"><span class="nt">Type</span>Keyword into global search bar above the tabs</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-sys"><span class="nt">System</span>Results appear across all challenges — each result tagged with its scenario name, keyword highlighted</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-click"><span class="nt">Click</span>Matching result card — opens conversation detail</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Found via global search — cross-challenge ✓</div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-sys">
+            <span class="nt">System</span>
+            List filters in real-time (150ms fade)<br>
+            Non-matches fade out — result count updates<br>
+            "3 conversations match"
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-view">
+            <span class="nt">User Views</span>
+            Filtered list — matching rows prominent
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-click">
+            <span class="nt">User Clicks</span>
+            Row from filtered list
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-sys">
+            <span class="nt">System</span>
+            Conversation feedback page opens in new tab
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-end">
+            User viewing conversation feedback page
+          </div>
+        </div>
+
+        <!-- ── NO branch: BROWSE/SCROLL ── -->
+        <div class="fc-branch">
+          <div class="fc-branch-label-no">&#10005;&nbsp; No — browsing</div>
+
+          <div class="n-view">
+            <span class="nt">User Views</span>
+            Scans topic names in pre-loaded list<br>
+            Challenge badges identify which challenge each attempt belongs to
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-view">
+            <span class="nt">User Views</span>
+            Scrolls down — all rows visible, no clicking required
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-click">
+            <span class="nt">User Clicks</span>
+            Row from browsed list
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-sys">
+            <span class="nt">System</span>
+            Conversation feedback page opens in new tab
+          </div>
+          <div class="fc-conn">
+            <div class="fc-conn-line"></div>
+            <div class="fc-conn-arrow">▼</div>
+          </div>
+
+          <div class="n-end">
+            User viewing conversation feedback page
           </div>
         </div>
 
       </div>
+      <!-- end fc-branches -->
+
     </div>
+    <!-- end fc -->
+    </div>
+    <!-- end flow-body -->
   </div>
-
-  <!-- ── FLOW 2: LEARNER — CHALLENGE CONTEXT ───────────────── -->
-  <div class="flow-block">
-    <div class="flow-header">
-      <div class="flow-num">02</div>
-      <div class="flow-meta">
-        <div class="flow-purpose">Learner understands which challenge covers which scenario without opening any attempt</div>
-        <div class="flow-subtitle">Direction B — scenario names in tabs · attempt count visible · full history without drilling</div>
-      </div>
-    </div>
-    <div class="flow-steps">
-      <div class="fc">
-
-        <div class="n-start">Learner returns after a break — doesn't remember which challenge was which</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Page heading "Previous Conversations" — matches what they clicked in the sidebar</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Three named tabs — "Self-Harm · 9 attempts," "Persuasion · 6 attempts," "Vulnerable User · 4 attempts" — scenario context immediate</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-click"><span class="nt">Click</span>First tab "Self-Harm · 9 attempts" — already active, attempt cards visible</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Attempt cards — AI title · date · SUBMITTED/GUARDED/RESET badge · 2-line excerpt — full outcome context without opening anything</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-click"><span class="nt">Click</span>Tab "Persuasion · 6 attempts" — switches to that challenge's feed</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-sys"><span class="nt">System</span>Feed updates — 150ms transition, new tab highlighted pink-50 + border-bottom</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-end">Full challenge history understood — zero clicks into conversations ✓</div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ── FLOW 3: EXCERPT SCAN ───────────────────────────────── -->
-  <div class="flow-block">
-    <div class="flow-header">
-      <div class="flow-num">03</div>
-      <div class="flow-meta">
-        <div class="flow-purpose">Researcher scans attempt cards by AI title and 2-line excerpt to identify a specific exchange</div>
-        <div class="flow-subtitle">Direction B — excerpt inline on card · no click-in needed to orient</div>
-      </div>
-    </div>
-    <div class="flow-steps">
-      <div class="fc">
-
-        <div class="n-start">Researcher remembers approximate content — knows likely challenge</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-click"><span class="nt">Click</span>Relevant challenge tab</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-view"><span class="nt">View</span>Attempt cards — AI title (Inter 16px/600) · date · status badges · 2-line transcript excerpt below title</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Target visible in excerpt?</div></div></div>
-
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">Yes</div>
-            <div class="n-click"><span class="nt">Click</span>Matching attempt card — opens conversation detail</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Found via excerpt scan — under 5 seconds ✓</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">No</div>
-            <div class="n-type"><span class="nt">Type</span>Keyword into global search bar above the tabs</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-sys"><span class="nt">System</span>Cross-challenge results — keyword highlighted in each matching excerpt</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-            <div class="n-end">Found via keyword — highlighted excerpt ✓</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
+  <!-- end flow-section -->
 
 </div>
 </body>
