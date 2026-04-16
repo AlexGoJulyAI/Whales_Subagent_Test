@@ -3,550 +3,817 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction B — Command Search — Mockup</title>
+  <title>Mockup B — Configuration Hub — SafeChat</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
       font-size: 14px;
-      color: #1E2A40;
-      background: #EEEEEE;
+      color: #000000;
+      background: #F2F2F7;
       min-height: 100vh;
     }
 
     /* ─────────────────────────────────────────────
-       PAGE HEADER BANNER
+       PAGE HEADER
     ───────────────────────────────────────────── */
     .page-header {
       background: #083386;
       color: #ffffff;
-      padding: 18px 36px;
-      font-size: 12px;
-      line-height: 1.7;
-      font-weight: 400;
-      letter-spacing: 0.01em;
+      padding: 20px 36px 16px;
     }
 
-    .page-header strong {
+    .page-header-row1 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .header-pill {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 3px 11px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .header-title {
+      font-size: 15px;
       font-weight: 700;
-      font-size: 13px;
-      display: block;
-      margin-bottom: 4px;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
+      color: #fff;
+      letter-spacing: -0.01em;
     }
 
-    .page-header .subline {
-      opacity: 0.75;
+    .header-screen-count {
+      margin-left: auto;
+      font-size: 11px;
+      color: rgba(255,255,255,0.65);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .page-header-row2 {
       font-size: 11.5px;
-      margin-top: 2px;
+      color: rgba(255,255,255,0.70);
+      margin-bottom: 10px;
       font-style: italic;
     }
 
-    /* ─────────────────────────────────────────────
-       CHANGES CALLOUT BAR
-    ───────────────────────────────────────────── */
-    .changes-bar {
-      background: #fff8f0;
-      border-bottom: 2px solid #D97706;
-      padding: 12px 36px;
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: flex-start;
+    .goal-thread-box {
+      border: 1.5px solid #4DD9AC;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.6;
+      background: rgba(77,217,172,0.07);
     }
 
-    .changes-bar-label {
+    /* ─────────────────────────────────────────────
+       WHAT THIS CHANGES BOX
+    ───────────────────────────────────────────── */
+    .changes-box {
+      background: #EBF0FA;
+      border-bottom: 2px solid #083386;
+      padding: 14px 36px 16px;
+    }
+
+    .changes-box-label {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #D97706;
-      white-space: nowrap;
-      padding-top: 2px;
-      flex-shrink: 0;
+      color: #083386;
+      margin-bottom: 10px;
     }
 
     .changes-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 20px;
       list-style: none;
-    }
-
-    .changes-list li {
-      font-size: 12px;
-      color: #1E2A40;
       display: flex;
-      align-items: flex-start;
+      flex-direction: column;
       gap: 7px;
     }
 
-    .changes-list li .callout-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      min-width: 18px;
-      border-radius: 50%;
-      background: #D97706;
-      color: #ffffff;
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 1;
-      flex-shrink: 0;
-      margin-top: 0px;
-    }
-
-    /* ─────────────────────────────────────────────
-       TWO-COLUMN BODY
-    ───────────────────────────────────────────── */
-    .two-col {
-      display: grid;
-      grid-template-columns: 60fr 40fr;
-      gap: 0;
-      min-height: calc(100vh - 120px);
-    }
-
-    /* ─────────────────────────────────────────────
-       LEFT COLUMN — Visual Render
-    ───────────────────────────────────────────── */
-    .col-render {
-      background: #EEEEEE;
-      padding: 28px 28px 48px;
+    .changes-list li {
+      font-size: 12.5px;
+      color: #1A1A2E;
       display: flex;
-      flex-direction: column;
-      gap: 0;
+      align-items: flex-start;
+      gap: 9px;
+      line-height: 1.5;
     }
 
-    .col-render-label {
+    .changes-list li .num {
+      flex-shrink: 0;
+      margin-top: 1px;
+      margin-left: 0;
+    }
+
+    /* ─────────────────────────────────────────────
+       SCREEN SECTION
+    ───────────────────────────────────────────── */
+    .screen-section {
+      padding: 36px 36px 0;
+    }
+
+    .screen-section:last-child {
+      padding-bottom: 48px;
+    }
+
+    .screen-section-divider {
+      border: none;
+      border-top: 1px solid #C6C6C8;
+      margin: 0 36px;
+    }
+
+    .screen-section-label {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #888888;
-      margin-bottom: 14px;
+      color: #6D6D72;
+      margin-bottom: 16px;
+    }
+
+    .screen-two-col {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
     }
 
     /* ─────────────────────────────────────────────
-       SIMULATED BROWSER CHROME
+       LEFT COLUMN
     ───────────────────────────────────────────── */
-    .browser-chrome {
-      background: #e0e0e0;
-      border-radius: 10px 10px 0 0;
-      padding: 10px 14px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #c8c8c8;
-      border-bottom: none;
-    }
-
-    .browser-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .browser-dot-red    { background: #ff5f57; }
-    .browser-dot-yellow { background: #ffbd2e; }
-    .browser-dot-green  { background: #28c840; }
-
-    .browser-addressbar {
-      flex: 1;
-      height: 22px;
-      background: #ffffff;
-      border-radius: 4px;
-      border: 1px solid #c8c8c8;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      font-size: 10px;
-      color: #666666;
-      margin-left: 6px;
-    }
-
-    /* ─────────────────────────────────────────────
-       UI RENDER SHELL
-    ───────────────────────────────────────────── */
-    .ui-shell {
-      background: #ffffff;
-      border: 1px solid #c8c8c8;
-      border-radius: 0 0 8px 8px;
-      overflow: hidden;
+    .col-left {
+      width: 320px;
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
+      gap: 20px;
     }
 
     /* ─────────────────────────────────────────────
-       TOP NAV (in render)
+       PHONE FRAME
     ───────────────────────────────────────────── */
-    .rdr-topnav {
-      height: 46px;
-      background: #ffffff;
-      border-bottom: 1px solid #dadee7;
+    .phone {
+      width: 320px;
+      background: #fff;
+      border-radius: 36px;
+      border: 7px solid #1C1C1E;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: #fff;
       display: flex;
       align-items: center;
-      padding: 0 20px;
+      justify-content: space-between;
+      padding: 0 28px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .status-bar-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tab-bar {
+      height: 82px;
+      background: #fff;
+      border-top: 0.5px solid #C6C6C8;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px 16px;
+      flex-shrink: 0;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #AEAEB2;
+    }
+
+    .tab-item.active {
+      color: #1A6B4A;
+    }
+
+    .tab-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    /* ─────────────────────────────────────────────
+       NAV BAR
+    ───────────────────────────────────────────── */
+    .nav-bar {
+      height: 44px;
+      background: #fff;
+      border-bottom: 0.5px solid #C6C6C8;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
       gap: 0;
       flex-shrink: 0;
     }
 
-    .rdr-brand {
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 14px;
+    .nav-back {
+      font-size: 17px;
+      color: #1A6B4A;
       font-weight: 400;
-      color: #083386;
-      letter-spacing: -0.01em;
-      margin-right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
       flex-shrink: 0;
     }
 
-    .rdr-nav-links {
+    .nav-back-chevron {
+      font-size: 20px;
+      line-height: 1;
+      margin-top: -1px;
+    }
+
+    .nav-title {
+      flex: 1;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .nav-action {
+      font-size: 17px;
+      color: #1A6B4A;
+      font-weight: 400;
+      flex-shrink: 0;
+    }
+
+    /* Large title nav */
+    .large-title-nav {
+      background: #fff;
+      padding: 8px 16px 12px;
+      border-bottom: 0.5px solid #C6C6C8;
+      flex-shrink: 0;
+    }
+
+    .large-title-nav-top {
       display: flex;
       align-items: center;
-      gap: 16px;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .large-title-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1.1;
+    }
+
+    /* ─────────────────────────────────────────────
+       SCREEN 1 — CONFIGURATION HUB
+    ───────────────────────────────────────────── */
+    .hub-body {
+      background: #F2F2F7;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hub-progress-label {
+      font-size: 13px;
+      color: #6D6D72;
+      padding: 10px 16px 6px;
+      flex-shrink: 0;
+    }
+
+    .hub-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 16px;
+    }
+
+    .hub-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 0.5px solid #C6C6C8;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+      padding: 14px 14px 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 96px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hub-card-emoji {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .hub-card-name {
+      font-size: 13px;
+      color: #6D6D72;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+
+    .hub-card-status-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hub-card-status-done {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1A6B4A;
+    }
+
+    .hub-card-status-pending {
+      font-size: 12px;
+      font-weight: 400;
+      color: #AEAEB2;
+    }
+
+    .hub-card-bottom-strip {
+      height: 4px;
+      background: #1A6B4A;
+      margin: 0 -14px;
+      margin-top: auto;
+    }
+
+    .hub-card-5th {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hub-card-5th .hub-card {
+      width: calc(50% - 6px);
+    }
+
+    .hub-finish-btn-wrap {
+      padding: 14px 16px 16px;
+      flex-shrink: 0;
+    }
+
+    .hub-finish-btn {
+      width: 100%;
+      height: 52px;
+      border-radius: 999px;
+      background: #C6C6C8;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: not-allowed;
+    }
+
+    /* ─────────────────────────────────────────────
+       SCREEN 2 — CATEGORY DETAIL
+    ───────────────────────────────────────────── */
+    .detail-body {
+      background: #F2F2F7;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .detail-section-header {
+      font-size: 13px;
+      font-weight: 400;
+      color: #6D6D72;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 14px 16px 6px;
+      flex-shrink: 0;
+    }
+
+    .inset-list {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 0.5px solid #C6C6C8;
+      margin: 0 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .inset-cell {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 56px;
+      gap: 8px;
+      border-bottom: 0.5px solid #C6C6C8;
+      background: #fff;
+    }
+
+    .inset-cell:last-child {
+      border-bottom: none;
+    }
+
+    .cell-emoji {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .cell-label {
+      font-size: 17px;
+      font-weight: 400;
+      color: #000;
       flex: 1;
     }
 
-    .rdr-nav-link {
-      font-size: 11px;
-      font-weight: 500;
-      color: #6b7280;
-      white-space: nowrap;
-      cursor: pointer;
-      padding: 0 2px;
+    .pill-row {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
-    .rdr-nav-link.active {
-      color: #1E2A40;
+    .pill {
+      height: 28px;
+      width: 56px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 400;
+      color: #000;
+      background: #F2F2F7;
+      border: none;
+    }
+
+    .pill.selected-strict {
+      background: #FF3B30;
+      color: #fff;
       font-weight: 600;
     }
 
-    .rdr-nav-right {
+    .pill.selected-balanced {
+      background: #FF9500;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .pill.selected-off {
+      background: #8E8E93;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .more-section-header {
+      font-size: 13px;
+      font-weight: 400;
+      color: #6D6D72;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 16px 4px;
+      flex-shrink: 0;
+    }
+
+    .detail-save-btn-wrap {
+      padding: 14px 16px 16px;
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+
+    .detail-save-btn {
+      width: 100%;
+      height: 52px;
+      border-radius: 999px;
+      background: #1A6B4A;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      border: none;
       display: flex;
       align-items: center;
+      justify-content: center;
+    }
+
+    .scroll-hint {
+      text-align: center;
+      font-size: 11px;
+      color: #AEAEB2;
+      padding: 4px 0 2px;
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────────────────────────
+       SCREEN 3 — CHILD CHATBOT
+    ───────────────────────────────────────────── */
+    .chat-body {
+      background: #fff;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 12px 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .bubble-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bubble-sender-label {
+      font-size: 11px;
+      color: #AEAEB2;
+      padding: 0 4px;
+    }
+
+    .bubble-sender-label.leading {
+      text-align: left;
+    }
+
+    .bubble-sender-label.trailing {
+      text-align: right;
+    }
+
+    .bubble {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 15px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .bubble.ai {
+      background: #F2F2F7;
+      color: #000;
+      border-top-left-radius: 4px;
+      align-self: flex-start;
+    }
+
+    .bubble.user {
+      background: #1A6B4A;
+      color: #fff;
+      border-top-right-radius: 4px;
+      align-self: flex-end;
+    }
+
+    .chat-input-bar {
+      height: 56px;
+      background: #fff;
+      border-top: 0.5px solid #C6C6C8;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
       gap: 10px;
       flex-shrink: 0;
     }
 
-    .rdr-nav-badge {
-      font-size: 10px;
-      color: #6b7280;
-      border: 1px solid #dadee7;
-      border-radius: 4px;
-      padding: 2px 6px;
+    .chat-input-field {
+      flex: 1;
+      height: 36px;
+      background: #F2F2F7;
+      border-radius: 16px;
+      border: none;
+      padding: 0 14px;
+      font-size: 15px;
+      color: #AEAEB2;
+      display: flex;
+      align-items: center;
     }
 
-    .rdr-avatar {
-      width: 24px;
-      height: 24px;
+    .chat-send-btn {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      background: #EBF0F7;
-      border: 1px solid #dadee7;
+      background: #1A6B4A;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 9px;
-      font-weight: 700;
-      color: #083386;
-    }
-
-    /* ─────────────────────────────────────────────
-       BODY (sidebar + main) in render
-    ───────────────────────────────────────────── */
-    .rdr-body {
-      display: flex;
-      flex: 1;
-      min-height: 0;
-    }
-
-    /* ─────────────────────────────────────────────
-       SIDEBAR in render
-    ───────────────────────────────────────────── */
-    .rdr-sidebar {
-      width: 160px;
       flex-shrink: 0;
-      background: #ffffff;
-      border-right: 1px solid #dadee7;
-      padding: 14px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
     }
 
-    .rdr-sidebar-title {
-      font-size: 9px;
+    .send-arrow {
+      color: #fff;
+      font-size: 14px;
       font-weight: 700;
-      color: #083386;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0 6px;
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-
-    .rdr-section-label {
-      font-size: 8.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #9ca3af;
-      padding: 6px 6px 3px;
-    }
-
-    .rdr-sidebar-item {
-      font-size: 10px;
-      font-weight: 400;
-      color: #374151;
-      padding: 5px 6px;
-      border-radius: 5px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .rdr-sidebar-item.active {
-      background: #fdf2f8;
-      color: #be185d;
-      font-weight: 600;
-      border-left: 4px solid #ec4899;
-      border-radius: 0 5px 5px 0;
-      padding-left: 4px;
+      margin-top: -1px;
     }
 
     /* ─────────────────────────────────────────────
-       MAIN AREA in render
+       SPATIAL SUMMARY
     ───────────────────────────────────────────── */
-    .rdr-main {
+    .spatial-summary {
+      background: #1C1C1E;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .spatial-summary-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #8E8E93;
+      margin-bottom: 9px;
+    }
+
+    .spatial-row {
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-bottom: 3px;
+    }
+
+    .spatial-key {
+      color: #8E8E93;
+      font-weight: 500;
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+
+    .spatial-val {
+      color: #E5E5EA;
+      font-weight: 400;
+    }
+
+    /* ─────────────────────────────────────────────
+       RIGHT COLUMN — SPEC PANEL
+    ───────────────────────────────────────────── */
+    .col-right {
       flex: 1;
       min-width: 0;
-      background: #f9fafb;
       display: flex;
       flex-direction: column;
+      gap: 20px;
+      padding-bottom: 4px;
     }
 
-    /* ─────────────────────────────────────────────
-       HERO SEARCH ZONE
-    ───────────────────────────────────────────── */
-    .rdr-hero-zone {
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 22px 22px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .spec-panel {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #E5E5EA;
+      overflow: hidden;
     }
 
-    .rdr-page-heading {
-      font-size: 15px;
+    .spec-panel-header {
+      background: #F2F2F7;
+      border-bottom: 1px solid #E5E5EA;
+      padding: 10px 16px;
+    }
+
+    .spec-panel-title {
+      font-size: 12px;
       font-weight: 700;
-      color: #1E2A40;
-      letter-spacing: -0.01em;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .rdr-search-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 2px solid #083386;
-      border-radius: 8px;
-      height: 42px;
-      padding: 0 12px;
-      background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(8, 51, 134, 0.08);
-    }
-
-    .rdr-search-icon {
-      width: 15px;
-      height: 15px;
-      color: #083386;
-      flex-shrink: 0;
-    }
-
-    .rdr-search-placeholder {
-      font-size: 11.5px;
-      color: #9ca3af;
-      font-style: italic;
-    }
-
-    .rdr-search-kbd {
-      margin-left: auto;
-      font-size: 9px;
-      color: #9ca3af;
-      border: 1px solid #e5e7eb;
-      border-radius: 3px;
-      padding: 1px 5px;
-      font-family: monospace;
-      background: #f9fafb;
-    }
-
-    /* filter pills row */
-    .rdr-filter-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .rdr-pill {
-      font-size: 10px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 20px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .rdr-pill.active {
-      background: #083386;
-      color: #ffffff;
-      border-color: #083386;
-    }
-
-    .rdr-pill.inactive {
-      background: #f3f4f6;
-      color: #6b7280;
-      border-color: #e5e7eb;
-    }
-
-    .rdr-result-count {
-      margin-left: auto;
-      font-size: 10px;
-      color: #9ca3af;
-      font-weight: 500;
-    }
-
-    /* ─────────────────────────────────────────────
-       LIST ZONE
-    ───────────────────────────────────────────── */
-    .rdr-list-zone {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 22px 22px;
+    .spec-panel-body {
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
       gap: 0;
     }
 
-    /* Challenge group header */
-    .rdr-group-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 0 5px;
-      border-bottom: 1px solid #e5e7eb;
-      margin-bottom: 1px;
+    .spec-block {
+      padding: 10px 0;
+      border-bottom: 1px solid #F2F2F7;
     }
 
-    .rdr-group-header:not(:first-child) {
-      margin-top: 10px;
+    .spec-block:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
     }
 
-    .rdr-group-label {
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #9ca3af;
-    }
-
-    .rdr-group-count {
-      font-size: 9px;
-      color: #c4c9d4;
-      margin-left: auto;
-    }
-
-    /* Attempt row */
-    .rdr-row {
-      display: flex;
-      align-items: center;
-      padding: 7px 0;
-      border-bottom: 1px solid #f3f4f6;
-      gap: 8px;
-      cursor: pointer;
-      transition: background 120ms ease;
-      border-radius: 4px;
-      padding-left: 4px;
-      padding-right: 4px;
-    }
-
-    .rdr-row:hover {
-      background: #f0f4ff;
-    }
-
-    .rdr-row-title {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .rdr-row-name {
+    .spec-block-title {
       font-size: 11px;
-      font-weight: 600;
-      color: #1E2A40;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-
-    .rdr-row-date {
-      font-size: 9.5px;
-      color: #9ca3af;
-      line-height: 1.3;
-    }
-
-    .rdr-row-badges {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .rdr-badge {
-      font-size: 8.5px;
       font-weight: 700;
+      color: #1A6B4A;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 2px 5px;
-      border-radius: 3px;
-      white-space: nowrap;
+      letter-spacing: 0.06em;
+      margin-bottom: 7px;
     }
 
-    .rdr-badge-c1   { background: #EBF0F7; color: #083386; }
-    .rdr-badge-c2   { background: #e0f2f1; color: #0d6e6e; }
-    .rdr-badge-c3   { background: #f3e8ff; color: #6b21a8; }
-    .rdr-badge-sub  { background: rgb(162, 232, 165); color: rgb(8, 51, 134); }
-    .rdr-badge-reset{ background: rgb(218, 222, 231); color: rgb(8, 51, 134); }
-    .rdr-badge-guard{ background: rgb(218, 222, 231); color: rgb(8, 51, 134); }
+    .spec-prose {
+      font-size: 12px;
+      color: #3A3A3C;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
 
-    .rdr-share-btn {
-      width: 22px;
-      height: 22px;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-      background: #ffffff;
+    .spec-prose:last-child {
+      margin-bottom: 0;
+    }
+
+    .spec-rows {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #9ca3af;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .spec-row {
+      display: flex;
+      gap: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .spec-key {
+      color: #6D6D72;
+      font-weight: 600;
+      min-width: 96px;
       flex-shrink: 0;
-      cursor: pointer;
+    }
+
+    .spec-val {
+      color: #1C1C1E;
+      font-weight: 400;
+      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+      font-size: 10.5px;
+    }
+
+    .spec-val.prose {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      font-size: 11.5px;
+      color: #3A3A3C;
+    }
+
+    .spec-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .spec-bullets li {
+      font-size: 12px;
+      color: #3A3A3C;
+      line-height: 1.55;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .spec-bullets li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #1A6B4A;
+      font-weight: 700;
+    }
+
+    .spec-numbered-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 2px;
+    }
+
+    .spec-divider {
+      height: 1px;
+      background: #F2F2F7;
+      margin: 8px 0;
     }
 
     /* ─────────────────────────────────────────────
-       CALLOUT CIRCLE (on render layer)
+       NUM callout circles
     ───────────────────────────────────────────── */
-    .callout-wrap {
-      position: relative;
-      display: inline-block;
-    }
-
-    .callout {
+    .num {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -554,20 +821,14 @@
       height: 22px;
       border-radius: 50%;
       background: #D97706;
-      color: #ffffff;
+      color: #fff;
       font-size: 11px;
       font-weight: 700;
-      line-height: 1;
       flex-shrink: 0;
-      vertical-align: middle;
-      position: absolute;
-      top: -11px;
-      right: -11px;
-      z-index: 10;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      margin-left: auto;
     }
 
-    .callout-inline {
+    .num-inline {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -576,880 +837,956 @@
       min-width: 22px;
       border-radius: 50%;
       background: #D97706;
-      color: #ffffff;
+      color: #fff;
       font-size: 11px;
       font-weight: 700;
-      line-height: 1;
       flex-shrink: 0;
+      vertical-align: middle;
       box-shadow: 0 1px 4px rgba(0,0,0,0.18);
     }
 
     /* ─────────────────────────────────────────────
-       RIGHT COLUMN — Specs + Before
+       TOKEN LEGEND FOOTER
     ───────────────────────────────────────────── */
-    .col-specs {
-      background: #ffffff;
-      border-left: 1px solid #dde1ea;
-      padding: 28px 24px 48px;
+    .token-footer {
+      background: #1C1C1E;
+      padding: 14px 36px;
       display: flex;
-      flex-direction: column;
-      gap: 28px;
-      overflow-y: auto;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .col-specs-label {
+    .token-footer-label {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #888888;
-      margin-bottom: 2px;
-    }
-
-    /* ─────────────────────────────────────────────
-       SPEC CARDS
-    ───────────────────────────────────────────── */
-    .spec-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .spec-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      background: #f9fafb;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .spec-card-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #1E2A40;
-    }
-
-    .spec-card-body {
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .spec-row {
-      display: flex;
-      gap: 10px;
-      font-size: 11px;
-    }
-
-    .spec-key {
-      color: #9ca3af;
-      font-weight: 600;
-      min-width: 80px;
+      color: #8E8E93;
       flex-shrink: 0;
     }
 
-    .spec-val {
-      color: #1E2A40;
-      font-weight: 400;
-      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-      font-size: 10.5px;
-    }
-
-    .spec-val.note {
-      font-family: Inter, system-ui, sans-serif;
-      font-size: 11px;
-      color: #374151;
-    }
-
-    .spec-divider {
-      height: 1px;
-      background: #f3f4f6;
-      margin: 4px 0;
-    }
-
-    /* ─────────────────────────────────────────────
-       BEFORE SCREENSHOT PANEL
-    ───────────────────────────────────────────── */
-    .before-panel {
-      border: 2px solid #D97706;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .before-panel-header {
-      background: #D97706;
-      padding: 7px 12px;
-      font-size: 10px;
-      font-weight: 700;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .token-items {
       display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .before-panel-img {
-      width: 100%;
-      display: block;
-      max-height: 260px;
-      object-fit: cover;
-      object-position: top;
-    }
-
-    .before-panel-footer {
-      background: #fff8f0;
-      border-top: 1px solid #fde68a;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .before-caption {
-      font-size: 11px;
-      font-weight: 700;
-      color: #92400e;
-    }
-
-    .before-problems {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .before-problems li {
-      font-size: 10.5px;
-      color: #78350f;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      line-height: 1.45;
-    }
-
-    .before-problems li::before {
-      content: '✕';
-      color: #ef4444;
-      font-weight: 700;
-      font-size: 9px;
-      margin-top: 1px;
-      flex-shrink: 0;
-    }
-
-    /* ─────────────────────────────────────────────
-       HIGHLIGHT ANNOTATION BOXES (on left column)
-    ───────────────────────────────────────────── */
-    .annotation-zone {
-      border: 1.5px dashed #D97706;
-      border-radius: 4px;
-      position: relative;
-      background: rgba(217, 119, 6, 0.03);
-    }
-
-    .annotation-zone .callout {
-      position: absolute;
-      top: -11px;
-      right: -11px;
-    }
-
-    /* section dividers visible on list zone */
-    .rdr-section-divider-visible {
-      height: 1px;
-      background: linear-gradient(to right, #e5e7eb 0%, transparent 100%);
-      margin: 6px 0 4px;
-    }
-
-    /* ─────────────────────────────────────────────
-       FOOTER LEGEND
-    ───────────────────────────────────────────── */
-    .legend-bar {
-      background: #1E2A40;
-      padding: 12px 36px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
+      gap: 14px;
       flex-wrap: wrap;
     }
 
-    .legend-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #9ca3af;
-      flex-shrink: 0;
-    }
-
-    .legend-items {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .legend-item {
+    .token-item {
       display: flex;
       align-items: center;
       gap: 6px;
       font-size: 11px;
-      color: #d1d5db;
+      color: #D1D1D6;
     }
 
-    .legend-swatch {
+    .token-swatch {
       width: 14px;
       height: 14px;
       border-radius: 3px;
       flex-shrink: 0;
     }
+
+    /* ─────────────────────────────────────────────
+       HUB CARD STATUS ROW FLEX
+    ───────────────────────────────────────────── */
+    .hub-card-inner {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .hub-card-status-line {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
   </style>
 </head>
 <body>
 
 <!-- ═══════════════════════════════════════════════
-     1. PAGE HEADER BANNER
+     1. PAGE HEADER
 ═══════════════════════════════════════════════ -->
 <div class="page-header">
-  <strong>Direction B &nbsp;·&nbsp; Command Search &nbsp;·&nbsp; July AI — Previous Conversations &nbsp;·&nbsp; 1 screen &nbsp;·&nbsp; Desktop 1440px</strong>
-  Visual register: Clean / modern / consumer-grade &nbsp;·&nbsp; Hero search bar + unified pre-loaded attempt list &nbsp;·&nbsp; Feels like Linear or Superhuman: white surfaces, generous whitespace, search-first navigation
-  <div class="subline">Goal thread: Making search the dominant spatial element directly addresses §2 Problem 2 (no search exists) and §2 Problem 1 (date-only labels) simultaneously — the hero bar forces attention to search-first navigation while topic names in each row eliminate the need to click into conversations. Serves §4 primary metric (under 10 seconds) for users who know what they're looking for.</div>
+  <div class="page-header-row1">
+    <span class="header-pill">Mockup B</span>
+    <span class="header-pill">Configuration Hub</span>
+    <span class="header-title">SafeChat</span>
+    <span class="header-screen-count">3 screens</span>
+  </div>
+  <div class="page-header-row2">iOS 390px &middot; Parent Onboarding + Hub &middot; Child Chatbot</div>
+  <div class="goal-thread-box">
+    <strong style="font-weight:700;">Goal thread:</strong> Direction B gives parents a map before they start &mdash; the hub screen surfaces all 5 categories simultaneously so &sect;4&rsquo;s completion metric is served by visible progress, not blind faith. &sect;3 identifies parents as cautious: seeing 3 of 5 cards already green reduces anxiety better than a progress bar ever could. The hub doubles as the settings editor, meaning there is zero re-learning cost when a parent returns months later.
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     1b. WHAT THIS CHANGES
+     2. WHAT THIS CHANGES BOX
 ═══════════════════════════════════════════════ -->
-<div class="changes-bar">
-  <span class="changes-bar-label">What changes</span>
+<div class="changes-box">
+  <div class="changes-box-label">What this direction does</div>
   <ul class="changes-list">
     <li>
-      <span class="callout-num">1</span>
-      Hero search bar replaces the "Practice Sets" heading as the dominant element
+      <span class="num-inline">1</span>
+      <span><strong>Category hub cards</strong> &mdash; Five cards replace a wizard &mdash; parents see the full map, pick any order, and watch each card fill green when done.</span>
     </li>
     <li>
-      <span class="callout-num">2</span>
-      AI topic name as primary label on every attempt row (replaces raw date)
+      <span class="num-inline">2</span>
+      <span><strong>Completion status badge</strong> &mdash; Each card shows &ldquo;&#10003; Configured&rdquo; in forest green or &ldquo;Not configured&rdquo; in gray &mdash; progress is visible at all times.</span>
     </li>
     <li>
-      <span class="callout-num">3</span>
-      Challenge filter pills (All / C1 / C2 / C3) replace per-challenge accordions
+      <span class="num-inline">3</span>
+      <span><strong>Category detail list</strong> &mdash; Inside each card, subcategories are grouped cells with Off/Balanced/Strict pill rows &mdash; scrollable, dense, fast to complete.</span>
     </li>
     <li>
-      <span class="callout-num">4</span>
-      Unified list shows ALL attempts across all challenges simultaneously — no expand clicks
+      <span class="num-inline">4</span>
+      <span><strong>Alert card with edit link</strong> &mdash; Dashboard alert cards link directly to the relevant hub card, so a parent can adjust a setting without searching.</span>
     </li>
     <li>
-      <span class="callout-num">5</span>
-      Real-time filtering — rows fade out as user types; result count updates below search bar
+      <span class="num-inline">5</span>
+      <span><strong>Chat bubbles</strong> &mdash; Same SF Pro + forest-green token set as parent view &mdash; unified language across both users.</span>
     </li>
   </ul>
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     2. TWO-COLUMN BODY
+     SCREEN 1 — PARENT SETUP: CONFIGURATION HUB
 ═══════════════════════════════════════════════ -->
-<div class="two-col">
+<div class="screen-section">
+  <div class="screen-section-label">Screen 1 &mdash; Parent Setup: Configuration Hub</div>
+  <div class="screen-two-col">
 
-  <!-- ─────────────────────────────────────────────
-       LEFT — Visual Render
-  ───────────────────────────────────────────── -->
-  <div class="col-render">
-    <div class="col-render-label">Visual Render — Desktop 1440px (scaled)</div>
+    <!-- LEFT: Phone + Spatial Summary -->
+    <div class="col-left">
 
-    <!-- Browser chrome -->
-    <div class="browser-chrome">
-      <div class="browser-dot browser-dot-red"></div>
-      <div class="browser-dot browser-dot-yellow"></div>
-      <div class="browser-dot browser-dot-green"></div>
-      <div class="browser-addressbar">app.gojuly.ai/previous-conversations</div>
-    </div>
+      <!-- PHONE -->
+      <div class="phone">
 
-    <!-- UI Shell -->
-    <div class="ui-shell">
-
-      <!-- TOP NAV -->
-      <div class="rdr-topnav">
-        <span class="rdr-brand">july ai</span>
-        <div class="rdr-nav-links">
-          <span class="rdr-nav-link">Home</span>
-          <span class="rdr-nav-link">Data Portfolio</span>
-          <span class="rdr-nav-link">Payment</span>
-        </div>
-        <div class="rdr-nav-right">
-          <span class="rdr-nav-badge">Admin</span>
-          <span class="rdr-nav-badge">FE Admin</span>
-          <div class="rdr-avatar">A</div>
-        </div>
-      </div>
-
-      <!-- BODY: sidebar + main -->
-      <div class="rdr-body">
-
-        <!-- SIDEBAR -->
-        <div class="rdr-sidebar">
-          <div class="rdr-sidebar-title">Red Team Sample Submission</div>
-
-          <div class="rdr-section-label">Menu</div>
-          <div class="rdr-sidebar-item">Success Criteria</div>
-          <div class="rdr-sidebar-item">Examples of Successful Attacks</div>
-          <div class="rdr-sidebar-item active">Previous Conversations</div>
-
-          <div class="rdr-section-label" style="margin-top: 8px;">Challenges</div>
-          <div class="rdr-sidebar-item">Challenge 1</div>
-          <div class="rdr-sidebar-item">Challenge 2</div>
-          <div class="rdr-sidebar-item">Challenge 3</div>
+        <!-- Status bar -->
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-bar-icons">
+            <span>&#9679;&#9679;&#9679;</span>
+            <span>WiFi</span>
+            <span>&#9646;</span>
+          </div>
         </div>
 
-        <!-- MAIN -->
-        <div class="rdr-main">
-
-          <!-- ────────────────────────────────────
-               TOP HERO ZONE (callout 1 + 3)
-          ──────────────────────────────────────── -->
-          <div class="rdr-hero-zone">
-            <div class="rdr-page-heading">Previous Conversations</div>
-
-            <!-- Search bar — callout 1 -->
-            <div class="annotation-zone" style="padding: 3px;">
-              <div class="rdr-search-wrap">
-                <svg class="rdr-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="6.5" cy="6.5" r="4.25"/>
-                  <line x1="9.9" y1="9.9" x2="14" y2="14"/>
-                </svg>
-                <span class="rdr-search-placeholder">Search by topic, keyword, or approach…</span>
-                <span class="rdr-search-kbd">⌘K</span>
-              </div>
-              <div class="callout">1</div>
+        <!-- Large title nav -->
+        <div class="large-title-nav">
+          <div class="large-title-nav-top">
+            <div class="nav-back">
+              <span class="nav-back-chevron">&#8249;</span>
             </div>
+            <div class="nav-action">Skip</div>
+          </div>
+          <div class="large-title-text">Set up Aria&rsquo;s Safety</div>
+        </div>
 
-            <!-- Filter pills + count — callout 3 -->
-            <div class="annotation-zone" style="padding: 6px 8px;">
-              <div class="rdr-filter-row">
-                <span class="rdr-pill active">All</span>
-                <span class="rdr-pill inactive">Challenge 1</span>
-                <span class="rdr-pill inactive">Challenge 2</span>
-                <span class="rdr-pill inactive">Challenge 3</span>
-                <span class="rdr-result-count">14 conversations</span>
-              </div>
-              <div class="callout">3</div>
-            </div>
-          </div><!-- /hero-zone -->
+        <!-- Hub body -->
+        <div class="hub-body">
 
-          <!-- ────────────────────────────────────
-               BOTTOM LIST ZONE (callouts 2, 4, 5)
-          ──────────────────────────────────────── -->
-          <div class="rdr-list-zone">
+          <!-- Progress label -->
+          <div class="hub-progress-label">3 of 5 complete</div>
 
-            <!-- CHALLENGE 1 GROUP -->
-            <div class="rdr-group-header">
-              <span class="rdr-group-label">Challenge 1</span>
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#083386;color:#fff;font-size:8px;font-weight:700;">C1</span>
-              <span class="rdr-group-count">5 attempts</span>
-            </div>
+          <!-- Card grid -->
+          <div class="hub-card-grid">
 
-            <!-- Row 1 — callout 2 annotation on name column -->
-            <div class="rdr-row">
-              <div class="rdr-row-title" style="position:relative;">
-                <div class="annotation-zone" style="padding: 2px 4px; display: inline-block; width: 100%;">
-                  <div class="rdr-row-name">Self-Harm Encouragement</div>
-                  <div class="rdr-row-date">Mar 9, 2026</div>
-                  <div class="callout">2</div>
+            <!-- Card 1: Content (completed) -->
+            <div class="hub-card">
+              <div class="hub-card-inner">
+                <div class="hub-card-emoji">&#128539;</div>
+                <div class="hub-card-name">Content</div>
+                <div class="hub-card-status-line">
+                  <span class="hub-card-status-done">&#10003; Configured</span>
+                  <span class="num" style="margin-left:auto;width:18px;height:18px;font-size:10px;">2</span>
                 </div>
               </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c1">C1</span>
-                <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                <span class="rdr-badge rdr-badge-guard">GUARDED</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
+              <div class="hub-card-bottom-strip"></div>
+              <span class="num" style="position:absolute;top:-8px;right:-8px;width:18px;height:18px;font-size:10px;margin-left:0;">1</span>
             </div>
 
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">Suicidal Ideation Loop</div>
-                <div class="rdr-row-date">Mar 9, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c1">C1</span>
-                <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                <span class="rdr-badge rdr-badge-guard">GUARDED</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">Crisis Endorsement Pattern</div>
-                <div class="rdr-row-date">Mar 6, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c1">C1</span>
-                <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                <span class="rdr-badge rdr-badge-guard">GUARDED</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">Empathy Exploitation Attempt</div>
-                <div class="rdr-row-date">Feb 14, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c1">C1</span>
-                <span class="rdr-badge rdr-badge-reset">RESET</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">Real-World Harm Validation</div>
-                <div class="rdr-row-date">Feb 5, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c1">C1</span>
-                <span class="rdr-badge rdr-badge-reset">RESET</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- CHALLENGE 2 GROUP -->
-            <div class="rdr-group-header">
-              <span class="rdr-group-label">Challenge 2</span>
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#0d6e6e;color:#fff;font-size:8px;font-weight:700;">C2</span>
-              <span class="rdr-group-count">3 attempts</span>
-            </div>
-
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">Innocent Refusal Trigger</div>
-                <div class="rdr-row-date">Mar 9, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c2">C2</span>
-                <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                <span class="rdr-badge rdr-badge-guard">GUARDED</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">Benign Request Over-blocked</div>
-                <div class="rdr-row-date">Mar 9, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c2">C2</span>
-                <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                <span class="rdr-badge rdr-badge-guard">GUARDED</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- callout 4 annotation on unified list -->
-            <div class="annotation-zone" style="border-radius: 4px;">
-              <div class="rdr-row" style="border-radius: 4px; border-bottom: none;">
-                <div class="rdr-row-title">
-                  <div class="rdr-row-name">Low-Risk Query Rejection</div>
-                  <div class="rdr-row-date">Oct 13, 2025</div>
-                </div>
-                <div class="rdr-row-badges">
-                  <span class="rdr-badge rdr-badge-c2">C2</span>
-                  <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                  <span class="rdr-badge rdr-badge-guard">GUARDED</span>
-                </div>
-                <div class="rdr-share-btn">
-                  <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                    <polyline points="11 1 15 1 15 5"/>
-                    <line x1="15" y1="1" x2="8" y2="8"/>
-                  </svg>
+            <!-- Card 2: Behavior (completed) -->
+            <div class="hub-card">
+              <div class="hub-card-inner">
+                <div class="hub-card-emoji">&#129504;</div>
+                <div class="hub-card-name">Behavior</div>
+                <div class="hub-card-status-line">
+                  <span class="hub-card-status-done">&#10003; Configured</span>
                 </div>
               </div>
-              <div class="callout">4</div>
+              <div class="hub-card-bottom-strip"></div>
             </div>
 
-            <!-- CHALLENGE 3 GROUP -->
-            <div class="rdr-group-header">
-              <span class="rdr-group-label">Challenge 3</span>
-              <span style="display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#6b21a8;color:#fff;font-size:8px;font-weight:700;">C3</span>
-              <span class="rdr-group-count">2 attempts</span>
-            </div>
-
-            <div class="rdr-row">
-              <div class="rdr-row-title">
-                <div class="rdr-row-name">PTSD Validation Exploit</div>
-                <div class="rdr-row-date">Mar 9, 2026</div>
-              </div>
-              <div class="rdr-row-badges">
-                <span class="rdr-badge rdr-badge-c3">C3</span>
-                <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-              </div>
-              <div class="rdr-share-btn">
-                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                  <polyline points="11 1 15 1 15 5"/>
-                  <line x1="15" y1="1" x2="8" y2="8"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- callout 5 on last row (real-time filter) -->
-            <div class="annotation-zone" style="border-radius: 4px;">
-              <div class="rdr-row" style="border-radius: 4px; border-bottom: none;">
-                <div class="rdr-row-title">
-                  <div class="rdr-row-name">Dangerous Belief Reinforcement</div>
-                  <div class="rdr-row-date">Mar 9, 2026</div>
-                </div>
-                <div class="rdr-row-badges">
-                  <span class="rdr-badge rdr-badge-c3">C3</span>
-                  <span class="rdr-badge rdr-badge-sub">SUBMITTED</span>
-                </div>
-                <div class="rdr-share-btn">
-                  <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9"/>
-                    <polyline points="11 1 15 1 15 5"/>
-                    <line x1="15" y1="1" x2="8" y2="8"/>
-                  </svg>
+            <!-- Card 3: Personality (not configured) -->
+            <div class="hub-card">
+              <div class="hub-card-inner">
+                <div class="hub-card-emoji">&#128172;</div>
+                <div class="hub-card-name">Personality</div>
+                <div class="hub-card-status-line">
+                  <span class="hub-card-status-pending">Not configured</span>
                 </div>
               </div>
-              <div class="callout">5</div>
             </div>
 
-          </div><!-- /list-zone -->
-        </div><!-- /main -->
-      </div><!-- /body -->
-    </div><!-- /ui-shell -->
-  </div><!-- /col-render -->
+            <!-- Card 4: Learning (not configured) -->
+            <div class="hub-card">
+              <div class="hub-card-inner">
+                <div class="hub-card-emoji">&#128218;</div>
+                <div class="hub-card-name">Learning</div>
+                <div class="hub-card-status-line">
+                  <span class="hub-card-status-pending">Not configured</span>
+                </div>
+              </div>
+            </div>
 
-  <!-- ─────────────────────────────────────────────
-       RIGHT — Component Specs + Before
-  ───────────────────────────────────────────── -->
-  <div class="col-specs">
-    <div class="col-specs-label">Component Specs &amp; Existing Screen Analysis</div>
+            <!-- Card 5: Privacy — centered below -->
+            <div class="hub-card-5th">
+              <div class="hub-card" style="width:calc(50% - 6px);">
+                <div class="hub-card-inner">
+                  <div class="hub-card-emoji">&#128274;</div>
+                  <div class="hub-card-name">Privacy</div>
+                  <div class="hub-card-status-line">
+                    <span class="hub-card-status-pending">Not configured</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <!-- SPEC 1: Hero search bar -->
-    <div class="spec-card">
-      <div class="spec-card-header">
-        <div class="callout-inline">1</div>
-        <span class="spec-card-title">Hero Search Bar</span>
-      </div>
-      <div class="spec-card-body">
-        <div class="spec-row">
-          <span class="spec-key">Height</span>
-          <span class="spec-val">48px (rendered at 42px in scaled view)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Border</span>
-          <span class="spec-val">2px solid #083386 (focus state always-on in mockup)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Box shadow</span>
-          <span class="spec-val">0 0 0 3px rgba(8,51,134,0.08)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Border radius</span>
-          <span class="spec-val">8px</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Icon</span>
-          <span class="spec-val">Magnifier — 16×16px, color #083386, left-inset 12px</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Placeholder</span>
-          <span class="spec-val">"Search by topic, keyword, or approach…"</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Font</span>
-          <span class="spec-val">Inter 14px/400, color #1E2A40</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Keyboard hint</span>
-          <span class="spec-val">⌘K badge — right-inset, 9px mono, border #e5e7eb</span>
-        </div>
-        <div class="spec-divider"></div>
-        <div class="spec-row">
-          <span class="spec-key">Rationale</span>
-          <span class="spec-val note">Spatial dominance forces search-first behavior. Eliminating the need to know which challenge an attempt belongs to before searching.</span>
-        </div>
-      </div>
-    </div>
+          </div><!-- /hub-card-grid -->
 
-    <!-- SPEC 2: AI topic name -->
-    <div class="spec-card">
-      <div class="spec-card-header">
-        <div class="callout-inline">2</div>
-        <span class="spec-card-title">AI Topic Name — Primary Row Label</span>
-      </div>
-      <div class="spec-card-body">
-        <div class="spec-row">
-          <span class="spec-key">Font size</span>
-          <span class="spec-val">15px (spec) / 11px scaled render</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Weight</span>
-          <span class="spec-val">600 (semibold)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Color</span>
-          <span class="spec-val">#1E2A40 (dark navy-charcoal)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Truncation</span>
-          <span class="spec-val">overflow: hidden; text-overflow: ellipsis; white-space: nowrap</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Sub-label</span>
-          <span class="spec-val">Date — 12px/400, #9ca3af — below name, same cell</span>
-        </div>
-        <div class="spec-divider"></div>
-        <div class="spec-row">
-          <span class="spec-key">Rationale</span>
-          <span class="spec-val note">Replaces "date-as-primary" pattern. User reads intent before metadata. Scannable at a glance without opening any conversation.</span>
-        </div>
-      </div>
-    </div>
+          <!-- Finish setup button -->
+          <div class="hub-finish-btn-wrap">
+            <div class="hub-finish-btn">Finish setup</div>
+          </div>
 
-    <!-- SPEC 3: Filter pills -->
-    <div class="spec-card">
-      <div class="spec-card-header">
-        <div class="callout-inline">3</div>
-        <span class="spec-card-title">Challenge Filter Pills</span>
-      </div>
-      <div class="spec-card-body">
-        <div class="spec-row">
-          <span class="spec-key">Active pill</span>
-          <span class="spec-val">bg #083386 · color #ffffff · border #083386</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Inactive pill</span>
-          <span class="spec-val">bg #F3F4F6 · color #6b7280 · border #e5e7eb</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Hover</span>
-          <span class="spec-val">bg #E5E7EB (inactive) · bg #0a3fa8 (active)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Padding</span>
-          <span class="spec-val">3px 10px</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Border radius</span>
-          <span class="spec-val">20px (fully rounded)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Font</span>
-          <span class="spec-val">Inter 10px/700, uppercase</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Result count</span>
-          <span class="spec-val">Right-aligned, 10px/500, #9ca3af — updates on filter</span>
-        </div>
-        <div class="spec-divider"></div>
-        <div class="spec-row">
-          <span class="spec-key">Rationale</span>
-          <span class="spec-key note" style="min-width:unset;color:#374151;font-family:Inter,system-ui,sans-serif;font-size:11px;font-weight:400;">Replaces accordion-per-challenge interaction with a single tap. No expand/collapse — state is a simple active pill.</span>
-        </div>
-      </div>
-    </div>
+        </div><!-- /hub-body -->
 
-    <!-- SPEC 4: Unified list -->
-    <div class="spec-card">
-      <div class="spec-card-header">
-        <div class="callout-inline">4</div>
-        <span class="spec-card-title">Unified Attempt List</span>
-      </div>
-      <div class="spec-card-body">
-        <div class="spec-row">
-          <span class="spec-key">Row height</span>
-          <span class="spec-val">52px (two-line: name + date)</span>
+        <!-- Tab bar -->
+        <div class="tab-bar">
+          <div class="tab-item active">
+            <div class="tab-icon">&#127968;</div>
+            <span>Setup</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon">&#128276;</div>
+            <span>Alerts</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon">&#9881;&#65039;</div>
+            <span>Settings</span>
+          </div>
         </div>
-        <div class="spec-row">
-          <span class="spec-key">Row hover</span>
-          <span class="spec-val">bg #f0f4ff · transition 120ms ease</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Challenge badge</span>
-          <span class="spec-val">C1 — #EBF0F7 / #083386 · C2 — #e0f2f1 / #0d6e6e · C3 — #f3e8ff / #6b21a8</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">SUBMITTED</span>
-          <span class="spec-val">bg rgb(162,232,165) · color rgb(8,51,134)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">RESET</span>
-          <span class="spec-val">bg rgb(218,222,231) · color rgb(8,51,134)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">GUARDED</span>
-          <span class="spec-val">bg rgb(218,222,231) · color rgb(8,51,134)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Share icon</span>
-          <span class="spec-val">22×22px border btn · external-link SVG · right-aligned</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Group header</span>
-          <span class="spec-val">9px/700 uppercase label + challenge color dot + count</span>
-        </div>
-        <div class="spec-divider"></div>
-        <div class="spec-row">
-          <span class="spec-key">Rationale</span>
-          <span class="spec-val note">All 14 attempts visible simultaneously. No accordion state. Grouping is decorative/navigational, not a gate. Removes mandatory expand step.</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- SPEC 5: Real-time filter -->
-    <div class="spec-card">
-      <div class="spec-card-header">
-        <div class="callout-inline">5</div>
-        <span class="spec-card-title">Real-Time Filtering Behavior</span>
-      </div>
-      <div class="spec-card-body">
-        <div class="spec-row">
-          <span class="spec-key">Trigger</span>
-          <span class="spec-val">oninput on search bar (no debounce needed — DOM filter)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Match scope</span>
-          <span class="spec-val">Topic name + challenge label + badge text</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Non-match</span>
-          <span class="spec-val">opacity: 0.25; pointer-events: none; transition: 150ms</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Match</span>
-          <span class="spec-val">opacity: 1; highlight matched substring in #083386 bg</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Count update</span>
-          <span class="spec-val">Result count pill below search bar → "N conversations"</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Clear</span>
-          <span class="spec-val">× icon appears in search bar when value is non-empty</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Empty state</span>
-          <span class="spec-val">"No conversations match — try a different keyword"</span>
-        </div>
-        <div class="spec-divider"></div>
-        <div class="spec-row">
-          <span class="spec-key">Rationale</span>
-          <span class="spec-val note">Serves §4 primary metric: under 10s to find a specific attempt. Instant feedback without any page navigation or accordion gymnastics.</span>
-        </div>
-      </div>
-    </div>
+      </div><!-- /phone -->
 
-    <!-- ─────────────────────
-         EXISTING SCREEN ANALYSIS
-    ───────────────────────── -->
-    <div>
-      <div class="col-specs-label" style="margin-bottom: 10px;">Existing Screen Analysis</div>
-      <div class="before-panel">
-        <div class="before-panel-header">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r="0.5" fill="currentColor"/>
-          </svg>
-          Current UI — Before Redesign
+      <!-- Spatial Summary -->
+      <div class="spatial-summary">
+        <div class="spatial-summary-label">Spatial Summary</div>
+        <div class="spatial-row">
+          <span class="spatial-key">Direction:</span>
+          <span class="spatial-val">B &mdash; Configuration Hub</span>
         </div>
-        <img
-          class="before-panel-img"
-          src="../design-references/prev-conv-desktop-1440-viewport.png"
-          alt="Current UI — Previous Conversations page on app.gojuly.ai at 1440px viewport"
-        />
-        <div class="before-panel-footer">
-          <div class="before-caption">Current UI — Previous Conversations</div>
-          <ul class="before-problems">
-            <li>Date-only labels as primary identifier — user must open each conversation to know what approach was tried</li>
-            <li>No search bar exists — finding a specific attempt requires scrolling through all 14 rows across 3 accordions manually</li>
-            <li>Separate accordion per challenge — each challenge requires a distinct expand interaction, preventing cross-challenge scanning</li>
-          </ul>
+        <div class="spatial-row">
+          <span class="spatial-key">Layout:</span>
+          <span class="spatial-val">2-column card grid hub with progress label</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Distinctive move:</span>
+          <span class="spatial-val">The entire safety system is visible as a 5-card map &mdash; parent sees completion state at a glance</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">New/changed zones:</span>
+          <span class="spatial-val">Hub card grid, completion status badges, progress label</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Proportional note:</span>
+          <span class="spatial-val">Phone frame scaled to 320px from iOS 390px [estimated]</span>
         </div>
       </div>
-    </div>
 
-  </div><!-- /col-specs -->
-</div><!-- /two-col -->
+    </div><!-- /col-left -->
+
+    <!-- RIGHT: Spec panel -->
+    <div class="col-right">
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Direction at a Glance</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <ul class="spec-bullets">
+              <li>The parent sees all 5 safety categories before configuring any of them</li>
+              <li>Cards show live completion status (green &#10003; vs gray &ldquo;Not configured&rdquo;) &mdash; progress is never invisible</li>
+              <li>The hub doubles as the settings editor on the dashboard &mdash; zero re-learning on return visits</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Strategy</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <p class="spec-prose">Direction B exists because &sect;3 identifies the parent&rsquo;s key anxiety as &ldquo;am I almost done?&rdquo; &mdash; a question a linear wizard can never answer until you&rsquo;re actually done. The hub model pre-answers that question before the first tap: parents see the entire scope of the task mapped as 5 cards, choose where to start, and watch progress fill in as they go.</p>
+            <p class="spec-prose">&sect;4&rsquo;s &gt;80% completion metric is served by making partial completion visible and persistent: a parent who has 3 of 5 green is far more likely to complete than one who can&rsquo;t tell if there are 2 or 12 steps remaining.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Above the Fold</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">1st</span>
+                <span class="spec-val prose">&ldquo;3 of 5 complete&rdquo; progress label &mdash; communicates state immediately</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">2nd</span>
+                <span class="spec-val prose">Card grid &mdash; the full task map, scannable in under 3 seconds</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">3rd</span>
+                <span class="spec-val prose">Finish setup button &mdash; inactive until earned, visible as a goal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header" style="display:flex;align-items:center;gap:10px;">
+          <span class="num-inline">1</span>
+          <div class="spec-panel-title">Component: Hub Card &mdash; P0</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Source</span>
+                <span class="spec-val prose">New &mdash; Direction B signature element</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Background</span>
+                <span class="spec-val">#FFFFFF (incomplete) / #FFFFFF + #1A6B4A bottom strip 4px (complete)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Border radius</span>
+                <span class="spec-val">12px</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Shadow</span>
+                <span class="spec-val">0 1px 3px rgba(0,0,0,0.10)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Padding</span>
+                <span class="spec-val">14px</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Emoji</span>
+                <span class="spec-val">22px, category icon</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Category name</span>
+                <span class="spec-val">SF Pro Text 13px / Regular / #6D6D72</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Height</span>
+                <span class="spec-val">~96px</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Width</span>
+                <span class="spec-val">(320 - 48px padding - 12px gap) / 2 = ~130px per card</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header" style="display:flex;align-items:center;gap:10px;">
+          <span class="num-inline">2</span>
+          <div class="spec-panel-title">Component: Completion Badge &mdash; P0</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Complete</span>
+                <span class="spec-val">&ldquo;&#10003; Configured&rdquo; &mdash; 12px / Semibold / #1A6B4A</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Incomplete</span>
+                <span class="spec-val">&ldquo;Not configured&rdquo; &mdash; 12px / Regular / #AEAEB2</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Position</span>
+                <span class="spec-val">Bottom of card, above bottom strip</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Component: Finish Setup Button &mdash; P0</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Active state</span>
+                <span class="spec-val">bg #1A6B4A / text #FFFFFF / 52px / 999px radius</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Disabled state</span>
+                <span class="spec-val">bg #C6C6C8 / text #FFFFFF / same dimensions</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Activation</span>
+                <span class="spec-val prose">Becomes active only when all 5 cards show &ldquo;&#10003; Configured&rdquo;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /screen-two-col -->
+</div><!-- /screen-section 1 -->
+
+<hr class="screen-section-divider" style="margin-top:36px;" />
 
 <!-- ═══════════════════════════════════════════════
-     FOOTER LEGEND
+     SCREEN 2 — CATEGORY DETAIL (CONTENT)
 ═══════════════════════════════════════════════ -->
-<div class="legend-bar">
-  <span class="legend-label">Design Tokens</span>
-  <div class="legend-items">
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#083386;"></div>
-      Navy primary #083386
+<div class="screen-section">
+  <div class="screen-section-label">Screen 2 &mdash; Category Detail (Content)</div>
+  <div class="screen-two-col">
+
+    <!-- LEFT: Phone + Spatial Summary -->
+    <div class="col-left">
+
+      <!-- PHONE -->
+      <div class="phone">
+
+        <!-- Status bar -->
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-bar-icons">
+            <span>&#9679;&#9679;&#9679;</span>
+            <span>WiFi</span>
+            <span>&#9646;</span>
+          </div>
+        </div>
+
+        <!-- Nav bar -->
+        <div class="nav-bar">
+          <div class="nav-back">
+            <span class="nav-back-chevron">&#8249;</span>
+            <span style="font-size:17px;">Content</span>
+          </div>
+          <div class="nav-title">Content</div>
+          <div style="width:60px;"></div>
+        </div>
+
+        <!-- Detail body -->
+        <div class="detail-body">
+
+          <!-- Section header -->
+          <div class="detail-section-header">Content Settings</div>
+
+          <!-- Inset grouped list -->
+          <div class="inset-list">
+
+            <!-- Cell 1: Sexual content -->
+            <div class="inset-cell">
+              <span class="cell-emoji">&#128286;</span>
+              <span class="cell-label" style="font-size:14px;">Sexual content</span>
+              <div class="pill-row">
+                <div class="pill">Off</div>
+                <div class="pill">Bal.</div>
+                <div class="pill selected-strict">Strict</div>
+              </div>
+              <span class="num-inline" style="margin-left:6px;width:18px;height:18px;font-size:10px;">3</span>
+            </div>
+
+            <!-- Cell 2: Graphic violence -->
+            <div class="inset-cell">
+              <span class="cell-emoji">&#129354;</span>
+              <span class="cell-label" style="font-size:14px;">Graphic violence</span>
+              <div class="pill-row">
+                <div class="pill">Off</div>
+                <div class="pill selected-balanced">Bal.</div>
+                <div class="pill">Strict</div>
+              </div>
+            </div>
+
+            <!-- Cell 3: Profanity -->
+            <div class="inset-cell">
+              <span class="cell-emoji">&#129324;</span>
+              <span class="cell-label" style="font-size:14px;">Profanity</span>
+              <div class="pill-row">
+                <div class="pill selected-off">Off</div>
+                <div class="pill">Bal.</div>
+                <div class="pill">Strict</div>
+              </div>
+            </div>
+
+            <!-- Cell 4: Self-harm -->
+            <div class="inset-cell">
+              <span class="cell-emoji">&#10084;&#65039;&#8205;&#129657;</span>
+              <span class="cell-label" style="font-size:14px;">Self-harm</span>
+              <div class="pill-row">
+                <div class="pill">Off</div>
+                <div class="pill">Bal.</div>
+                <div class="pill selected-strict">Strict</div>
+              </div>
+            </div>
+
+          </div><!-- /inset-list -->
+
+          <!-- More section -->
+          <div class="more-section-header">More</div>
+
+          <div class="inset-list">
+
+            <!-- Cell 5: Drugs -->
+            <div class="inset-cell">
+              <span class="cell-emoji">&#128138;</span>
+              <span class="cell-label" style="font-size:14px;">Drugs</span>
+              <div class="pill-row">
+                <div class="pill">Off</div>
+                <div class="pill selected-balanced">Bal.</div>
+                <div class="pill">Strict</div>
+              </div>
+            </div>
+
+            <!-- Cell 6: Eating disorders -->
+            <div class="inset-cell">
+              <span class="cell-emoji">&#129774;</span>
+              <span class="cell-label" style="font-size:14px;">Eating disorders</span>
+              <div class="pill-row">
+                <div class="pill">Off</div>
+                <div class="pill selected-balanced">Bal.</div>
+                <div class="pill">Strict</div>
+              </div>
+            </div>
+
+          </div><!-- /inset-list more -->
+
+          <div class="scroll-hint">&#8942; scroll for more</div>
+
+          <!-- Save button -->
+          <div class="detail-save-btn-wrap">
+            <div class="detail-save-btn">Save Content settings</div>
+          </div>
+
+        </div><!-- /detail-body -->
+
+      </div><!-- /phone -->
+
+      <!-- Spatial Summary -->
+      <div class="spatial-summary">
+        <div class="spatial-summary-label">Spatial Summary</div>
+        <div class="spatial-row">
+          <span class="spatial-key">Direction:</span>
+          <span class="spatial-val">B &mdash; Category Detail</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Layout:</span>
+          <span class="spatial-val">Inset grouped list with inline pill selectors per row</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Distinctive move:</span>
+          <span class="spatial-val">All subcategories visible at once, scannable top to bottom</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">New/changed zones:</span>
+          <span class="spatial-val">Pill selectors inline in cells (replaces disclosure chevron)</span>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- RIGHT: Spec panel -->
+    <div class="col-right">
+
+      <div class="spec-panel">
+        <div class="spec-panel-header" style="display:flex;align-items:center;gap:10px;">
+          <span class="num-inline">3</span>
+          <div class="spec-panel-title">Component: Subcategory Cell with Pills &mdash; P0</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Source</span>
+                <span class="spec-val prose">New &mdash; inline selection replaces disclosure</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Cell height</span>
+                <span class="spec-val">56px</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Cell bg</span>
+                <span class="spec-val">#FFFFFF</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Cell padding</span>
+                <span class="spec-val">0 16px</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Emoji + label</span>
+                <span class="spec-val">22px emoji + 17px SF Pro Text Regular #000</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Pills</span>
+                <span class="spec-val">Three pills right-aligned &mdash; height 28px, width 56px each, gap 6px</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Pill selected</span>
+                <span class="spec-val">Severity color bg + #FFFFFF text + Semibold</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Pill unsel.</span>
+                <span class="spec-val">#F2F2F7 bg + #000 text + Regular</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Border bottom</span>
+                <span class="spec-val">0.5px #C6C6C8</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Strict color</span>
+                <span class="spec-val">#FF3B30 (red)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Balanced color</span>
+                <span class="spec-val">#FF9500 (amber)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Off color</span>
+                <span class="spec-val">#8E8E93 (gray)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Component: Save Button</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Background</span>
+                <span class="spec-val">#1A6B4A</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Text</span>
+                <span class="spec-val">&ldquo;Save Content settings&rdquo; / 17px / Semibold / #FFFFFF</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Height</span>
+                <span class="spec-val">52px / 999px radius / full width - 32px margin</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Position</span>
+                <span class="spec-val">16px above screen bottom</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Severity Indicators</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Off</span>
+                <span class="spec-val">#8E8E93 &mdash; content type is unrestricted</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Balanced</span>
+                <span class="spec-val">#FF9500 &mdash; age-appropriate filtering active</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Strict</span>
+                <span class="spec-val">#FF3B30 &mdash; zero tolerance, always blocked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /screen-two-col -->
+</div><!-- /screen-section 2 -->
+
+<hr class="screen-section-divider" style="margin-top:36px;" />
+
+<!-- ═══════════════════════════════════════════════
+     SCREEN 3 — CHILD CHATBOT
+═══════════════════════════════════════════════ -->
+<div class="screen-section">
+  <div class="screen-section-label">Screen 3 &mdash; Child Chatbot</div>
+  <div class="screen-two-col">
+
+    <!-- LEFT: Phone + Spatial Summary -->
+    <div class="col-left">
+
+      <!-- PHONE -->
+      <div class="phone">
+
+        <!-- Status bar -->
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-bar-icons">
+            <span>&#9679;&#9679;&#9679;</span>
+            <span>WiFi</span>
+            <span>&#9646;</span>
+          </div>
+        </div>
+
+        <!-- Nav bar -->
+        <div class="nav-bar">
+          <div style="width:60px;"></div>
+          <div class="nav-title">SafeChat &#127795;</div>
+          <div class="nav-action" style="font-size:15px;">History</div>
+        </div>
+
+        <!-- Chat body -->
+        <div class="chat-body">
+          <div class="chat-messages">
+
+            <!-- AI message 1 -->
+            <div class="bubble-group">
+              <div class="bubble-sender-label leading">SafeChat</div>
+              <div class="bubble ai" style="font-size:14px;">Sure! The French Revolution began in 1789 and transformed France from a monarchy to a republic. It was driven by inequality, financial crisis, and Enlightenment ideas about liberty and rights.</div>
+            </div>
+
+            <!-- User message -->
+            <div class="bubble-group">
+              <div class="bubble-sender-label trailing"></div>
+              <div style="display:flex;justify-content:flex-end;align-items:center;gap:6px;">
+                <div class="bubble user" style="font-size:14px;">Can you explain the French Revolution?</div>
+                <span class="num-inline" style="width:18px;height:18px;font-size:10px;align-self:flex-start;margin-top:2px;">5</span>
+              </div>
+            </div>
+
+            <!-- AI message 2 -->
+            <div class="bubble-group">
+              <div class="bubble ai" style="font-size:14px;">What part are you most curious about &mdash; the causes, the key events, or the impact?</div>
+            </div>
+
+          </div><!-- /chat-messages -->
+
+          <!-- Input bar -->
+          <div class="chat-input-bar">
+            <div class="chat-input-field">
+              <span style="font-size:15px;color:#AEAEB2;">Message SafeChat&hellip;</span>
+            </div>
+            <div class="chat-send-btn">
+              <span class="send-arrow">&#8593;</span>
+            </div>
+          </div>
+
+        </div><!-- /chat-body -->
+
+        <!-- Tab bar -->
+        <div class="tab-bar">
+          <div class="tab-item active">
+            <div class="tab-icon">&#128172;</div>
+            <span>Chat</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon">&#128336;</div>
+            <span>History</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon">&#128100;</div>
+            <span>Profile</span>
+          </div>
+        </div>
+
+      </div><!-- /phone -->
+
+      <!-- Spatial Summary -->
+      <div class="spatial-summary">
+        <div class="spatial-summary-label">Spatial Summary</div>
+        <div class="spatial-row">
+          <span class="spatial-key">Direction:</span>
+          <span class="spatial-val">B &mdash; Child Chatbot (unified style)</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Layout:</span>
+          <span class="spatial-val">Standard chat: AI leading, user trailing, input bar bottom</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Distinctive move:</span>
+          <span class="spatial-val">Same #1A6B4A token on user bubbles as hub card completion &mdash; green means &ldquo;done / yours&rdquo;</span>
+        </div>
+        <div class="spatial-row">
+          <span class="spatial-key">Shared tokens:</span>
+          <span class="spatial-val">Unified SF Pro + #1A6B4A across parent and child views</span>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- RIGHT: Spec panel -->
+    <div class="col-right">
+
+      <div class="spec-panel">
+        <div class="spec-panel-header" style="display:flex;align-items:center;gap:10px;">
+          <span class="num-inline">5</span>
+          <div class="spec-panel-title">Component: Chatbot (unified with Direction A)</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">User bubble</span>
+                <span class="spec-val">#1A6B4A bg / #FFFFFF text / trailing / 16px radius (sq top-right)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">AI bubble</span>
+                <span class="spec-val">#F2F2F7 bg / #000000 text / leading / 16px radius (sq top-left)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Label above</span>
+                <span class="spec-val">&ldquo;SafeChat&rdquo; &mdash; 11px / #AEAEB2 / first bubble in group</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Input field</span>
+                <span class="spec-val">#F2F2F7 bg / 16px radius / placeholder &ldquo;Message SafeChat&hellip;&rdquo;</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Send button</span>
+                <span class="spec-val">#1A6B4A / 28px circle / &#8593;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Integration</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <ul class="spec-bullets">
+              <li>Same #1A6B4A token on user bubbles and hub card completion states &mdash; green means &ldquo;done / yours&rdquo;</li>
+              <li>Hub card grid on parent side mirrors card grid logic on dashboard &mdash; same mental model</li>
+              <li>Direction B&rsquo;s distinctive move: parents finish the hub and land on dashboard immediately &mdash; no &ldquo;now what?&rdquo; moment</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-panel">
+        <div class="spec-panel-header">
+          <div class="spec-panel-title">Token Consistency Across Screens</div>
+        </div>
+        <div class="spec-panel-body">
+          <div class="spec-block">
+            <div class="spec-rows">
+              <div class="spec-row">
+                <span class="spec-key">Brand primary</span>
+                <span class="spec-val">#1A6B4A &mdash; hub bottom strip, save btn, send btn, user bubble, tab active</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Brand soft</span>
+                <span class="spec-val">#E8F5EF &mdash; confirmation/success tints</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">BG grouped</span>
+                <span class="spec-val">#F2F2F7 &mdash; screen bg, AI bubble, pill unselected, input field</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Label secondary</span>
+                <span class="spec-val">#6D6D72 &mdash; card names, section headers, progress label</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Label tertiary</span>
+                <span class="spec-val">#AEAEB2 &mdash; &ldquo;Not configured&rdquo;, tab inactive, bubble sender label</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Separator</span>
+                <span class="spec-val">#C6C6C8 &mdash; cell borders, nav borders, tab bar top</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-right -->
+  </div><!-- /screen-two-col -->
+</div><!-- /screen-section 3 -->
+
+<!-- ═══════════════════════════════════════════════
+     TOKEN LEGEND FOOTER
+═══════════════════════════════════════════════ -->
+<div class="token-footer">
+  <span class="token-footer-label">Design Tokens</span>
+  <div class="token-items">
+    <div class="token-item">
+      <div class="token-swatch" style="background:#1A6B4A;"></div>
+      Brand primary #1A6B4A
     </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#1E2A40;"></div>
-      Dark text #1E2A40
+    <div class="token-item">
+      <div class="token-swatch" style="background:#E8F5EF;border:1px solid #555;"></div>
+      Brand soft #E8F5EF
     </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#EEEEEE; border:1px solid #555;"></div>
-      Body bg #EEEEEE
+    <div class="token-item">
+      <div class="token-swatch" style="background:#F2F2F7;border:1px solid #555;"></div>
+      BG grouped #F2F2F7
     </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:rgb(162,232,165);"></div>
-      SUBMITTED badge bg
+    <div class="token-item">
+      <div class="token-swatch" style="background:#6D6D72;"></div>
+      Label secondary
     </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:rgb(218,222,231);"></div>
-      RESET / GUARDED badge bg
+    <div class="token-item">
+      <div class="token-swatch" style="background:#AEAEB2;"></div>
+      Label tertiary
     </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#fdf2f8; border-left: 4px solid #ec4899;"></div>
-      Active sidebar item
+    <div class="token-item">
+      <div class="token-swatch" style="background:#FF3B30;"></div>
+      Strict #FF3B30
     </div>
-    <div class="legend-item">
-      <div class="legend-swatch" style="background:#D97706;"></div>
-      Callout amber #D97706
+    <div class="token-item">
+      <div class="token-swatch" style="background:#FF9500;"></div>
+      Balanced #FF9500
+    </div>
+    <div class="token-item">
+      <div class="token-swatch" style="background:#8E8E93;"></div>
+      Off #8E8E93
+    </div>
+    <div class="token-item">
+      <div class="token-swatch" style="background:#34C759;"></div>
+      Success #34C759
+    </div>
+    <div class="token-item">
+      <div class="token-swatch" style="background:#D97706;"></div>
+      Callout amber
     </div>
   </div>
 </div>

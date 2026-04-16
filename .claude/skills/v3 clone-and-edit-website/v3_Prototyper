@@ -47,16 +47,16 @@ This is the single most important architectural rule for Figma fidelity. Read it
 
 **Every visual layer must be a real DOM element. CSS `background-image` is never used.**
 
-| Surface type | Wrong approach | Correct approach |
-|---|---|---|
-| Photo / raster image | `background-image: url(...)` on a `<div>` | `<img>` element with `position: absolute`, `object-fit: cover` |
-| SVG illustration | `background-image: url(hero.svg)` | Inline `<svg>` element directly in the DOM |
-| SVG icon | `<img src="icon.svg">` or CSS background | Inline `<svg>` with `width`, `height`, `fill` as attributes |
-| Gradient background | `background: linear-gradient(...)` on container | `<div>` child with `position: absolute`, `inset: 0`, `background: linear-gradient(...)` as inline style |
-| Noise / texture overlay | `background-image: url(noise.png)` | `<img>` with `position: absolute`, `mix-blend-mode: overlay`, base64 src |
-| Color fill | `background-image: none` — use `background-color` | `background-color: #hex` inline — this is correct, no change needed |
-| Glassmorphism blur | `backdrop-filter: blur(Npx)` on the element itself | Separate sibling `<div>` behind the content with `filter: blur(Npx)` and semi-transparent `background-color` |
-| Pattern / decorative shape | CSS `::before` or `::after` with `background-image` | Inline `<svg>` or absolutely positioned `<div>` as a real child element |
+| Surface type               | Wrong approach                                      | Correct approach                                                                                             |
+| -------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Photo / raster image       | `background-image: url(...)` on a `<div>`           | `<img>` element with `position: absolute`, `object-fit: cover`                                               |
+| SVG illustration           | `background-image: url(hero.svg)`                   | Inline `<svg>` element directly in the DOM                                                                   |
+| SVG icon                   | `<img src="icon.svg">` or CSS background            | Inline `<svg>` with `width`, `height`, `fill` as attributes                                                  |
+| Gradient background        | `background: linear-gradient(...)` on container     | `<div>` child with `position: absolute`, `inset: 0`, `background: linear-gradient(...)` as inline style      |
+| Noise / texture overlay    | `background-image: url(noise.png)`                  | `<img>` with `position: absolute`, `mix-blend-mode: overlay`, base64 src                                     |
+| Color fill                 | `background-image: none` — use `background-color`   | `background-color: #hex` inline — this is correct, no change needed                                          |
+| Glassmorphism blur         | `backdrop-filter: blur(Npx)` on the element itself  | Separate sibling `<div>` behind the content with `filter: blur(Npx)` and semi-transparent `background-color` |
+| Pattern / decorative shape | CSS `::before` or `::after` with `background-image` | Inline `<svg>` or absolutely positioned `<div>` as a real child element                                      |
 
 **Why this matters for Figma:** The HTML to Figma plugin reads the DOM tree. Every real DOM element becomes an editable Figma frame or group. A `background-image` on a `<div>` imports as a single raster fill on that frame — not editable, not separable from the container, not meaningful to a designer who needs to adjust the image independently. An `<img>` element inside the container imports as a separate image layer that can be selected, replaced, resized, and masked independently.
 
@@ -204,16 +204,16 @@ Before writing any element's `style=""` attribute, every CSS property used must 
 
 ### Column B — Substitution Required: replace before writing HTML
 
-| Property to avoid | Why | Substitution |
-|---|---|---|
-| `background-image: url(...)` on any element | Imports as flat raster — not editable | DOM-Only Surface Rule: use `<img>` element instead |
-| `backdrop-filter: blur(Npx)` | Figma blur works differently — won't match | Separate sibling `<div>` with `filter: blur(Npx)` and semi-transparent `background-color` |
-| `clip-path: polygon(...)` | Imports incorrectly or not at all | Inline `<svg>` with `<clipPath>` element — imports as editable vector mask |
-| `aspect-ratio: N/N` | Figma doesn't have this property | Explicit `width` and `height` in px from spec |
-| `grid-template-areas` | Figma auto-layout doesn't support named areas | Use explicit `grid-column` and `grid-row` on each child |
-| `filter: drop-shadow(...)` on images | Renders differently across browsers | Use `box-shadow` on a wrapper `<div>` |
-| `background-image: linear-gradient(...)` | Can work but less reliable than explicit child div | Absolutely positioned child `<div>` with `background: linear-gradient(...)` |
-| `var(--token-name)` anywhere | Figma cannot resolve CSS custom properties | Resolve to final hex/px value before writing |
+| Property to avoid                           | Why                                                | Substitution                                                                              |
+| ------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `background-image: url(...)` on any element | Imports as flat raster — not editable              | DOM-Only Surface Rule: use `<img>` element instead                                        |
+| `backdrop-filter: blur(Npx)`                | Figma blur works differently — won't match         | Separate sibling `<div>` with `filter: blur(Npx)` and semi-transparent `background-color` |
+| `clip-path: polygon(...)`                   | Imports incorrectly or not at all                  | Inline `<svg>` with `<clipPath>` element — imports as editable vector mask                |
+| `aspect-ratio: N/N`                         | Figma doesn't have this property                   | Explicit `width` and `height` in px from spec                                             |
+| `grid-template-areas`                       | Figma auto-layout doesn't support named areas      | Use explicit `grid-column` and `grid-row` on each child                                   |
+| `filter: drop-shadow(...)` on images        | Renders differently across browsers                | Use `box-shadow` on a wrapper `<div>`                                                     |
+| `background-image: linear-gradient(...)`    | Can work but less reliable than explicit child div | Absolutely positioned child `<div>` with `background: linear-gradient(...)`               |
+| `var(--token-name)` anywhere                | Figma cannot resolve CSS custom properties         | Resolve to final hex/px value before writing                                              |
 
 ---
 
@@ -463,10 +463,10 @@ If any P0 field is missing for any direction: escalate to the Designer Agent bef
 
 For every section of every prototype, classify its content:
 
-| Category | Definition | Action |
-|---|---|---|
-| **Specified** | Explicitly in Mockup or Brief | Implement exactly |
-| **Unspecified** | No spec exists | Minimal labeled placeholder: `[Section name]` |
+| Category        | Definition                    | Action                                        |
+| --------------- | ----------------------------- | --------------------------------------------- |
+| **Specified**   | Explicitly in Mockup or Brief | Implement exactly                             |
+| **Unspecified** | No spec exists                | Minimal labeled placeholder: `[Section name]` |
 
 **Build failures:** fabricated body text, invented data, nav items added for completeness, copy for unspecified sections.
 
@@ -555,31 +555,31 @@ One table per direction. Every visual value in that direction has a row. This ta
 TOKEN RESOLUTION TABLE — Direction [A | B | C]
 Source priority: Figma extraction → Living Token Reference → Design Token Record → Named benchmark
 
-| Token name           | Final resolved value              | CSS property(ies)              | Usage                   | Source                      |
-|----------------------|-----------------------------------|--------------------------------|-------------------------|-----------------------------|
-| color-primary        | #083386                           | background-color, color        | CTA buttons, links      | Living Token Reference      |
-| color-primary-hover  | #0a2a6e                           | background-color               | CTA hover state         | Figma: Button/Hover         |
-| color-bg             | #0a0a0a                           | background-color               | Page background         | Figma style: Background     |
-| color-surface        | #1a1a2e                           | background-color               | Cards, panels           | Figma: Card/Default         |
-| color-text-primary   | #f5f5f5                           | color                          | Body text               | Figma style: Text/Primary   |
-| color-text-secondary | #a0a0a0                           | color                          | Labels, captions        | Figma style: Text/Secondary |
-| color-border         | rgba(255,255,255,0.12)             | border-color                   | Card borders            | Figma: Card/Default         |
-| font-display         | 'Calistoga', serif                | font-family                    | H1, hero heading        | Figma style: Display/H1     |
-| font-size-display    | 64px                              | font-size                      | H1                      | Figma style: Display/H1     |
-| font-weight-display  | 400                               | font-weight                    | H1                      | Figma style: Display/H1     |
-| font-lh-display      | 1.05                              | line-height                    | H1                      | Figma style: Display/H1     |
-| font-ls-display      | -0.02em                           | letter-spacing                 | H1                      | Figma style: Display/H1     |
-| spacing-xs           | 4px                               | gap, padding                   | Icon spacing            | Figma node: Button anatomy  |
-| spacing-sm           | 8px                               | gap, padding                   | Inline spacing          | Figma node: Button anatomy  |
-| spacing-md           | 16px                              | gap, padding                   | Component internal      | Figma node: Card anatomy    |
-| spacing-lg           | 24px                              | gap, padding                   | Section internal        | Figma node: Section padding |
-| spacing-xl           | 48px                              | gap, padding                   | Section gap             | Brief §8                    |
-| radius-sm            | 4px                               | border-radius                  | Badges, pills           | Brief §8                    |
-| radius-md            | 8px                               | border-radius                  | Cards, inputs           | Brief §8                    |
-| radius-lg            | 16px                              | border-radius                  | Modals, large cards     | Figma: Modal/Default        |
-| shadow-card          | 0 2px 8px 0 rgba(0,0,0,0.24)      | box-shadow                     | Card elevation          | Figma: Card/Default         |
-| shadow-nav           | 0 4px 24px 0 rgba(0,0,0,0.32)     | box-shadow                     | Sticky nav              | Figma: Nav/Scrolled         |
-| accent-color         | #1a73e8                           | background-color, fill, stroke | Active indicators       | Living Token Reference      |
+| Token name           | Final resolved value          | CSS property(ies)              | Usage               | Source                      |
+| -------------------- | ----------------------------- | ------------------------------ | ------------------- | --------------------------- |
+| color-primary        | #083386                       | background-color, color        | CTA buttons, links  | Living Token Reference      |
+| color-primary-hover  | #0a2a6e                       | background-color               | CTA hover state     | Figma: Button/Hover         |
+| color-bg             | #0a0a0a                       | background-color               | Page background     | Figma style: Background     |
+| color-surface        | #1a1a2e                       | background-color               | Cards, panels       | Figma: Card/Default         |
+| color-text-primary   | #f5f5f5                       | color                          | Body text           | Figma style: Text/Primary   |
+| color-text-secondary | #a0a0a0                       | color                          | Labels, captions    | Figma style: Text/Secondary |
+| color-border         | rgba(255,255,255,0.12)        | border-color                   | Card borders        | Figma: Card/Default         |
+| font-display         | 'Calistoga', serif            | font-family                    | H1, hero heading    | Figma style: Display/H1     |
+| font-size-display    | 64px                          | font-size                      | H1                  | Figma style: Display/H1     |
+| font-weight-display  | 400                           | font-weight                    | H1                  | Figma style: Display/H1     |
+| font-lh-display      | 1.05                          | line-height                    | H1                  | Figma style: Display/H1     |
+| font-ls-display      | -0.02em                       | letter-spacing                 | H1                  | Figma style: Display/H1     |
+| spacing-xs           | 4px                           | gap, padding                   | Icon spacing        | Figma node: Button anatomy  |
+| spacing-sm           | 8px                           | gap, padding                   | Inline spacing      | Figma node: Button anatomy  |
+| spacing-md           | 16px                          | gap, padding                   | Component internal  | Figma node: Card anatomy    |
+| spacing-lg           | 24px                          | gap, padding                   | Section internal    | Figma node: Section padding |
+| spacing-xl           | 48px                          | gap, padding                   | Section gap         | Brief §8                    |
+| radius-sm            | 4px                           | border-radius                  | Badges, pills       | Brief §8                    |
+| radius-md            | 8px                           | border-radius                  | Cards, inputs       | Brief §8                    |
+| radius-lg            | 16px                          | border-radius                  | Modals, large cards | Figma: Modal/Default        |
+| shadow-card          | 0 2px 8px 0 rgba(0,0,0,0.24)  | box-shadow                     | Card elevation      | Figma: Card/Default         |
+| shadow-nav           | 0 4px 24px 0 rgba(0,0,0,0.32) | box-shadow                     | Sticky nav          | Figma: Nav/Scrolled         |
+| accent-color         | #1a73e8                       | background-color, fill, stroke | Active indicators   | Living Token Reference      |
 ```
 
 **Non-negotiable rules:**
@@ -1184,18 +1184,18 @@ Verdict before writing: "This component reads as [native/bolted-on] because [rea
 
 ### Accessibility — Minimum Requirements
 
-| Element | Requirement | Implementation |
-|---|---|---|
-| All images | `alt` attribute | Descriptive text; `alt=""` + `aria-hidden="true"` for decorative |
-| Background/layer images | `aria-hidden="true"` | These are presentational only |
-| Inline SVG icons | `aria-hidden="true"` on `<svg>` | Parent button/link carries the label |
-| Icon-only buttons | `aria-label` | Describes action, not icon name |
-| Custom interactive elements | `role` attribute | `role="button"`, `role="tab"`, `role="dialog"` |
-| Toggle buttons | `aria-expanded` | Boolean, updated by JS on state change |
-| Active nav items | `aria-current="page"` | Or `aria-selected="true"` for tabs |
-| Disabled elements | `aria-disabled="true"` | In addition to `disabled` attribute |
-| Dynamic content | `aria-live` | `"polite"` for non-urgent, `"assertive"` for errors |
-| Open modals | `aria-modal="true"` | Set and removed by JS |
+| Element                     | Requirement                     | Implementation                                                   |
+| --------------------------- | ------------------------------- | ---------------------------------------------------------------- |
+| All images                  | `alt` attribute                 | Descriptive text; `alt=""` + `aria-hidden="true"` for decorative |
+| Background/layer images     | `aria-hidden="true"`            | These are presentational only                                    |
+| Inline SVG icons            | `aria-hidden="true"` on `<svg>` | Parent button/link carries the label                             |
+| Icon-only buttons           | `aria-label`                    | Describes action, not icon name                                  |
+| Custom interactive elements | `role` attribute                | `role="button"`, `role="tab"`, `role="dialog"`                   |
+| Toggle buttons              | `aria-expanded`                 | Boolean, updated by JS on state change                           |
+| Active nav items            | `aria-current="page"`           | Or `aria-selected="true"` for tabs                               |
+| Disabled elements           | `aria-disabled="true"`          | In addition to `disabled` attribute                              |
+| Dynamic content             | `aria-live`                     | `"polite"` for non-urgent, `"assertive"` for errors              |
+| Open modals                 | `aria-modal="true"`             | Set and removed by JS                                            |
 
 ---
 
@@ -1495,21 +1495,21 @@ If a P0 component fails reflection after 2 cycles:
 
 ## EXCEPTION HANDLING
 
-| Situation | Action |
-|---|---|
-| Token value unresolvable from all sources | Named benchmark fallback. Document in Token Resolution Table. Flag in Evaluation Report. |
-| Font unavailable on Google Fonts CDN | `@font-face` block with font files in `public/prototypes/fonts/`. If unavailable, escalate to Designer Agent — do not substitute silently. |
-| Image unavailable after download | Correctly-sized `<div>` with background-color matching the image region, `aria-label` describing the image. Document in Build Decision Log. |
-| SVG unavailable from Figma | Request re-export from Designer Agent. Do not substitute `<img src=".svg">` or a placeholder icon. |
-| SVG IDs conflict within file | Apply direction-prefix scheme `dir-[a|b|c]-[asset-slug]-[instance]`. |
-| `file://` open shows broken layout | Identify cause (relative path, CSS needing server). Fix before proceeding. |
-| `?figma=true` shows unstyled elements | A `var()` or missing inline style is present. Search file for both. Fix before proceeding. |
-| Figma import produces flat image for a section | `background-image` is present on a container. Find it, apply DOM-Only Surface Rule. |
-| Figma import shows unstyled SVG | SVG was referenced as `<img>` not inlined. Replace with inline `<svg>`. |
-| Interaction unachievable in vanilla JS | Escalate to Designer Agent. Do not approximate. |
-| P0 component fails reflection after 2 cycles | Partial Prototype Protocol. |
-| Copy absent from all sources | Copy Gap Protocol. |
-| Gate 1 or Gate 2 fails | Fix all failing items before proceeding. |
+| Situation                                      | Action                                                                                                                                      |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Token value unresolvable from all sources      | Named benchmark fallback. Document in Token Resolution Table. Flag in Evaluation Report.                                                    |
+| Font unavailable on Google Fonts CDN           | `@font-face` block with font files in `public/prototypes/fonts/`. If unavailable, escalate to Designer Agent — do not substitute silently.  |
+| Image unavailable after download               | Correctly-sized `<div>` with background-color matching the image region, `aria-label` describing the image. Document in Build Decision Log. |
+| SVG unavailable from Figma                     | Request re-export from Designer Agent. Do not substitute `<img src=".svg">` or a placeholder icon.                                          |
+| SVG IDs conflict within file                   | Apply direction-prefix scheme `dir-[a                                                                                                       | b | c]-[asset-slug]-[instance]`. |
+| `file://` open shows broken layout             | Identify cause (relative path, CSS needing server). Fix before proceeding.                                                                  |
+| `?figma=true` shows unstyled elements          | A `var()` or missing inline style is present. Search file for both. Fix before proceeding.                                                  |
+| Figma import produces flat image for a section | `background-image` is present on a container. Find it, apply DOM-Only Surface Rule.                                                         |
+| Figma import shows unstyled SVG                | SVG was referenced as `<img>` not inlined. Replace with inline `<svg>`.                                                                     |
+| Interaction unachievable in vanilla JS         | Escalate to Designer Agent. Do not approximate.                                                                                             |
+| P0 component fails reflection after 2 cycles   | Partial Prototype Protocol.                                                                                                                 |
+| Copy absent from all sources                   | Copy Gap Protocol.                                                                                                                          |
+| Gate 1 or Gate 2 fails                         | Fix all failing items before proceeding.                                                                                                    |
 
 ---
 

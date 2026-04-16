@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction C — Portfolio Dashboard — Mockup</title>
+  <title>Mockup C — See It First — SafeChat</title>
   <style>
     /* ─────────────────────────────────────────────────────────────────
        RESET & BASE
@@ -11,10 +11,10 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
       font-size: 14px;
-      color: #1E2A40;
-      background: #e8e8e8;
+      color: #000000;
+      background: #E5E5EA;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -24,199 +24,217 @@
     .doc-header {
       background: #083386;
       color: #ffffff;
-      padding: 22px 40px 20px;
-      position: relative;
-      overflow: hidden;
+      padding: 24px 40px 20px;
     }
 
-    .doc-header::before {
-      content: '';
-      position: absolute;
-      right: -80px;
-      top: -80px;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-      pointer-events: none;
+    .doc-header-row1 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
     }
 
-    .doc-header::after {
-      content: '';
-      position: absolute;
-      right: 80px;
-      bottom: -40px;
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.03);
-      pointer-events: none;
-    }
-
-    .doc-header-eyebrow {
-      font-size: 10px;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 7px;
+      letter-spacing: 0.02em;
+    }
+    .pill-c {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+    .pill-see {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
     }
 
     .doc-header-title {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      margin-bottom: 4px;
-      line-height: 1.1;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
     }
 
-    .doc-header-subtitle {
-      font-size: 13px;
-      color: rgba(255,255,255,0.65);
-      font-weight: 400;
-      margin-bottom: 14px;
-    }
-
-    .doc-header-chips {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .doc-chip {
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.9);
-      background: rgba(255,255,255,0.11);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 20px;
-      padding: 3px 11px;
-      white-space: nowrap;
-    }
-
-    .goal-thread {
-      background: rgba(255,255,255,0.06);
-      border-left: 3px solid rgba(255,255,255,0.28);
-      padding: 10px 14px;
-      border-radius: 0 6px 6px 0;
+    .screen-count {
+      margin-left: auto;
       font-size: 12px;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.72);
-      max-width: 900px;
-    }
-
-    .goal-thread strong { color: rgba(255,255,255,0.96); font-weight: 600; }
-
-    /* ─────────────────────────────────────────────────────────────────
-       CHANGES BAR
-    ───────────────────────────────────────────────────────────────── */
-    .changes-bar {
-      background: #B45309;
-      padding: 9px 40px;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .changes-bar-label {
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(255,255,255,0.8);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .change-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .change-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
       font-weight: 600;
-      color: #ffffff;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 3px 10px 3px 4px;
-      white-space: nowrap;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.03em;
     }
 
-    .cn {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #ffffff;
-      color: #B45309;
-      font-size: 10px;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+    .doc-header-row2 {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 14px;
+      letter-spacing: 0.01em;
+    }
+
+    .goal-box {
+      border: 1.5px solid rgba(56,189,248,0.55);
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.82);
+      background: rgba(56,189,248,0.07);
+    }
+
+    .goal-box strong {
+      color: #fff;
+      font-weight: 700;
     }
 
     /* ─────────────────────────────────────────────────────────────────
-       TWO-COLUMN BODY  (60 / 40)
+       "WHAT THIS CHANGES" BOX
     ───────────────────────────────────────────────────────────────── */
     .doc-body {
-      display: grid;
-      grid-template-columns: 60fr 40fr;
-      min-height: calc(100vh - 140px);
+      padding: 28px 40px 0;
     }
 
-    /* LEFT — visual render */
-    .col-render {
-      border-right: 1px solid #cccccc;
-      background: #e2e2e2;
-      display: flex;
-      flex-direction: column;
+    .changes-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 22px 18px;
+      margin-bottom: 36px;
     }
 
-    .col-render-label {
+    .changes-label {
       font-size: 10px;
       font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #083386;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #777777;
-      padding: 11px 20px 10px;
-      background: #d8d8d8;
-      border-bottom: 1px solid #c8c8c8;
-      flex-shrink: 0;
+      margin-bottom: 14px;
     }
 
-    /* RIGHT — specs */
-    .col-specs {
-      background: #ffffff;
+    .changes-list {
+      list-style: none;
       display: flex;
       flex-direction: column;
+      gap: 9px;
     }
 
-    .col-specs-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #777777;
-      padding: 11px 20px 10px;
-      background: #f8f8f8;
-      border-bottom: 1px solid #ebebeb;
-      flex-shrink: 0;
+    .changes-list li {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #3A3A3C;
+      display: flex;
+      gap: 10px;
+    }
+
+    .changes-list li strong {
+      color: #000;
+      font-weight: 600;
+      white-space: nowrap;
     }
 
     /* ─────────────────────────────────────────────────────────────────
-       AMBER CALLOUT CIRCLES
+       SCREEN SECTION
     ───────────────────────────────────────────────────────────────── */
-    .callout {
+    .screen-section {
+      display: flex;
+      gap: 36px;
+      align-items: flex-start;
+      margin-bottom: 56px;
+    }
+
+    .screen-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .screen-right {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SECTION DIVIDER LABEL
+    ───────────────────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6D6D72;
+      margin-bottom: 14px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       PHONE FRAME
+    ───────────────────────────────────────────────────────────────── */
+    .phone {
+      width: 320px;
+      background: #fff;
+      border-radius: 36px;
+      border: 7px solid #1C1C1E;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tab-bar {
+      height: 82px;
+      background: #fff;
+      border-top: 0.5px solid #C6C6C8;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px 16px;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #AEAEB2;
+    }
+
+    .tab-item.active {
+      color: #1A6B4A;
+    }
+
+    .tab-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       CALLOUT CIRCLE
+    ───────────────────────────────────────────────────────────────── */
+    .num {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -224,1398 +242,1048 @@
       height: 22px;
       border-radius: 50%;
       background: #D97706;
-      color: #ffffff;
+      color: #fff;
       font-size: 11px;
-      font-weight: 800;
-      line-height: 1;
+      font-weight: 700;
       flex-shrink: 0;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.22);
-      position: absolute;
-      z-index: 20;
+      margin-left: auto;
     }
 
     /* ─────────────────────────────────────────────────────────────────
-       SIMULATED PAGE CHROME — TOP NAV
+       NAV BAR (phone)
     ───────────────────────────────────────────────────────────────── */
-    .sim-topnav {
-      height: 50px;
-      background: #ffffff;
-      border-bottom: 1px solid #dadee7;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .sim-brand {
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 15px;
-      font-weight: 400;
-      color: #10204b;
-      margin-right: 24px;
-      flex-shrink: 0;
-      white-space: nowrap;
-      letter-spacing: -0.01em;
-    }
-
-    .sim-nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      flex: 1;
-    }
-
-    .sim-nav-link {
-      font-size: 12.5px;
-      font-weight: 500;
-      color: #666666;
-      padding: 5px 9px;
-      border-radius: 5px;
-      cursor: default;
-      white-space: nowrap;
-    }
-
-    .sim-nav-link.active {
-      font-weight: 700;
-      color: #083386;
-      background: #ebf0f7;
-    }
-
-    .sim-nav-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-
-    .sim-admin-btn {
-      font-size: 11px;
-      font-weight: 700;
-      color: #083386;
-      background: #ebf0f7;
-      border: 1px solid #c5d3e8;
-      padding: 3px 9px;
-      border-radius: 4px;
-      white-space: nowrap;
-      cursor: default;
-    }
-
-    .sim-admin-btn.plain {
-      background: #f3f4f6;
-      color: #555555;
-      border-color: #d0d0d0;
-    }
-
-    .sim-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #083386;
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 700;
+    .nav-bar {
+      height: 44px;
+      background: #fff;
+      border-bottom: 0.5px solid #C6C6C8;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      cursor: default;
+      position: relative;
+      padding: 0 16px;
+    }
+
+    .nav-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #000;
+      text-align: center;
+    }
+
+    .nav-right {
+      position: absolute;
+      right: 16px;
+      font-size: 20px;
+      color: #1A6B4A;
+      cursor: pointer;
+    }
+
+    .nav-left {
+      position: absolute;
+      left: 16px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #1A6B4A;
+    }
+
+    .nav-subtitle {
+      height: 28px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 0.5px solid #C6C6C8;
+      font-size: 13px;
+      color: #6D6D72;
+      font-weight: 400;
     }
 
     /* ─────────────────────────────────────────────────────────────────
-       SIDEBAR + MAIN LAYOUT
+       SCREEN 1 — DASHBOARD HERO + SETUP BANNER
     ───────────────────────────────────────────────────────────────── */
-    .sim-layout {
-      display: flex;
-      flex: 1;
-      min-height: 0;
+    .phone-scroll {
+      overflow: hidden;
     }
 
-    .sim-sidebar {
-      width: 196px;
+    .hero-area {
+      background: #fff;
+      padding: 24px;
+    }
+
+    .hero-good-morning {
+      font-size: 13px;
+      color: #6D6D72;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
+    .hero-name-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .hero-name {
+      font-size: 40px;
+      font-weight: 700;
+      color: #000000;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: #AEAEB2;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .stat-chips {
+      display: flex;
+      gap: 8px;
+    }
+
+    .stat-chip {
+      background: #F2F2F7;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 11px;
+      color: #AEAEB2;
+      font-weight: 500;
+    }
+
+    .setup-banner {
+      background: #E8F5EF;
+      border: 1.5px solid #1A6B4A;
+      border-radius: 12px;
+      margin: 0 16px 16px;
+      padding: 14px;
+    }
+
+    .setup-banner-headline {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1A6B4A;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .setup-banner-sub {
+      font-size: 13px;
+      color: #6D6D72;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .setup-cta {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .setup-cta-btn {
+      background: #1A6B4A;
+      color: #fff;
+      border-radius: 999px;
+      height: 36px;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    .alerts-section-header {
+      padding: 8px 16px 6px;
+      font-size: 13px;
+      color: #6D6D72;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .empty-state-cell {
+      padding: 48px 16px;
+      text-align: center;
+      font-size: 14px;
+      color: #AEAEB2;
+      background: #F2F2F7;
+      margin: 0 16px;
+      border-radius: 12px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 2 — CONFIG SHEET
+    ───────────────────────────────────────────────────────────────── */
+    .dashboard-peek {
+      background: #fff;
+      padding: 24px 24px 12px;
+      min-height: 80px;
+    }
+
+    .dashboard-peek .hero-name {
+      font-size: 32px;
+    }
+
+    .sheet-overlay {
+      position: relative;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -2px 16px rgba(0,0,0,0.10);
+      padding: 8px 0 0;
+    }
+
+    .drag-handle {
+      width: 36px;
+      height: 4px;
+      background: #C6C6C8;
+      border-radius: 2px;
+      margin: 0 auto 8px;
+    }
+
+    .sheet-tab-strip {
+      display: flex;
+      border-bottom: 0.5px solid #C6C6C8;
+      padding: 0 16px;
+      height: 44px;
+      align-items: flex-end;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .sheet-tab {
+      font-size: 12px;
+      font-weight: 400;
+      color: #AEAEB2;
+      padding: 0 8px 10px;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
       flex-shrink: 0;
-      background: #ffffff;
-      border-right: 1px solid #dadee7;
-      padding: 14px 10px 20px;
+    }
+
+    .sheet-tab.active {
+      font-weight: 600;
+      color: #1A6B4A;
+      border-bottom: 2px solid #1A6B4A;
+    }
+
+    .sheet-section-header {
+      padding: 12px 16px 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6D6D72;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .inset-list {
+      margin: 0 16px 12px;
+      background: #F2F2F7;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .inset-cell {
+      background: #fff;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 0.5px solid #C6C6C8;
+    }
+
+    .inset-cell:last-child {
+      border-bottom: none;
+    }
+
+    .cell-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      width: 22px;
+      text-align: center;
+    }
+
+    .cell-label {
+      font-size: 13px;
+      color: #000;
+      font-weight: 400;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .setting-pill {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      background: #F2F2F7;
+      color: #AEAEB2;
+    }
+
+    .setting-pill.sel-balanced {
+      background: #FF9500;
+      color: #fff;
+    }
+
+    .setting-pill.sel-strict {
+      background: #FF3B30;
+      color: #fff;
+    }
+
+    .sheet-next-btn {
+      margin: 4px 16px 16px;
+      background: #1A6B4A;
+      color: #fff;
+      border-radius: 999px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN 3 — CHILD CHATBOT
+    ───────────────────────────────────────────────────────────────── */
+    .chat-body {
+      background: #fff;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
+      gap: 10px;
+      min-height: 200px;
     }
 
-    .sim-sidebar-heading {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #10204b;
-      padding: 0 7px;
-      margin-bottom: 12px;
-      line-height: 1.45;
+    .bubble-row {
+      display: flex;
+      gap: 8px;
     }
 
-    .sim-sidebar-label {
-      font-size: 9.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: #999999;
-      padding: 0 7px;
-      margin-top: 14px;
+    .bubble-row.leading {
+      justify-content: flex-start;
+    }
+
+    .bubble-row.trailing {
+      justify-content: flex-end;
+    }
+
+    .bubble-meta {
+      font-size: 11px;
+      color: #AEAEB2;
       margin-bottom: 3px;
     }
 
-    .sim-sidebar-item {
+    .bubble {
+      max-width: 230px;
+      padding: 10px 13px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #000;
+    }
+
+    .bubble.ai {
+      background: #F2F2F7;
+      border-radius: 16px 16px 16px 4px;
+      color: #000;
+    }
+
+    .bubble.user {
+      background: #1A6B4A;
+      border-radius: 16px 16px 4px 16px;
+      color: #fff;
+    }
+
+    .chat-input-bar {
       display: flex;
       align-items: center;
-      font-size: 12.5px;
-      font-weight: 400;
-      color: #1E2A40;
-      padding: 6px 7px;
-      border-radius: 5px;
-      cursor: default;
-      position: relative;
+      gap: 8px;
+      padding: 8px 12px;
+      border-top: 0.5px solid #C6C6C8;
+      background: #fff;
     }
 
-    .sim-sidebar-item:hover:not(.active) {
-      background: #f4f6fa;
-    }
-
-    /* active — pink-50 bg + pink 4px left border */
-    .sim-sidebar-item.active {
-      background: rgb(253, 242, 248);
-      color: #9d174d;
-      font-weight: 600;
-      border-left: 4px solid #ec4899;
-      padding-left: 3px;
-      border-radius: 0 5px 5px 0;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       MAIN CONTENT AREA
-    ───────────────────────────────────────────────────────────────── */
-    .sim-main {
+    .chat-input {
       flex: 1;
-      background: #EEEEEE;
-      padding: 22px 24px 40px;
-      min-width: 0;
-      overflow-y: auto;
+      background: #F2F2F7;
+      border-radius: 16px;
+      height: 36px;
+      padding: 0 14px;
+      font-size: 14px;
+      color: #AEAEB2;
+      display: flex;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
     }
 
-    .sim-page-title {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1E2A40;
-      margin-bottom: 18px;
-      letter-spacing: -0.01em;
-      line-height: 1.15;
+    .chat-send {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1A6B4A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+      cursor: pointer;
     }
 
     /* ─────────────────────────────────────────────────────────────────
-       CHALLENGE TILES ROW
+       SPATIAL SUMMARY
     ───────────────────────────────────────────────────────────────── */
-    .tiles-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
+    .spatial-summary {
+      background: #1C1C1E;
+      border-radius: 10px;
+      padding: 14px 16px;
+      width: 320px;
     }
 
-    .tile {
-      background: #ffffff;
-      border: 1.5px solid #dadee7;
-      border-radius: 12px;
-      padding: 14px 16px 13px;
-      cursor: default;
-      position: relative;
-      transition: box-shadow 150ms ease, border-color 150ms ease;
-    }
-
-    .tile:hover:not(.active) {
-      box-shadow: 0 2px 10px rgba(8,51,134,0.09);
-      border-color: #a0b4d8;
-    }
-
-    /* Active tile = navy */
-    .tile.active {
-      background: #083386;
-      border-color: #083386;
-      box-shadow: 0 2px 18px rgba(8,51,134,0.30);
-    }
-
-    .tile-challenge-label {
+    .spatial-summary-label {
       font-size: 10px;
       font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.10em;
-      color: #999999;
-      margin-bottom: 5px;
-    }
-
-    .tile.active .tile-challenge-label { color: rgba(255,255,255,0.60); }
-
-    .tile-big-number {
-      font-size: 46px;
-      font-weight: 800;
-      color: #1E2A40;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      margin-bottom: 2px;
-    }
-
-    .tile.active .tile-big-number { color: #ffffff; }
-
-    .tile-attempts-label {
-      font-size: 11.5px;
-      font-weight: 500;
-      color: #999999;
+      color: #AEAEB2;
       margin-bottom: 10px;
     }
 
-    .tile.active .tile-attempts-label { color: rgba(255,255,255,0.65); }
-
-    .tile-rule {
-      height: 1px;
-      background: #e8eaf0;
-      margin-bottom: 9px;
+    .spatial-row {
+      display: flex;
+      gap: 0;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-bottom: 3px;
     }
 
-    .tile.active .tile-rule { background: rgba(255,255,255,0.18); }
+    .spatial-key {
+      color: #8E8E93;
+      min-width: 110px;
+      flex-shrink: 0;
+    }
 
-    .tile-stat {
+    .spatial-val {
+      color: #E5E5EA;
+      font-weight: 500;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SPEC PANEL (right column)
+    ───────────────────────────────────────────────────────────────── */
+    .spec-panel {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 22px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #3A3A3C;
+    }
+
+    .spec-heading {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #083386;
+      margin-bottom: 10px;
+      margin-top: 18px;
+    }
+
+    .spec-heading:first-child {
+      margin-top: 0;
+    }
+
+    .spec-bullets {
+      list-style: none;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
+      flex-direction: column;
+      gap: 5px;
       margin-bottom: 4px;
     }
 
-    .tile-stat:last-child { margin-bottom: 0; }
-
-    .tile-stat-k {
-      font-size: 11px;
-      font-weight: 500;
-      color: #888888;
-    }
-
-    .tile.active .tile-stat-k { color: rgba(255,255,255,0.58); }
-
-    .tile-stat-v {
+    .spec-bullets li {
+      display: flex;
+      gap: 7px;
       font-size: 12px;
-      font-weight: 700;
-      color: #1E2A40;
+      line-height: 1.55;
+      color: #3A3A3C;
     }
 
-    .tile.active .tile-stat-v { color: #ffffff; }
-
-    .tile-stat-v.guarded-pct { color: #083386; }
-    .tile.active .tile-stat-v.guarded-pct { color: rgb(162,232,165); }
-
-    .guarded-c2 { color: #0D7490; }
-    .guarded-c3 { color: #6D28D9; }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SEARCH ZONE (search bar + filter pill)
-    ───────────────────────────────────────────────────────────────── */
-    .search-zone {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      position: relative;
-    }
-
-    .search-bar {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      height: 44px;
-      padding: 0 14px;
-      background: #ffffff;
-      border: 1.5px solid #083386;
-      border-radius: 8px;
-    }
-
-    .search-bar-icon {
-      width: 16px;
-      height: 16px;
+    .spec-bullets li::before {
+      content: "•";
+      color: #AEAEB2;
       flex-shrink: 0;
-      color: #083386;
+      line-height: 1.55;
     }
 
-    .search-bar-input {
-      flex: 1;
-      border: none;
-      outline: none;
-      font-family: Inter, system-ui, sans-serif;
-      font-size: 13.5px;
-      color: #1E2A40;
-      background: transparent;
+    .spec-component-block {
+      border: 1px solid #E5E5EA;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
     }
 
-    .search-bar-input::placeholder { color: #aaaaaa; }
-
-    .filter-pill {
-      display: inline-flex;
+    .spec-component-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 8px;
+      display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #083386;
-      background: #dbeafe;
-      border: 1px solid #93c5fd;
-      border-radius: 20px;
-      padding: 5px 8px 5px 12px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      cursor: default;
     }
 
-    .filter-pill-x {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #083386;
-      color: #ffffff;
+    .p0-badge {
       font-size: 9px;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      cursor: default;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       ATTEMPT LIST
-    ───────────────────────────────────────────────────────────────── */
-    .list-container {
-      border: 1.5px solid #dadee7;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #ffffff;
-    }
-
-    /* Column header row */
-    .list-col-headers {
-      display: flex;
-      align-items: center;
-      height: 34px;
-      background: #f4f6fa;
-      border-bottom: 1px solid #dadee7;
-      padding: 0 14px;
-    }
-
-    .list-ch {
-      font-size: 9.5px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.10em;
-      color: #999999;
-      white-space: nowrap;
-    }
-
-    .ch-topic  { flex: 1; }
-    .ch-badge  { width: 40px; text-align: center; flex-shrink: 0; }
-    .ch-date   { width: 90px; flex-shrink: 0; }
-    .ch-guard  { width: 90px; text-align: center; flex-shrink: 0; }
-    .ch-prog   { width: 94px; text-align: center; flex-shrink: 0; }
-    .ch-share  { width: 44px; text-align: center; flex-shrink: 0; }
-
-    /* Attempt row */
-    .a-row {
-      display: flex;
-      align-items: center;
-      min-height: 50px;
-      padding: 0 14px;
-      border-bottom: 1px solid #eaecf0;
-      background: #ffffff;
-      cursor: default;
-      position: relative;
-      transition: background 130ms ease;
-    }
-
-    .a-row:last-of-type { border-bottom: none; }
-
-    .a-row::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: #083386;
-      opacity: 0;
-      transition: opacity 130ms ease;
-    }
-
-    .a-row:hover { background: #f4f6fa; }
-    .a-row:hover::before { opacity: 1; }
-
-    /* topic cell */
-    .c-topic {
-      flex: 1;
-      min-width: 0;
-      padding-right: 10px;
-    }
-
-    .topic-name {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: #1E2A40;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-
-    /* challenge badge cell */
-    .c-badge {
-      width: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .ch-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9.5px;
-      font-weight: 800;
-      padding: 2px 5px;
-      border-radius: 3px;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-    }
-
-    .cp-c1 { background: #083386; color: #ffffff; }
-    .cp-c2 { background: #0D7490; color: #ffffff; }
-    .cp-c3 { background: #6D28D9; color: #ffffff; }
-
-    /* date cell */
-    .c-date {
-      width: 90px;
-      flex-shrink: 0;
-    }
-
-    .row-date {
-      font-size: 11.5px;
-      color: #888888;
-      white-space: nowrap;
-    }
-
-    /* guarded cell */
-    .c-guard {
-      width: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* progress cell */
-    .c-prog {
-      width: 94px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* share cell */
-    .c-share {
-      width: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* STATUS BADGES */
-    .badge {
-      display: inline-flex;
-      align-items: center;
+      letter-spacing: 0.08em;
+      background: #1A6B4A;
+      color: #fff;
       padding: 2px 6px;
       border-radius: 4px;
-      font-size: 9.5px;
-      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-      line-height: 1.5;
     }
 
-    .badge-submitted { background: rgb(162,232,165); color: rgb(8,51,134); }
-    .badge-reset     { background: rgb(218,222,231); color: rgb(8,51,134); }
-    .badge-guarded   { background: rgb(218,222,231); color: rgb(8,51,134); }
-
-    .badge-empty {
-      font-size: 12px;
-      color: #cccccc;
-      font-weight: 400;
-    }
-
-    /* share button */
-    .share-btn {
-      width: 26px;
-      height: 26px;
-      border: 1px solid #dadee7;
-      border-radius: 5px;
-      background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: default;
-      color: #999999;
-      transition: border-color 120ms, color 120ms, background 120ms;
-    }
-
-    .share-btn:hover {
-      border-color: #083386;
-      color: #083386;
-      background: #ebf0f7;
-    }
-
-    /* list footer */
-    .list-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 14px 10px;
-      border-top: 1px solid #eaecf0;
-      background: #fafafa;
-    }
-
-    .list-footer-text {
-      font-size: 11.5px;
-      color: #999999;
-    }
-
-    .list-footer-clear {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #083386;
-      cursor: default;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       RIGHT COLUMN — SPECS
-    ───────────────────────────────────────────────────────────────── */
-    .specs-inner {
-      padding: 22px 22px 48px;
-    }
-
-    .spec-section {
-      margin-bottom: 26px;
-      padding-bottom: 2px;
-    }
-
-    .spec-section-head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 11px;
-      padding-bottom: 8px;
-      border-bottom: 1.5px solid #eeeeee;
-    }
-
-    .spec-callout {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #D97706;
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .spec-callout.navy {
-      background: #083386;
-    }
-
-    .spec-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #1E2A40;
-    }
-
-    .spec-row {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 5px;
-      align-items: flex-start;
-    }
-
-    .spec-k {
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #083386;
-      min-width: 90px;
-      flex-shrink: 0;
-      padding-top: 1px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .spec-v {
-      font-size: 12px;
-      color: #444444;
-      line-height: 1.6;
-    }
-
-    .spec-v p { margin-bottom: 5px; }
-    .spec-v p:last-child { margin-bottom: 0; }
-
-    .code {
-      font-family: 'SF Mono', 'Fira Mono', 'Consolas', monospace;
-      font-size: 10.5px;
-      background: #f0f4fa;
-      border: 1px solid #d8e0f0;
-      border-radius: 3px;
-      padding: 0 4px;
-      color: #083386;
-    }
-
-    /* Token swatches */
-    .token-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 5px;
-    }
-
-    .token-swatch {
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      border: 1px solid rgba(0,0,0,0.10);
-      flex-shrink: 0;
-    }
-
-    .token-label {
-      font-size: 11px;
-      color: #555555;
-      line-height: 1.4;
-    }
-
-    /* Inline badge preview */
-    .ibadge {
-      display: inline-flex;
-      align-items: center;
-      padding: 1px 5px;
-      border-radius: 3px;
-      font-size: 9.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      line-height: 1.5;
-      vertical-align: middle;
-    }
-
-    /* Challenge pill preview in spec */
-    .cpill-preview {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9.5px;
-      font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 3px;
-      letter-spacing: 0.04em;
-      vertical-align: middle;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       BEFORE SCREENSHOT SECTION
-    ───────────────────────────────────────────────────────────────── */
-    .before-section {
-      margin-top: 24px;
-      padding-top: 18px;
-      border-top: 2px solid #eeeeee;
-    }
-
-    .before-eyebrow {
-      font-size: 9.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #999999;
-      margin-bottom: 7px;
-    }
-
-    .before-caption {
-      font-size: 12px;
-      font-weight: 700;
-      color: #1E2A40;
-      margin-bottom: 8px;
-    }
-
-    .problem-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-
-    .problem-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      font-size: 11.5px;
-      color: #555555;
-      line-height: 1.45;
-    }
-
-    .problem-dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #fee2e2;
-      border: 1px solid #fca5a5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .before-img-wrap {
-      border: 3px solid #D97706;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .before-img {
+    .spec-table {
       width: 100%;
-      display: block;
+      border-collapse: collapse;
     }
 
+    .spec-table tr td {
+      padding: 2px 0;
+      font-size: 11px;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+
+    .spec-table tr td:first-child {
+      color: #6D6D72;
+      width: 110px;
+      flex-shrink: 0;
+      padding-right: 8px;
+    }
+
+    .spec-table tr td:last-child {
+      color: #000;
+      font-weight: 500;
+    }
+
+    .warn-box {
+      background: #FFF8ED;
+      border: 1px solid #FFE0A3;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #7C4E00;
+      line-height: 1.55;
+      margin-top: 10px;
+    }
+
+    .warn-box p {
+      margin-bottom: 4px;
+    }
+
+    .warn-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       SCREEN TITLE LABEL
+    ───────────────────────────────────────────────────────────────── */
+    .screen-title-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .screen-title-sub {
+      font-size: 11px;
+      color: #6D6D72;
+      margin-bottom: 12px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────
+       LAYOUT WRAPPER
+    ───────────────────────────────────────────────────────────────── */
+    .page-body {
+      padding: 28px 40px 60px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #C6C6C8;
+      margin: 0 0 36px;
+      opacity: 0.5;
+    }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     1. PAGE HEADER — navy bar
-     Direction C · Portfolio Dashboard · July AI — Previous Conversations · 1 screen · Desktop 1440px
-     Editorial / bold · Challenge summary tiles + unified attempt list
-     Goal thread: Dashboard tiles answer "how am I doing across all challenges?" at a glance (§4 proxy signals)
-     before the detail list answers "which conversation?" — the tile-to-filter interaction is maximally
-     intuitive (§3 primary persona: technical fluency, mid-session context) and eliminates all accordion
-     interactions (§2 Problem 3).
-═══════════════════════════════════════════════════════════════════ -->
-<header class="doc-header">
-  <div class="doc-header-eyebrow">UX Direction C of 3 &nbsp;·&nbsp; July AI Red Team Platform &nbsp;·&nbsp; Previous Conversations</div>
-  <div class="doc-header-title">Portfolio Dashboard</div>
-  <div class="doc-header-subtitle">Desktop 1440px &nbsp;·&nbsp; Visual Register: Editorial / Bold / Data-Forward</div>
-  <div class="doc-header-chips">
-    <span class="doc-chip">1 Screen</span>
-    <span class="doc-chip">Challenge Summary Tiles + Unified Attempt List</span>
-    <span class="doc-chip">Tile-to-Filter Interaction</span>
-    <span class="doc-chip">AI-Generated Topic Names</span>
-    <span class="doc-chip">Full-Width Search Bar</span>
-  </div>
-  <div class="goal-thread">
-    <strong>Goal thread:</strong> Dashboard tiles answer "how am I doing across all challenges?" at a glance (§4 proxy signals) before the detail list answers "which conversation?" — the tile-to-filter interaction is maximally intuitive (§3 primary persona: technical fluency, mid-session context) and eliminates all accordion interactions (§2 Problem 3). Strong typographic hierarchy — 46px display number anchored by muted metadata — communicates performance without requiring the user to expand any element first.
-  </div>
-</header>
+  <!-- ═══════════════════════════════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════════════════════════════════ -->
+  <header class="doc-header">
+    <div class="doc-header-row1">
+      <span class="pill pill-c">Mockup C</span>
+      <span class="pill pill-see">See It First</span>
+      <span class="doc-header-title">SafeChat</span>
+      <span class="screen-count">3 screens</span>
+    </div>
+    <div class="doc-header-row2">iOS 390px &nbsp;·&nbsp; Parent Dashboard-First Setup &nbsp;·&nbsp; Child Chatbot</div>
+    <div class="goal-box">
+      <strong>Goal thread:</strong> Direction C anchors setup in an emotional outcome rather than a technical task. Showing the child's name as the dashboard hero before any configuration creates personal investment that drives §4's completion metric more reliably than progress bars. §3 identifies the parent's emotional state as "cautious and wanting reassurance" — seeing their child's name already in the product IS the reassurance. Setup happens in a sheet; the destination never disappears.
+    </div>
+  </header>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     1b. WHAT THIS CHANGES
-═══════════════════════════════════════════════════════════════════ -->
-<div class="changes-bar">
-  <span class="changes-bar-label">What this changes:</span>
-  <div class="change-chips">
-    <span class="change-chip"><span class="cn">1</span>Challenge summary tiles replace accordion cards — stats at a glance</span>
-    <span class="change-chip"><span class="cn">2</span>AI topic name as primary label on every attempt row</span>
-    <span class="change-chip"><span class="cn">3</span>Search bar between tiles and list — keyword filter</span>
-    <span class="change-chip"><span class="cn">4</span>Unified attempt list — all challenges visible simultaneously</span>
-    <span class="change-chip"><span class="cn">5</span>Active tile filter — clicking a tile filters the list; × pill clears</span>
-  </div>
-</div>
+  <!-- ═══════════════════════════════════════════════════════════════
+       WHAT THIS DIRECTION DOES
+  ════════════════════════════════════════════════════════════════ -->
+  <div class="page-body">
+    <div class="changes-box">
+      <div class="changes-label">What This Direction Does</div>
+      <ul class="changes-list">
+        <li><span class="num">1</span>&nbsp;<strong>Child name hero</strong> — The parent's first view after signup is their child's name in large display type — making the entire setup feel personal before a single setting is touched.</li>
+        <li><span class="num">2</span>&nbsp;<strong>Setup overlay banner</strong> — A forest-green banner sits over the empty dashboard: "SafeChat is almost ready for Aria" with a "Set up now" CTA — explicit, can't be missed.</li>
+        <li><span class="num">3</span>&nbsp;<strong>Configuration sheet</strong> — All five categories live in one bottom sheet with a tab strip at top — parent taps "Next" to advance sections, never leaves the dashboard.</li>
+        <li><span class="num">4</span>&nbsp;<strong>Alert detail sheet</strong> — Tapping an alert opens a sheet with an inline "Edit setting" action — parent can change a setting without ever navigating away from the dashboard.</li>
+        <li><span class="num">5</span>&nbsp;<strong>Chat bubbles</strong> — Same SF Pro + forest-green tokens as parent view — unified language across both users.</li>
+      </ul>
+    </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     2. TWO-COLUMN BODY  (60 / 40)
-     LEFT: Visual render    RIGHT: Specs + before screenshot
-═══════════════════════════════════════════════════════════════════ -->
-<div class="doc-body">
+    <!-- ─────────────────────────────────────────────────────────────
+         SCREEN 1 — DASHBOARD FIRST VIEW
+    ──────────────────────────────────────────────────────────────── -->
+    <div class="section-label">Screen 1 of 3</div>
+    <div class="screen-section">
 
-  <!-- ══════════════════════════════════════════════════
-       LEFT — VISUAL RENDER
-  ══════════════════════════════════════════════════ -->
-  <div class="col-render">
-    <div class="col-render-label">Visual Render — Desktop 1440px (scaled) · Challenge 1 filter active</div>
+      <!-- Left: Phone + Spatial Summary -->
+      <div class="screen-left">
+        <div class="screen-title-label">Dashboard First View</div>
+        <div class="screen-title-sub">Moment after parent creates account</div>
 
-    <!-- ── TOP NAV ── -->
-    <nav class="sim-topnav">
-      <span class="sim-brand">july ai</span>
-      <div class="sim-nav-links">
-        <span class="sim-nav-link">Home</span>
-        <span class="sim-nav-link active">Data Portfolio</span>
-        <span class="sim-nav-link">Payment</span>
-      </div>
-      <div class="sim-nav-right">
-        <span class="sim-admin-btn">Admin</span>
-        <span class="sim-admin-btn plain">FE Admin</span>
-        <div class="sim-avatar">U</div>
-      </div>
-    </nav>
-
-    <!-- ── SIDEBAR + MAIN ── -->
-    <div class="sim-layout">
-
-      <!-- SIDEBAR -->
-      <aside class="sim-sidebar">
-        <div class="sim-sidebar-heading">Red Team Sample<br>Submission</div>
-
-        <div class="sim-sidebar-label">Menu</div>
-        <span class="sim-sidebar-item">Success Criteria</span>
-        <span class="sim-sidebar-item">Examples of Successful Attacks</span>
-        <span class="sim-sidebar-item active">Previous Conversations</span>
-
-        <div class="sim-sidebar-label">Challenges</div>
-        <span class="sim-sidebar-item">Challenge 1</span>
-        <span class="sim-sidebar-item">Challenge 2</span>
-        <span class="sim-sidebar-item">Challenge 3</span>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="sim-main">
-
-        <!-- Page title -->
-        <h1 class="sim-page-title">Previous Conversations</h1>
-
-        <!-- ── TILES ROW (callout 1) ── -->
-        <div style="position:relative; margin-bottom:14px;">
-          <!-- Callout 1 -->
-          <span class="callout" style="top:-10px; left:-10px;">1</span>
-
-          <div class="tiles-row">
-
-            <!-- Tile 1 — ACTIVE (navy bg) -->
-            <div class="tile active">
-              <div class="tile-challenge-label">Challenge 1</div>
-              <div class="tile-big-number">8</div>
-              <div class="tile-attempts-label">attempts</div>
-              <div class="tile-rule"></div>
-              <div class="tile-stat">
-                <span class="tile-stat-k">Guarded</span>
-                <span class="tile-stat-v guarded-pct">50%</span>
-              </div>
-              <div class="tile-stat">
-                <span class="tile-stat-k">Last attempt</span>
-                <span class="tile-stat-v">Mar 9, 2026</span>
-              </div>
+        <div class="phone">
+          <!-- Status bar -->
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right">
+              <span>●●●</span>
+              <span>WiFi</span>
+              <span>&#9646;</span>
             </div>
-
-            <!-- Tile 2 -->
-            <div class="tile">
-              <div class="tile-challenge-label">Challenge 2</div>
-              <div class="tile-big-number">4</div>
-              <div class="tile-attempts-label">attempts</div>
-              <div class="tile-rule"></div>
-              <div class="tile-stat">
-                <span class="tile-stat-k">Guarded</span>
-                <span class="tile-stat-v guarded-c2">75%</span>
-              </div>
-              <div class="tile-stat">
-                <span class="tile-stat-k">Last attempt</span>
-                <span class="tile-stat-v">Mar 9, 2026</span>
-              </div>
-            </div>
-
-            <!-- Tile 3 -->
-            <div class="tile">
-              <div class="tile-challenge-label">Challenge 3</div>
-              <div class="tile-big-number">2</div>
-              <div class="tile-attempts-label">attempts</div>
-              <div class="tile-rule"></div>
-              <div class="tile-stat">
-                <span class="tile-stat-k">Guarded</span>
-                <span class="tile-stat-v guarded-c3">50%</span>
-              </div>
-              <div class="tile-stat">
-                <span class="tile-stat-k">Last attempt</span>
-                <span class="tile-stat-v">Mar 9, 2026</span>
-              </div>
-            </div>
-
-          </div><!-- /tiles-row -->
-        </div>
-
-        <!-- ── SEARCH ZONE (callout 3 + 5) ── -->
-        <div class="search-zone" style="position:relative;">
-          <!-- Callout 3 -->
-          <span class="callout" style="top:-10px; left:-10px;">3</span>
-
-          <div class="search-bar">
-            <svg class="search-bar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="6.5" cy="6.5" r="4.25"/>
-              <line x1="9.9" y1="9.9" x2="14" y2="14"/>
-            </svg>
-            <input class="search-bar-input" type="text" placeholder="Filter by topic or keyword..." readonly />
           </div>
-
-          <!-- Callout 5 -->
-          <span class="callout" style="position:static; flex-shrink:0;">5</span>
-          <div class="filter-pill">
-            Showing: Challenge 1
-            <span class="filter-pill-x">✕</span>
+          <!-- Nav bar -->
+          <div class="nav-bar">
+            <span class="nav-title">SafeChat &#x1F333;</span>
+            <span class="nav-right">&#9881;</span>
+          </div>
+          <!-- Hero area -->
+          <div class="hero-area">
+            <div class="hero-good-morning">Good morning</div>
+            <div class="hero-name-row">
+              <div class="hero-name">Aria</div>
+              <span class="num">1</span>
+            </div>
+            <div class="hero-meta">Age 13 &nbsp;·&nbsp; Joined today</div>
+            <div class="stat-chips">
+              <div class="stat-chip">0 sessions</div>
+              <div class="stat-chip">0 alerts</div>
+              <div class="stat-chip">0 topics</div>
+            </div>
+          </div>
+          <!-- Setup banner -->
+          <div class="setup-banner">
+            <div class="setup-banner-headline">
+              <span>&#9889; SafeChat is almost ready for Aria</span>
+              <span class="num">2</span>
+            </div>
+            <div class="setup-banner-sub">Set up safety settings — takes about 5 minutes</div>
+            <div class="setup-cta">
+              <button class="setup-cta-btn">Set up now &rarr;</button>
+            </div>
+          </div>
+          <!-- Alerts section -->
+          <div class="alerts-section-header">Alerts</div>
+          <div class="empty-state-cell">No alerts yet</div>
+          <!-- Tab bar -->
+          <div class="tab-bar">
+            <div class="tab-item active">
+              <span class="tab-icon">&#127968;</span>
+              <span>Dashboard</span>
+            </div>
+            <div class="tab-item">
+              <span class="tab-icon">&#128276;</span>
+              <span>Alerts</span>
+            </div>
+            <div class="tab-item">
+              <span class="tab-icon">&#9881;&#65039;</span>
+              <span>Settings</span>
+            </div>
           </div>
         </div>
 
-        <!-- ── UNIFIED ATTEMPT LIST (callout 2 + 4) ── -->
-        <div style="position:relative;">
-          <!-- Callout 2 -->
-          <span class="callout" style="top:-10px; left:-10px;">2</span>
-          <!-- Callout 4 -->
-          <span class="callout" style="top:-10px; left:18px;">4</span>
-
-          <div class="list-container">
-
-            <!-- Column headers -->
-            <div class="list-col-headers">
-              <span class="list-ch ch-topic">Topic</span>
-              <span class="list-ch ch-badge">Ch</span>
-              <span class="list-ch ch-date">Date</span>
-              <span class="list-ch ch-guard">Attack Status</span>
-              <span class="list-ch ch-prog">Progress</span>
-              <span class="list-ch ch-share">Share</span>
-            </div>
-
-            <!-- Row 1: Self-Harm Encouragement -->
-            <div class="a-row">
-              <div class="c-topic">
-                <span class="topic-name">Self-Harm Encouragement</span>
-              </div>
-              <div class="c-badge">
-                <span class="ch-pill cp-c1">C1</span>
-              </div>
-              <div class="c-date">
-                <span class="row-date">Mar 9, 2026</span>
-              </div>
-              <div class="c-guard">
-                <span class="badge badge-guarded">Guarded</span>
-              </div>
-              <div class="c-prog">
-                <span class="badge badge-submitted">Submitted</span>
-              </div>
-              <div class="c-share">
-                <button class="share-btn" title="Share conversation">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8"/>
-                    <polyline points="9,1 12,1 12,4"/>
-                    <line x1="5.5" y1="7.5" x2="12" y2="1"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Row 2: Suicidal Ideation Loop -->
-            <div class="a-row">
-              <div class="c-topic">
-                <span class="topic-name">Suicidal Ideation Loop</span>
-              </div>
-              <div class="c-badge">
-                <span class="ch-pill cp-c1">C1</span>
-              </div>
-              <div class="c-date">
-                <span class="row-date">Mar 9, 2026</span>
-              </div>
-              <div class="c-guard">
-                <span class="badge badge-guarded">Guarded</span>
-              </div>
-              <div class="c-prog">
-                <span class="badge badge-submitted">Submitted</span>
-              </div>
-              <div class="c-share">
-                <button class="share-btn" title="Share conversation">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8"/>
-                    <polyline points="9,1 12,1 12,4"/>
-                    <line x1="5.5" y1="7.5" x2="12" y2="1"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Row 3: Crisis Endorsement Pattern -->
-            <div class="a-row">
-              <div class="c-topic">
-                <span class="topic-name">Crisis Endorsement Pattern</span>
-              </div>
-              <div class="c-badge">
-                <span class="ch-pill cp-c1">C1</span>
-              </div>
-              <div class="c-date">
-                <span class="row-date">Mar 6, 2026</span>
-              </div>
-              <div class="c-guard">
-                <span class="badge badge-guarded">Guarded</span>
-              </div>
-              <div class="c-prog">
-                <span class="badge badge-submitted">Submitted</span>
-              </div>
-              <div class="c-share">
-                <button class="share-btn" title="Share conversation">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8"/>
-                    <polyline points="9,1 12,1 12,4"/>
-                    <line x1="5.5" y1="7.5" x2="12" y2="1"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Row 4: Empathy Exploitation Attempt -->
-            <div class="a-row">
-              <div class="c-topic">
-                <span class="topic-name">Empathy Exploitation Attempt</span>
-              </div>
-              <div class="c-badge">
-                <span class="ch-pill cp-c1">C1</span>
-              </div>
-              <div class="c-date">
-                <span class="row-date">Feb 14, 2026</span>
-              </div>
-              <div class="c-guard">
-                <span class="badge-empty" style="display:flex;align-items:center;justify-content:center;width:100%;">—</span>
-              </div>
-              <div class="c-prog">
-                <span class="badge badge-reset">Reset</span>
-              </div>
-              <div class="c-share">
-                <button class="share-btn" title="Share conversation">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8"/>
-                    <polyline points="9,1 12,1 12,4"/>
-                    <line x1="5.5" y1="7.5" x2="12" y2="1"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Row 5: Real-World Harm Validation -->
-            <div class="a-row">
-              <div class="c-topic">
-                <span class="topic-name">Real-World Harm Validation</span>
-              </div>
-              <div class="c-badge">
-                <span class="ch-pill cp-c1">C1</span>
-              </div>
-              <div class="c-date">
-                <span class="row-date">Feb 5, 2026</span>
-              </div>
-              <div class="c-guard">
-                <span class="badge-empty" style="display:flex;align-items:center;justify-content:center;width:100%;">—</span>
-              </div>
-              <div class="c-prog">
-                <span class="badge badge-reset">Reset</span>
-              </div>
-              <div class="c-share">
-                <button class="share-btn" title="Share conversation">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 2H2a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8"/>
-                    <polyline points="9,1 12,1 12,4"/>
-                    <line x1="5.5" y1="7.5" x2="12" y2="1"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- List footer -->
-            <div class="list-footer">
-              <span class="list-footer-text">Showing 5 of 8 attempts for Challenge 1</span>
-              <span class="list-footer-clear">Clear filter &rarr;</span>
-            </div>
-
-          </div><!-- /list-container -->
-        </div>
-
-      </main><!-- /sim-main -->
-    </div><!-- /sim-layout -->
-  </div><!-- /col-render -->
-
-  <!-- ══════════════════════════════════════════════════
-       RIGHT — SPECS + BEFORE SCREENSHOT
-  ══════════════════════════════════════════════════ -->
-  <div class="col-specs">
-    <div class="col-specs-label">Component Specs &amp; Interaction Notes</div>
-    <div class="specs-inner">
-
-      <!-- ── Spec 1: Challenge Summary Tiles ── -->
-      <div class="spec-section">
-        <div class="spec-section-head">
-          <span class="spec-callout">1</span>
-          <span class="spec-title">Challenge Summary Tiles</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Purpose</span>
-          <span class="spec-v">Replace accordion cards. Show attempt count (large display number), success rate, and last attempt date before interacting with any individual row.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Layout</span>
-          <span class="spec-v">3-column grid, equal width, 10px gap. Each tile: white bg, 1.5px border <span class="code">#dadee7</span>, 12px border-radius, 14/16px padding.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Count</span>
-          <span class="spec-v">46px / weight 800 / letter-spacing &minus;0.04em. Visual anchor for the tile — highest weight element on the page after the page title.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Active state</span>
-          <span class="spec-v">bg <span class="code">#083386</span>, all text white/muted-white. box-shadow <span class="code">0 2px 18px rgba(8,51,134,.30)</span>. Rule line: <span class="code">rgba(255,255,255,.18)</span>. Guarded % shows as <span class="code">rgb(162,232,165)</span> so it pops on navy.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Hover (inactive)</span>
-          <span class="spec-v">box-shadow <span class="code">0 2px 10px rgba(8,51,134,.09)</span>, border-color <span class="code">#a0b4d8</span>. 150ms ease transition.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Toggle logic</span>
-          <span class="spec-v">Clicking an inactive tile activates it (filters list) and deactivates any previously active tile. Clicking the already-active tile deactivates it and restores the full unfiltered list.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Tile data</span>
-          <span class="spec-v">C1: 8 attempts, 50% guarded, last Mar 9 2026 &nbsp;·&nbsp; C2: 4 attempts, 75% guarded, last Mar 9 2026 &nbsp;·&nbsp; C3: 2 attempts, 50% guarded, last Mar 9 2026</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Guarded %</span>
-          <span class="spec-v">C1 navy <span class="code">#083386</span>, C2 teal <span class="code">#0D7490</span>, C3 purple <span class="code">#6D28D9</span> — color-coded to match challenge pill colors when inactive.</span>
+        <!-- Spatial Summary -->
+        <div class="spatial-summary">
+          <div class="spatial-summary-label">Spatial Summary</div>
+          <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">C — Dashboard First View</span></div>
+          <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Hero + setup banner + empty alert feed</span></div>
+          <div class="spatial-row"><span class="spatial-key">Distinctive move:</span><span class="spatial-val">Child's name at 40px creates personal investment before any task begins</span></div>
+          <div class="spatial-row"><span class="spatial-key">New/changed zones:</span><span class="spatial-val">Child name hero, setup overlay banner, empty dashboard state</span></div>
+          <div class="spatial-row"><span class="spatial-key">Proportional note:</span><span class="spatial-val">Phone frame scaled to 320px from iOS 390px [estimated]</span></div>
         </div>
       </div>
 
-      <!-- ── Spec 2: AI Topic Name ── -->
-      <div class="spec-section">
-        <div class="spec-section-head">
-          <span class="spec-callout">2</span>
-          <span class="spec-title">AI-Generated Topic Name (Primary Row Label)</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Typography</span>
-          <span class="spec-v">13.5px / weight 600 / color <span class="code">#1E2A40</span>. Truncates with ellipsis at cell edge. Highest-weight text on each row.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Replaces</span>
-          <span class="spec-v">The current date-only label (which provides no conversational context). Date moves to its own dedicated column in muted <span class="code">#888888</span> 11.5px.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Generation</span>
-          <span class="spec-v">AI-inferred from the first 3–5 conversation turns. Stored server-side on first read. Falls back to "Conversation [date]" if generation fails or is pending.</span>
-        </div>
-      </div>
+      <!-- Right: Spec Panel -->
+      <div class="screen-right">
+        <div class="spec-panel">
+          <div class="spec-heading">Direction at a Glance</div>
+          <ul class="spec-bullets">
+            <li>Parent sees their child's name in the app before any configuration — setup feels personal, not procedural</li>
+            <li>The setup banner sits over the destination (dashboard), not in front of a form — parent can see what they're building</li>
+            <li>When setup is done, the sheet dismisses and the parent is already on their dashboard — no redirect needed</li>
+          </ul>
 
-      <!-- ── Spec 3: Search Bar ── -->
-      <div class="spec-section">
-        <div class="spec-section-head">
-          <span class="spec-callout">3</span>
-          <span class="spec-title">Search Bar</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Position</span>
-          <span class="spec-v">Full-width between tiles row and attempt list. 44px tall, 8px border-radius.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Placeholder</span>
-          <span class="spec-v">"Filter by topic or keyword..."</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Focus state</span>
-          <span class="spec-v">Border 1.5px <span class="code">#083386</span> (shown as default in this mockup since it is the primary affordance). Icon color also <span class="code">#083386</span>.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Scope &amp; logic</span>
-          <span class="spec-v">Filters the unified list by topic name substring match. When a tile filter is active, search applies within that filtered set (AND logic). Clearing search text removes the keyword filter without affecting the tile filter.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Icon</span>
-          <span class="spec-v">16&times;16 SVG magnifier, left-padded 14px. Color <span class="code">#083386</span> when focused / <span class="code">#aaaaaa</span> at rest.</span>
-        </div>
-      </div>
+          <div class="spec-heading">Strategy</div>
+          <p style="font-size:12px;line-height:1.65;color:#3A3A3C;margin-bottom:10px;">Direction C exists because §3 describes the parent's emotional state as cautious and wanting reassurance. The strongest reassurance is not a progress bar or explanatory copy — it is seeing their child's name in the product before they've done a single thing. This creates personal investment that sustains motivation through the 21-setting configuration. §4's primary metric (&gt;80% completion) is served by emotional anchoring: parents who are configuring for a specific real person they love are far less likely to abandon than parents configuring abstract policies. The sheet model ensures the destination is always visible — setup never feels like a detour.</p>
 
-      <!-- ── Spec 4: Unified Attempt List ── -->
-      <div class="spec-section">
-        <div class="spec-section-head">
-          <span class="spec-callout">4</span>
-          <span class="spec-title">Unified Attempt List</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Default view</span>
-          <span class="spec-v">All 14 attempts (8+4+2), sorted by date descending. The C1/C2/C3 badge on every row identifies the challenge — no section headers needed.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Filtered view</span>
-          <span class="spec-v">When a tile is active, list shows only that challenge's rows. Filter pill appears beside search bar. Footer: "Showing N of M attempts for Challenge X".</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Row</span>
-          <span class="spec-v">50px min-height, 14px horizontal padding, border-bottom <span class="code">#eaecf0</span>. Last row no border. Hover: bg <span class="code">#f4f6fa</span> + 3px navy left accent (<span class="code">::before</span>). Click: opens conversation in new tab.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Column widths</span>
-          <span class="spec-v">Topic: flex 1 &nbsp;·&nbsp; Ch: 40px &nbsp;·&nbsp; Date: 90px &nbsp;·&nbsp; Attack Status: 90px &nbsp;·&nbsp; Progress: 94px &nbsp;·&nbsp; Share: 44px</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Container</span>
-          <span class="spec-v">1.5px border <span class="code">#dadee7</span>, 12px border-radius, white bg, overflow hidden. Column header row: 34px / bg <span class="code">#f4f6fa</span> / 9.5px uppercase headers.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Share btn</span>
-          <span class="spec-v">26&times;26px, border <span class="code">#dadee7</span>, hover: border+icon to <span class="code">#083386</span> + bg <span class="code">#ebf0f7</span>. Copies shareable link to clipboard — independent of row click.</span>
-        </div>
-        <div style="margin-top:9px;">
-          <div style="font-size:10.5px;font-weight:700;color:#1E2A40;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Challenge Pill Colors</div>
-          <div class="token-row">
-            <span class="token-swatch" style="background:#083386;"></span>
-            <span class="cpill-preview" style="background:#083386;color:#fff;">C1</span>
-            <span class="token-label">Challenge 1 — Navy <span class="code">#083386</span></span>
+          <div class="spec-heading">Above the Fold</div>
+          <ul class="spec-bullets">
+            <li><strong>1st:</strong> Child's name (Aria) at 40px — earns first position as the emotional anchor for the entire session</li>
+            <li><strong>2nd:</strong> Setup banner — explicit CTA, but framed as completing something personal, not a required step</li>
+            <li><strong>3rd:</strong> Empty alert feed — shows the parent what they'll be monitoring; builds anticipation</li>
+          </ul>
+
+          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">1</span>&nbsp; Child Name Hero — P0</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>Source</td><td>New — Direction C signature element</td></tr>
+              <tr><td>Child name</td><td>SF Pro Display 40px / Bold / #000000</td></tr>
+              <tr><td>"Good morning"</td><td>SF Pro Text 13px / Regular / #6D6D72</td></tr>
+              <tr><td>Age/join line</td><td>SF Pro Text 13px / Regular / #AEAEB2</td></tr>
+              <tr><td>Background</td><td>#FFFFFF</td></tr>
+              <tr><td>Padding</td><td>24px all sides</td></tr>
+            </table>
           </div>
-          <div class="token-row">
-            <span class="token-swatch" style="background:#0D7490;"></span>
-            <span class="cpill-preview" style="background:#0D7490;color:#fff;">C2</span>
-            <span class="token-label">Challenge 2 — Teal <span class="code">#0D7490</span></span>
-          </div>
-          <div class="token-row">
-            <span class="token-swatch" style="background:#6D28D9;"></span>
-            <span class="cpill-preview" style="background:#6D28D9;color:#fff;">C3</span>
-            <span class="token-label">Challenge 3 — Purple <span class="code">#6D28D9</span></span>
+
+          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">2</span>&nbsp; Setup Banner — P0</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>Source</td><td>New</td></tr>
+              <tr><td>Background</td><td>#E8F5EF (brand-primary-soft)</td></tr>
+              <tr><td>Border</td><td>1.5px solid #1A6B4A</td></tr>
+              <tr><td>Border radius</td><td>12px</td></tr>
+              <tr><td>Margin</td><td>0 16px</td></tr>
+              <tr><td>Padding</td><td>14px</td></tr>
+              <tr><td>Headline</td><td>15px / Semibold / #1A6B4A</td></tr>
+              <tr><td>Subline</td><td>13px / Regular / #6D6D72</td></tr>
+              <tr><td>CTA button</td><td>#1A6B4A / 999px / 36px / "Set up now →" / #FFFFFF / right-aligned</td></tr>
+            </table>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- ── Spec 5: Active Tile Filter + Filter Pill ── -->
-      <div class="spec-section">
-        <div class="spec-section-head">
-          <span class="spec-callout">5</span>
-          <span class="spec-title">Active Tile Filter &amp; Filter Pill</span>
+    <div class="divider"></div>
+
+    <!-- ─────────────────────────────────────────────────────────────
+         SCREEN 2 — CONFIGURATION SHEET
+    ──────────────────────────────────────────────────────────────── -->
+    <div class="section-label">Screen 2 of 3</div>
+    <div class="screen-section">
+
+      <!-- Left: Phone + Spatial Summary -->
+      <div class="screen-left">
+        <div class="screen-title-label">Configuration Sheet</div>
+        <div class="screen-title-sub">Sheet in progress — dashboard hero visible above</div>
+
+        <div class="phone">
+          <!-- Status bar -->
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right">
+              <span>●●●</span>
+              <span>WiFi</span>
+              <span>&#9646;</span>
+            </div>
+          </div>
+          <!-- Nav bar -->
+          <div class="nav-bar">
+            <span class="nav-title">SafeChat &#x1F333;</span>
+            <span class="nav-right">&#9881;</span>
+          </div>
+          <!-- Dashboard peek (visible above sheet) -->
+          <div class="dashboard-peek">
+            <div class="hero-good-morning">Good morning</div>
+            <div class="hero-name" style="font-size:32px;">Aria</div>
+            <div class="hero-meta" style="margin-bottom:0;">Age 13 &nbsp;·&nbsp; Joined today</div>
+          </div>
+          <!-- Bottom sheet -->
+          <div class="sheet-overlay">
+            <div class="drag-handle"></div>
+            <!-- Tab strip -->
+            <div class="sheet-tab-strip">
+              <div class="sheet-tab">1 Content</div>
+              <div class="sheet-tab active">2 Behavior</div>
+              <div class="sheet-tab">3 Personality</div>
+              <div class="sheet-tab">4 Learning</div>
+              <div class="sheet-tab">5 Privacy</div>
+            </div>
+            <!-- Section header -->
+            <div class="sheet-section-header">Behavioral Monitoring</div>
+            <!-- Inset list -->
+            <div class="inset-list">
+              <!-- Cell 1 -->
+              <div class="inset-cell">
+                <span class="cell-icon">&#x1F9E0;</span>
+                <span class="cell-label">AI dependency</span>
+                <div class="pill-group">
+                  <span class="setting-pill">Off</span>
+                  <span class="setting-pill sel-balanced">Balanced</span>
+                  <span class="setting-pill">Strict</span>
+                </div>
+              </div>
+              <!-- Cell 2 -->
+              <div class="inset-cell">
+                <span class="cell-icon">&#9889;</span>
+                <span class="cell-label">Radicalization</span>
+                <div class="pill-group">
+                  <span class="setting-pill">Off</span>
+                  <span class="setting-pill">Balanced</span>
+                  <span class="setting-pill sel-strict">Strict</span>
+                </div>
+                <span class="num" style="margin-left:6px;">3</span>
+              </div>
+              <!-- Cell 3 -->
+              <div class="inset-cell">
+                <span class="cell-icon">&#x1F91D;</span>
+                <span class="cell-label">Predatory patterns</span>
+                <div class="pill-group">
+                  <span class="setting-pill">Off</span>
+                  <span class="setting-pill">Balanced</span>
+                  <span class="setting-pill sel-strict">Strict</span>
+                </div>
+              </div>
+              <!-- Cell 4 -->
+              <div class="inset-cell">
+                <span class="cell-icon">&#x1F4CD;</span>
+                <span class="cell-label">Personal info</span>
+                <div class="pill-group">
+                  <span class="setting-pill">Off</span>
+                  <span class="setting-pill sel-balanced">Balanced</span>
+                  <span class="setting-pill">Strict</span>
+                </div>
+              </div>
+            </div>
+            <!-- Next button -->
+            <div class="sheet-next-btn">Next: Personality &rarr;</div>
+          </div>
+          <!-- Tab bar -->
+          <div class="tab-bar">
+            <div class="tab-item active">
+              <span class="tab-icon">&#127968;</span>
+              <span>Dashboard</span>
+            </div>
+            <div class="tab-item">
+              <span class="tab-icon">&#128276;</span>
+              <span>Alerts</span>
+            </div>
+            <div class="tab-item">
+              <span class="tab-icon">&#9881;&#65039;</span>
+              <span>Settings</span>
+            </div>
+          </div>
         </div>
-        <div class="spec-row">
-          <span class="spec-k">Activation</span>
-          <span class="spec-v">Click any challenge tile. That tile switches to navy bg + white text (active state). Only one tile can be active at a time.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Filter pill</span>
-          <span class="spec-v">Appears to the right of the search bar when a filter is active. Label: "Showing: Challenge N". bg <span class="code">#dbeafe</span>, border <span class="code">#93c5fd</span>, text <span class="code">#083386</span>, 12px font-weight 700. Fades in with 100ms opacity transition.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Clear</span>
-          <span class="spec-v">Three equivalent affordances: (a) × icon in filter pill, (b) "Clear filter &rarr;" footer link, (c) click the active tile again. All three restore full unfiltered list and remove pill.</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-k">Animation</span>
-          <span class="spec-v">Tile bg/text transitions 150ms ease. List rows fade in 130ms ease on filter change. Filter pill: 100ms opacity fade.</span>
+
+        <!-- Spatial Summary -->
+        <div class="spatial-summary">
+          <div class="spatial-summary-label">Spatial Summary</div>
+          <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">C — Configuration Sheet</span></div>
+          <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Sheet over dashboard — destination always visible above</span></div>
+          <div class="spatial-row"><span class="spatial-key">Distinctive move:</span><span class="spatial-val">Dashboard hero visible at top while configuration happens below</span></div>
+          <div class="spatial-row"><span class="spatial-key">New/changed zones:</span><span class="spatial-val">Bottom sheet, section tab strip, inline pill selectors</span></div>
         </div>
       </div>
 
-      <!-- ── Design Tokens ── -->
-      <div class="spec-section">
-        <div class="spec-section-head">
-          <span class="spec-callout navy">T</span>
-          <span class="spec-title">Design Tokens</span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:#083386;"></span>
-          <span class="token-label">Navy primary — <span class="code">#083386</span> / rgb(8,51,134)</span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:#1E2A40;"></span>
-          <span class="token-label">Dark text — <span class="code">#1E2A40</span></span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:#EEEEEE;border-color:#ccc;"></span>
-          <span class="token-label">Body bg — <span class="code">#EEEEEE</span> / rgb(238,238,238)</span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:rgb(253,242,248);border-left:3px solid #ec4899;"></span>
-          <span class="token-label">Sidebar active — <span class="code">rgb(253,242,248)</span> + 4px pink border</span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:rgb(162,232,165);"></span>
-          <span class="token-label">Badge Submitted bg — <span class="code">rgb(162,232,165)</span>, text <span class="code">rgb(8,51,134)</span></span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:rgb(218,222,231);"></span>
-          <span class="token-label">Badge Reset / Guarded bg — <span class="code">rgb(218,222,231)</span>, text <span class="code">rgb(8,51,134)</span></span>
-        </div>
-        <div class="token-row">
-          <span class="token-swatch" style="background:#D97706;"></span>
-          <span class="token-label">Callout amber — <span class="code">#D97706</span>, white text, 22px circle</span>
-        </div>
-        <div style="margin-top:8px;">
-          <div class="spec-row">
-            <span class="spec-k">Font</span>
-            <span class="spec-v">Inter, system-ui, sans-serif</span>
+      <!-- Right: Spec Panel -->
+      <div class="screen-right">
+        <div class="spec-panel">
+          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">3</span>&nbsp; Configuration Sheet — P0</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>Source</td><td>New</td></tr>
+              <tr><td>Background</td><td>#FFFFFF</td></tr>
+              <tr><td>Top radius</td><td>20px (sheet handle curve)</td></tr>
+              <tr><td>Shadow</td><td>0 -2px 16px rgba(0,0,0,0.10)</td></tr>
+              <tr><td>Height</td><td>~70% of screen (slides up over dashboard)</td></tr>
+              <tr><td>Drag handle</td><td>4px × 36px / #C6C6C8 / centered / 8px from top</td></tr>
+            </table>
           </div>
-          <div class="spec-row">
-            <span class="spec-k">Page title</span>
-            <span class="spec-v">24px / weight 600 / <span class="code">#1E2A40</span> / letter-spacing &minus;0.01em</span>
+
+          <div class="spec-heading">Component: Section Tab Strip — P0</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>Background</td><td>#FFFFFF</td></tr>
+              <tr><td>Border bottom</td><td>0.5px #C6C6C8</td></tr>
+              <tr><td>Active tab</td><td>13px / Semibold / #1A6B4A / 2px underline #1A6B4A</td></tr>
+              <tr><td>Inactive tab</td><td>13px / Regular / #AEAEB2</td></tr>
+              <tr><td>Height</td><td>44px</td></tr>
+              <tr><td>Padding</td><td>0 16px</td></tr>
+            </table>
           </div>
-          <div class="spec-row">
-            <span class="spec-k">Tile count</span>
-            <span class="spec-v">46px / weight 800 / letter-spacing &minus;0.04em</span>
+
+          <div class="spec-heading">Component: Pill Selectors — P0</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>Off (unsel.)</td><td>#F2F2F7 bg / #AEAEB2 text / 6px radius</td></tr>
+              <tr><td>Balanced (sel.)</td><td>#FF9500 bg / #FFFFFF text / 10px/600</td></tr>
+              <tr><td>Strict (sel.)</td><td>#FF3B30 bg / #FFFFFF text / 10px/600</td></tr>
+              <tr><td>Inset list bg</td><td>#F2F2F7 / 12px radius / 0 16px margin</td></tr>
+              <tr><td>Cell separator</td><td>0.5px solid #C6C6C8</td></tr>
+            </table>
           </div>
-          <div class="spec-row">
-            <span class="spec-k">Tile label</span>
-            <span class="spec-v">10px / weight 700 / uppercase / +0.10em tracking</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-k">Row topic</span>
-            <span class="spec-v">13.5px / weight 600 / <span class="code">#1E2A40</span></span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-k">Row date</span>
-            <span class="spec-v">11.5px / weight 400 / <span class="code">#888888</span></span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-k">Col headers</span>
-            <span class="spec-v">9.5px / weight 700 / uppercase / +0.10em tracking / <span class="code">#999999</span></span>
+
+          <div class="spec-heading">Component: "Next" Button in Sheet — P0</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>Background</td><td>#1A6B4A</td></tr>
+              <tr><td>Text</td><td>"Next: Personality →" / 17px / Semibold / #FFFFFF</td></tr>
+              <tr><td>Height</td><td>52px / 999px radius / full sheet width − 32px</td></tr>
+              <tr><td>Position</td><td>Pinned to sheet bottom, 16px above sheet edge</td></tr>
+            </table>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- ── BEFORE SCREENSHOT ── -->
-      <div class="before-section">
-        <div class="before-eyebrow">Existing Screen — What This Replaces</div>
-        <div class="before-caption">Current UI — Previous Conversations (app.gojuly.ai)</div>
-        <div class="problem-list">
-          <div class="problem-item">
-            <span class="problem-dot">
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/>
-                <line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/>
-              </svg>
-            </span>
-            <span>Date-only labels — no topic name visible; impossible to identify conversations without opening them one by one</span>
+    <div class="divider"></div>
+
+    <!-- ─────────────────────────────────────────────────────────────
+         SCREEN 3 — CHILD CHATBOT
+    ──────────────────────────────────────────────────────────────── -->
+    <div class="section-label">Screen 3 of 3</div>
+    <div class="screen-section">
+
+      <!-- Left: Phone + Spatial Summary -->
+      <div class="screen-left">
+        <div class="screen-title-label">Child Chatbot</div>
+        <div class="screen-title-sub">Child's session — Aria's own view</div>
+
+        <div class="phone">
+          <!-- Status bar -->
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right">
+              <span>●●●</span>
+              <span>WiFi</span>
+              <span>&#9646;</span>
+            </div>
           </div>
-          <div class="problem-item">
-            <span class="problem-dot">
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/>
-                <line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/>
-              </svg>
-            </span>
-            <span>No search — no way to find a specific conversation without manual scan</span>
+          <!-- Nav bar -->
+          <div class="nav-bar">
+            <span class="nav-title">SafeChat &#x1F333;</span>
+            <span class="nav-right" style="font-size:14px;font-weight:500;">History</span>
           </div>
-          <div class="problem-item">
-            <span class="problem-dot">
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                <line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/>
-                <line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/>
-              </svg>
-            </span>
-            <span>Separate accordion per challenge — no cross-challenge overview; no aggregate attempt counts or guarded rate</span>
+          <!-- Sub-header with child name -->
+          <div class="nav-subtitle">Aria</div>
+          <!-- Chat body -->
+          <div class="chat-body">
+            <!-- User bubble first (question) -->
+            <div class="bubble-row trailing">
+              <div class="bubble user">Can you explain the French Revolution?</div>
+            </div>
+            <!-- AI response -->
+            <div class="bubble-row leading">
+              <div>
+                <div class="bubble-meta">SafeChat</div>
+                <div class="bubble ai">Sure! The French Revolution began in 1789 when widespread discontent with the monarchy and economic hardship pushed citizens to demand change...</div>
+              </div>
+            </div>
+            <!-- AI follow-up -->
+            <div class="bubble-row leading">
+              <div>
+                <div class="bubble-meta">SafeChat</div>
+                <div class="bubble ai" style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;">
+                  <span>What part are you most curious about — the causes, the events, or the impact?</span>
+                  <span class="num" style="flex-shrink:0;margin-top:2px;">5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Input bar -->
+          <div class="chat-input-bar">
+            <div class="chat-input">Message SafeChat&hellip;</div>
+            <div class="chat-send">&#8593;</div>
+          </div>
+          <!-- Tab bar -->
+          <div class="tab-bar">
+            <div class="tab-item active">
+              <span class="tab-icon">&#128172;</span>
+              <span>Chat</span>
+            </div>
+            <div class="tab-item">
+              <span class="tab-icon">&#128336;</span>
+              <span>History</span>
+            </div>
+            <div class="tab-item">
+              <span class="tab-icon">&#128100;</span>
+              <span>Profile</span>
+            </div>
           </div>
         </div>
-        <div class="before-img-wrap">
-          <img class="before-img" src="../design-references/prev-conv-desktop-1440-viewport.png" alt="Current UI — Previous Conversations page on app.gojuly.ai" />
+
+        <!-- Spatial Summary -->
+        <div class="spatial-summary">
+          <div class="spatial-summary-label">Spatial Summary</div>
+          <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">C — Child Chatbot</span></div>
+          <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Full-screen chat thread, child name in sub-header</span></div>
+          <div class="spatial-row"><span class="spatial-key">Distinctive move:</span><span class="spatial-val">"Aria" sub-header in nav — same name from parent hero now in child's own UI</span></div>
+          <div class="spatial-row"><span class="spatial-key">New/changed zones:</span><span class="spatial-val">Name sub-header, chat bubbles, input bar</span></div>
         </div>
       </div>
 
-    </div><!-- /specs-inner -->
-  </div><!-- /col-specs -->
+      <!-- Right: Spec Panel -->
+      <div class="screen-right">
+        <div class="spec-panel">
+          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">5</span>&nbsp; Chatbot — P0 (same tokens as A and B)</div>
+          <div class="spec-component-block">
+            <table class="spec-table">
+              <tr><td>User bubble</td><td>#1A6B4A bg / #FFFFFF text / trailing / sq top-right corner</td></tr>
+              <tr><td>AI bubble</td><td>#F2F2F7 bg / #000000 text / leading / sq top-left corner</td></tr>
+              <tr><td>Nav sub-header</td><td>Child's name "Aria" — 13px / Regular / #6D6D72 / centered</td></tr>
+              <tr><td>Input field</td><td>#F2F2F7 bg / 16px radius / "Message SafeChat…" placeholder</td></tr>
+              <tr><td>Send button</td><td>#1A6B4A / 28px circle / ↑</td></tr>
+            </table>
+          </div>
 
-</div><!-- /doc-body -->
+          <div class="spec-heading">Integration</div>
+          <ul class="spec-bullets">
+            <li>Child's name "Aria" appears in both parent hero (40px) and child's own nav sub-header — same identity token across both users</li>
+            <li>Forest green (#1A6B4A) on user bubbles + parent CTAs + setup banner CTA — one accent color, consistent meaning</li>
+            <li>Direction C's distinctive move: setup sheet always has the dashboard destination visible above it — completion feels like arriving somewhere, not finishing a form</li>
+          </ul>
+
+          <div class="warn-box">
+            <p><strong>Open Question:</strong></p>
+            <p>&#9888; Setup banner dismiss — should it persist until all 5 sections are configured, or can parents dismiss it and return later? Confirm before build.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
 
 </body>
 </html>

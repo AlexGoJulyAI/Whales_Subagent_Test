@@ -3,416 +3,234 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction C — Portfolio Dashboard | Previous Conversations Redesign</title>
+  <title>Direction C — See It First · User Journey</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F8FAFC; color: #1E2A40; line-height: 1.5; }
-    .page { max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; background: #F1F5F9; padding: 32px 24px; color: #111827; }
+    .page-wrapper { max-width: 720px; margin: 0 auto; }
 
-    /* ── HEADER ── */
-    .header { background: #1E2A40; border-radius: 14px; padding: 30px 32px 26px; margin-bottom: 32px; box-shadow: 0 4px 24px rgba(8,51,134,.18); }
-    .hdr-kicker { font-size: 11px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 6px; }
-    .hdr-direction { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 20px; line-height: 1.2; letter-spacing: -.01em; }
-    .hdr-direction span { color: #7C3AED; }
-
-    .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px; }
-    .callout-prob { background: rgba(239,68,68,.10); border-color: #EF4444; }
-    .callout-sol  { background: rgba(22,163,74,.10); border-color: #16A34A; }
-    .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
-    .callout-prob .callout-label { color: #FCA5A5; }
-    .callout-sol  .callout-label { color: #86EFAC; }
-    .callout-body { font-size: 12px; color: rgba(255,255,255,.82); line-height: 1.6; }
-
-    .hdr-divider { height: 1px; background: rgba(255,255,255,.10); margin: 20px 0 16px; }
-    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.32); margin-bottom: 12px; }
-    .hdr-shapes { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+    .header { background: #083386; border-radius: 12px; padding: 28px 32px; margin-bottom: 28px; }
+    .hdr-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.82); margin-bottom: 22px; }
+    .hdr-block { margin-bottom: 16px; }
+    .hdr-block-eyebrow { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+    .hdr-block-prob .hdr-block-eyebrow { color: #F87171; }
+    .hdr-block-sol  .hdr-block-eyebrow { color: #4ADE80; }
+    .hdr-block-body { font-size: 13px; color: rgba(255,255,255,.88); line-height: 1.65; margin: 0; }
+    .hdr-divider { height: 1px; background: rgba(255,255,255,.12); margin: 16px 0 14px; }
+    .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.38); margin-bottom: 12px; }
+    .hdr-shapes { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
     .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .hdr-shape-item span { font-size: 8px; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; white-space: nowrap; text-transform: uppercase; }
+    .hdr-shape-item span { font-size: 9px; color: rgba(255,255,255,.55); font-weight: 600; white-space: nowrap; }
+    .hs-start { width: 52px; height: 22px; background: #111827; border-radius: 999px; border: 2px solid rgba(255,255,255,.20); }
+    .hs-click { width: 44px; height: 22px; background: #7C3AED; border-radius: 10px; }
+    .hs-type  { width: 44px; height: 22px; background: #7C3AED; border-radius: 0; }
+    .hs-view  { width: 44px; height: 22px; background: #7C3AED; border-radius: 999px; }
+    .hs-sys   { width: 52px; height: 22px; background: #0284C7; border-radius: 6px; }
+    .hs-dec-wrap { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+    .hs-dec { width: 27px; height: 27px; background: #2563EB; transform: rotate(45deg); border-radius: 3px; }
+    .hs-end { width: 52px; height: 22px; background: #15803D; border-radius: 999px; }
 
-    /* Legend shapes */
-    .hs-start { width: 56px; height: 24px; background: #111827; border-radius: 999px; }
-    .hs-click { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; }
-    .hs-type  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
-    .hs-view  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
-    .hs-sys   { width: 56px; height: 24px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; }
-    .hs-dec-wrap { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-    .hs-dec { width: 28px; height: 28px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 3px; }
-    .hs-end { width: 56px; height: 24px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
+    .flow-block { margin-bottom: 28px; }
+    .flow-header { background: #1E2A40; border-radius: 10px 10px 0 0; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+    .flow-num { font-size: 36px; font-weight: 900; color: rgba(255,255,255,.10); line-height: 1; flex-shrink: 0; width: 40px; }
+    .flow-purpose { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.45; }
+    .flow-steps { border: 1px solid #E5E7EB; border-top: none; border-radius: 0 0 10px 10px; padding: 28px 20px 24px; background: #F8FAFC; }
 
-    /* ── FLOW WRAPPER ── */
-    .flow-section { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,42,64,.07); }
-    .flow-title-bar { background: #1E2A40; padding: 16px 24px; }
-    .flow-title-bar-kicker { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.42); margin-bottom: 3px; }
-    .flow-title-bar-label { font-size: 14px; font-weight: 800; color: #fff; }
-    .flow-body { padding: 32px 24px 28px; }
-
-    /* ── FLOWCHART ── */
     .fc { display: flex; flex-direction: column; align-items: center; }
-    .nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
 
-    /* ── NODE CLASSES ── */
-    .n-start {
-      background: #111827; color: #fff;
-      border-radius: 999px;
-      padding: 11px 32px;
-      font-size: 12px; font-weight: 700;
-      text-align: center; max-width: 340px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.28);
-    }
-    .n-end {
-      background: #DCFCE7; border: 2px solid #16A34A;
-      border-radius: 999px;
-      padding: 11px 32px;
-      color: #14532D; font-size: 12px; font-weight: 700;
-      text-align: center; max-width: 340px;
-    }
-    .n-click {
-      background: #F3EEFF; border: 2px solid #7C3AED;
-      border-radius: 16px;
-      padding: 11px 18px;
-      color: #3B0764; font-size: 12px; font-weight: 600;
-      text-align: center; max-width: 300px; line-height: 1.4;
-    }
-    .n-click .nt { color: #7C3AED; }
-    .n-type {
-      background: #F3EEFF; border: 2px solid #7C3AED;
-      border-radius: 0;
-      padding: 11px 18px;
-      color: #3B0764; font-size: 12px; font-weight: 600;
-      text-align: center; max-width: 300px; line-height: 1.4;
-    }
-    .n-type .nt { color: #7C3AED; }
-    .n-view {
-      background: #F3EEFF; border: 2px solid #7C3AED;
-      border-radius: 999px;
-      padding: 11px 26px;
-      color: #3B0764; font-size: 12px; font-weight: 600;
-      text-align: center; max-width: 300px; line-height: 1.4;
-    }
-    .n-view .nt { color: #7C3AED; }
-    .n-sys {
-      background: #E0F2FE; border: 2px solid #0284C7;
-      border-radius: 8px;
-      padding: 11px 18px;
-      color: #0C4A6E; font-size: 12px; font-weight: 600;
-      text-align: center; max-width: 300px; line-height: 1.4;
-    }
+    .n-start, .n-end { padding: 10px 28px; border-radius: 999px; font-size: 11px; font-weight: 700; text-align: center; width: fit-content; max-width: 280px; }
+    .n-start { background: #111827; color: #fff; }
+    .n-end   { background: #DCFCE7; border: 2px solid #16A34A; color: #14532D; }
+
+    .n-click, .n-type, .n-view { padding: 10px 16px; font-size: 12px; font-weight: 500; color: #3B0764; max-width: 280px; width: 100%; text-align: center; background: #F3EEFF; border: 2px solid #7C3AED; }
+    .n-click { border-radius: 16px; }
+    .n-type  { border-radius: 0; }
+    .n-view  { border-radius: 999px; }
+
+    .n-sys { padding: 10px 16px; font-size: 12px; font-weight: 500; color: #0C4A6E; max-width: 280px; width: 100%; text-align: center; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; }
+
+    .nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
+    .n-click .nt, .n-type .nt, .n-view .nt { color: #7C3AED; }
     .n-sys .nt { color: #0284C7; }
 
-    /* ── DECISION DIAMOND ── */
-    .n-dec-wrap {
-      display: flex; align-items: center; justify-content: center;
-      width: 140px; height: 140px; flex-shrink: 0;
-    }
-    .n-dec {
-      width: 96px; height: 96px;
-      background: #BFDBFE; border: 2px solid #2563EB;
-      transform: rotate(45deg);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .n-dec-text {
-      transform: rotate(-45deg);
-      font-size: 10px; font-weight: 800; color: #1D4ED8;
-      text-align: center; line-height: 1.3;
-      max-width: 70px;
-    }
+    .n-dec-wrap { width: 96px; height: 96px; display: flex; align-items: center; justify-content: center; }
+    .n-dec { width: 68px; height: 68px; background: #BFDBFE; border: 2px solid #2563EB; border-radius: 8px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; }
+    .n-dec-text { transform: rotate(-45deg); font-size: 9px; font-weight: 700; color: #1D4ED8; text-align: center; max-width: 70px; line-height: 1.3; }
 
-    /* Connectors */
-    .fc-conn { display: flex; flex-direction: column; align-items: center; padding: 2px 0; }
+    .fc-conn { display: flex; flex-direction: column; align-items: center; }
     .fc-conn-line { width: 2px; height: 24px; background: #CBD5E1; }
-    .fc-conn-arrow { font-size: 11px; color: #94A3B8; margin-top: -2px; }
+    .fc-conn-arrow { color: #94A3B8; font-size: 10px; line-height: 1; }
 
-    /* step number badge */
-    .step-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 22px; height: 22px;
-      background: #083386; color: #fff;
-      border-radius: 999px;
-      font-size: 10px; font-weight: 800;
-      margin-bottom: 6px;
-      flex-shrink: 0;
-    }
-
-    /* node with step badge layout */
-    .n-with-badge { display: flex; flex-direction: column; align-items: center; }
-
-    /* ── THREE-WAY BRANCH ── */
-    .fc-3branches {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      justify-content: center;
-      width: 100%;
-    }
-    .fc-branch { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 0; }
-    .fc-branch-label {
-      font-size: 9px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .06em; margin-bottom: 8px; white-space: nowrap;
-    }
-    .fc-branch-label.filter { color: #2563EB; }
-    .fc-branch-label.search { color: #7C3AED; }
-    .fc-branch-label.browse { color: #64748B; }
-
-    /* Branch nodes — narrower max-width for 3-col layout */
-    .fc-branch .n-click,
-    .fc-branch .n-type,
-    .fc-branch .n-view,
-    .fc-branch .n-sys { max-width: 180px; font-size: 11px; padding: 8px 12px; }
-
-    /* Merge connector: three lines converging to center */
-    .fc-merge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      margin-top: 0;
-    }
-    .fc-merge-row {
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      width: 100%;
-      height: 36px;
-      position: relative;
-    }
-    /* The horizontal bar sits at the top of the merge-row */
-    .fc-merge-hbar {
-      position: absolute;
-      top: 0;
-      left: 16.67%;
-      right: 16.67%;
-      height: 2px;
-      background: #CBD5E1;
-    }
-    /* Three vertical drops from each branch to the bar */
-    .fc-merge-drop {
-      position: absolute;
-      top: 0;
-      width: 2px;
-      height: 36px;
-      background: #CBD5E1;
-    }
-    .fc-merge-drop.left   { left: calc(16.67% + 0px); transform: translateX(-50%); }
-    .fc-merge-drop.center { left: 50%;                transform: translateX(-50%); }
-    .fc-merge-drop.right  { right: calc(16.67% + 0px); transform: translateX(50%); }
-
-    /* Single vertical from bar to shared node */
-    .fc-merge-stem {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Shared merge node (special — outlined navy, no fill) */
-    .n-shared {
-      background: #EFF6FF; border: 2px solid #083386; border-radius: 16px;
-      padding: 10px 16px; color: #083386; font-size: 12px; font-weight: 700;
-      text-align: center; max-width: 300px; line-height: 1.4;
-    }
-    .n-shared .nt { color: #083386; opacity: .5; }
+    .fc-branches { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; }
+    .fc-branch { display: flex; flex-direction: column; align-items: center; max-width: 220px; }
+    .fc-bl-y { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #16A34A; margin-bottom: 6px; letter-spacing: .06em; }
+    .fc-bl-n { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #DC2626; margin-bottom: 6px; letter-spacing: .06em; }
   </style>
 </head>
 <body>
-<div class="page">
+<div class="page-wrapper">
 
-  <!-- ════════════════════════════════════════
-       HEADER
-  ════════════════════════════════════════ -->
   <div class="header">
-    <div class="hdr-kicker">GoJuly · User Journey</div>
-    <div class="hdr-direction">Direction C — <span>Portfolio Dashboard</span></div>
-
-    <div class="callout callout-prob">
-      <div class="callout-label">Problem</div>
-      <div class="callout-body">The conversations list only shows dates — there's no way to see what was discussed without clicking into each entry. The three challenge sections are collapsed by default, requiring separate accordion interactions. There's no summary of a user's attempt history across all challenges.</div>
+    <div class="hdr-kicker">Direction C &middot; See It First &mdash; User Journey</div>
+    <div class="hdr-block hdr-block-prob">
+      <div class="hdr-block-eyebrow">The Problem</div>
+      <p class="hdr-block-body">Parents completing safety setup are configuring abstract policies for a future experience they can't picture. When the effort feels disconnected from an outcome they care about, motivation drops — especially for settings that feel unfamiliar or overly technical.</p>
     </div>
-    <div class="callout callout-sol">
-      <div class="callout-label">Solution — Direction C</div>
-      <div class="callout-body">Challenge summary tiles at the top give an at-a-glance portfolio view — attempt counts, success rates, last activity. Below them, every attempt across all challenges loads in one unified list with AI-generated topic names. Users can filter by challenge tile, search by keyword, or simply scroll — all paths lead directly to the conversation.</div>
+    <div class="hdr-block hdr-block-sol">
+      <div class="hdr-block-eyebrow">This Direction</div>
+      <p class="hdr-block-body">The parent sees their child's name on their own dashboard before doing any setup. A focused sheet overlay guides configuration while the destination is always visible in the background. Every setting they choose feels like building something real — for a specific child they love, not for an abstract system.</p>
     </div>
-
     <div class="hdr-divider"></div>
-    <div class="hdr-legend-title">Node Legend</div>
+    <div class="hdr-legend-title">How to read this diagram:</div>
     <div class="hdr-shapes">
-      <div class="hdr-shape-item">
-        <div class="hs-start"></div>
-        <span>START / END</span>
-      </div>
-      <div class="hdr-shape-item">
-        <div class="hs-click"></div>
-        <span>USER CLICKS</span>
-      </div>
-      <div class="hdr-shape-item">
-        <div class="hs-type"></div>
-        <span>USER TYPES</span>
-      </div>
-      <div class="hdr-shape-item">
-        <div class="hs-view"></div>
-        <span>USER VIEWS</span>
-      </div>
-      <div class="hdr-shape-item">
-        <div class="hs-sys"></div>
-        <span>SYSTEM</span>
-      </div>
-      <div class="hdr-shape-item">
-        <div class="hs-dec-wrap"><div class="hs-dec"></div></div>
-        <span>DECISION</span>
-      </div>
-      <div class="hdr-shape-item">
-        <div class="hs-end"></div>
-        <span>SUCCESS</span>
+      <div class="hdr-shape-item"><div class="hs-start"></div><span>Start</span></div>
+      <div class="hdr-shape-item"><div class="hs-click"></div><span>Click</span></div>
+      <div class="hdr-shape-item"><div class="hs-type"></div><span>Type</span></div>
+      <div class="hdr-shape-item"><div class="hs-view"></div><span>View</span></div>
+      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System</span></div>
+      <div class="hdr-shape-item"><div class="hs-dec-wrap"><div class="hs-dec"></div></div><span>Decision</span></div>
+      <div class="hdr-shape-item"><div class="hs-end"></div><span>Outcome</span></div>
+    </div>
+  </div>
+
+  <!-- FLOW 1 -->
+  <div class="flow-block">
+    <div class="flow-header">
+      <div class="flow-num">1</div>
+      <div class="flow-purpose">Parent sees their child's dashboard first, then configures safety in a focused sheet overlay</div>
+    </div>
+    <div class="flow-steps">
+      <div class="fc">
+        <div class="n-start">App launch &mdash; new parent</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-view"><span class="nt">View</span>Welcome screen &mdash; "SafeChat. AI for your family, safely." &mdash; Get Started below</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-type"><span class="nt">Type</span>Email + password on first screen, then child name + age on second screen</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-click"><span class="nt">Click</span>"Continue" pill button on child info screen</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-sys"><span class="nt">System</span>Account + family code created &mdash; dashboard loads immediately</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-view"><span class="nt">View</span>Dashboard hero &mdash; "[child's name]" in large display type &mdash; all stats empty &mdash; setup overlay banner at top: "SafeChat is almost ready for [name]" + "Set up now"</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-click"><span class="nt">Click</span>"Set up now" in the setup banner &mdash; bottom sheet slides up</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-view"><span class="nt">View</span>Sheet &mdash; section tab bar at top: "1 Content | 2 Behavior | 3 Personality | 4 Learning | 5 Privacy" &mdash; Content section loaded</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-click"><span class="nt">Click</span>Off / Balanced / Strict for each subcategory &mdash; scroll within the sheet</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-click"><span class="nt">Click</span>"Next: Behavior &#8594;" button at sheet bottom &mdash; sheet tab advances</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">All 5 sections done?</div></div></div>
+        <div class="fc-conn"><div class="fc-conn-line"></div></div>
+        <div class="fc-branches">
+          <div class="fc-branch">
+            <div class="fc-bl-n">No</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-view"><span class="nt">View</span>Next section loads in sheet &mdash; dashboard still visible behind</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Parent continues in sheet ✓</div>
+          </div>
+          <div class="fc-branch">
+            <div class="fc-bl-y">Yes &mdash; all done</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>"Done &mdash; launch SafeChat" button on final section</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-sys"><span class="nt">System</span>Sheet dismisses &mdash; dashboard hero shows "Ready &#10003;" badge &mdash; alert feed appears below</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Setup complete &mdash; parent lands directly in dashboard ✓</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════
-       FLOW — Single unified journey
-  ════════════════════════════════════════ -->
-  <div class="flow-section">
-    <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Full User Journey</div>
-      <div class="flow-title-bar-label">Locate a past conversation by topic — Portfolio Dashboard</div>
+  <!-- FLOW 2 -->
+  <div class="flow-block">
+    <div class="flow-header">
+      <div class="flow-num">2</div>
+      <div class="flow-purpose">Child enters family code and starts their first conversation</div>
     </div>
-    <div class="flow-body">
+    <div class="flow-steps">
       <div class="fc">
-
-        <!-- STEP 1 — START -->
-        <div class="n-start">User clicks "Previous Conversations" in sidebar</div>
+        <div class="n-start">App launch &mdash; child</div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <!-- STEP 2 — SYSTEM: page loads -->
-        <div class="n-sys">
-          <span class="nt">System</span>
-          Page loads: row of 3 challenge summary tiles (attempt count, last attempt date, success indicator) + unified flat list of ALL attempts below — each row shows AI topic name, challenge badge, date, result
-        </div>
+        <div class="n-view"><span class="nt">View</span>Welcome screen &mdash; "Enter your family code to get started" &mdash; large numeric input</div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <!-- STEP 3 — VIEW: scan tiles -->
-        <div class="n-view">
-          <span class="nt">User Views</span>
-          Dashboard tiles — "Challenge 1: 8 attempts, last Mar 9" — portfolio overview loads in one glance before any interaction
-        </div>
+        <div class="n-type"><span class="nt">Type</span>6-digit family code from parent into the input field</div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <!-- STEP 4 — VIEW: scan list -->
-        <div class="n-view">
-          <span class="nt">User Views</span>
-          Unified list below tiles — topic names scannable immediately; challenge badge pills color-code each row (C1 blue / C2 purple / C3 green)
-        </div>
+        <div class="n-sys"><span class="nt">System</span>Code validates &mdash; child's name confirmed &mdash; chat screen loads with their name in the header</div>
         <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <!-- STEP 5 — DECISION: how to find? -->
-        <div class="n-dec-wrap">
-          <div class="n-dec">
-            <div class="n-dec-text">How to find the conversation?</div>
-          </div>
-        </div>
-
-        <!-- THREE-WAY BRANCHES -->
-        <div class="fc-3branches">
-
-          <!-- BRANCH A: Filter by tile -->
+        <div class="n-view"><span class="nt">View</span>Chat screen &mdash; child's name in nav header &mdash; "Hi [name]!" greeting &mdash; 3 suggested prompt chips below</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-click"><span class="nt">Click</span>Suggested prompt chip or types into the bottom input bar</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-sys"><span class="nt">System</span>AI response appears in leading bubble &mdash; "SafeChat" label above message group</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Safety filter triggered?</div></div></div>
+        <div class="fc-conn"><div class="fc-conn-line"></div></div>
+        <div class="fc-branches">
           <div class="fc-branch">
-            <div class="fc-branch-label filter">Filter</div>
-
-            <!-- 6A — CLICK tile -->
-            <div class="n-click">
-              <span class="nt">User Clicks</span>
-              Challenge tile (e.g., Challenge 1) at top of page
-            </div>
+            <div class="fc-bl-y">Yes</div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-            <!-- 6A SYS — list filters -->
-            <div class="n-sys">
-              <span class="nt">System</span>
-              List filters to Challenge 1 only. Tile turns active (navy bg). Filter pill "Showing: Challenge 1 &times;" appears above list
-            </div>
+            <div class="n-view"><span class="nt">View</span>Warm redirect card replaces AI response &mdash; age-appropriate, non-punitive message</div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-            <!-- 6A VIEW — scans filtered list -->
-            <div class="n-view">
-              <span class="nt">User Views</span>
-              Only C1 attempts — topic names scannable in focused context
-            </div>
+            <div class="n-end">Child redirected safely &mdash; parent alerted ✓</div>
           </div>
-
-          <!-- BRANCH B: Search by keyword -->
           <div class="fc-branch">
-            <div class="fc-branch-label search">Search</div>
-
-            <!-- 6B — TYPE keyword -->
-            <div class="n-type">
-              <span class="nt">User Types</span>
-              Keyword in search bar above the list (e.g., "prompt injection")
-            </div>
+            <div class="fc-bl-n">No</div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-            <!-- 6B SYS — real-time filter -->
-            <div class="n-sys">
-              <span class="nt">System</span>
-              List filters in real-time; non-matching rows fade out. Match count shown in search bar
-            </div>
+            <div class="n-click"><span class="nt">Click</span>History tab (clock) in the bottom tab bar</div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-            <!-- 6B VIEW — scans results -->
-            <div class="n-view">
-              <span class="nt">User Views</span>
-              Matching topic names highlighted across all challenges simultaneously
-            </div>
+            <div class="n-view"><span class="nt">View</span>History drawer &mdash; past sessions by date and topic preview</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Child actively using chatbot ✓</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          <!-- BRANCH C: Browse all -->
+  <!-- FLOW 3 -->
+  <div class="flow-block">
+    <div class="flow-header">
+      <div class="flow-num">3</div>
+      <div class="flow-purpose">Returning parent checks alerts and adjusts a setting directly from the alert context</div>
+    </div>
+    <div class="flow-steps">
+      <div class="fc">
+        <div class="n-start">App launch &mdash; returning parent</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-view"><span class="nt">View</span>Dashboard &mdash; "[child's name]" hero at top &mdash; alert count badge &mdash; alert feed below</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-click"><span class="nt">Click</span>Alert card in feed &mdash; category emoji, severity, and timestamp on face</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-view"><span class="nt">View</span>Alert detail sheet slides up &mdash; full message snippet, category name, severity, "Edit this setting" link</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Adjust setting?</div></div></div>
+        <div class="fc-conn"><div class="fc-conn-line"></div></div>
+        <div class="fc-branches">
           <div class="fc-branch">
-            <div class="fc-branch-label browse">Browse</div>
-
-            <!-- 6C VIEW — scroll -->
-            <div class="n-view">
-              <span class="nt">User Views</span>
-              Scrolls through unified list — all attempts from all 3 challenges, newest first
-            </div>
+            <div class="fc-bl-y">Yes</div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-            <!-- 6C VIEW — topic names visible -->
-            <div class="n-view">
-              <span class="nt">User Views</span>
-              Topic name (primary, large) + challenge badge pill — enough context per row without clicking into anything
-            </div>
-          </div>
-
-        </div>
-        <!-- END THREE-WAY BRANCHES -->
-
-        <!-- MERGE CONNECTOR -->
-        <div class="fc-merge">
-          <div class="fc-merge-row">
-            <div class="fc-merge-hbar"></div>
-            <div class="fc-merge-drop left"></div>
-            <div class="fc-merge-drop center"></div>
-            <div class="fc-merge-drop right"></div>
-          </div>
-          <div class="fc-merge-stem">
+            <div class="n-click"><span class="nt">Click</span>"Edit this setting" link in the sheet &mdash; sheet morphs to show that subcategory's selector</div>
             <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>New Off / Balanced / Strict selection for this subcategory</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>"Save" &mdash; sheet closes &mdash; dashboard hero shows updated "Ready &#10003;"</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Setting updated in context &mdash; never left the dashboard ✓</div>
+          </div>
+          <div class="fc-branch">
+            <div class="fc-bl-n">No</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>Usage tab below the hero &mdash; switches to usage stats view</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-view"><span class="nt">View</span>Usage stats &mdash; sessions this week, avg duration, top conversation topics</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Parent informed &mdash; child's name still in view throughout ✓</div>
           </div>
         </div>
-
-        <!-- STEP 7 — CLICK: attempt row (shared) -->
-        <div class="n-shared">
-          <span class="nt">User Clicks</span>
-          Attempt row from filtered / searched / browsed list
-        </div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <!-- STEP 8 — SYSTEM: open feedback page -->
-        <div class="n-sys">
-          <span class="nt">System</span>
-          Conversation feedback page opens in new tab — full exchange + AI evaluation visible
-        </div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
-
-        <!-- STEP 9 — END -->
-        <div class="n-end">User is viewing the conversation feedback page</div>
-
       </div>
     </div>
   </div>
