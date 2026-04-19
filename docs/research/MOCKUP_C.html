@@ -3,1287 +3,1385 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mockup C — See It First — SafeChat</title>
+  <title>Direction C — Obsidian Protocol — Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    /* ─────────────────────────────────────────────────────────────────
-       RESET & BASE
-    ───────────────────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
-      font-size: 14px;
-      color: #000000;
-      background: #E5E5EA;
-      -webkit-font-smoothing: antialiased;
+    html, body {
+      background: #EEEEEE;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Inter, sans-serif;
+      min-height: 100vh;
     }
 
-    /* ─────────────────────────────────────────────────────────────────
-       DOC HEADER BANNER
-    ───────────────────────────────────────────────────────────────── */
-    .doc-header {
+    /* ─── Design tokens (for reference, also used as CSS vars) ─── */
+    :root {
+      --page-bg:       #0a0a0a;
+      --surface:       #1c1c1c;
+      --search-bg:     #1e1e1e;
+      --accent:        #8f7bfa;
+      --status-green:  #42ba5f;
+      --text-heading:  #ffffff;
+      --text-body:     #b0b0b0;
+      --text-muted:    #6b6b6b;
+      --border:        #232323;
+      --card-radius:   14px;
+    }
+
+    /* ────────────────────────────────────────────
+       PAGE HEADER — dark blue bar
+    ──────────────────────────────────────────── */
+    .page-header {
       background: #083386;
-      color: #ffffff;
-      padding: 24px 40px 20px;
-    }
-
-    .doc-header-row1 {
+      padding: 20px 40px 18px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
+      gap: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
-
-    .pill {
+    .page-header-badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 10px;
-      border-radius: 999px;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(143,123,250,0.22);
+      border: 1.5px solid rgba(143,123,250,0.5);
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 900;
+      color: #a89ffb;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+    .page-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .page-header-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .page-header-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 400;
+    }
+    .page-header-anchor-tag {
+      margin-left: auto;
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-    .pill-c {
-      background: rgba(255,255,255,0.18);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.35);
-    }
-    .pill-see {
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.25);
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 4px 10px;
+      border-radius: 4px;
     }
 
-    .doc-header-title {
-      font-size: 18px;
+    /* ────────────────────────────────────────────
+       PHONE STAGE AREA
+    ──────────────────────────────────────────── */
+    .stage {
+      position: relative;
+      padding: 56px 40px 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 40px;
+      overflow: hidden;
+    }
+
+    /* ── Ambient "SafeChat" text behind phones ── */
+    .ambient-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 160px;
+      font-weight: 900;
+      color: #2a2a2a;
+      opacity: 0.35;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+      letter-spacing: -0.04em;
+      user-select: none;
+    }
+
+    /* ── Phone wrapper ── */
+    .phone-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .phone-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #888888;
+    }
+
+    /* iPhone 14 proportions — roughly 390×844 scaled to ~248×540 */
+    .phone-frame {
+      width: 248px;
+      height: 536px;
+      background: #181818;
+      border-radius: 44px;
+      padding: 9px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 32px 80px rgba(0,0,0,0.55),
+        0 8px 24px rgba(0,0,0,0.4),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+      flex-shrink: 0;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 37px;
+      overflow: hidden;
+      background: #0a0a0a;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic island */
+    .dynamic-island {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 22px;
+      background: #000000;
+      border-radius: 14px;
+      z-index: 100;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    /* Status bar row */
+    .status-bar {
+      height: 44px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 20px 6px;
+      position: relative;
+      z-index: 10;
+    }
+    .status-time {
+      font-size: 11px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .status-icon {
+      font-size: 10px;
+      color: #ffffff;
+    }
+
+    /* ════════════════════════════════════════════
+       PHONE 1 — PARENT DASHBOARD (Hero Screen)
+    ════════════════════════════════════════════ */
+    .p1-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    /* App header bar */
+    .p1-app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 18px 4px;
+      flex-shrink: 0;
+    }
+    .p1-app-name {
+      font-size: 14px;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+    .p1-menu-icon {
+      font-size: 16px;
+      color: #b0b0b0;
+      letter-spacing: 1.5px;
+    }
+
+    /* Component 1 — HERO HEADING */
+    .p1-hero {
+      padding: 10px 18px 12px;
+      flex-shrink: 0;
+    }
+    .p1-hero-line {
+      font-size: 30px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      display: block;
+    }
+
+    /* Component 2 — SEARCH BAR */
+    .p1-search {
+      margin: 0 18px 12px;
+      height: 44px;
+      background: #1e1e1e;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .p1-search-icon {
+      font-size: 13px;
+      color: #b0b0b0;
+      flex-shrink: 0;
+    }
+    .p1-search-placeholder {
+      font-size: 12px;
+      color: #6b6b6b;
+      flex: 1;
+    }
+    .p1-search-right-icon {
+      font-size: 13px;
+      color: #6b6b6b;
+      flex-shrink: 0;
+    }
+
+    /* Component 3 — FEATURE CARD (AutoFill translation) */
+    .p1-feature-card {
+      margin: 0 18px 14px;
+      background: #1c1c1c;
+      border-radius: 14px;
+      padding: 14px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .p1-card-icon-wrap {
+      width: 36px;
+      height: 36px;
+      background: rgba(143,123,250,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .p1-card-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .p1-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+    .p1-card-sub {
+      font-size: 10px;
+      color: #b0b0b0;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+    .p1-card-chevron {
+      font-size: 16px;
+      color: #6b6b6b;
+      flex-shrink: 0;
+      font-weight: 400;
+    }
+
+    /* Component 4 — SECTION HEADER "Recent Alerts" + "See All" */
+    .p1-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px 8px;
+      flex-shrink: 0;
+    }
+    .p1-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #b0b0b0;
+      letter-spacing: 0.01em;
+    }
+    .p1-section-see-all {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b6b6b;
+    }
+
+    /* Component 5 — CREDENTIAL-STYLE ROWS */
+    .p1-rows {
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    .p1-cred-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 0;
+      border-bottom: 1px solid #191919;
+      background: transparent;
+    }
+    .p1-cred-row:last-child {
+      border-bottom: none;
+    }
+    .p1-cred-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      flex-shrink: 0;
+      letter-spacing: 0;
+    }
+    .p1-cred-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .p1-cred-primary {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .p1-cred-secondary {
+      font-size: 10px;
+      color: #b0b0b0;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .p1-eye-icon {
+      font-size: 13px;
+      color: #6b6b6b;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════════
+       PHONE 2 — SAFETY CONFIGURATION
+    ════════════════════════════════════════════ */
+    .p2-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .p2-back-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px 4px;
+      flex-shrink: 0;
+    }
+    .p2-back-arrow {
+      font-size: 16px;
+      color: #ffffff;
+    }
+    .p2-back-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .p2-heading {
+      padding: 8px 18px 10px;
+      flex-shrink: 0;
+    }
+    .p2-heading-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .p2-section-label {
+      padding: 6px 18px 6px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6b6b6b;
+      flex-shrink: 0;
+    }
+
+    /* Credential-style rows repurposed for settings */
+    .p2-rows {
+      padding: 0 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    .p2-cred-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 0;
+      border-bottom: 1px solid #191919;
+      background: transparent;
+    }
+    .p2-cred-row:last-child {
+      border-bottom: none;
+    }
+    .p2-cred-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+    .p2-cred-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .p2-cred-primary {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Badge pill */
+    .p2-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .p2-badge-violet {
+      background: #8f7bfa;
+      color: #ffffff;
+    }
+    .p2-badge-muted {
+      background: #232323;
+      color: #6b6b6b;
+    }
+    .p2-badge-off {
+      background: #1a1a1a;
+      color: #6b6b6b;
+      border: 1px solid #232323;
+    }
+    .p2-toggle-icon {
+      font-size: 12px;
+      color: #6b6b6b;
+      flex-shrink: 0;
+    }
+
+    /* Save button */
+    .p2-save-wrap {
+      padding: 10px 18px 14px;
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+    .p2-save-btn {
+      width: 100%;
+      height: 44px;
+      background: #8f7bfa;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
       letter-spacing: -0.01em;
     }
 
-    .screen-count {
-      margin-left: auto;
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.65);
-      letter-spacing: 0.03em;
-    }
-
-    .doc-header-row2 {
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 14px;
-      letter-spacing: 0.01em;
-    }
-
-    .goal-box {
-      border: 1.5px solid rgba(56,189,248,0.55);
-      border-radius: 8px;
-      padding: 13px 16px;
-      font-size: 12px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.82);
-      background: rgba(56,189,248,0.07);
-    }
-
-    .goal-box strong {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       "WHAT THIS CHANGES" BOX
-    ───────────────────────────────────────────────────────────────── */
-    .doc-body {
-      padding: 28px 40px 0;
-    }
-
-    .changes-box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px 22px 18px;
-      margin-bottom: 36px;
-    }
-
-    .changes-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: #083386;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .changes-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-
-    .changes-list li {
-      font-size: 13px;
-      line-height: 1.55;
-      color: #3A3A3C;
-      display: flex;
-      gap: 10px;
-    }
-
-    .changes-list li strong {
-      color: #000;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SCREEN SECTION
-    ───────────────────────────────────────────────────────────────── */
-    .screen-section {
-      display: flex;
-      gap: 36px;
-      align-items: flex-start;
-      margin-bottom: 56px;
-    }
-
-    .screen-left {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      flex-shrink: 0;
-    }
-
-    .screen-right {
+    /* ════════════════════════════════════════════
+       PHONE 3 — CHILD CHATBOT
+    ════════════════════════════════════════════ */
+    .p3-content {
       flex: 1;
-      min-width: 0;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SECTION DIVIDER LABEL
-    ───────────────────────────────────────────────────────────────── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #6D6D72;
-      margin-bottom: 14px;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       PHONE FRAME
-    ───────────────────────────────────────────────────────────────── */
-    .phone {
-      width: 320px;
-      background: #fff;
-      border-radius: 36px;
-      border: 7px solid #1C1C1E;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
-      flex-shrink: 0;
+      background: #0a0a0a;
     }
 
-    .status-bar {
-      height: 44px;
-      background: #fff;
+    .p3-app-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 28px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #000;
-    }
-
-    .status-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .tab-bar {
-      height: 82px;
-      background: #fff;
-      border-top: 0.5px solid #C6C6C8;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 8px 16px;
-    }
-
-    .tab-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      font-size: 10px;
-      font-weight: 500;
-      color: #AEAEB2;
-    }
-
-    .tab-item.active {
-      color: #1A6B4A;
-    }
-
-    .tab-icon {
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       CALLOUT CIRCLE
-    ───────────────────────────────────────────────────────────────── */
-    .num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #D97706;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
+      padding: 6px 18px 4px;
       flex-shrink: 0;
-      margin-left: auto;
     }
-
-    /* ─────────────────────────────────────────────────────────────────
-       NAV BAR (phone)
-    ───────────────────────────────────────────────────────────────── */
-    .nav-bar {
-      height: 44px;
-      background: #fff;
-      border-bottom: 0.5px solid #C6C6C8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      padding: 0 16px;
-    }
-
-    .nav-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: #000;
-      text-align: center;
-    }
-
-    .nav-right {
-      position: absolute;
-      right: 16px;
-      font-size: 20px;
-      color: #1A6B4A;
-      cursor: pointer;
-    }
-
-    .nav-left {
-      position: absolute;
-      left: 16px;
+    .p3-app-name {
       font-size: 14px;
-      font-weight: 400;
-      color: #1A6B4A;
-    }
-
-    .nav-subtitle {
-      height: 28px;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 0.5px solid #C6C6C8;
-      font-size: 13px;
-      color: #6D6D72;
-      font-weight: 400;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SCREEN 1 — DASHBOARD HERO + SETUP BANNER
-    ───────────────────────────────────────────────────────────────── */
-    .phone-scroll {
-      overflow: hidden;
-    }
-
-    .hero-area {
-      background: #fff;
-      padding: 24px;
-    }
-
-    .hero-good-morning {
-      font-size: 13px;
-      color: #6D6D72;
-      font-weight: 400;
-      margin-bottom: 4px;
-    }
-
-    .hero-name-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .hero-name {
-      font-size: 40px;
       font-weight: 700;
-      color: #000000;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      color: #ffffff;
+      letter-spacing: -0.01em;
     }
-
-    .hero-meta {
-      font-size: 13px;
-      color: #AEAEB2;
-      font-weight: 400;
-      margin-bottom: 16px;
-    }
-
-    .stat-chips {
-      display: flex;
-      gap: 8px;
-    }
-
-    .stat-chip {
-      background: #F2F2F7;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 11px;
-      color: #AEAEB2;
-      font-weight: 500;
-    }
-
-    .setup-banner {
-      background: #E8F5EF;
-      border: 1.5px solid #1A6B4A;
-      border-radius: 12px;
-      margin: 0 16px 16px;
-      padding: 14px;
-    }
-
-    .setup-banner-headline {
+    .p3-settings-icon {
       font-size: 15px;
-      font-weight: 600;
-      color: #1A6B4A;
-      margin-bottom: 4px;
+      color: #b0b0b0;
+    }
+
+    /* Component 2 repurposed — "Ask anything..." search bar at top */
+    .p3-search-bar {
+      margin: 0 16px 10px;
+      height: 44px;
+      background: #1e1e1e;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .p3-search-icon {
+      font-size: 13px;
+      color: #b0b0b0;
+      flex-shrink: 0;
+    }
+    .p3-search-placeholder {
+      font-size: 12px;
+      color: #6b6b6b;
+      flex: 1;
+    }
+
+    /* Component 4 — "Today" + "See All" section header */
+    .p3-day-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 16px 6px;
+      flex-shrink: 0;
+    }
+    .p3-day-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #b0b0b0;
+    }
+    .p3-see-all {
+      font-size: 11px;
+      color: #6b6b6b;
     }
 
-    .setup-banner-sub {
-      font-size: 13px;
-      color: #6D6D72;
-      margin-bottom: 12px;
-      font-weight: 400;
+    /* Chat area */
+    .p3-chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 4px 14px 6px;
+      overflow: hidden;
     }
 
-    .setup-cta {
+    /* User bubble — right aligned, dark card */
+    .p3-msg-user {
       display: flex;
       justify-content: flex-end;
     }
-
-    .setup-cta-btn {
-      background: #1A6B4A;
-      color: #fff;
-      border-radius: 999px;
-      height: 36px;
-      padding: 0 18px;
-      font-size: 14px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      border: none;
-      cursor: pointer;
-    }
-
-    .alerts-section-header {
-      padding: 8px 16px 6px;
-      font-size: 13px;
-      color: #6D6D72;
+    .p3-bubble-user {
+      background: #1c1c1c;
+      border-radius: 14px 14px 4px 14px;
+      padding: 9px 12px;
+      font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-      font-size: 12px;
+      color: #ffffff;
+      max-width: 76%;
+      line-height: 1.45;
     }
 
-    .empty-state-cell {
-      padding: 48px 16px;
-      text-align: center;
-      font-size: 14px;
-      color: #AEAEB2;
-      background: #F2F2F7;
-      margin: 0 16px;
-      border-radius: 12px;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SCREEN 2 — CONFIG SHEET
-    ───────────────────────────────────────────────────────────────── */
-    .dashboard-peek {
-      background: #fff;
-      padding: 24px 24px 12px;
-      min-height: 80px;
-    }
-
-    .dashboard-peek .hero-name {
-      font-size: 32px;
-    }
-
-    .sheet-overlay {
-      position: relative;
-      background: #fff;
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 -2px 16px rgba(0,0,0,0.10);
-      padding: 8px 0 0;
-    }
-
-    .drag-handle {
-      width: 36px;
-      height: 4px;
-      background: #C6C6C8;
-      border-radius: 2px;
-      margin: 0 auto 8px;
-    }
-
-    .sheet-tab-strip {
+    /* AI bubble — dark card with violet left border */
+    .p3-msg-ai {
       display: flex;
-      border-bottom: 0.5px solid #C6C6C8;
-      padding: 0 16px;
-      height: 44px;
-      align-items: flex-end;
-      gap: 0;
-      overflow: hidden;
+      align-items: flex-start;
+      gap: 6px;
     }
-
-    .sheet-tab {
-      font-size: 12px;
-      font-weight: 400;
-      color: #AEAEB2;
-      padding: 0 8px 10px;
-      white-space: nowrap;
-      border-bottom: 2px solid transparent;
-      flex-shrink: 0;
-    }
-
-    .sheet-tab.active {
-      font-weight: 600;
-      color: #1A6B4A;
-      border-bottom: 2px solid #1A6B4A;
-    }
-
-    .sheet-section-header {
-      padding: 12px 16px 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #6D6D72;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-
-    .inset-list {
-      margin: 0 16px 12px;
-      background: #F2F2F7;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .inset-cell {
-      background: #fff;
-      padding: 10px 12px;
+    .p3-ai-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(143,123,250,0.2);
+      border: 1px solid rgba(143,123,250,0.35);
       display: flex;
       align-items: center;
-      gap: 8px;
-      border-bottom: 0.5px solid #C6C6C8;
-    }
-
-    .inset-cell:last-child {
-      border-bottom: none;
-    }
-
-    .cell-icon {
-      font-size: 16px;
+      justify-content: center;
+      font-size: 11px;
       flex-shrink: 0;
-      width: 22px;
-      text-align: center;
+      margin-top: 1px;
+    }
+    .p3-bubble-ai {
+      background: #1c1c1c;
+      border-radius: 4px 14px 14px 14px;
+      border-left: 3px solid #8f7bfa;
+      padding: 9px 11px;
+      font-size: 10px;
+      color: #b0b0b0;
+      max-width: 76%;
+      line-height: 1.5;
+    }
+    .p3-bubble-ai-strong {
+      color: #ffffff;
+      font-weight: 600;
     }
 
-    .cell-label {
-      font-size: 13px;
-      color: #000;
-      font-weight: 400;
+    /* Component 3 repurposed — AI fact card */
+    .p3-fact-card {
+      margin: 0;
+      background: #1c1c1c;
+      border-radius: 14px;
+      padding: 11px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .p3-fact-icon-wrap {
+      width: 30px;
+      height: 30px;
+      background: rgba(143,123,250,0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .p3-fact-text {
       flex: 1;
       min-width: 0;
     }
-
-    .pill-group {
-      display: flex;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .setting-pill {
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 600;
-      background: #F2F2F7;
-      color: #AEAEB2;
-    }
-
-    .setting-pill.sel-balanced {
-      background: #FF9500;
-      color: #fff;
-    }
-
-    .setting-pill.sel-strict {
-      background: #FF3B30;
-      color: #fff;
-    }
-
-    .sheet-next-btn {
-      margin: 4px 16px 16px;
-      background: #1A6B4A;
-      color: #fff;
-      border-radius: 999px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SCREEN 3 — CHILD CHATBOT
-    ───────────────────────────────────────────────────────────────── */
-    .chat-body {
-      background: #fff;
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 200px;
-    }
-
-    .bubble-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .bubble-row.leading {
-      justify-content: flex-start;
-    }
-
-    .bubble-row.trailing {
-      justify-content: flex-end;
-    }
-
-    .bubble-meta {
-      font-size: 11px;
-      color: #AEAEB2;
-      margin-bottom: 3px;
-    }
-
-    .bubble {
-      max-width: 230px;
-      padding: 10px 13px;
-      font-size: 14px;
-      line-height: 1.45;
-      color: #000;
-    }
-
-    .bubble.ai {
-      background: #F2F2F7;
-      border-radius: 16px 16px 16px 4px;
-      color: #000;
-    }
-
-    .bubble.user {
-      background: #1A6B4A;
-      border-radius: 16px 16px 4px 16px;
-      color: #fff;
-    }
-
-    .chat-input-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-top: 0.5px solid #C6C6C8;
-      background: #fff;
-    }
-
-    .chat-input {
-      flex: 1;
-      background: #F2F2F7;
-      border-radius: 16px;
-      height: 36px;
-      padding: 0 14px;
-      font-size: 14px;
-      color: #AEAEB2;
-      display: flex;
-      align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
-    }
-
-    .chat-send {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #1A6B4A;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SPATIAL SUMMARY
-    ───────────────────────────────────────────────────────────────── */
-    .spatial-summary {
-      background: #1C1C1E;
-      border-radius: 10px;
-      padding: 14px 16px;
-      width: 320px;
-    }
-
-    .spatial-summary-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #AEAEB2;
-      margin-bottom: 10px;
-    }
-
-    .spatial-row {
-      display: flex;
-      gap: 0;
-      font-size: 11px;
-      line-height: 1.5;
-      margin-bottom: 3px;
-    }
-
-    .spatial-key {
-      color: #8E8E93;
-      min-width: 110px;
-      flex-shrink: 0;
-    }
-
-    .spatial-val {
-      color: #E5E5EA;
-      font-weight: 500;
-    }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SPEC PANEL (right column)
-    ───────────────────────────────────────────────────────────────── */
-    .spec-panel {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px 22px;
-      font-size: 12px;
-      line-height: 1.6;
-      color: #3A3A3C;
-    }
-
-    .spec-heading {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #083386;
-      margin-bottom: 10px;
-      margin-top: 18px;
-    }
-
-    .spec-heading:first-child {
-      margin-top: 0;
-    }
-
-    .spec-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-bottom: 4px;
-    }
-
-    .spec-bullets li {
-      display: flex;
-      gap: 7px;
-      font-size: 12px;
-      line-height: 1.55;
-      color: #3A3A3C;
-    }
-
-    .spec-bullets li::before {
-      content: "•";
-      color: #AEAEB2;
-      flex-shrink: 0;
-      line-height: 1.55;
-    }
-
-    .spec-component-block {
-      border: 1px solid #E5E5EA;
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
-
-    .spec-component-title {
+    .p3-fact-title {
       font-size: 11px;
       font-weight: 700;
-      color: #000;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      color: #ffffff;
+      line-height: 1.3;
     }
-
-    .p0-badge {
+    .p3-fact-body {
       font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      background: #1A6B4A;
-      color: #fff;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
+      color: #b0b0b0;
+      margin-top: 2px;
+      line-height: 1.4;
     }
 
-    .spec-table {
+    /* Bottom input bar */
+    .p3-input-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px 14px;
+      flex-shrink: 0;
+    }
+    .p3-input-field {
+      flex: 1;
+      height: 38px;
+      background: #1e1e1e;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 11px;
+      color: #6b6b6b;
+      border: 1px solid #232323;
+    }
+    .p3-send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #8f7bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    /* ────────────────────────────────────────────
+       TOKEN TABLE + COMPONENT TRANSLATION MAP
+    ──────────────────────────────────────────── */
+    .docs-section {
+      background: #ffffff;
+      border-top: 1px solid #d8d8d8;
+      padding: 48px 40px 64px;
+    }
+
+    .docs-section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111111;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .docs-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    /* Token table */
+    .token-table-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #8f7bfa;
+      margin-bottom: 14px;
+    }
+    .token-table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 12px;
     }
-
-    .spec-table tr td {
-      padding: 2px 0;
+    .token-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888888;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 6px 12px 8px 0;
+    }
+    .token-table td {
+      padding: 8px 12px 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+      color: #333333;
+    }
+    .token-table tr:last-child td {
+      border-bottom: none;
+    }
+    .token-swatch {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    .token-name {
+      font-weight: 700;
+      color: #111111;
+    }
+    .token-value {
+      font-family: "SF Mono", "Fira Mono", monospace;
       font-size: 11px;
-      line-height: 1.5;
-      vertical-align: top;
+      color: #444444;
     }
-
-    .spec-table tr td:first-child {
-      color: #6D6D72;
-      width: 110px;
-      flex-shrink: 0;
-      padding-right: 8px;
-    }
-
-    .spec-table tr td:last-child {
-      color: #000;
-      font-weight: 500;
-    }
-
-    .warn-box {
-      background: #FFF8ED;
-      border: 1px solid #FFE0A3;
-      border-radius: 8px;
-      padding: 10px 12px;
+    .token-usage {
+      color: #888888;
       font-size: 11px;
-      color: #7C4E00;
-      line-height: 1.55;
-      margin-top: 10px;
     }
 
-    .warn-box p {
-      margin-bottom: 4px;
+    /* Component translation map */
+    .ctm-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #8f7bfa;
+      margin-bottom: 14px;
     }
-
-    .warn-box p:last-child {
+    .ctm-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .ctm-item:last-child {
+      border-bottom: none;
       margin-bottom: 0;
     }
-
-    /* ─────────────────────────────────────────────────────────────────
-       SCREEN TITLE LABEL
-    ───────────────────────────────────────────────────────────────── */
-    .screen-title-label {
+    .ctm-item-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .ctm-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #8f7bfa;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .ctm-item-title {
       font-size: 13px;
       font-weight: 700;
-      color: #000;
-      margin-bottom: 4px;
+      color: #111111;
+      line-height: 1.35;
     }
-
-    .screen-title-sub {
-      font-size: 11px;
-      color: #6D6D72;
-      margin-bottom: 12px;
+    .ctm-item-body {
+      font-size: 12px;
+      color: #555555;
+      line-height: 1.6;
+      padding-left: 30px;
     }
-
-    /* ─────────────────────────────────────────────────────────────────
-       LAYOUT WRAPPER
-    ───────────────────────────────────────────────────────────────── */
-    .page-body {
-      padding: 28px 40px 60px;
+    .ctm-anchor {
+      color: #8f7bfa;
+      font-weight: 600;
     }
-
-    .divider {
-      height: 1px;
-      background: #C6C6C8;
-      margin: 0 0 36px;
-      opacity: 0.5;
+    .ctm-arrow {
+      color: #aaaaaa;
+      margin: 0 4px;
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════════════════════
+  <!-- ═══════════════════════════════════════
        PAGE HEADER
-  ════════════════════════════════════════════════════════════════ -->
-  <header class="doc-header">
-    <div class="doc-header-row1">
-      <span class="pill pill-c">Mockup C</span>
-      <span class="pill pill-see">See It First</span>
-      <span class="doc-header-title">SafeChat</span>
-      <span class="screen-count">3 screens</span>
+  ═══════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="page-header-badge">C</div>
+    <div class="page-header-text">
+      <div class="page-header-title">Direction C — Obsidian Protocol</div>
+      <div class="page-header-sub">TreeHouse / SafeChat &nbsp;·&nbsp; Serious Shield &nbsp;·&nbsp; Parental Control + AI Chatbot for Teens</div>
     </div>
-    <div class="doc-header-row2">iOS 390px &nbsp;·&nbsp; Parent Dashboard-First Setup &nbsp;·&nbsp; Child Chatbot</div>
-    <div class="goal-box">
-      <strong>Goal thread:</strong> Direction C anchors setup in an emotional outcome rather than a technical task. Showing the child's name as the dashboard hero before any configuration creates personal investment that drives §4's completion metric more reliably than progress bars. §3 identifies the parent's emotional state as "cautious and wanting reassurance" — seeing their child's name already in the product IS the reassurance. Setup happens in a sheet; the destination never disappears.
-    </div>
-  </header>
+    <div class="page-header-anchor-tag">Anchor: Proton Pass Dribbble</div>
+  </div>
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       WHAT THIS DIRECTION DOES
-  ════════════════════════════════════════════════════════════════ -->
-  <div class="page-body">
-    <div class="changes-box">
-      <div class="changes-label">What This Direction Does</div>
-      <ul class="changes-list">
-        <li><span class="num">1</span>&nbsp;<strong>Child name hero</strong> — The parent's first view after signup is their child's name in large display type — making the entire setup feel personal before a single setting is touched.</li>
-        <li><span class="num">2</span>&nbsp;<strong>Setup overlay banner</strong> — A forest-green banner sits over the empty dashboard: "SafeChat is almost ready for Aria" with a "Set up now" CTA — explicit, can't be missed.</li>
-        <li><span class="num">3</span>&nbsp;<strong>Configuration sheet</strong> — All five categories live in one bottom sheet with a tab strip at top — parent taps "Next" to advance sections, never leaves the dashboard.</li>
-        <li><span class="num">4</span>&nbsp;<strong>Alert detail sheet</strong> — Tapping an alert opens a sheet with an inline "Edit setting" action — parent can change a setting without ever navigating away from the dashboard.</li>
-        <li><span class="num">5</span>&nbsp;<strong>Chat bubbles</strong> — Same SF Pro + forest-green tokens as parent view — unified language across both users.</li>
-      </ul>
-    </div>
+  <!-- ═══════════════════════════════════════
+       PHONE STAGE — ambient text + 3 phones
+  ═══════════════════════════════════════ -->
+  <div class="stage">
 
-    <!-- ─────────────────────────────────────────────────────────────
-         SCREEN 1 — DASHBOARD FIRST VIEW
-    ──────────────────────────────────────────────────────────────── -->
-    <div class="section-label">Screen 1 of 3</div>
-    <div class="screen-section">
+    <!-- Ambient "SafeChat" text behind all phones -->
+    <div class="ambient-text">SafeChat</div>
 
-      <!-- Left: Phone + Spatial Summary -->
-      <div class="screen-left">
-        <div class="screen-title-label">Dashboard First View</div>
-        <div class="screen-title-sub">Moment after parent creates account</div>
+    <!-- ─────────────────────────────────────
+         PHONE 1 — Parent Dashboard (Hero)
+    ───────────────────────────────────── -->
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
 
-        <div class="phone">
           <!-- Status bar -->
           <div class="status-bar">
-            <span>9:41</span>
-            <div class="status-right">
-              <span>●●●</span>
-              <span>WiFi</span>
-              <span>&#9646;</span>
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <span class="status-icon">●●●</span>
+              <span class="status-icon">WiFi</span>
+              <span class="status-icon">▮</span>
             </div>
           </div>
-          <!-- Nav bar -->
-          <div class="nav-bar">
-            <span class="nav-title">SafeChat &#x1F333;</span>
-            <span class="nav-right">&#9881;</span>
-          </div>
-          <!-- Hero area -->
-          <div class="hero-area">
-            <div class="hero-good-morning">Good morning</div>
-            <div class="hero-name-row">
-              <div class="hero-name">Aria</div>
-              <span class="num">1</span>
+
+          <div class="p1-content">
+
+            <!-- App header: SafeChat + menu -->
+            <div class="p1-app-header">
+              <div class="p1-app-name">SafeChat</div>
+              <div class="p1-menu-icon">≡</div>
             </div>
-            <div class="hero-meta">Age 13 &nbsp;·&nbsp; Joined today</div>
-            <div class="stat-chips">
-              <div class="stat-chip">0 sessions</div>
-              <div class="stat-chip">0 alerts</div>
-              <div class="stat-chip">0 topics</div>
+
+            <!-- COMPONENT 1 — Oversized hero heading -->
+            <div class="p1-hero">
+              <span class="p1-hero-line">Protect 🔒</span>
+              <span class="p1-hero-line">Your Teen</span>
+              <span class="p1-hero-line">Stay Safe 🛡</span>
             </div>
-          </div>
-          <!-- Setup banner -->
-          <div class="setup-banner">
-            <div class="setup-banner-headline">
-              <span>&#9889; SafeChat is almost ready for Aria</span>
-              <span class="num">2</span>
+
+            <!-- COMPONENT 2 — Full-width dark search bar -->
+            <div class="p1-search">
+              <div class="p1-search-icon">🔍</div>
+              <div class="p1-search-placeholder">Search conversations...</div>
+              <div class="p1-search-right-icon">⏎</div>
             </div>
-            <div class="setup-banner-sub">Set up safety settings — takes about 5 minutes</div>
-            <div class="setup-cta">
-              <button class="setup-cta-btn">Set up now &rarr;</button>
+
+            <!-- COMPONENT 3 — Feature card (AutoFill translation) -->
+            <div class="p1-feature-card">
+              <div class="p1-card-icon-wrap">🛡</div>
+              <div class="p1-card-text">
+                <div class="p1-card-title">Review flagged content</div>
+                <div class="p1-card-sub">2 new alerts need attention</div>
+              </div>
+              <div class="p1-card-chevron">›</div>
             </div>
-          </div>
-          <!-- Alerts section -->
-          <div class="alerts-section-header">Alerts</div>
-          <div class="empty-state-cell">No alerts yet</div>
-          <!-- Tab bar -->
-          <div class="tab-bar">
-            <div class="tab-item active">
-              <span class="tab-icon">&#127968;</span>
-              <span>Dashboard</span>
+
+            <!-- COMPONENT 4 — Section header "Recent Alerts" + "See All" -->
+            <div class="p1-section-header">
+              <div class="p1-section-label">Recent Alerts</div>
+              <div class="p1-section-see-all">See All</div>
             </div>
-            <div class="tab-item">
-              <span class="tab-icon">&#128276;</span>
-              <span>Alerts</span>
-            </div>
-            <div class="tab-item">
-              <span class="tab-icon">&#9881;&#65039;</span>
-              <span>Settings</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Spatial Summary -->
-        <div class="spatial-summary">
-          <div class="spatial-summary-label">Spatial Summary</div>
-          <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">C — Dashboard First View</span></div>
-          <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Hero + setup banner + empty alert feed</span></div>
-          <div class="spatial-row"><span class="spatial-key">Distinctive move:</span><span class="spatial-val">Child's name at 40px creates personal investment before any task begins</span></div>
-          <div class="spatial-row"><span class="spatial-key">New/changed zones:</span><span class="spatial-val">Child name hero, setup overlay banner, empty dashboard state</span></div>
-          <div class="spatial-row"><span class="spatial-key">Proportional note:</span><span class="spatial-val">Phone frame scaled to 320px from iOS 390px [estimated]</span></div>
-        </div>
-      </div>
+            <!-- COMPONENT 5 — Credential-style alert rows -->
+            <div class="p1-rows">
 
-      <!-- Right: Spec Panel -->
-      <div class="screen-right">
-        <div class="spec-panel">
-          <div class="spec-heading">Direction at a Glance</div>
-          <ul class="spec-bullets">
-            <li>Parent sees their child's name in the app before any configuration — setup feels personal, not procedural</li>
-            <li>The setup banner sits over the destination (dashboard), not in front of a form — parent can see what they're building</li>
-            <li>When setup is done, the sheet dismisses and the parent is already on their dashboard — no redirect needed</li>
-          </ul>
+              <!-- Row 1: Self-harm -->
+              <div class="p1-cred-row">
+                <div class="p1-cred-icon" style="background: #c0392b;">SH</div>
+                <div class="p1-cred-text">
+                  <div class="p1-cred-primary">Self-harm mention</div>
+                  <div class="p1-cred-secondary">Emma · 3 flagged messages</div>
+                </div>
+                <div class="p1-eye-icon">👁</div>
+              </div>
 
-          <div class="spec-heading">Strategy</div>
-          <p style="font-size:12px;line-height:1.65;color:#3A3A3C;margin-bottom:10px;">Direction C exists because §3 describes the parent's emotional state as cautious and wanting reassurance. The strongest reassurance is not a progress bar or explanatory copy — it is seeing their child's name in the product before they've done a single thing. This creates personal investment that sustains motivation through the 21-setting configuration. §4's primary metric (&gt;80% completion) is served by emotional anchoring: parents who are configuring for a specific real person they love are far less likely to abandon than parents configuring abstract policies. The sheet model ensures the destination is always visible — setup never feels like a detour.</p>
+              <!-- Row 2: Loneliness -->
+              <div class="p1-cred-row">
+                <div class="p1-cred-icon" style="background: #6c5ce7;">L</div>
+                <div class="p1-cred-text">
+                  <div class="p1-cred-primary">Loneliness pattern</div>
+                  <div class="p1-cred-secondary">Emma · 7 mentions this week</div>
+                </div>
+                <div class="p1-eye-icon">👁</div>
+              </div>
 
-          <div class="spec-heading">Above the Fold</div>
-          <ul class="spec-bullets">
-            <li><strong>1st:</strong> Child's name (Aria) at 40px — earns first position as the emotional anchor for the entire session</li>
-            <li><strong>2nd:</strong> Setup banner — explicit CTA, but framed as completing something personal, not a required step</li>
-            <li><strong>3rd:</strong> Empty alert feed — shows the parent what they'll be monitoring; builds anticipation</li>
-          </ul>
+              <!-- Row 3: Drug reference -->
+              <div class="p1-cred-row">
+                <div class="p1-cred-icon" style="background: #d35400;">D</div>
+                <div class="p1-cred-text">
+                  <div class="p1-cred-primary">Drug reference</div>
+                  <div class="p1-cred-secondary">James · 2 mentions</div>
+                </div>
+                <div class="p1-eye-icon">👁</div>
+              </div>
 
-          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">1</span>&nbsp; Child Name Hero — P0</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>Source</td><td>New — Direction C signature element</td></tr>
-              <tr><td>Child name</td><td>SF Pro Display 40px / Bold / #000000</td></tr>
-              <tr><td>"Good morning"</td><td>SF Pro Text 13px / Regular / #6D6D72</td></tr>
-              <tr><td>Age/join line</td><td>SF Pro Text 13px / Regular / #AEAEB2</td></tr>
-              <tr><td>Background</td><td>#FFFFFF</td></tr>
-              <tr><td>Padding</td><td>24px all sides</td></tr>
-            </table>
-          </div>
+            </div><!-- /p1-rows -->
 
-          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">2</span>&nbsp; Setup Banner — P0</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>Source</td><td>New</td></tr>
-              <tr><td>Background</td><td>#E8F5EF (brand-primary-soft)</td></tr>
-              <tr><td>Border</td><td>1.5px solid #1A6B4A</td></tr>
-              <tr><td>Border radius</td><td>12px</td></tr>
-              <tr><td>Margin</td><td>0 16px</td></tr>
-              <tr><td>Padding</td><td>14px</td></tr>
-              <tr><td>Headline</td><td>15px / Semibold / #1A6B4A</td></tr>
-              <tr><td>Subline</td><td>13px / Regular / #6D6D72</td></tr>
-              <tr><td>CTA button</td><td>#1A6B4A / 999px / 36px / "Set up now →" / #FFFFFF / right-aligned</td></tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+          </div><!-- /p1-content -->
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+      <div class="phone-label">Parent Dashboard</div>
+    </div><!-- /phone-wrap -->
 
-    <div class="divider"></div>
 
-    <!-- ─────────────────────────────────────────────────────────────
-         SCREEN 2 — CONFIGURATION SHEET
-    ──────────────────────────────────────────────────────────────── -->
-    <div class="section-label">Screen 2 of 3</div>
-    <div class="screen-section">
+    <!-- ─────────────────────────────────────
+         PHONE 2 — Safety Configuration
+    ───────────────────────────────────── -->
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
 
-      <!-- Left: Phone + Spatial Summary -->
-      <div class="screen-left">
-        <div class="screen-title-label">Configuration Sheet</div>
-        <div class="screen-title-sub">Sheet in progress — dashboard hero visible above</div>
-
-        <div class="phone">
           <!-- Status bar -->
           <div class="status-bar">
-            <span>9:41</span>
-            <div class="status-right">
-              <span>●●●</span>
-              <span>WiFi</span>
-              <span>&#9646;</span>
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <span class="status-icon">●●●</span>
+              <span class="status-icon">WiFi</span>
+              <span class="status-icon">▮</span>
             </div>
           </div>
-          <!-- Nav bar -->
-          <div class="nav-bar">
-            <span class="nav-title">SafeChat &#x1F333;</span>
-            <span class="nav-right">&#9881;</span>
-          </div>
-          <!-- Dashboard peek (visible above sheet) -->
-          <div class="dashboard-peek">
-            <div class="hero-good-morning">Good morning</div>
-            <div class="hero-name" style="font-size:32px;">Aria</div>
-            <div class="hero-meta" style="margin-bottom:0;">Age 13 &nbsp;·&nbsp; Joined today</div>
-          </div>
-          <!-- Bottom sheet -->
-          <div class="sheet-overlay">
-            <div class="drag-handle"></div>
-            <!-- Tab strip -->
-            <div class="sheet-tab-strip">
-              <div class="sheet-tab">1 Content</div>
-              <div class="sheet-tab active">2 Behavior</div>
-              <div class="sheet-tab">3 Personality</div>
-              <div class="sheet-tab">4 Learning</div>
-              <div class="sheet-tab">5 Privacy</div>
+
+          <div class="p2-content">
+
+            <!-- Back header -->
+            <div class="p2-back-header">
+              <div class="p2-back-arrow">←</div>
+              <div class="p2-back-title">Safety Config</div>
             </div>
-            <!-- Section header -->
-            <div class="sheet-section-header">Behavioral Monitoring</div>
-            <!-- Inset list -->
-            <div class="inset-list">
-              <!-- Cell 1 -->
-              <div class="inset-cell">
-                <span class="cell-icon">&#x1F9E0;</span>
-                <span class="cell-label">AI dependency</span>
-                <div class="pill-group">
-                  <span class="setting-pill">Off</span>
-                  <span class="setting-pill sel-balanced">Balanced</span>
-                  <span class="setting-pill">Strict</span>
+
+            <!-- H2 heading -->
+            <div class="p2-heading">
+              <div class="p2-heading-text">Configure<br>Protection</div>
+            </div>
+
+            <!-- Section: Content Controls -->
+            <div class="p2-section-label">Content Controls</div>
+
+            <!-- Credential-style rows for settings -->
+            <div class="p2-rows">
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #c0392b;">!</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Self-harm &amp; Suicide</div>
                 </div>
+                <div class="p2-badge p2-badge-violet">Strict</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
               </div>
-              <!-- Cell 2 -->
-              <div class="inset-cell">
-                <span class="cell-icon">&#9889;</span>
-                <span class="cell-label">Radicalization</span>
-                <div class="pill-group">
-                  <span class="setting-pill">Off</span>
-                  <span class="setting-pill">Balanced</span>
-                  <span class="setting-pill sel-strict">Strict</span>
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #d35400;">💊</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Drugs &amp; Substance Use</div>
                 </div>
-                <span class="num" style="margin-left:6px;">3</span>
+                <div class="p2-badge p2-badge-muted">Balanced</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
               </div>
-              <!-- Cell 3 -->
-              <div class="inset-cell">
-                <span class="cell-icon">&#x1F91D;</span>
-                <span class="cell-label">Predatory patterns</span>
-                <div class="pill-group">
-                  <span class="setting-pill">Off</span>
-                  <span class="setting-pill">Balanced</span>
-                  <span class="setting-pill sel-strict">Strict</span>
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #b7950b; font-size:13px;">🌿</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Eating Disorders</div>
                 </div>
+                <div class="p2-badge p2-badge-muted">Balanced</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
               </div>
-              <!-- Cell 4 -->
-              <div class="inset-cell">
-                <span class="cell-icon">&#x1F4CD;</span>
-                <span class="cell-label">Personal info</span>
-                <div class="pill-group">
-                  <span class="setting-pill">Off</span>
-                  <span class="setting-pill sel-balanced">Balanced</span>
-                  <span class="setting-pill">Strict</span>
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #3d3d3d;">✖</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Illegal Activities</div>
                 </div>
+                <div class="p2-badge p2-badge-off">Off</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
               </div>
+
+            </div><!-- /p2-rows -->
+
+            <!-- Section: Pattern Monitoring -->
+            <div class="p2-section-label" style="margin-top: 6px;">Pattern Monitoring</div>
+
+            <div class="p2-rows">
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #6c5ce7;">L</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Loneliness</div>
+                </div>
+                <div class="p2-badge p2-badge-muted">Balanced</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
+              </div>
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #922b21;">R</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Radicalization</div>
+                </div>
+                <div class="p2-badge p2-badge-violet">Strict</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
+              </div>
+
+              <div class="p2-cred-row">
+                <div class="p2-cred-icon" style="background: #1e6fa8;">i</div>
+                <div class="p2-cred-text">
+                  <div class="p2-cred-primary">Personal Info Sharing</div>
+                </div>
+                <div class="p2-badge p2-badge-muted">Balanced</div>
+                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
+              </div>
+
+            </div><!-- /p2-rows (pattern) -->
+
+            <!-- Save button -->
+            <div class="p2-save-wrap">
+              <div class="p2-save-btn">Save Configuration</div>
             </div>
-            <!-- Next button -->
-            <div class="sheet-next-btn">Next: Personality &rarr;</div>
-          </div>
-          <!-- Tab bar -->
-          <div class="tab-bar">
-            <div class="tab-item active">
-              <span class="tab-icon">&#127968;</span>
-              <span>Dashboard</span>
-            </div>
-            <div class="tab-item">
-              <span class="tab-icon">&#128276;</span>
-              <span>Alerts</span>
-            </div>
-            <div class="tab-item">
-              <span class="tab-icon">&#9881;&#65039;</span>
-              <span>Settings</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Spatial Summary -->
-        <div class="spatial-summary">
-          <div class="spatial-summary-label">Spatial Summary</div>
-          <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">C — Configuration Sheet</span></div>
-          <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Sheet over dashboard — destination always visible above</span></div>
-          <div class="spatial-row"><span class="spatial-key">Distinctive move:</span><span class="spatial-val">Dashboard hero visible at top while configuration happens below</span></div>
-          <div class="spatial-row"><span class="spatial-key">New/changed zones:</span><span class="spatial-val">Bottom sheet, section tab strip, inline pill selectors</span></div>
-        </div>
-      </div>
+          </div><!-- /p2-content -->
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+      <div class="phone-label">Safety Config</div>
+    </div><!-- /phone-wrap -->
 
-      <!-- Right: Spec Panel -->
-      <div class="screen-right">
-        <div class="spec-panel">
-          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">3</span>&nbsp; Configuration Sheet — P0</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>Source</td><td>New</td></tr>
-              <tr><td>Background</td><td>#FFFFFF</td></tr>
-              <tr><td>Top radius</td><td>20px (sheet handle curve)</td></tr>
-              <tr><td>Shadow</td><td>0 -2px 16px rgba(0,0,0,0.10)</td></tr>
-              <tr><td>Height</td><td>~70% of screen (slides up over dashboard)</td></tr>
-              <tr><td>Drag handle</td><td>4px × 36px / #C6C6C8 / centered / 8px from top</td></tr>
-            </table>
-          </div>
 
-          <div class="spec-heading">Component: Section Tab Strip — P0</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>Background</td><td>#FFFFFF</td></tr>
-              <tr><td>Border bottom</td><td>0.5px #C6C6C8</td></tr>
-              <tr><td>Active tab</td><td>13px / Semibold / #1A6B4A / 2px underline #1A6B4A</td></tr>
-              <tr><td>Inactive tab</td><td>13px / Regular / #AEAEB2</td></tr>
-              <tr><td>Height</td><td>44px</td></tr>
-              <tr><td>Padding</td><td>0 16px</td></tr>
-            </table>
-          </div>
+    <!-- ─────────────────────────────────────
+         PHONE 3 — Child Chatbot
+    ───────────────────────────────────── -->
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="dynamic-island"></div>
 
-          <div class="spec-heading">Component: Pill Selectors — P0</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>Off (unsel.)</td><td>#F2F2F7 bg / #AEAEB2 text / 6px radius</td></tr>
-              <tr><td>Balanced (sel.)</td><td>#FF9500 bg / #FFFFFF text / 10px/600</td></tr>
-              <tr><td>Strict (sel.)</td><td>#FF3B30 bg / #FFFFFF text / 10px/600</td></tr>
-              <tr><td>Inset list bg</td><td>#F2F2F7 / 12px radius / 0 16px margin</td></tr>
-              <tr><td>Cell separator</td><td>0.5px solid #C6C6C8</td></tr>
-            </table>
-          </div>
-
-          <div class="spec-heading">Component: "Next" Button in Sheet — P0</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>Background</td><td>#1A6B4A</td></tr>
-              <tr><td>Text</td><td>"Next: Personality →" / 17px / Semibold / #FFFFFF</td></tr>
-              <tr><td>Height</td><td>52px / 999px radius / full sheet width − 32px</td></tr>
-              <tr><td>Position</td><td>Pinned to sheet bottom, 16px above sheet edge</td></tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- ─────────────────────────────────────────────────────────────
-         SCREEN 3 — CHILD CHATBOT
-    ──────────────────────────────────────────────────────────────── -->
-    <div class="section-label">Screen 3 of 3</div>
-    <div class="screen-section">
-
-      <!-- Left: Phone + Spatial Summary -->
-      <div class="screen-left">
-        <div class="screen-title-label">Child Chatbot</div>
-        <div class="screen-title-sub">Child's session — Aria's own view</div>
-
-        <div class="phone">
           <!-- Status bar -->
           <div class="status-bar">
-            <span>9:41</span>
-            <div class="status-right">
-              <span>●●●</span>
-              <span>WiFi</span>
-              <span>&#9646;</span>
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <span class="status-icon">●●●</span>
+              <span class="status-icon">WiFi</span>
+              <span class="status-icon">▮</span>
             </div>
           </div>
-          <!-- Nav bar -->
-          <div class="nav-bar">
-            <span class="nav-title">SafeChat &#x1F333;</span>
-            <span class="nav-right" style="font-size:14px;font-weight:500;">History</span>
-          </div>
-          <!-- Sub-header with child name -->
-          <div class="nav-subtitle">Aria</div>
-          <!-- Chat body -->
-          <div class="chat-body">
-            <!-- User bubble first (question) -->
-            <div class="bubble-row trailing">
-              <div class="bubble user">Can you explain the French Revolution?</div>
+
+          <div class="p3-content">
+
+            <!-- App header -->
+            <div class="p3-app-header">
+              <div class="p3-app-name">SafeChat AI</div>
+              <div class="p3-settings-icon">⚙</div>
             </div>
-            <!-- AI response -->
-            <div class="bubble-row leading">
-              <div>
-                <div class="bubble-meta">SafeChat</div>
-                <div class="bubble ai">Sure! The French Revolution began in 1789 when widespread discontent with the monarchy and economic hardship pushed citizens to demand change...</div>
+
+            <!-- COMPONENT 2 repurposed — "Ask anything..." search bar at TOP -->
+            <div class="p3-search-bar">
+              <div class="p3-search-icon">🔍</div>
+              <div class="p3-search-placeholder">Ask anything...</div>
+            </div>
+
+            <!-- COMPONENT 4 — "Today" + "See All" -->
+            <div class="p3-day-header">
+              <div class="p3-day-label">Today</div>
+              <div class="p3-see-all">See All</div>
+            </div>
+
+            <!-- Chat area -->
+            <div class="p3-chat">
+
+              <!-- User message 1 -->
+              <div class="p3-msg-user">
+                <div class="p3-bubble-user">What causes anxiety?</div>
               </div>
-            </div>
-            <!-- AI follow-up -->
-            <div class="bubble-row leading">
-              <div>
-                <div class="bubble-meta">SafeChat</div>
-                <div class="bubble ai" style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;">
-                  <span>What part are you most curious about — the causes, the events, or the impact?</span>
-                  <span class="num" style="flex-shrink:0;margin-top:2px;">5</span>
+
+              <!-- AI message 1 — violet left border card -->
+              <div class="p3-msg-ai">
+                <div class="p3-ai-avatar">✦</div>
+                <div class="p3-bubble-ai">
+                  <span class="p3-bubble-ai-strong">Anxiety</span> is your brain's response to perceived threats. It triggers the fight-or-flight response...
                 </div>
               </div>
-            </div>
-          </div>
-          <!-- Input bar -->
-          <div class="chat-input-bar">
-            <div class="chat-input">Message SafeChat&hellip;</div>
-            <div class="chat-send">&#8593;</div>
-          </div>
-          <!-- Tab bar -->
-          <div class="tab-bar">
-            <div class="tab-item active">
-              <span class="tab-icon">&#128172;</span>
-              <span>Chat</span>
-            </div>
-            <div class="tab-item">
-              <span class="tab-icon">&#128336;</span>
-              <span>History</span>
-            </div>
-            <div class="tab-item">
-              <span class="tab-icon">&#128100;</span>
-              <span>Profile</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Spatial Summary -->
-        <div class="spatial-summary">
-          <div class="spatial-summary-label">Spatial Summary</div>
-          <div class="spatial-row"><span class="spatial-key">Direction:</span><span class="spatial-val">C — Child Chatbot</span></div>
-          <div class="spatial-row"><span class="spatial-key">Layout:</span><span class="spatial-val">Full-screen chat thread, child name in sub-header</span></div>
-          <div class="spatial-row"><span class="spatial-key">Distinctive move:</span><span class="spatial-val">"Aria" sub-header in nav — same name from parent hero now in child's own UI</span></div>
-          <div class="spatial-row"><span class="spatial-key">New/changed zones:</span><span class="spatial-val">Name sub-header, chat bubbles, input bar</span></div>
-        </div>
+              <!-- COMPONENT 3 repurposed — AI fact card (no arrow) -->
+              <div class="p3-fact-card">
+                <div class="p3-fact-icon-wrap">🔒</div>
+                <div class="p3-fact-text">
+                  <div class="p3-fact-title">Fun Fact</div>
+                  <div class="p3-fact-body">Regular exercise reduces anxiety by 48%</div>
+                </div>
+              </div>
+
+              <!-- User message 2 -->
+              <div class="p3-msg-user">
+                <div class="p3-bubble-user">What should I do if I'm feeling anxious?</div>
+              </div>
+
+              <!-- AI message 2 — violet left border -->
+              <div class="p3-msg-ai">
+                <div class="p3-ai-avatar">✦</div>
+                <div class="p3-bubble-ai">
+                  Try <span class="p3-bubble-ai-strong">box breathing</span> — inhale 4s, hold 4s, exhale 4s. It calms your nervous system fast.
+                </div>
+              </div>
+
+            </div><!-- /p3-chat -->
+
+            <!-- Bottom input bar -->
+            <div class="p3-input-bar">
+              <div class="p3-input-field">Ask anything...</div>
+              <div class="p3-send-btn">↑</div>
+            </div>
+
+          </div><!-- /p3-content -->
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+      <div class="phone-label">Child Chatbot</div>
+    </div><!-- /phone-wrap -->
+
+  </div><!-- /stage -->
+
+
+  <!-- ═══════════════════════════════════════
+       TOKEN TABLE + COMPONENT TRANSLATION MAP
+  ═══════════════════════════════════════ -->
+  <div class="docs-section">
+    <div class="docs-section-title">Direction C — Reference Specs</div>
+
+    <div class="docs-two-col">
+
+      <!-- LEFT: Token table -->
+      <div>
+        <div class="token-table-title">Design Token Reference</div>
+        <table class="token-table">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Value</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="token-swatch" style="background:#0a0a0a;"></span><span class="token-name">Page BG</span></td>
+              <td><span class="token-value">#0a0a0a</span></td>
+              <td><span class="token-usage">All phone screen backgrounds</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#1c1c1c;"></span><span class="token-name">Card Surface</span></td>
+              <td><span class="token-value">#1c1c1c</span></td>
+              <td><span class="token-usage">Feature cards, chat bubbles</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#1e1e1e;"></span><span class="token-name">Search Bar BG</span></td>
+              <td><span class="token-value">#1e1e1e</span></td>
+              <td><span class="token-usage">Search inputs, text fields</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#8f7bfa;"></span><span class="token-name">Accent Violet</span></td>
+              <td><span class="token-value">#8f7bfa</span></td>
+              <td><span class="token-usage">AI border, badges, CTA, send btn</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#42ba5f;"></span><span class="token-name">Status Green</span></td>
+              <td><span class="token-value">#42ba5f</span></td>
+              <td><span class="token-usage">Active / safe indicators</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#ffffff; border:1px solid #ccc;"></span><span class="token-name">Heading Text</span></td>
+              <td><span class="token-value">#ffffff</span></td>
+              <td><span class="token-usage">All headings, primary labels</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#b0b0b0;"></span><span class="token-name">Body Text</span></td>
+              <td><span class="token-value">#b0b0b0</span></td>
+              <td><span class="token-usage">Secondary text, AI responses</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#6b6b6b;"></span><span class="token-name">Muted Text</span></td>
+              <td><span class="token-value">#6b6b6b</span></td>
+              <td><span class="token-usage">Placeholders, section labels</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-swatch" style="background:#232323;"></span><span class="token-name">Border</span></td>
+              <td><span class="token-value">#232323</span></td>
+              <td><span class="token-usage">Row dividers, card borders</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-name">Card Radius</span></td>
+              <td><span class="token-value">14px</span></td>
+              <td><span class="token-usage">Feature cards, fact card</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-name">Display Weight</span></td>
+              <td><span class="token-value">800</span></td>
+              <td><span class="token-usage">Hero heading, section titles</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-name">Letter Spacing</span></td>
+              <td><span class="token-value">-0.02em</span></td>
+              <td><span class="token-usage">Display headings only</span></td>
+            </tr>
+            <tr>
+              <td><span class="token-name">Font Stack</span></td>
+              <td><span class="token-value" style="font-size:10px;">-apple-system, SF Pro Display, Inter</span></td>
+              <td><span class="token-usage">All UI text</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <!-- Right: Spec Panel -->
-      <div class="screen-right">
-        <div class="spec-panel">
-          <div class="spec-heading">Component: <span class="num" style="margin-left:4px;">5</span>&nbsp; Chatbot — P0 (same tokens as A and B)</div>
-          <div class="spec-component-block">
-            <table class="spec-table">
-              <tr><td>User bubble</td><td>#1A6B4A bg / #FFFFFF text / trailing / sq top-right corner</td></tr>
-              <tr><td>AI bubble</td><td>#F2F2F7 bg / #000000 text / leading / sq top-left corner</td></tr>
-              <tr><td>Nav sub-header</td><td>Child's name "Aria" — 13px / Regular / #6D6D72 / centered</td></tr>
-              <tr><td>Input field</td><td>#F2F2F7 bg / 16px radius / "Message SafeChat…" placeholder</td></tr>
-              <tr><td>Send button</td><td>#1A6B4A / 28px circle / ↑</td></tr>
-            </table>
+      <!-- RIGHT: Component Translation Map -->
+      <div>
+        <div class="ctm-title">Anchor Component Translation Map</div>
+        <p style="font-size:12px; color:#666; margin-bottom:18px; line-height:1.6;">Each Proton Pass UI pattern translated 1:1 into SafeChat. The anchor component in the left column maps directly to the implementation in the right column.</p>
+
+        <div class="ctm-item">
+          <div class="ctm-item-header">
+            <div class="ctm-num">1</div>
+            <div class="ctm-item-title">Oversized Bold Hero Heading with Inline Emojis</div>
           </div>
-
-          <div class="spec-heading">Integration</div>
-          <ul class="spec-bullets">
-            <li>Child's name "Aria" appears in both parent hero (40px) and child's own nav sub-header — same identity token across both users</li>
-            <li>Forest green (#1A6B4A) on user bubbles + parent CTAs + setup banner CTA — one accent color, consistent meaning</li>
-            <li>Direction C's distinctive move: setup sheet always has the dashboard destination visible above it — completion feels like arriving somewhere, not finishing a form</li>
-          </ul>
-
-          <div class="warn-box">
-            <p><strong>Open Question:</strong></p>
-            <p>&#9888; Setup banner dismiss — should it persist until all 5 sections are configured, or can parents dismiss it and return later? Confirm before build.</p>
+          <div class="ctm-item-body">
+            <span class="ctm-anchor">Anchor:</span> "Keep 🔒 Your Life Safe 🛡" — 32px, 800 weight, -0.02em, white on #0a0a0a, full width
+            <span class="ctm-arrow">→</span>
+            <strong>Translation:</strong> "Protect 🔒 / Your Teen / Stay Safe 🛡" — same 30px, 800 weight, -0.02em, flush left, three-line stacked layout. Takes up the top third of Phone 1.
           </div>
         </div>
-      </div>
-    </div>
 
-  </div><!-- /page-body -->
+        <div class="ctm-item">
+          <div class="ctm-item-header">
+            <div class="ctm-num">2</div>
+            <div class="ctm-item-title">Full-Width Dark Search Bar</div>
+          </div>
+          <div class="ctm-item-body">
+            <span class="ctm-anchor">Anchor:</span> 46px tall, #1e1e1e bg, 12px radius, search icon left, mic/filter icon right, "Search" placeholder in #6b6b6b
+            <span class="ctm-arrow">→</span>
+            <strong>Phone 1:</strong> "Search conversations..." parent search. <strong>Phone 3:</strong> "Ask anything..." prominently at top before chat begins — same dark treatment, same dimensions, same icon placement.
+          </div>
+        </div>
+
+        <div class="ctm-item">
+          <div class="ctm-item-header">
+            <div class="ctm-num">3</div>
+            <div class="ctm-item-title">Feature Card with Icon + Title + Subtitle + Chevron</div>
+          </div>
+          <div class="ctm-item-body">
+            <span class="ctm-anchor">Anchor:</span> "Enjoy the magic of AutoFill" — #1c1c1c card, 16px radius, lock icon left, bold white title, muted subtitle, › right
+            <span class="ctm-arrow">→</span>
+            <strong>Phone 1:</strong> Shield icon | "Review flagged content" | "2 new alerts need attention" | › — identical dark card, identical layout. <strong>Phone 3:</strong> Fact card — lock icon | "Fun Fact" | "Regular exercise reduces anxiety by 48%" — same card, no arrow (AI context variant).
+          </div>
+        </div>
+
+        <div class="ctm-item">
+          <div class="ctm-item-header">
+            <div class="ctm-num">4</div>
+            <div class="ctm-item-title">"Today" + "See All" Minimal Section Header</div>
+          </div>
+          <div class="ctm-item-body">
+            <span class="ctm-anchor">Anchor:</span> "Today" left, "See All" right — 11px, 600 weight, #b0b0b0, no border
+            <span class="ctm-arrow">→</span>
+            <strong>Phone 1:</strong> "Recent Alerts" + "See All" — same muted paired label layout. <strong>Phone 3:</strong> "Today" + "See All" — exact anchor translation for the chat date separator.
+          </div>
+        </div>
+
+        <div class="ctm-item">
+          <div class="ctm-item-header">
+            <div class="ctm-num">5</div>
+            <div class="ctm-item-title">Credential-Style List Rows</div>
+          </div>
+          <div class="ctm-item-body">
+            <span class="ctm-anchor">Anchor:</span> Netflix N icon 32px circle | "Netflix" bold white | "netflix.zri3O@aleisos.com" muted | 👁 right — transparent bg rows
+            <span class="ctm-arrow">→</span>
+            <strong>Phone 1 alerts:</strong> Red "SH" circle | "Self-harm mention" bold | "Emma · 3 flagged messages" muted | 👁. Purple "L" | "Loneliness pattern" | "Emma · 7 mentions". Orange "D" | "Drug reference" | "James · 2 mentions".
+            <strong>Phone 2 settings:</strong> Same row structure — colored icon circle | setting name | badge pill | toggle chevron.
+          </div>
+        </div>
+
+        <div class="ctm-item">
+          <div class="ctm-item-header">
+            <div class="ctm-num">6</div>
+            <div class="ctm-item-title">"SafeChat" Ambient Background Text</div>
+          </div>
+          <div class="ctm-item-body">
+            <span class="ctm-anchor">Anchor:</span> "ProtoPass" ~120px display font at ~35% opacity, dark color, behind phone UI
+            <span class="ctm-arrow">→</span>
+            <strong>Page level:</strong> "SafeChat" at 160px, font-weight 900, color #2a2a2a, opacity 0.35, absolute positioned and centered behind all three phone frames. The outer page bg is #EEEEEE light gray, so the dark text reads as a subtle ghost layer.
+          </div>
+        </div>
+
+      </div><!-- /right col -->
+    </div><!-- /docs-two-col -->
+  </div><!-- /docs-section -->
 
 </body>
 </html>

@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeChat Direction B — Warm Architecture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #F7F5F1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─────────────────────────────────────────────
+       PHONE SHELL
+    ───────────────────────────────────────────── */
+    .phone-shell {
+      width: 390px;
+      height: 844px;
+      background: #FFFFFF;
+      border-radius: 48px;
+      border: 8px solid #1C1C1E;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.32), 0 2px 8px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    /* ─────────────────────────────────────────────
+       SCREENS
+    ───────────────────────────────────────────── */
+    .screen {
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .screen.active { display: flex; }
+
+    /* ─────────────────────────────────────────────
+       STATUS BAR
+    ───────────────────────────────────────────── */
+    .status-bar {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .status-bar.dark { color: #FFFFFF; }
+    .status-bar.light { color: #1A2635; }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ─────────────────────────────────────────────
+       PROGRESS DOTS
+    ───────────────────────────────────────────── */
+    .progress-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 0 4px;
+      flex-shrink: 0;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #E8E6E1;
+    }
+
+    .dot.active {
+      width: 20px;
+      background: #4BBFD4;
+    }
+
+    /* ─────────────────────────────────────────────
+       CTA BUTTON
+    ───────────────────────────────────────────── */
+    .cta-btn {
+      width: 100%;
+      height: 54px;
+      border-radius: 14px;
+      border: none;
+      background: #4BBFD4;
+      color: #FFFFFF;
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-btn:active { opacity: 0.88; }
+
+    /* ─────────────────────────────────────────────
+       TAB BAR
+    ───────────────────────────────────────────── */
+    .tab-bar {
+      height: 82px;
+      background: #FFFFFF;
+      border-top: 1px solid #E8E6E1;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding: 10px 8px 0;
+      flex-shrink: 0;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #6B7A8D;
+      min-width: 48px;
+    }
+
+    .tab-item.active { color: #4BBFD4; }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 1 — WELCOME (DARK)
+    ═══════════════════════════════════════════ */
+    .screen-welcome {
+      background: #162B45;
+      position: relative;
+    }
+
+    .welcome-glow-1 {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 280px;
+      border-radius: 999px;
+      background: rgba(75,191,212,0.15);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .welcome-glow-2 {
+      position: absolute;
+      bottom: 120px;
+      right: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      background: rgba(75,191,212,0.08);
+      filter: blur(48px);
+      pointer-events: none;
+    }
+
+    .welcome-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .welcome-logo-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: rgba(75,191,212,0.15);
+      border: 1px solid rgba(75,191,212,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .welcome-wordmark {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .welcome-tagline {
+      font-size: 11px;
+      font-weight: 700;
+      color: #4BBFD4;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .welcome-headline {
+      font-size: 28px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .welcome-sub {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .welcome-cta-wrap {
+      width: 100%;
+      padding: 0 32px 40px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 2 — CHILD NAME INPUT
+    ═══════════════════════════════════════════ */
+    .screen-name {
+      background: #F7F5F1;
+    }
+
+    .screen-name .status-bar { background: #F7F5F1; }
+
+    .name-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 20px 0;
+      overflow-y: auto;
+    }
+
+    .name-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .name-avatar-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      background: rgba(75,191,212,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .name-headline {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1A2635;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .name-sub {
+      font-size: 13px;
+      font-weight: 400;
+      color: #6B7A8D;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .name-input {
+      width: 100%;
+      height: 52px;
+      background: #FFFFFF;
+      border: 1.5px solid #E8E6E1;
+      border-radius: 12px;
+      padding: 0 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: #1A2635;
+      outline: none;
+    }
+
+    .name-input::placeholder { color: #6B7A8D; }
+
+    .name-input:focus { border-color: #4BBFD4; }
+
+    .name-cta-wrap {
+      padding: 0 20px 32px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 3 — TIER SELECTION
+    ═══════════════════════════════════════════ */
+    .screen-tier {
+      background: #F7F5F1;
+    }
+
+    .screen-tier .status-bar { background: #F7F5F1; }
+
+    .tier-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 20px 0;
+      overflow-y: auto;
+    }
+
+    .tier-headline {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1A2635;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .tier-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tier-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E8E6E1;
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .tier-card.selected {
+      border-color: #4BBFD4;
+      background: rgba(75,191,212,0.06);
+    }
+
+    .tier-card-icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .tier-card-body { flex: 1; min-width: 0; }
+
+    .tier-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #4BBFD4;
+      background: rgba(75,191,212,0.12);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    .tier-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1A2635;
+      margin-bottom: 4px;
+    }
+
+    .tier-desc {
+      font-size: 13px;
+      font-weight: 400;
+      color: #6B7A8D;
+      line-height: 1.45;
+    }
+
+    .tier-cta-wrap {
+      padding: 0 20px 32px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 4 — ONBOARDING SETTINGS
+    ═══════════════════════════════════════════ */
+    .screen-settings {
+      background: #F7F5F1;
+    }
+
+    .screen-settings .status-bar { background: #F7F5F1; }
+
+    .settings-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 20px 0;
+      overflow-y: auto;
+    }
+
+    .settings-headline {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1A2635;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .settings-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+      padding: 20px 18px;
+      margin-bottom: 16px;
+    }
+
+    .settings-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6B7A8D;
+      margin-bottom: 6px;
+    }
+
+    .settings-card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #1A2635;
+      margin-bottom: 16px;
+    }
+
+    .pill-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .pill-row:last-child { margin-bottom: 0; }
+
+    .pill-row-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1A2635;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .pill {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6B7A8D;
+      background: #F7F5F1;
+      border: 1px solid #E8E6E1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pill.pill-active {
+      background: #4BBFD4;
+      color: #FFFFFF;
+      border-color: #4BBFD4;
+    }
+
+    .settings-cta-wrap {
+      padding: 0 20px 32px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREEN 5 — PARENT DASHBOARD
+    ═══════════════════════════════════════════ */
+    .screen-dashboard {
+      background: #F7F5F1;
+    }
+
+    .screen-dashboard .status-bar { background: #F7F5F1; }
+
+    .dashboard-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 20px 0;
+      overflow-y: auto;
+    }
+
+    .success-card {
+      background: rgba(75,212,130,0.08);
+      border: 1px solid rgba(76,175,130,0.2);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .success-card-text { flex: 1; min-width: 0; }
+
+    .success-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1A2635;
+      margin-bottom: 3px;
+    }
+
+    .success-sub {
+      font-size: 13px;
+      font-weight: 400;
+      color: #6B7A8D;
+    }
+
+    .dashboard-header {
+      margin-bottom: 20px;
+    }
+
+    .dashboard-greeting {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1A2635;
+      margin-bottom: 8px;
+    }
+
+    .child-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1px solid #E8E6E1;
+      border-radius: 999px;
+      padding: 5px 12px 5px 8px;
+      box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+    }
+
+    .child-chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #4CAF82;
+      flex-shrink: 0;
+    }
+
+    .child-chip-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1A2635;
+    }
+
+    .dashboard-tiles-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6B7A8D;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .dashboard-tiles {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard-tile {
+      flex: 1;
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 14px 10px;
+      box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .tile-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1A2635;
+      text-align: center;
+    }
+
+    /* ─────────────────────────────────────────────
+       FIGMA GALLERY MODE
+    ───────────────────────────────────────────── */
+    .gallery-mode {
+      display: none;
+      font-family: 'Nunito', sans-serif;
+      background: #F7F5F1;
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .gallery-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1A2635;
+      margin-bottom: 8px;
+    }
+
+    .gallery-sub {
+      font-size: 13px;
+      color: #6B7A8D;
+      margin-bottom: 32px;
+    }
+
+    .gallery-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .gallery-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6B7A8D;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .gallery-screen-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gallery-screen-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6B7A8D;
+      text-align: center;
+    }
+
+    .gallery-phone {
+      width: 136px;
+      height: 295px;
+      border-radius: 18px;
+      border: 3px solid #1C1C1E;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      transform: scale(1);
+      flex-shrink: 0;
+    }
+
+    .gallery-phone .screen { position: relative; top: auto; left: auto; display: flex; }
+
+    .gallery-states-wrap {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+
+    .state-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .state-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #6B7A8D;
+      text-align: center;
+    }
+
+    .swatch-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(22,43,69,0.06);
+    }
+
+    .swatch { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+
+    .swatch-label { font-size: 11px; font-weight: 600; color: #1A2635; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     DEFAULT: PHONE MODE
+═══════════════════════════════════ -->
+<div class="phone-shell" id="phoneShell">
+
+  <!-- ──────────────────────────────
+       SCREEN 1: WELCOME
+  ────────────────────────────────── -->
+  <div class="screen screen-welcome active" id="screen1">
+    <!-- Glow layers -->
+    <div class="welcome-glow-1"></div>
+    <div class="welcome-glow-2"></div>
+
+    <!-- Status bar -->
+    <div class="status-bar dark">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white" aria-hidden="true" focusable="false">
+          <rect x="0" y="3" width="3" height="9" rx="1"/>
+          <rect x="4.5" y="2" width="3" height="10" rx="1"/>
+          <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+          <rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.35"/>
+        </svg>
+        <svg width="16" height="12" viewBox="0 0 18 14" fill="none" aria-hidden="true" focusable="false">
+          <path d="M9 2.5C11.8 2.5 14.3 3.7 16 5.7L17.5 4C15.4 1.5 12.4 0 9 0C5.6 0 2.6 1.5 0.5 4L2 5.7C3.7 3.7 6.2 2.5 9 2.5Z" fill="white"/>
+          <path d="M9 6C10.9 6 12.6 6.8 13.8 8.1L15.3 6.4C13.7 4.6 11.5 3.5 9 3.5C6.5 3.5 4.3 4.6 2.7 6.4L4.2 8.1C5.4 6.8 7.1 6 9 6Z" fill="white"/>
+          <circle cx="9" cy="11" r="2" fill="white"/>
+        </svg>
+        <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true" focusable="false">
+          <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="white" stroke-opacity="0.35"/>
+          <rect x="2" y="2" width="17" height="9" rx="2" fill="white"/>
+          <path d="M24 4.5V8.5C24.8 8.2 25.5 7.4 25.5 6.5C25.5 5.6 24.8 4.8 24 4.5Z" fill="white" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Welcome body -->
+    <div class="welcome-body">
+      <div class="welcome-logo-wrap">
+        <!-- TreeHouse Logo 40×40 -->
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="white" aria-hidden="true" focusable="false">
+          <polygon points="12,3 4,13 20,13"/>
+          <polygon points="12,8 3,19 21,19"/>
+          <rect x="10" y="19" width="4" height="5"/>
+        </svg>
+      </div>
+      <div class="welcome-wordmark">TreeHouse</div>
+      <div class="welcome-tagline">SafeChat for Kids</div>
+      <div class="welcome-headline">Set up in minutes.<br>Protect forever.</div>
+      <div class="welcome-sub">A personalized AI companion your child will love — filtered for their world.</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="welcome-cta-wrap">
+      <button class="cta-btn" onclick="showScreen(2)">Let's get started</button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────
+       SCREEN 2: CHILD NAME INPUT
+  ────────────────────────────────── -->
+  <div class="screen screen-name" id="screen2">
+    <div class="status-bar light">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A2635" aria-hidden="true" focusable="false">
+          <rect x="0" y="3" width="3" height="9" rx="1"/>
+          <rect x="4.5" y="2" width="3" height="10" rx="1"/>
+          <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+          <rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.35"/>
+        </svg>
+        <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true" focusable="false">
+          <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#1A2635" stroke-opacity="0.35"/>
+          <rect x="2" y="2" width="17" height="9" rx="2" fill="#1A2635"/>
+          <path d="M24 4.5V8.5C24.8 8.2 25.5 7.4 25.5 6.5C25.5 5.6 24.8 4.8 24 4.5Z" fill="#1A2635" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Progress dots: 1 of 4 -->
+    <div class="progress-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="name-content">
+      <div class="name-card">
+        <!-- Child avatar icon 32×32 -->
+        <div class="name-avatar-wrap">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="#4BBFD4" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="name-headline">What's your child's name?</div>
+        <div class="name-sub">We'll make SafeChat feel personal for them.</div>
+        <input
+          class="name-input"
+          id="childNameInput"
+          type="text"
+          placeholder="e.g. Zoe"
+          maxlength="30"
+        >
+      </div>
+    </div>
+
+    <div class="name-cta-wrap">
+      <button class="cta-btn" onclick="saveName()">Continue</button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────
+       SCREEN 3: TIER SELECTION
+  ────────────────────────────────── -->
+  <div class="screen screen-tier" id="screen3">
+    <div class="status-bar light">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A2635" aria-hidden="true" focusable="false">
+          <rect x="0" y="3" width="3" height="9" rx="1"/>
+          <rect x="4.5" y="2" width="3" height="10" rx="1"/>
+          <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+          <rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.35"/>
+        </svg>
+        <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true" focusable="false">
+          <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#1A2635" stroke-opacity="0.35"/>
+          <rect x="2" y="2" width="17" height="9" rx="2" fill="#1A2635"/>
+          <path d="M24 4.5V8.5C24.8 8.2 25.5 7.4 25.5 6.5C25.5 5.6 24.8 4.8 24 4.5Z" fill="#1A2635" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Progress dots: 2 of 4 -->
+    <div class="progress-dots">
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="tier-content">
+      <div class="tier-headline" id="tierHeadline">Choose Zoe's protection level</div>
+
+      <div class="tier-cards" id="tierCards">
+
+        <!-- Essential -->
+        <div class="tier-card" id="tierEssential" onclick="selectTier('essential')">
+          <div class="tier-card-icon">
+            <!-- Shield: Essential (gray) -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="tier-card-body">
+            <div class="tier-name">Essential</div>
+            <div class="tier-desc">Basic protection — violence and adult content blocked.</div>
+          </div>
+        </div>
+
+        <!-- Standard (selected by default) -->
+        <div class="tier-card selected" id="tierStandard" onclick="selectTier('standard')">
+          <div class="tier-badge">Recommended</div>
+          <div class="tier-card-icon">
+            <!-- Shield-check: Standard (teal) -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="9 12 11 14 15 10" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="tier-card-body">
+            <div class="tier-name" id="standardName" style="color:#162B45;">Standard</div>
+            <div class="tier-desc" id="standardDesc">Zoe can get homework help, creative writing, and curiosity — without the dark corners of the internet.</div>
+          </div>
+        </div>
+
+        <!-- Full -->
+        <div class="tier-card" id="tierFull" onclick="selectTier('full')">
+          <div class="tier-card-icon">
+            <!-- Shield-lock: Full (dark) -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#162B45" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="9" y="11" width="6" height="5" rx="1" stroke="#162B45" stroke-width="1.5"/>
+              <path d="M10 11V9a2 2 0 014 0v2" stroke="#162B45" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="tier-card-body">
+            <div class="tier-name">Full</div>
+            <div class="tier-desc" id="fullDesc">Maximum protection — educational and creative topics only.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tier-cta-wrap">
+      <button class="cta-btn" id="tierCta" onclick="showScreen(4)">Set up Zoe's SafeChat →</button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────
+       SCREEN 4: ONBOARDING SETTINGS
+  ────────────────────────────────── -->
+  <div class="screen screen-settings" id="screen4">
+    <div class="status-bar light">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A2635" aria-hidden="true" focusable="false">
+          <rect x="0" y="3" width="3" height="9" rx="1"/>
+          <rect x="4.5" y="2" width="3" height="10" rx="1"/>
+          <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+          <rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.35"/>
+        </svg>
+        <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true" focusable="false">
+          <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#1A2635" stroke-opacity="0.35"/>
+          <rect x="2" y="2" width="17" height="9" rx="2" fill="#1A2635"/>
+          <path d="M24 4.5V8.5C24.8 8.2 25.5 7.4 25.5 6.5C25.5 5.6 24.8 4.8 24 4.5Z" fill="#1A2635" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Progress dots: 3 of 4 -->
+    <div class="progress-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="settings-content">
+      <div class="settings-headline" id="settingsHeadline">What should Zoe's SafeChat avoid?</div>
+
+      <div class="settings-card">
+        <div class="settings-card-label">Content</div>
+        <div class="settings-card-title" id="settingsCardTitle">Topics to filter for Zoe</div>
+
+        <!-- Violence -->
+        <div class="pill-row">
+          <div class="pill-row-label">Violence</div>
+          <div class="pill-group">
+            <button class="pill" onclick="setPill(this, 'violence', 'Off')">Off</button>
+            <button class="pill pill-active" onclick="setPill(this, 'violence', 'Balanced')">Balanced</button>
+            <button class="pill" onclick="setPill(this, 'violence', 'Strict')">Strict</button>
+          </div>
+        </div>
+
+        <!-- Adult Content -->
+        <div class="pill-row">
+          <div class="pill-row-label">Adult Content</div>
+          <div class="pill-group">
+            <button class="pill" onclick="setPill(this, 'adult', 'Off')">Off</button>
+            <button class="pill pill-active" onclick="setPill(this, 'adult', 'Balanced')">Balanced</button>
+            <button class="pill" onclick="setPill(this, 'adult', 'Strict')">Strict</button>
+          </div>
+        </div>
+
+        <!-- Profanity -->
+        <div class="pill-row">
+          <div class="pill-row-label">Profanity</div>
+          <div class="pill-group">
+            <button class="pill" onclick="setPill(this, 'profanity', 'Off')">Off</button>
+            <button class="pill pill-active" onclick="setPill(this, 'profanity', 'Balanced')">Balanced</button>
+            <button class="pill" onclick="setPill(this, 'profanity', 'Strict')">Strict</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="settings-cta-wrap">
+      <button class="cta-btn" onclick="showScreen(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────
+       SCREEN 5: PARENT DASHBOARD
+  ────────────────────────────────── -->
+  <div class="screen screen-dashboard" id="screen5">
+    <div class="status-bar light">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A2635" aria-hidden="true" focusable="false">
+          <rect x="0" y="3" width="3" height="9" rx="1"/>
+          <rect x="4.5" y="2" width="3" height="10" rx="1"/>
+          <rect x="9" y="0.5" width="3" height="11.5" rx="1"/>
+          <rect x="13.5" y="0" width="2.5" height="12" rx="1" opacity="0.35"/>
+        </svg>
+        <svg width="26" height="13" viewBox="0 0 26 13" fill="none" aria-hidden="true" focusable="false">
+          <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#1A2635" stroke-opacity="0.35"/>
+          <rect x="2" y="2" width="17" height="9" rx="2" fill="#1A2635"/>
+          <path d="M24 4.5V8.5C24.8 8.2 25.5 7.4 25.5 6.5C25.5 5.6 24.8 4.8 24 4.5Z" fill="#1A2635" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <!-- Success card -->
+      <div class="success-card">
+        <!-- Checkmark circle 48×48 -->
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="#4CAF82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="22 4 12 14.01 9 11.01" stroke="#4CAF82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="success-card-text">
+          <div class="success-title" id="successTitle">SafeChat is live for Zoe</div>
+          <div class="success-sub" id="successSub">Zoe can now start chatting safely.</div>
+        </div>
+      </div>
+
+      <!-- Dashboard header -->
+      <div class="dashboard-header">
+        <div class="dashboard-greeting" id="dashboardGreeting">Hi! Zoe is protected.</div>
+        <div class="child-chip">
+          <div class="child-chip-dot"></div>
+          <span class="child-chip-label" id="childChipLabel">Zoe · Active</span>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="dashboard-tiles-label">Quick Actions</div>
+      <div class="dashboard-tiles">
+
+        <!-- View Chats -->
+        <div class="dashboard-tile">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M4 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-3 3V5a1 1 0 011-1z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="tile-label">View Chats</div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="dashboard-tile">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 14a2 2 0 004 0" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div class="tile-label">Alerts</div>
+        </div>
+
+        <!-- Settings -->
+        <div class="dashboard-tile">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="3" stroke="#4BBFD4" stroke-width="2"/>
+            <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div class="tile-label">Settings</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+
+      <!-- Home (active) -->
+      <div class="tab-item active">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="M3 10L10 3l7 7" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 8.5V16a1 1 0 001 1h3v-3h2v3h3a1 1 0 001-1V8.5" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Home</span>
+      </div>
+
+      <!-- Alerts -->
+      <div class="tab-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 14a2 2 0 004 0" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Alerts</span>
+      </div>
+
+      <!-- Chat -->
+      <div class="tab-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <path d="M4 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-3 3V5a1 1 0 011-1z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Chat</span>
+      </div>
+
+      <!-- Reports -->
+      <div class="tab-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <rect x="4" y="14" width="3" height="7" rx="1" stroke="#6B7A8D" stroke-width="2"/>
+          <rect x="10" y="9" width="3" height="12" rx="1" stroke="#6B7A8D" stroke-width="2"/>
+          <rect x="16" y="4" width="3" height="17" rx="1" stroke="#6B7A8D" stroke-width="2"/>
+        </svg>
+        <span>Reports</span>
+      </div>
+
+      <!-- Settings -->
+      <div class="tab-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="3" stroke="#6B7A8D" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Settings</span>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /phone-shell -->
+
+<!-- ═══════════════════════════════════
+     FIGMA GALLERY MODE
+═══════════════════════════════════ -->
+<div class="gallery-mode" id="galleryMode">
+  <div class="gallery-title">SafeChat — Direction B: Warm Architecture</div>
+  <div class="gallery-sub">Figma handoff gallery · All screens at 0.35 scale · Component states</div>
+
+  <div class="gallery-section-label">All 5 Screens</div>
+  <div class="gallery-row" id="galleryScreens"></div>
+
+  <div class="gallery-section-label">Button States</div>
+  <div class="gallery-states-wrap">
+    <div class="state-item">
+      <div style="width:180px;height:54px;border-radius:14px;background:#4BBFD4;color:#FFFFFF;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(75,191,212,0.35);">Continue</div>
+      <div class="state-label">CTA — Default</div>
+    </div>
+    <div class="state-item">
+      <div style="width:180px;height:54px;border-radius:14px;background:rgba(75,191,212,0.5);color:#FFFFFF;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;">Continue</div>
+      <div class="state-label">CTA — Pressed</div>
+    </div>
+    <div class="state-item">
+      <div style="width:180px;height:54px;border-radius:14px;background:#E8E6E1;color:#6B7A8D;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;">Continue</div>
+      <div class="state-label">CTA — Disabled</div>
+    </div>
+  </div>
+
+  <div class="gallery-section-label">Pill States</div>
+  <div class="gallery-states-wrap">
+    <div class="state-item">
+      <div class="pill" style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:#6B7A8D;background:#F7F5F1;border:1px solid #E8E6E1;border-radius:999px;height:28px;padding:0 10px;display:flex;align-items:center;">Off</div>
+      <div class="state-label">Unselected</div>
+    </div>
+    <div class="state-item">
+      <div style="height:28px;padding:0 10px;border-radius:999px;background:#4BBFD4;color:#FFFFFF;font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;display:flex;align-items:center;">Balanced</div>
+      <div class="state-label">Selected</div>
+    </div>
+    <div class="state-item">
+      <div style="height:28px;padding:0 10px;border-radius:999px;background:#F7F5F1;color:#6B7A8D;font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;border:1px solid #E8E6E1;display:flex;align-items:center;">Strict</div>
+      <div class="state-label">Unselected</div>
+    </div>
+  </div>
+
+  <div class="gallery-section-label">Tier Card States</div>
+  <div class="gallery-states-wrap">
+    <div class="state-item">
+      <div style="width:200px;padding:14px;border-radius:16px;background:#FFFFFF;border:1.5px solid #E8E6E1;font-family:'Nunito',sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1A2635;margin-bottom:4px;">Essential</div>
+        <div style="font-size:12px;color:#6B7A8D;">Basic protection — violence and adult content blocked.</div>
+      </div>
+      <div class="state-label">Default</div>
+    </div>
+    <div class="state-item">
+      <div style="width:200px;padding:14px;border-radius:16px;background:rgba(75,191,212,0.06);border:1.5px solid #4BBFD4;font-family:'Nunito',sans-serif;position:relative;">
+        <div style="position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;text-transform:uppercase;color:#4BBFD4;background:rgba(75,191,212,0.12);border-radius:4px;padding:2px 5px;">Recommended</div>
+        <div style="font-size:13px;font-weight:800;color:#162B45;margin-bottom:4px;">Standard</div>
+        <div style="font-size:12px;color:#6B7A8D;">Homework help, creative writing, curiosity — safely.</div>
+      </div>
+      <div class="state-label">Selected</div>
+    </div>
+  </div>
+
+  <div class="gallery-section-label">Name Input States</div>
+  <div class="gallery-states-wrap">
+    <div class="state-item">
+      <input style="width:180px;height:48px;border-radius:12px;border:1.5px solid #E8E6E1;background:#FFFFFF;padding:0 14px;font-family:'Nunito',sans-serif;font-size:14px;color:#6B7A8D;outline:none;" placeholder="e.g. Zoe" readonly>
+      <div class="state-label">Empty / Placeholder</div>
+    </div>
+    <div class="state-item">
+      <input style="width:180px;height:48px;border-radius:12px;border:1.5px solid #4BBFD4;background:#FFFFFF;padding:0 14px;font-family:'Nunito',sans-serif;font-size:14px;color:#1A2635;outline:none;" value="Zoe" readonly>
+      <div class="state-label">Focused / Filled</div>
+    </div>
+  </div>
+
+  <div class="gallery-section-label">Tab Bar Icons — Active vs Inactive</div>
+  <div class="gallery-states-wrap">
+    <div class="state-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M3 10L10 3l7 7" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 8.5V16a1 1 0 001 1h3v-3h2v3h3a1 1 0 001-1V8.5" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="state-label">Home — Active</div>
+    </div>
+    <div class="state-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M3 10L10 3l7 7" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 8.5V16a1 1 0 001 1h3v-3h2v3h3a1 1 0 001-1V8.5" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="state-label">Home — Inactive</div>
+    </div>
+    <div class="state-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 14a2 2 0 004 0" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="state-label">Alerts — Active</div>
+    </div>
+    <div class="state-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M4 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-3 3V5a1 1 0 011-1z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="state-label">Chat — Active</div>
+    </div>
+  </div>
+
+  <div class="gallery-section-label">Color Tokens</div>
+  <div class="gallery-states-wrap">
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#162B45;"></div>
+      <span class="swatch-label">#162B45 dark-bg</span>
+    </div>
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#4BBFD4;"></div>
+      <span class="swatch-label">#4BBFD4 accent</span>
+    </div>
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#F7F5F1;border:1px solid #E8E6E1;"></div>
+      <span class="swatch-label">#F7F5F1 bg-light</span>
+    </div>
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#1A2635;"></div>
+      <span class="swatch-label">#1A2635 text-primary</span>
+    </div>
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#6B7A8D;"></div>
+      <span class="swatch-label">#6B7A8D text-secondary</span>
+    </div>
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#4CAF82;"></div>
+      <span class="swatch-label">#4CAF82 alert-success</span>
+    </div>
+    <div class="swatch-wrap">
+      <div class="swatch" style="background:#E8E6E1;"></div>
+      <span class="swatch-label">#E8E6E1 border</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  // STATE
+  // ─────────────────────────────────────────────
+  window.childName = 'Zoe';
+  var selectedTier = 'standard';
+
+  // ─────────────────────────────────────────────
+  // SCREEN NAVIGATION
+  // ─────────────────────────────────────────────
+  function showScreen(n) {
+    var screens = document.querySelectorAll('.screen');
+    screens.forEach(function(s) { s.classList.remove('active'); });
+    var target = document.getElementById('screen' + n);
+    if (target) { target.classList.add('active'); }
+  }
+
+  // ─────────────────────────────────────────────
+  // SAVE NAME & UPDATE PERSONALIZED COPY
+  // ─────────────────────────────────────────────
+  function saveName() {
+    var input = document.getElementById('childNameInput');
+    var name = (input && input.value.trim()) ? input.value.trim() : 'Zoe';
+    window.childName = name;
+    applyChildName(name);
+    showScreen(3);
+  }
+
+  function applyChildName(name) {
+    var tierHeadline = document.getElementById('tierHeadline');
+    if (tierHeadline) {
+      tierHeadline.textContent = "Choose " + name + "'s protection level";
+    }
+    var standardDesc = document.getElementById('standardDesc');
+    if (standardDesc) {
+      standardDesc.textContent = name + " can get homework help, creative writing, and curiosity \u2014 without the dark corners of the internet.";
+    }
+    var settingsHeadline = document.getElementById('settingsHeadline');
+    if (settingsHeadline) {
+      settingsHeadline.textContent = "What should " + name + "'s SafeChat avoid?";
+    }
+    var settingsCardTitle = document.getElementById('settingsCardTitle');
+    if (settingsCardTitle) {
+      settingsCardTitle.textContent = "Topics to filter for " + name;
+    }
+    var tierCta = document.getElementById('tierCta');
+    if (tierCta) {
+      tierCta.textContent = "Set up " + name + "'s SafeChat \u2192";
+    }
+    var successTitle = document.getElementById('successTitle');
+    if (successTitle) {
+      successTitle.textContent = "SafeChat is live for " + name;
+    }
+    var successSub = document.getElementById('successSub');
+    if (successSub) {
+      successSub.textContent = name + " can now start chatting safely.";
+    }
+    var dashboardGreeting = document.getElementById('dashboardGreeting');
+    if (dashboardGreeting) {
+      dashboardGreeting.textContent = "Hi! " + name + " is protected.";
+    }
+    var childChipLabel = document.getElementById('childChipLabel');
+    if (childChipLabel) {
+      childChipLabel.textContent = name + " \u00B7 Active";
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // TIER SELECTION
+  // ─────────────────────────────────────────────
+  function selectTier(tier) {
+    selectedTier = tier;
+    var cards = ['essential', 'standard', 'full'];
+    cards.forEach(function(t) {
+      var card = document.getElementById('tier' + t.charAt(0).toUpperCase() + t.slice(1));
+      if (!card) { return; }
+      if (t === tier) {
+        card.classList.add('selected');
+      } else {
+        card.classList.remove('selected');
+      }
+    });
+    // Update tier name color for selected/unselected standard
+    var standardName = document.getElementById('standardName');
+    if (standardName) {
+      standardName.style.color = (tier === 'standard') ? '#162B45' : '#1A2635';
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // PILL SELECTION
+  // ─────────────────────────────────────────────
+  function setPill(el, group, val) {
+    var row = el.parentElement;
+    if (!row) { return; }
+    var pills = row.querySelectorAll('.pill');
+    pills.forEach(function(p) { p.classList.remove('pill-active'); });
+    el.classList.add('pill-active');
+  }
+
+  // ─────────────────────────────────────────────
+  // FIGMA GALLERY MODE
+  // ─────────────────────────────────────────────
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('figma') === 'true') {
+    document.getElementById('phoneShell').style.display = 'none';
+    var gallery = document.getElementById('galleryMode');
+    gallery.style.display = 'block';
+
+    // Build screen snapshots at 0.35 scale
+    var screenLabels = ['Screen 1: Welcome', 'Screen 2: Name Input', 'Screen 3: Tier Selection', 'Screen 4: Settings', 'Screen 5: Dashboard'];
+    var screenIds = [1, 2, 3, 4, 5];
+    var galleryScreens = document.getElementById('galleryScreens');
+
+    screenIds.forEach(function(id, i) {
+      var wrap = document.createElement('div');
+      wrap.className = 'gallery-screen-wrap';
+
+      var miniPhone = document.createElement('div');
+      miniPhone.className = 'gallery-phone';
+      miniPhone.style.width = '136px';
+      miniPhone.style.height = '295px';
+
+      // Create a scaled iframe-like div showing the screen
+      var inner = document.createElement('div');
+      inner.style.width = '390px';
+      inner.style.height = '844px';
+      inner.style.transform = 'scale(0.35)';
+      inner.style.transformOrigin = 'top left';
+      inner.style.pointerEvents = 'none';
+      inner.style.overflow = 'hidden';
+      inner.style.position = 'relative';
+
+      // Clone just the screen div
+      var originalScreen = document.getElementById('screen' + id);
+      if (originalScreen) {
+        var clone = originalScreen.cloneNode(true);
+        clone.classList.add('active');
+        clone.style.position = 'relative';
+        clone.style.display = 'flex';
+        inner.appendChild(clone);
+      }
+
+      miniPhone.appendChild(inner);
+      wrap.appendChild(miniPhone);
+
+      var label = document.createElement('div');
+      label.className = 'gallery-screen-label';
+      label.textContent = screenLabels[i];
+      wrap.appendChild(label);
+
+      galleryScreens.appendChild(wrap);
+    });
+  }
+</script>
+</body>
+</html>

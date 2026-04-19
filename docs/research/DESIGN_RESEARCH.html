@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TreeHouse — Design Research</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; color: #1a1a1a; background: #f6f6f6; padding: 40px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: #666; margin-bottom: 40px; font-size: 15px; }
+  h2 { font-size: 20px; font-weight: 700; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #e0e0e0; }
+  h3 { font-size: 15px; font-weight: 600; margin: 24px 0 10px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; }
+  .section { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 24px; border: 1px solid #e8e8e8; }
+  .anchor-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .anchor-badge { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; font-weight: 800; font-size: 16px; color: #fff; flex-shrink: 0; }
+  .badge-a { background: #6b2aed; }
+  .badge-b { background: #274296; }
+  .badge-c { background: #1c1c1c; }
+  .anchor-title { font-size: 18px; font-weight: 700; }
+  .anchor-file { font-size: 12px; color: #888; font-family: monospace; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; padding: 8px 12px; border-bottom: 1px solid #eee; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: #555; width: 200px; }
+  .tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-family: monospace; }
+  .tag-canvas { background: #e8f5e9; color: #2e7d32; }
+  .tag-zoom { background: #fff8e1; color: #f57f17; }
+  .tag-screenshot { background: #fce4ec; color: #c62828; }
+  .swatch { display: inline-block; width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); margin-right: 6px; vertical-align: middle; }
+  .palette-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+  .color-chip { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .color-chip .chip { width: 48px; height: 48px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); }
+  .color-chip .hex { font-size: 10px; font-family: monospace; color: #555; }
+  .color-chip .label { font-size: 10px; color: #888; text-align: center; }
+  .synthesis-table td:first-child { width: 120px; font-weight: 700; color: #333; }
+  .dir-label { font-weight: 800; letter-spacing: 0.1em; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+  .dir-a { background: #ede8ff; color: #6b2aed; }
+  .dir-b { background: #e8ecf5; color: #274296; }
+  .dir-c { background: #f0f0f0; color: #1c1c1c; }
+  .selection-box { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+  .selection-box h3 { color: #166534; margin-bottom: 8px; font-size: 13px; }
+  .selection-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .selection-card { background: #fff; border-radius: 8px; padding: 14px; border: 1px solid #e0e0e0; }
+  .selection-card .dir { font-weight: 800; font-size: 20px; margin-bottom: 4px; }
+  .selection-card .name { font-weight: 600; margin-bottom: 2px; }
+  .selection-card .desc { font-size: 12px; color: #666; }
+  .signature-box { background: #fffbf0; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 4px; margin-top: 12px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>TreeHouse / SafeChat — Design Research</h1>
+<p class="subtitle">Phase 1 Design Research Output · 8 screenshots captured · Client confirmed 3 anchors · 3 Synthesis Tables complete</p>
+
+<div class="selection-box">
+  <h3>CLIENT IMAGE SELECTION — CONFIRMED</h3>
+  <div class="selection-row">
+    <div class="selection-card">
+      <div class="dir" style="color:#6b2aed">A</div>
+      <div class="name">Cooper AI Chat (Dribbble)</div>
+      <div class="desc">Lavender bg · white cards · dual-tone chat bubbles · deep violet CTA</div>
+    </div>
+    <div class="selection-card">
+      <div class="dir" style="color:#274296">B</div>
+      <div class="name">Fireart Parental Dashboard (Dribbble)</div>
+      <div class="desc">Navy accent · warm pastel cards · screen-time chart · coral highlights</div>
+    </div>
+    <div class="selection-card">
+      <div class="dir" style="color:#1c1c1c">C</div>
+      <div class="name">Cyber Security App (Dribbble)</div>
+      <div class="desc">Near-black bg · dark card rows · Proton purple accent · display typography texture</div>
+    </div>
+  </div>
+</div>
+
+<h2>Anchor A Extraction — Cooper AI Chat</h2>
+<div class="section">
+  <div class="anchor-header">
+    <div class="anchor-badge badge-a">A</div>
+    <div>
+      <div class="anchor-title">Cooper AI Chat — Mobile App Exploration (Paperpillar)</div>
+      <div class="anchor-file">pattern-ai-chat-dribbble.png · 801×827px · Source: Dribbble (screenshot-only, no live URL)</div>
+    </div>
+  </div>
+
+  <h3>Palette</h3>
+  <div class="palette-row">
+    <div class="color-chip"><div class="chip" style="background:#f8f7fc; border:1px solid #ddd"></div><div class="hex">#f8f7fc</div><div class="label">Page bg</div></div>
+    <div class="color-chip"><div class="chip" style="background:#ffffff; border:1px solid #ddd"></div><div class="hex">#ffffff</div><div class="label">Card surface</div></div>
+    <div class="color-chip"><div class="chip" style="background:#6b2aed"></div><div class="hex">#6b2aed</div><div class="label">CTA accent</div></div>
+    <div class="color-chip"><div class="chip" style="background:#d7d0fe"></div><div class="hex">#d7d0fe</div><div class="label">User bubble</div></div>
+    <div class="color-chip"><div class="chip" style="background:#ffecba"></div><div class="hex">#ffecba</div><div class="label">AI bubble</div></div>
+    <div class="color-chip"><div class="chip" style="background:#242529"></div><div class="hex">#242529</div><div class="label">Text</div></div>
+    <div class="color-chip"><div class="chip" style="background:#ddd7ed"></div><div class="hex">#ddd7ed</div><div class="label">Nav bg</div></div>
+  </div>
+
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Page background</td><td><span class="swatch" style="background:#f8f7fc"></span>#f8f7fc</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Card surface</td><td><span class="swatch" style="background:#ffffff; border:1px solid #ccc"></span>#ffffff</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Primary accent</td><td><span class="swatch" style="background:#6b2aed"></span>#6b2aed (deep violet)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>User chat bubble</td><td><span class="swatch" style="background:#d7d0fe"></span>#d7d0fe (soft lavender)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>AI chat bubble</td><td><span class="swatch" style="background:#ffecba"></span>#ffecba (warm yellow)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Heading text</td><td><span class="swatch" style="background:#242529"></span>#242529</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Body text</td><td><span class="swatch" style="background:#242529"></span>#242529</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Muted text</td><td>not-visible from screenshot</td><td><span class="tag tag-screenshot">screenshot-estimated</span></td></tr>
+    <tr><td>Border / divider</td><td>none visible</td><td><span class="tag tag-screenshot">screenshot-estimated</span></td></tr>
+    <tr><td>Nav background</td><td><span class="swatch" style="background:#ddd7ed"></span>#ddd7ed (muted lavender)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+  </table>
+
+  <h3>Typography</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Heading font</td><td>Rounded geometric sans-serif (soft curves — Plus Jakarta Sans / Nunito style) · weight 700</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body font</td><td>Same family · weight 400</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Heading letter-spacing</td><td>normal</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body line-height</td><td>loose 1.6</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Label text-transform</td><td>none</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Spacing</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Card internal padding</td><td>generous (~24–32px)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Item gap</td><td>medium (~12px)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Section breathing</td><td>airy</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Horizontal alignment</td><td>left-heavy (chat layout)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Shape</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Card border radius</td><td>large 20–28px</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Button border radius</td><td>pill</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Input border radius</td><td>pill / large</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Avatar shape</td><td>circle</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Elevation &amp; Components</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Shadow style</td><td>subtle / diffuse</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Border treatment</td><td>none</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Icon style</td><td>filled / rounded</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Navigation pattern</td><td>bottom tab bar</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>List pattern</td><td>cards — full-width, large radius</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Active state color</td><td><span class="swatch" style="background:#6b2aed"></span>#6b2aed</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+  </table>
+
+  <div class="signature-box">
+    <strong>Signature element:</strong> Dual-tone chat bubbles — soft lavender <code>#d7d0fe</code> for user messages and warm yellow <code>#ffecba</code> for AI responses — on white card background with pill input bar at bottom. Color pairing creates warmth and clear sender attribution without harsh contrast.
+  </div>
+</div>
+
+<h2>Anchor B Extraction — Fireart Parental Dashboard</h2>
+<div class="section">
+  <div class="anchor-header">
+    <div class="anchor-badge badge-b">B</div>
+    <div>
+      <div class="anchor-title">Parental Control Mobile App — Fireart Studio</div>
+      <div class="anchor-file">pattern-parental-control-dribbble-1.png · 801×827px · Source: Dribbble (screenshot-only, no live URL)</div>
+    </div>
+  </div>
+
+  <h3>Palette</h3>
+  <div class="palette-row">
+    <div class="color-chip"><div class="chip" style="background:#fafbfb; border:1px solid #ddd"></div><div class="hex">#fafbfb</div><div class="label">Page bg</div></div>
+    <div class="color-chip"><div class="chip" style="background:#ffeee6"></div><div class="hex">#ffeee6</div><div class="label">Peach surface</div></div>
+    <div class="color-chip"><div class="chip" style="background:#274296"></div><div class="hex">#274296</div><div class="label">Navy accent</div></div>
+    <div class="color-chip"><div class="chip" style="background:#f29da8"></div><div class="hex">#f29da8</div><div class="label">Coral secondary</div></div>
+    <div class="color-chip"><div class="chip" style="background:#283b85"></div><div class="hex">#283b85</div><div class="label">Navy text</div></div>
+    <div class="color-chip"><div class="chip" style="background:#77797a"></div><div class="hex">#77797a</div><div class="label">Body text</div></div>
+    <div class="color-chip"><div class="chip" style="background:#d9e0f8"></div><div class="hex">#d9e0f8</div><div class="label">Blue pill</div></div>
+  </div>
+
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Page background</td><td><span class="swatch" style="background:#fafbfb; border:1px solid #ddd"></span>#fafbfb</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Card surface</td><td><span class="swatch" style="background:#ffeee6"></span>#ffeee6 (warm peach)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Primary accent</td><td><span class="swatch" style="background:#274296"></span>#274296 (navy blue)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Secondary accent</td><td><span class="swatch" style="background:#f29da8"></span>#f29da8 (coral pink)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Heading text</td><td><span class="swatch" style="background:#283b85"></span>#283b85 (dark navy)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Body text</td><td><span class="swatch" style="background:#77797a"></span>#77797a</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Muted text</td><td><span class="swatch" style="background:#a2a0b9"></span>#a2a0b9 (purple-gray)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Border / divider</td><td><span class="swatch" style="background:#e0e1e3"></span>#e0e1e3</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Nav background</td><td><span class="swatch" style="background:#274296"></span>#274296 (navy)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Category pill</td><td><span class="swatch" style="background:#d9e0f8"></span>#d9e0f8 (light blue)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+  </table>
+
+  <h3>Typography</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Heading font</td><td>Clean geometric sans-serif · weight 700 · modern, medium contrast</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body font</td><td>Same family · weight 400</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Heading letter-spacing</td><td>normal</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body line-height</td><td>normal 1.5</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Label text-transform</td><td>none</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Spacing</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Card internal padding</td><td>medium (~16–24px)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Item gap</td><td>medium (~10–14px)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Section breathing</td><td>normal</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Horizontal alignment</td><td>left-heavy</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Shape</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Card border radius</td><td>large 20–24px</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Button border radius</td><td>pill</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Input border radius</td><td>medium 12px</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Avatar shape</td><td>circle</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Elevation &amp; Components</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Shadow style</td><td>subtle / diffuse</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Border treatment</td><td>hairline #e0e1e3</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Icon style</td><td>filled / rounded</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Navigation pattern</td><td>bottom tab bar + navy app bar</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>List pattern</td><td>cards — per-category colored fills</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Active state color</td><td><span class="swatch" style="background:#274296"></span>#274296 (navy)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+  </table>
+
+  <div class="signature-box">
+    <strong>Signature element:</strong> Three-column multi-screen showcase with distinct warm-toned pastel card panels per data type — screen-time bar chart in peach/pink tones, app usage list with colored circle icon dots, map location view — anchored by navy <code>#274296</code> app bars with white text.
+  </div>
+</div>
+
+<h2>Anchor C Extraction — Cyber Security App</h2>
+<div class="section">
+  <div class="anchor-header">
+    <div class="anchor-badge badge-c">C</div>
+    <div>
+      <div class="anchor-title">Cyber Security Mobile App — Safayet Hossain (Proton Pass)</div>
+      <div class="anchor-file">pattern-security-app-dribbble.png · 802×827px · Source: Dribbble (screenshot-only, no live URL)</div>
+    </div>
+  </div>
+
+  <h3>Palette</h3>
+  <div class="palette-row">
+    <div class="color-chip"><div class="chip" style="background:#0a0a0a"></div><div class="hex">#0a0a0a</div><div class="label">Page bg</div></div>
+    <div class="color-chip"><div class="chip" style="background:#1c1c1c"></div><div class="hex">#1c1c1c</div><div class="label">Card surface</div></div>
+    <div class="color-chip"><div class="chip" style="background:#8f7bfa"></div><div class="hex">#8f7bfa</div><div class="label">Accent violet</div></div>
+    <div class="color-chip"><div class="chip" style="background:#42ba5f"></div><div class="hex">#42ba5f</div><div class="label">Status green</div></div>
+    <div class="color-chip"><div class="chip" style="background:#ffffff; border:1px solid #333"></div><div class="hex">#ffffff</div><div class="label">Heading text</div></div>
+    <div class="color-chip"><div class="chip" style="background:#b0b0b0"></div><div class="hex">#b0b0b0</div><div class="label">Body text</div></div>
+    <div class="color-chip"><div class="chip" style="background:#232323"></div><div class="hex">#232323</div><div class="label">Border</div></div>
+  </div>
+
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Page background</td><td><span class="swatch" style="background:#0a0a0a"></span>#0a0a0a (near-black)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Card surface</td><td><span class="swatch" style="background:#1c1c1c"></span>#1c1c1c (dark gray)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Primary accent</td><td><span class="swatch" style="background:#8f7bfa"></span>#8f7bfa (Proton violet)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Secondary accent</td><td><span class="swatch" style="background:#42ba5f"></span>#42ba5f (status green)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Heading text</td><td><span class="swatch" style="background:#ffffff; border:1px solid #ccc"></span>#ffffff</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body text</td><td><span class="swatch" style="background:#b0b0b0"></span>#b0b0b0 (medium gray)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Muted text</td><td><span class="swatch" style="background:#616161"></span>#616161</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Border / divider</td><td><span class="swatch" style="background:#232323"></span>#232323</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Nav background</td><td><span class="swatch" style="background:#0a0a0a"></span>#0a0a0a (same as page bg)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+  </table>
+
+  <h3>Typography</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Heading font</td><td>Heavy grotesque sans-serif · weight 800 · large display scale · "Keep Your Life Safe" visible behind phone</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body font</td><td>Same family · weight 400</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Heading letter-spacing</td><td>tight (-0.02em)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Body line-height</td><td>normal 1.5</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Label text-transform</td><td>none</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Spacing &amp; Shape</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Card internal padding</td><td>medium (~16–20px)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Item gap</td><td>tight (~10–12px)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Section breathing</td><td>compressed</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Card border radius</td><td>medium 12–16px</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Button border radius</td><td>medium-large 16px</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Avatar shape</td><td>rounded square</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+  </table>
+
+  <h3>Elevation &amp; Components</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+    <tr><td>Shadow style</td><td>none (dark theme)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Border treatment</td><td>hairline #232323</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+    <tr><td>Icon style</td><td>filled square-rounded (app icon style)</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Navigation pattern</td><td>top bar + dense list rows</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>List pattern</td><td>rows — hairline-separated, dense</td><td><span class="tag tag-zoom">zoom-estimated</span></td></tr>
+    <tr><td>Active state color</td><td><span class="swatch" style="background:#8f7bfa"></span>#8f7bfa (violet)</td><td><span class="tag tag-canvas">canvas-sampled</span></td></tr>
+  </table>
+
+  <div class="signature-box">
+    <strong>Signature element:</strong> Full-bleed black background with oversized display typography ("Your Setup Guide" / "SafeChat") rendered at ~35% opacity behind the phone UI frame — background text-as-texture creates dimensionality and branded context using only type scale, no gradients or imagery.
+  </div>
+</div>
+
+<h2>Synthesis Tables</h2>
+
+<h3>Direction A — <span class="dir-label dir-a">DIRECTION A</span> &nbsp;Conversational Warmth</h3>
+<p style="font-size:13px; color:#666; margin:4px 0 12px">Sourced from Anchor A · pattern-ai-chat-dribbble.png</p>
+<div class="section">
+  <table class="synthesis-table">
+    <tr><th>Row</th><th>Decision</th><th>Extracted Value</th><th>Source</th></tr>
+    <tr>
+      <td>1 · Palette</td>
+      <td><strong>Palette</strong></td>
+      <td>
+        Background <code>#f8f7fc</code> · Surface <code>#ffffff</code> · Accent <code>#6b2aed</code> ·
+        User bubble <code>#d7d0fe</code> · AI bubble <code>#ffecba</code> · Text <code>#242529</code> · Nav <code>#ddd7ed</code>
+      </td>
+      <td>Anchor A — canvas-sampled</td>
+    </tr>
+    <tr>
+      <td>2 · Type</td>
+      <td><strong>Type pairing</strong></td>
+      <td>
+        Display: rounded geometric sans (Plus Jakarta Sans) weight 700, normal letter-spacing ·
+        Body: same weight 400, loose 1.6 line-height · Labels: weight 500
+      </td>
+      <td>Anchor A zoom-estimated</td>
+    </tr>
+    <tr>
+      <td>3 · Layout</td>
+      <td><strong>Layout pattern</strong></td>
+      <td>
+        Single-column scrolling chat layout · full-width white cards with 24px radius ·
+        bottom tab bar navigation · airy vertical breathing room (24–32px between cards)
+      </td>
+      <td>Anchor A + Anchor B screenshots</td>
+    </tr>
+    <tr>
+      <td>4 · Surface</td>
+      <td><strong>Surface treatment</strong></td>
+      <td>
+        White card (#ffffff) on near-white lavender page bg (#f8f7fc) ·
+        radius 24px · subtle diffuse shadow · no border · phone chrome in muted lavender #ddd7ed
+      </td>
+      <td>Anchor A — canvas-sampled</td>
+    </tr>
+    <tr>
+      <td>5 · Signature</td>
+      <td><strong>Signature moment</strong></td>
+      <td>
+        Dual-tone chat bubbles: lavender <code>#d7d0fe</code> for user turns, warm yellow <code>#ffecba</code> for AI turns —
+        borrowed directly from Cooper AI Chat's center phone mockup
+      </td>
+      <td>Anchor A — pattern-ai-chat-dribbble.png</td>
+    </tr>
+    <tr>
+      <td>6 · Anti-pattern</td>
+      <td><strong>Anti-pattern</strong></td>
+      <td>
+        No dark/black backgrounds · no flat monochrome buttons · no harsh blue system accent ·
+        no empty white screens with no texture or tint
+      </td>
+      <td>Observed across all screenshots</td>
+    </tr>
+  </table>
+</div>
+
+<h3>Direction B — <span class="dir-label dir-b">DIRECTION B</span> &nbsp;Trusted Data Dashboard</h3>
+<p style="font-size:13px; color:#666; margin:4px 0 12px">Sourced from Anchor B · pattern-parental-control-dribbble-1.png</p>
+<div class="section">
+  <table class="synthesis-table">
+    <tr><th>Row</th><th>Decision</th><th>Extracted Value</th><th>Source</th></tr>
+    <tr>
+      <td>1 · Palette</td>
+      <td><strong>Palette</strong></td>
+      <td>
+        Background <code>#fafbfb</code> · Peach surface <code>#ffeee6</code> · Navy accent <code>#274296</code> ·
+        Coral <code>#f29da8</code> · Navy text <code>#283b85</code> · Body text <code>#77797a</code> · Blue pill <code>#d9e0f8</code>
+      </td>
+      <td>Anchor B — canvas-sampled</td>
+    </tr>
+    <tr>
+      <td>2 · Type</td>
+      <td><strong>Type pairing</strong></td>
+      <td>
+        Display: clean geometric sans weight 700–800, normal letter-spacing ·
+        Body: same weight 400, 1.5 line-height ·
+        Data labels: weight 600, uppercase tracking optional
+      </td>
+      <td>Anchor B zoom-estimated</td>
+    </tr>
+    <tr>
+      <td>3 · Layout</td>
+      <td><strong>Layout pattern</strong></td>
+      <td>
+        Dashboard grid layout: 2-column card grid for category controls ·
+        full-width section headers in navy · hairline-divided list rows for alert feeds ·
+        bottom tab navigation
+      </td>
+      <td>Anchor B + Fireart reference</td>
+    </tr>
+    <tr>
+      <td>4 · Surface</td>
+      <td><strong>Surface treatment</strong></td>
+      <td>
+        Per-category warm pastel fills — peach <code>#ffeee6</code>, light blue <code>#d9e0f8</code>, mint <code>#f2f9f5</code> ·
+        radius 20–24px · hairline border <code>#e0e1e3</code> · subtle diffuse shadow · layered depth feel
+      </td>
+      <td>Anchor B — canvas-sampled</td>
+    </tr>
+    <tr>
+      <td>5 · Signature</td>
+      <td><strong>Signature moment</strong></td>
+      <td>
+        Warm pastel category cards with embedded micro-charts (bar chart for screen time,
+        circle-dot app usage list) — data visualization as first-class visual element, not decoration
+      </td>
+      <td>Anchor B — pattern-parental-control-dribbble-1.png</td>
+    </tr>
+    <tr>
+      <td>6 · Anti-pattern</td>
+      <td><strong>Anti-pattern</strong></td>
+      <td>
+        No dark or fully saturated card backgrounds · no single monochrome palette (each category needs a distinct warm hue) ·
+        no heavy drop shadows that obscure hairline borders · no dark text on peach/coral accent
+      </td>
+      <td>Observed across all screenshots</td>
+    </tr>
+  </table>
+</div>
+
+<h3>Direction C — <span class="dir-label dir-c">DIRECTION C</span> &nbsp;Serious Shield</h3>
+<p style="font-size:13px; color:#666; margin:4px 0 12px">Sourced from Anchor C · pattern-security-app-dribbble.png</p>
+<div class="section">
+  <table class="synthesis-table">
+    <tr><th>Row</th><th>Decision</th><th>Extracted Value</th><th>Source</th></tr>
+    <tr>
+      <td>1 · Palette</td>
+      <td><strong>Palette</strong></td>
+      <td>
+        Background <code>#0a0a0a</code> · Surface <code>#1c1c1c</code> · Accent <code>#8f7bfa</code> ·
+        Status green <code>#42ba5f</code> · Heading <code>#ffffff</code> · Body <code>#b0b0b0</code> · Border <code>#232323</code>
+      </td>
+      <td>Anchor C — canvas-sampled</td>
+    </tr>
+    <tr>
+      <td>2 · Type</td>
+      <td><strong>Type pairing</strong></td>
+      <td>
+        Display: heavy grotesque sans weight 800, tight letter-spacing -0.02em, display scale ·
+        Body: same weight 400, normal 1.5 line-height ·
+        Labels: weight 500, muted <code>#b0b0b0</code>
+      </td>
+      <td>Anchor C zoom-estimated</td>
+    </tr>
+    <tr>
+      <td>3 · Layout</td>
+      <td><strong>Layout pattern</strong></td>
+      <td>
+        Single-column dense layout · background typography layer as ambient texture ·
+        list-row dominant structure (settings feed pattern) · compressed vertical rhythm · centered phone stage
+      </td>
+      <td>Anchor C screenshots</td>
+    </tr>
+    <tr>
+      <td>4 · Surface</td>
+      <td><strong>Surface treatment</strong></td>
+      <td>
+        Near-black page <code>#0a0a0a</code> · dark card rows <code>#1c1c1c</code> ·
+        hairline border <code>#232323</code> · no shadow · radius 12–16px · flat depth through tone contrast only
+      </td>
+      <td>Anchor C — canvas-sampled</td>
+    </tr>
+    <tr>
+      <td>5 · Signature</td>
+      <td><strong>Signature moment</strong></td>
+      <td>
+        Oversized background display text at ~35% opacity behind the UI frame —
+        "Your Setup Guide" or "SafeChat" as ambient typography on pure black,
+        creating dimensionality without gradients or imagery
+      </td>
+      <td>Anchor C — pattern-security-app-dribbble.png</td>
+    </tr>
+    <tr>
+      <td>6 · Anti-pattern</td>
+      <td><strong>Anti-pattern</strong></td>
+      <td>
+        No light or white backgrounds on any screen · no pastel or warm tones ·
+        no glassmorphism frosted cards · never more than 3 accent color instances per screen ·
+        no playful oversized rounded CTA buttons
+      </td>
+      <td>Observed across all screenshots</td>
+    </tr>
+  </table>
+</div>
+
+<p style="margin-top:40px; color:#888; font-size:12px;">Generated by v3 pipeline Phase 1 Intake · TreeHouse / SafeChat · 2026-04-18</p>
+</body>
+</html>

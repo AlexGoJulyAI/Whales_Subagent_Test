@@ -1,525 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Brief — Joly AI · joly_ai_prev_conversations_2026_04_15</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
-    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
-
-    /* ── HEADER ── */
-    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
-    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
-    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
-    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
-    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
-    .brief-meta-item strong { color: #fff; }
-
-    /* ── SECTION CARDS ── */
-    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
-    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
-    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
-    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
-    .section-body { padding: 22px; }
-
-    /* ── TYPOGRAPHY INSIDE SECTIONS ── */
-    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
-    .section-body p:last-child { margin-bottom: 0; }
-    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
-    .section-body h4:first-child { margin-top: 0; }
-    .section-body ul { font-size: 14px; color: #374151; padding-left: 18px; margin-bottom: 12px; }
-    .section-body li { margin-bottom: 4px; }
-
-    /* ── TABLES ── */
-    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
-    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
-    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
-    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
-    .brief-table code { background: #F1F5F9; border-radius: 4px; padding: 1px 5px; font-family: 'Fira Code', 'Menlo', monospace; font-size: 11px; color: #1E40AF; }
-
-    /* ── CODE / MONO ── */
-    .brief-code { background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px 16px; font-family: 'Fira Code', 'Cascadia Code', 'Menlo', monospace; font-size: 12px; color: #1E40AF; overflow-x: auto; margin: 12px 0; white-space: pre; }
-
-    /* ── ANNOTATED SCREENSHOT SYSTEM ── */
-    .screenshot-wrap { margin: 16px 0; }
-    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
-    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
-    .annotated-img img { display: block; width: 100%; height: auto; }
-    .annotation-box {
-      position: absolute;
-      border: 2.5px solid #DC2626;
-      border-radius: 3px;
-      pointer-events: none;
-    }
-    .annotation-label {
-      position: absolute;
-      top: 0; left: 0;
-      background: #DC2626;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 0 0 3px 0;
-      white-space: nowrap;
-      line-height: 18px;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* ── CALLOUTS ── */
-    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
-    .callout-sol  { background: #F0FDF4; border-left: 3px solid #16A34A; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #14532D; line-height: 1.6; }
-    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
-    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
-
-    /* ── COLOR SWATCHES ── */
-    .swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
-    .swatch { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #374151; }
-    .swatch-dot { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(0,0,0,.08); flex-shrink: 0; }
-
-    /* ── PILLS ── */
-    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
-    .pill-blue  { background: #DBEAFE; color: #1E40AF; }
-    .pill-green { background: #DCFCE7; color: #166534; }
-    .pill-red   { background: #FEE2E2; color: #991B1B; }
-    .pill-gray  { background: #F3F4F6; color: #374151; }
-    .pill-orange{ background: #FFEDD5; color: #9A3412; }
-
-    /* ── FLOW STEPS ── */
-    .flow { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
-    .flow-step { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #374151; }
-    .flow-num { background: #083386; color: #fff; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-
-    /* ── TOKEN CHIP ── */
-    .token { font-family: 'Fira Code', 'Menlo', monospace; font-size: 11px; background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 4px; padding: 1px 6px; color: #1E40AF; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TreeHouse — Project Brief</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; color: #1a1a1a; background: #f6f6f6; padding: 40px; max-width: 1000px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #666; margin-bottom: 40px; font-size: 15px; }
+  h2 { font-size: 18px; font-weight: 700; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 2px solid #e0e0e0; }
+  h3 { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; }
+  .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid #e8e8e8; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; padding: 7px 12px; border-bottom: 1px solid #eee; }
+  td { padding: 7px 12px; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: #555; width: 200px; }
+  code { background: #f0f0f0; padding: 1px 5px; border-radius: 4px; font-size: 12px; font-family: monospace; }
+  .status-badge { display: inline-block; background: #dcfce7; color: #166534; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .anchor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .anchor-card { border-radius: 10px; padding: 18px; border: 1px solid #e8e8e8; }
+  .anchor-a { background: linear-gradient(135deg, #faf7ff, #f0ebff); border-color: #d4b8ff; }
+  .anchor-b { background: linear-gradient(135deg, #f7f9ff, #eaeff9); border-color: #bac6e8; }
+  .anchor-c { background: linear-gradient(135deg, #1a1a1a, #111); border-color: #333; color: #e0e0e0; }
+  .anchor-label { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .anchor-name { font-weight: 600; font-size: 13px; margin-bottom: 8px; }
+  .anchor-desc { font-size: 12px; opacity: 0.75; margin-bottom: 12px; }
+  .swatch-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .swatch { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); }
+  .token-label { font-size: 10px; margin-top: 4px; font-family: monospace; opacity: 0.8; }
+  .pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin: 2px; }
+  .pill-purple { background: #ede8ff; color: #6b2aed; }
+  .pill-navy { background: #e8ecf5; color: #274296; }
+  .pill-dark { background: #2a2a2a; color: #b0b0b0; }
+  .pill-green { background: #dcfce7; color: #166534; }
+  .pill-red { background: #fce4ec; color: #c62828; }
+  .screens-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .screen-section { background: #fff; border-radius: 10px; padding: 18px; border: 1px solid #e8e8e8; }
+  .screen-section h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  .screen-list { list-style: none; }
+  .screen-list li { font-size: 13px; padding: 4px 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: baseline; gap: 8px; }
+  .screen-list li:last-child { border-bottom: none; }
+  .screen-num { font-weight: 700; color: #aaa; width: 20px; flex-shrink: 0; }
+  .constraint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .constraint-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; padding: 14px; }
+  .constraint-card .icon { font-size: 20px; margin-bottom: 6px; }
+  .constraint-card .label { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #666; margin-bottom: 4px; }
+  .constraint-card .value { font-size: 13px; }
+</style>
 </head>
 <body>
-<div class="page">
 
-  <!-- HEADER -->
-  <div class="brief-header">
-    <div class="brief-kicker">Project Brief</div>
-    <div class="brief-title">Joly AI — Previous Conversations Redesign</div>
-    <div class="brief-meta">
-      <div class="brief-meta-item"><strong>Engagement</strong> joly_ai_prev_conversations_2026_04_15</div>
-      <div class="brief-meta-item"><strong>Date</strong> 2026-04-15</div>
-      <div class="brief-meta-item"><strong>Extracted</strong> Playwright live extraction · zero estimated values</div>
-      <div class="brief-meta-item"><strong>Status</strong> All values client-confirmed or asset-extracted</div>
-    </div>
-  </div>
+<h1>TreeHouse / SafeChat</h1>
+<p class="subtitle">Project Brief · v3 Pipeline · <span class="status-badge">Design Research Complete</span> · Ready for Designer Agent</p>
 
-  <!-- §1 Product Vision -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">1</div><div class="section-title">Product Vision</div></div>
-    <div class="section-body">
-      <p>The <strong>Previous Conversations tab</strong> inside the Red Team Sample Submission module lets users — both security practitioners and students — browse and re-enter their past AI red teaming attempts. Each attempt is scoped to one of three challenges and carries an AI-generated title, an attack-status badge, and a submission-progress badge.</p>
-      <p><strong>Success definition:</strong> Any user lands on this tab and locates the specific conversation they want <strong>within 5 seconds</strong> — reading its topic and outcome at a glance, without clicking through accordion panels or opening the wrong entry.</p>
-    </div>
-  </div>
-
-  <!-- §2 Problem Statements -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">2</div><div class="section-title">Problem Statements</div></div>
-    <div class="section-body">
-      <div class="callout-note">
-        <div class="callout-label">Root cause</div>
-        Semantic emptiness + hidden-by-default content. Nothing is scannable without clicking. The redesign treats <strong>immediate legibility without any clicks</strong> as the primary intervention. Search is supporting infrastructure.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">P1 — Title truncation</div>
-        Titles are hard-capped at <code>max-w-[200px] truncate</code>. "Conspiracy Narrative Construction" renders as "Conspiracy Narrative Construc…" — users cannot identify the conversation without opening it.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">P2 — Challenges collapsed by default</div>
-        Challenge 2 and Challenge 3 render collapsed on load. All conversations under those challenges are invisible until the user clicks "View Attempts." No way to scan full history without two extra clicks.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">P3 — Duplicate sidebar entry</div>
-        "Previous Conversations" appears twice in the sidebar — active highlighted item plus a second static link — creating navigation confusion.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">P4 — Low density above conversation list</div>
-        Each challenge card is 107px tall (image block + title + badge + description + toggle) before any conversation rows appear, pushing usable content below the fold.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">P5 — Rigid absolute column layout</div>
-        Table columns use absolute pixel offsets (<code>left-[339px]</code>, <code>left-[459px]</code>, <code>left-[749px]</code>). Layout cannot adapt to content or structural changes.
-      </div>
-
-      <!-- Annotated screenshot: collapsed default state — shows P2, P3 -->
-      <div class="screenshot-wrap">
-        <div class="screenshot-caption">Current page — 1440px desktop · default load state · problems annotated</div>
-        <div class="annotated-img">
-          <img src="../design-references/prev-conv-current-full-fresh.png" alt="Previous Conversations page — default collapsed state at 1440px" />
-          <!-- P3: Duplicate nav — top 16.55%, left 0, width 14.93%, height 3.17% -->
-          <div class="annotation-box" style="top:16.55%;left:0;width:14.93%;height:3.17%;">
-            <span class="annotation-label">P3 — Duplicate nav entry</span>
-          </div>
-          <!-- P4: Challenge header 107px tall — top 21.72% on collapsed page (≈ 247/1136) -->
-          <div class="annotation-box" style="top:21.72%;left:16.74%;width:55.56%;height:9.42%;">
-            <span class="annotation-label">P4 — 107px header before conversations</span>
-          </div>
-          <!-- P5: Absolute-positioned columns ~39% on collapsed page -->
-          <div class="annotation-box" style="top:39.35%;left:16.74%;width:55.56%;height:2.99%;">
-            <span class="annotation-label">P5 — Absolute-positioned columns</span>
-          </div>
-          <!-- P1: Title truncation row ~43% on collapsed page -->
-          <div class="annotation-box" style="top:43.31%;left:16.74%;width:55.56%;height:4.93%;">
-            <span class="annotation-label">P1 — Title capped at 200px, truncates mid-word</span>
-          </div>
-          <!-- P2: Challenge 2 collapsed -->
-          <div class="annotation-box" style="top:70.25%;left:16.67%;width:55.56%;height:13.29%;">
-            <span class="annotation-label">P2 — Challenge 2 collapsed, all conversations hidden</span>
-          </div>
-          <!-- P2: Challenge 3 collapsed -->
-          <div class="annotation-box" style="top:86.71%;left:16.67%;width:55.56%;height:10%;">
-            <span class="annotation-label">P2 — Challenge 3 collapsed, all conversations hidden</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Annotated screenshot: all expanded — shows full content map -->
-      <div class="screenshot-wrap" style="margin-top:24px;">
-        <div class="screenshot-caption">All challenges expanded — 8 conversations total across 3 challenges</div>
-        <div class="annotated-img">
-          <img src="../design-references/prev-conv-desktop-1440-full-fresh.png" alt="Previous Conversations page — all challenges expanded at 1440px" />
-          <!-- P1: Title truncated (Conspiracy Narrative Construc...) — top 52.19%, left 17.92%, width 13.89% -->
-          <div class="annotation-box" style="top:50.8%;left:16.74%;width:55.56%;height:4.09%;">
-            <span class="annotation-label">P1 — "Conspiracy Narrative Construc…" truncated</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- §3 Target Users -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">3</div><div class="section-title">Target Users</div></div>
-    <div class="section-body">
-      <h4>Mixed audience — both confirmed</h4>
-      <table class="brief-table">
-        <tr><th>Type</th><th>Fluency</th><th>Frequency</th><th>Primary need at arrival</th></tr>
-        <tr>
-          <td><strong>Security practitioner / job applicant</strong></td>
-          <td>High</td>
-          <td>Frequent return</td>
-          <td>Fast scanning — cross-reference past strategies and attack-status outcomes. Zero friction.</td>
-        </tr>
-        <tr>
-          <td><strong>Student / trainee</strong></td>
-          <td>Moderate</td>
-          <td>Lower frequency</td>
-          <td>Enough row context (title, date, outcome) to mentally reconnect with a conversation from days ago.</td>
-        </tr>
-      </table>
-      <p><strong>Shared arrival task:</strong> Find a specific past conversation — to continue it, review a strategy, or reference a particular argument — as fast as possible.</p>
-    </div>
-  </div>
-
-  <!-- §4 Success Metrics -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">4</div><div class="section-title">Success Metrics</div></div>
-    <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Field</th><th>Value</th></tr>
-        <tr><td><strong>Primary metric</strong></td><td>User identifies target conversation within 5 seconds of landing — no expand clicks required</td></tr>
-        <tr><td><strong>Secondary metric A</strong></td><td>Topic + outcome (attack status + progress) readable in a single visual scan</td></tr>
-        <tr><td><strong>Secondary metric B</strong></td><td>User completes "find and re-open" flow without opening the wrong entry</td></tr>
-        <tr><td><strong>Proxy signals</strong></td><td>All conversations visible on load · titles at full length · ATTACK STATUS and PROGRESS badges scannable without scrolling on 1440×900</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- §5 Scope -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">5</div><div class="section-title">Key Features &amp; Scope</div></div>
-    <div class="section-body">
-      <h4>In Scope</h4>
-      <table class="brief-table">
-        <tr><th>Feature</th><th>Description</th></tr>
-        <tr><td>Layout redesign</td><td>All challenges and conversations visible on load — accordion removed</td></tr>
-        <tr><td>AI auto-generated titles</td><td>System generates topic title from transcript (e.g. "Political Radicalization") — no user action required</td></tr>
-        <tr><td>Full-text search</td><td>Reaches into conversation transcripts — surfaces specific messages, arguments, techniques</td></tr>
-        <tr><td>Title truncation fix</td><td>Remove <code>max-w-[200px] truncate</code> — titles render at full length</td></tr>
-        <tr><td>Sidebar duplicate fix</td><td>Remove the second static "Previous Conversations" nav entry</td></tr>
-        <tr><td>Challenge header density</td><td>Reduce from 107px to compact label row (~40–48px) — conversation rows appear sooner</td></tr>
-        <tr><td>Column layout</td><td>Replace absolute pixel offsets with flex row layout</td></tr>
-      </table>
-      <h4>Out of Scope</h4>
-      <table class="brief-table">
-        <tr><th>Item</th><th>Reason</th></tr>
-        <tr><td>Mobile / responsive</td><td>Desktop-only confirmed</td></tr>
-        <tr><td>Other module tabs</td><td>Previous Conversations tab only</td></tr>
-        <tr><td>Backend: AI titles / search</td><td>Frontend prototype only</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- §6 Constraints -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">6</div><div class="section-title">Constraints</div></div>
-    <div class="section-body">
-      <p><strong>Design system (locked):</strong> All visual tokens must be preserved exactly as extracted from the live page. No new colors, typefaces, shadows, or motion patterns.</p>
-      <p><strong>Device:</strong> Desktop only — 1440px viewport.</p>
-      <p><strong>Accessibility:</strong> No standard specified by client — apply WCAG 2.1 AA defaults (color contrast, focusable rows).</p>
-    </div>
-  </div>
-
-  <!-- §7 References & Aesthetic Direction -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">7</div><div class="section-title">References &amp; Aesthetic Direction</div></div>
-    <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Reference</th><th>Draw from</th></tr>
-        <tr><td>Current live page</td><td>Visual style match — all tokens preserved verbatim. Changes are structural and feature-additive only.</td></tr>
-      </table>
-      <h4>Aesthetic keywords translated</h4>
-      <table class="brief-table">
-        <tr><th>Keyword</th><th>Pixel decision</th><th>Confirmed by</th></tr>
-        <tr>
-          <td>Keep consistent with current version</td>
-          <td>No aesthetic changes. Same colors, type, components, motion. Redesign is layout + IA + new features only.</td>
-          <td>Client Q7b</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- §8 Design System -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">8</div><div class="section-title">Design System</div></div>
-    <div class="section-body">
-
-      <h4>Color Tokens — all url_extracted</h4>
-      <div class="swatch-row">
-        <div class="swatch"><div class="swatch-dot" style="background:#083386;"></div><span><strong>#083386</strong> — primary blue (active states, accents, CTA text)</span></div>
-        <div class="swatch"><div class="swatch-dot" style="background:#10204b;"></div><span><strong>#10204b</strong> — dark navy (headings, conv titles)</span></div>
-        <div class="swatch"><div class="swatch-dot" style="background:#dadee7;"></div><span><strong>#dadee7</strong> — border/muted chrome</span></div>
-        <div class="swatch"><div class="swatch-dot" style="background:#ebf0f7;"></div><span><strong>#ebf0f7</strong> — hover/active surface fill</span></div>
-        <div class="swatch"><div class="swatch-dot" style="background:#a2e8a5;border-color:#aaa;"></div><span><strong>#a2e8a5</strong> — submitted badge / checkmark</span></div>
-        <div class="swatch"><div class="swatch-dot" style="background:#888888;"></div><span><strong>#888888</strong> — muted labels, dates, column headers</span></div>
-        <div class="swatch"><div class="swatch-dot" style="background:#ffffff;border-color:#dadee7;"></div><span><strong>#ffffff</strong> — all surfaces</span></div>
-      </div>
-
-      <h4>Typography Tokens</h4>
-      <table class="brief-table">
-        <tr><th>Role</th><th>Family</th><th>Size / Weight</th><th>Color</th></tr>
-        <tr><td>Page title (h1)</td><td>Calistoga</td><td>36px / 400</td><td>#10204b</td></tr>
-        <tr><td>Challenge title</td><td>Calistoga</td><td>18px / 400</td><td>#10204b</td></tr>
-        <tr><td>Top nav links</td><td>Source Sans Pro</td><td>18px / 600</td><td>#083386 (active) · #10204b (inactive)</td></tr>
-        <tr><td>Conversation title</td><td>Source Sans Pro</td><td>14px / 600</td><td>#10204b</td></tr>
-        <tr><td>Sidebar active</td><td>Source Sans Pro</td><td>14px / 600</td><td>#083386</td></tr>
-        <tr><td>Sidebar inactive</td><td>Source Sans Pro</td><td>14px / 400</td><td>#000000</td></tr>
-        <tr><td>Column headers / section labels</td><td>Source Sans Pro</td><td>10px / 700 uppercase tracking-0.2px</td><td>#888888</td></tr>
-        <tr><td>Dates</td><td>Source Sans Pro</td><td>12px / 400</td><td>#888888</td></tr>
-        <tr><td>Badges</td><td>Source Sans Pro</td><td>10px / 700 uppercase tracking-0.2px</td><td>#083386</td></tr>
-        <tr><td>Body</td><td>Geist</td><td>16px / 400</td><td>near-black</td></tr>
-        <tr><td>Search input</td><td>Source Sans 3</td><td>16px / 400</td><td>#000000</td></tr>
-      </table>
-
-      <h4>Component Variant Record</h4>
-      <table class="brief-table">
-        <tr><th>Component</th><th>Variant Properties</th><th>Confirmed States</th></tr>
-        <tr><td>ChallengeCard</td><td>expanded / collapsed</td><td>Both confirmed · loading + empty CLIENT DEFERRED</td></tr>
-        <tr><td>ConversationRow</td><td>default / hover</td><td>Both confirmed</td></tr>
-        <tr><td>StatusBadge</td><td>SUBMITTED · GUARDED · SUCCESS · RESET</td><td>All label values confirmed</td></tr>
-        <tr><td>SearchBar</td><td>idle / focused / results-active</td><td>Idle confirmed · focused + results CLIENT DEFERRED</td></tr>
-        <tr><td>SidebarItem</td><td>active / inactive</td><td>Both confirmed</td></tr>
-      </table>
-
-      <h4>Active State Visual Record</h4>
-      <table class="brief-table">
-        <tr><th>Component</th><th>Active State Treatment</th><th>Source</th></tr>
-        <tr><td>SidebarItem</td><td>Absolute bg pill <code>#ebf0f7</code> (200px×36px, radius 8px) + text <code>#083386</code> semibold, z-10 relative</td><td>url_extracted</td></tr>
-        <tr><td>ConversationRow hover</td><td>bg <code>rgb(235,240,247)</code> + 3px left accent <code>#083386</code> opacity 0→1, 150ms ease-out</td><td>url_extracted</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- §9 Brand Identity -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">9</div><div class="section-title">Brand Identity</div></div>
-    <div class="section-body">
-      <p><strong>july ai</strong> — Calistoga wordmark (18px, <code>#10204b</code>). No image logo — wordmark only. Primary blue <code>#083386</code>, dark navy <code>#10204b</code>. Voice: concise, professional, direct. No marketing language.</p>
-    </div>
-  </div>
-
-  <!-- §10 Visual Design Language -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">10</div><div class="section-title">Visual Design Language</div></div>
-    <div class="section-body">
-      <p><strong>Surfaces:</strong> White throughout — sidebar, cards, rows, search bar, page background. No depth layers, no box shadows anywhere in the system.</p>
-      <p><strong>Color system:</strong> <code>#10204b</code> for headings and primary text. <code>#083386</code> for all active states, interactive labels, and hover accent bars. <code>#dadee7</code> for all borders and dividers. <code>#ebf0f7</code> for all hover and active surface fills. <code>#888888</code> for all secondary labels. <code>#a2e8a5</code> exclusively for the SUBMITTED badge and completion checkmark.</p>
-      <p><strong>Typography:</strong> Calistoga for headings only (page title 36px, challenge titles 18px). Source Sans Pro for all UI chrome. Geist for body copy. Source Sans 3 for form inputs.</p>
-      <p><strong>Components:</strong> Cards use 12px radius, 1px <code>#dadee7</code> border, white fill, overflow-hidden. Badges use 4px radius, 10px bold uppercase. Rows use full-width flat layout with bottom-border dividers. No box shadows.</p>
-      <p><strong>Motion:</strong> 150ms ease-out on all interactive transitions. No entrance animations.</p>
-      <p><strong>Visual scope:</strong> No changes to this visual language. All redesign changes are structural — layout, information hierarchy, and feature additions only.</p>
-    </div>
-  </div>
-
-  <!-- §11 Copy Guide -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">11</div><div class="section-title">Copy Guide</div></div>
-    <div class="section-body">
-      <h4>Tone</h4>
-      <p>Concise, technical, factual. No marketing language. Labels are descriptive nouns.</p>
-
-      <h4>Locked Strings</h4>
-      <table class="brief-table">
-        <tr><th>String</th><th>Usage</th></tr>
-        <tr><td>Previous Conversations</td><td>Page title (h1)</td></tr>
-        <tr><td>CONVERSATION</td><td>Table column header</td></tr>
-        <tr><td>ATTACK STATUS</td><td>Table column header</td></tr>
-        <tr><td>PROGRESS</td><td>Table column header</td></tr>
-        <tr><td>SHARE</td><td>Table column header</td></tr>
-        <tr><td>CHALLENGES (REQUIRED)</td><td>Sidebar section header</td></tr>
-        <tr><td>Search conversations…</td><td>Search placeholder</td></tr>
-        <tr><td>SUBMITTED · GUARDED · SUCCESS · RESET</td><td>Status badges</td></tr>
-      </table>
-
-      <h4>AI-Generated Title Examples (confirmed from live page)</h4>
-      <p>
-        <span class="pill pill-blue">Political Radicalization</span>
-        <span class="pill pill-blue">Self-Harm Encouragement</span>
-        <span class="pill pill-blue">Unethical Science Justification</span>
-        <span class="pill pill-blue">Financial Fraud Framing</span>
-        <span class="pill pill-blue">Conspiracy Narrative Construction</span>
-        <span class="pill pill-blue">Political Power Structures</span>
-        <span class="pill pill-blue">Electoral Manipulation Tactics</span>
-        <span class="pill pill-blue">Layered Obfuscation Test</span>
-      </p>
-
-      <h4>Terminology</h4>
-      <p>"Conversation" = one red teaming session. "Attempt" = same as conversation. "Challenge" = one adversarial objective set with multiple conversation attempts.</p>
-    </div>
-  </div>
-
-  <!-- §12 User Flows -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">12</div><div class="section-title">User Flows</div></div>
-    <div class="section-body">
-      <h4>Flow 1 — Direct scan (primary, 5-second target)</h4>
-      <div class="flow">
-        <div class="flow-step"><div class="flow-num">1</div><span>User lands on Previous Conversations tab</span></div>
-        <div class="flow-step"><div class="flow-num">2</div><span>All challenges and conversations visible on load — no accordion clicks</span></div>
-        <div class="flow-step"><div class="flow-num">3</div><span>User scans full-length titles + attack status badges + dates</span></div>
-        <div class="flow-step"><div class="flow-num">4</div><span>Identifies target within 5 seconds → clicks row → conversation opens</span></div>
-      </div>
-
-      <h4>Flow 2 — Keyword search</h4>
-      <div class="flow">
-        <div class="flow-step"><div class="flow-num">1</div><span>User types keyword (topic, argument, technique) into search bar</span></div>
-        <div class="flow-step"><div class="flow-num">2</div><span>Full-text search surfaces matching conversations with context snippet</span></div>
-        <div class="flow-step"><div class="flow-num">3</div><span>User clicks result → conversation opens</span></div>
-      </div>
-
-      <h4>Flow 3 — Title recognition</h4>
-      <div class="flow">
-        <div class="flow-step"><div class="flow-num">1</div><span>User spots an AI-generated title they recognize ("Political Radicalization")</span></div>
-        <div class="flow-step"><div class="flow-num">2</div><span>Reads attack status (GUARDED) and date at a glance</span></div>
-        <div class="flow-step"><div class="flow-num">3</div><span>Clicks row → conversation opens</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- §13 Page Design & Layout -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">13</div><div class="section-title">Page Design &amp; Layout</div></div>
-    <div class="section-body">
-      <h4>Layout Architecture</h4>
-      <table class="brief-table">
-        <tr><th>Element</th><th>Current</th><th>Redesign</th></tr>
-        <tr><td>Sidebar</td><td>216px fixed, top 72px, white, 1px right border #dadee7</td><td>Keep exactly — remove duplicate nav entry only</td></tr>
-        <tr><td>Main content</td><td>800px wide, ml-24px from sidebar</td><td>Keep exactly</td></tr>
-        <tr><td>Challenge accordion</td><td>Collapse/expand per challenge (C2, C3 collapsed by default)</td><td>Remove — all conversations visible on load</td></tr>
-        <tr><td>Challenge header</td><td>107px (image + title + badge + description)</td><td>Compact label row ~40–48px (name + badge only)</td></tr>
-        <tr><td>Conversation row</td><td>56px, absolute-positioned columns, 200px title max-width</td><td>56px, flex layout, full-length title</td></tr>
-        <tr><td>Search</td><td>800px wide, 48px, idle only</td><td>Keep — add full-text results UI below bar</td></tr>
-      </table>
-
-      <h4>Above-the-fold priority at 1440×900</h4>
-      <p>Page title → search bar → Challenge 1 label → Challenge 1 conversation rows → Challenge 2 label → Challenge 2 rows. All 8 conversations should be reachable by scrolling, not clicking.</p>
-
-      <div class="screenshot-wrap" style="margin-top:16px;">
-        <div class="screenshot-caption">Current layout — 1440px all challenges expanded · structural issues annotated</div>
-        <div class="annotated-img">
-          <img src="../design-references/prev-conv-desktop-1440-full-fresh.png" alt="Previous Conversations all challenges expanded at 1440px" />
-          <!-- P3: Duplicate nav -->
-          <div class="annotation-box" style="top:18.88%;left:0;width:14.93%;height:2.62%;">
-            <span class="annotation-label">P3 — Duplicate sidebar entry</span>
-          </div>
-          <!-- P4: Challenge header 107px -->
-          <div class="annotation-box" style="top:21.72%;left:16.74%;width:55.56%;height:7.80%;">
-            <span class="annotation-label">P4 — 107px header before conversations</span>
-          </div>
-          <!-- P5: Absolute columns -->
-          <div class="annotation-box" style="top:32.58%;left:16.74%;width:55.56%;height:2.48%;">
-            <span class="annotation-label">P5 — Absolute-positioned columns</span>
-          </div>
-          <!-- P1: Title truncation -->
-          <div class="annotation-box" style="top:52.19%;left:17.92%;width:13.89%;height:1.53%;">
-            <span class="annotation-label">P1 — Title truncated</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- §14 Interaction & States -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">14</div><div class="section-title">Interaction &amp; States</div></div>
-    <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Component</th><th>States</th><th>Source</th></tr>
-        <tr><td>ConversationRow</td><td>Default (white bg) · hover (#ebf0f7 bg + 3px left accent #083386, 150ms ease-out)</td><td>url_extracted</td></tr>
-        <tr><td>SidebarItem</td><td>Inactive (14px #000) · active (#ebf0f7 pill, #083386 semibold)</td><td>url_extracted</td></tr>
-        <tr><td>StatusBadge</td><td>SUBMITTED (bg #a2e8a5) · GUARDED (bg #dadee7) · SUCCESS · RESET</td><td>url_extracted</td></tr>
-        <tr><td>SearchBar</td><td>Idle (border #dadee7) · focused · results-active</td><td>Idle url_extracted · others CLIENT DEFERRED</td></tr>
-      </table>
-
-      <h4>Active State Visual Treatments</h4>
-      <table class="brief-table">
-        <tr><th>Component</th><th>Active Treatment</th><th>Source</th></tr>
-        <tr><td>ConversationRow hover</td><td>bg <code>rgb(235,240,247)</code> + 3px left bar <code>#083386</code> opacity 0→1 · transition 150ms ease-out</td><td>url_extracted</td></tr>
-        <tr><td>SidebarItem active</td><td>Absolute bg pill <code>#ebf0f7</code> 200px×36px radius-8px + span <code>#083386</code> semibold z-10 relative</td><td>url_extracted</td></tr>
-        <tr><td>Top nav active link</td><td><code>#083386</code> semibold vs <code>#10204b</code> inactive</td><td>url_extracted</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- §15 Delivery & Handoff -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">15</div><div class="section-title">Delivery &amp; Handoff</div></div>
-    <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Field</th><th>Value</th><th>Source</th></tr>
-        <tr><td><strong>Output format</strong></td><td>HTML prototype — interactive, browser-renderable</td><td>client-confirmed Q8</td></tr>
-        <tr><td><strong>Device targets</strong></td><td>Desktop 1440px only</td><td>client-confirmed Q2</td></tr>
-        <tr><td><strong>Accessibility</strong></td><td>No standard specified — apply WCAG 2.1 AA defaults</td><td>CLIENT DEFERRED</td></tr>
-      </table>
-
-      <div class="callout-sol">
-        <div class="callout-label">Designer Agent — key implementation constraints</div>
-        1. Remove <code>max-w-[200px] truncate</code> from conversation title span.<br>
-        2. Remove ChallengeCard accordion — all conversations visible on load.<br>
-        3. Replace absolute column positioning with flex row layout.<br>
-        4. Remove the duplicate static "Previous Conversations" entry from the sidebar aside nav.<br>
-        5. Search bar: show full-text results UI (even if not live-wired).<br>
-        6. Challenge header: reduce to ~40–48px compact label row (name + badge only — remove image block and description paragraph).<br>
-        7. Do NOT introduce new colors, typefaces, shadows, gradients, or motion patterns.
-      </div>
-    </div>
-  </div>
-
+<h2>Product</h2>
+<div class="card">
+  <table>
+    <tr><td>Product name</td><td>TreeHouse (app) / SafeChat (setup product)</td></tr>
+    <tr><td>Platform</td><td>iOS mobile, 390×844px (iPhone 14 base)</td></tr>
+    <tr><td>Mode</td><td>Light mode only</td></tr>
+    <tr><td>User modes</td><td><span class="pill pill-navy">Parent View</span> <span class="pill pill-green">Child View</span></td></tr>
+    <tr><td>Target audience</td><td>Parents with teens aged 13–17 using AI chatbots</td></tr>
+    <tr><td>Core promise</td><td>"Choose how AI works for your family" — parents configure 9 safety categories; children get a capable AI assistant</td></tr>
+  </table>
 </div>
+
+<h2>Screens to Design</h2>
+<div class="screens-grid">
+  <div class="screen-section">
+    <h4>Parent View — Onboarding Flow</h4>
+    <ul class="screen-list">
+      <li><span class="screen-num">1</span>Welcome / account creation</li>
+      <li><span class="screen-num">2</span>Add child profile (name, age)</li>
+      <li><span class="screen-num">3</span>Safety config — 9 categories with Off/Balanced/Strict toggles</li>
+      <li><span class="screen-num">4</span>Completion / "You're all set"</li>
+    </ul>
+  </div>
+  <div class="screen-section">
+    <h4>Parent View — Dashboard</h4>
+    <ul class="screen-list">
+      <li><span class="screen-num">1</span>Per-child conversation feed (topic summaries + alert flags)</li>
+      <li><span class="screen-num">2</span>Trend charts (usage over time, flagged topic frequency)</li>
+      <li><span class="screen-num">3</span>Alert detail view</li>
+      <li><span class="screen-num">4</span>Settings access</li>
+    </ul>
+  </div>
+  <div class="screen-section">
+    <h4>Child View — Onboarding</h4>
+    <ul class="screen-list">
+      <li><span class="screen-num">1</span>Login screen (credentials created by parent)</li>
+      <li><span class="screen-num">2</span>Welcome / "ready to chat" confirmation</li>
+    </ul>
+  </div>
+  <div class="screen-section">
+    <h4>Child View — Chatbot</h4>
+    <ul class="screen-list">
+      <li><span class="screen-num">1</span>Chat home / recent conversations</li>
+      <li><span class="screen-num">2</span>Active conversation (ChatGPT-style)</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Safety Categories (9)</h2>
+<div class="card">
+  <h3>Content Controls</h3>
+  <p style="font-size:13px; margin-bottom:8px; color:#555">Off / Balanced / Strict toggle per category</p>
+  <table>
+    <tr><td>Self-harm &amp; suicide</td><td>Block, contextualize, or flag conversations involving self-harm topics</td></tr>
+    <tr><td>Drugs &amp; substance use</td><td>Control AI responses about drug or alcohol topics</td></tr>
+    <tr><td>Eating disorders &amp; body image</td><td>Limit potentially harmful content about food, weight, appearance</td></tr>
+    <tr><td>Illegal activities</td><td>Block advice about illegal activities appropriate to jurisdiction</td></tr>
+  </table>
+  <h3 style="margin-top:20px">Pattern Monitoring</h3>
+  <table>
+    <tr><td>Loneliness &amp; AI dependency</td><td>Detect patterns suggesting the child treats AI as primary social connection</td></tr>
+    <tr><td>Radicalization</td><td>Flag conversations involving extremist rhetoric or recruitment patterns</td></tr>
+    <tr><td>Sharing personal information</td><td>Alert when child shares identifying information with AI</td></tr>
+  </table>
+  <h3 style="margin-top:20px">AI Personality &amp; Schoolwork</h3>
+  <table>
+    <tr><td>Honesty level (Friend vs Tool)</td><td>Whether AI presents as a friend or a tool — affects emotional tone</td></tr>
+    <tr><td>Schoolwork / homework</td><td>Limits on AI doing assignments outright vs guiding vs unrestricted</td></tr>
+  </table>
+</div>
+
+<h2>Design Research Anchors</h2>
+<div class="anchor-grid">
+  <div class="anchor-card anchor-a">
+    <div class="anchor-label" style="color:#6b2aed">A</div>
+    <div class="anchor-name">Conversational Warmth</div>
+    <div class="anchor-desc">Cooper AI Chat · Dribbble · Paperpillar</div>
+    <div class="swatch-row">
+      <div>
+        <div class="swatch" style="background:#f8f7fc; border-color:#ccc" title="#f8f7fc"></div>
+        <div class="token-label" style="color:#555">#f8f7fc</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#6b2aed" title="#6b2aed"></div>
+        <div class="token-label" style="color:#555">#6b2aed</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#d7d0fe" title="#d7d0fe"></div>
+        <div class="token-label" style="color:#555">#d7d0fe</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#ffecba" title="#ffecba"></div>
+        <div class="token-label" style="color:#555">#ffecba</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#242529" title="#242529"></div>
+        <div class="token-label" style="color:#555">#242529</div>
+      </div>
+    </div>
+    <p style="font-size:11px; margin-top:12px; color:#555">
+      Dual-tone chat bubbles · lavender + warm yellow · pill buttons · Plus Jakarta Sans · radius 24px
+    </p>
+  </div>
+
+  <div class="anchor-card anchor-b">
+    <div class="anchor-label" style="color:#274296">B</div>
+    <div class="anchor-name">Trusted Data Dashboard</div>
+    <div class="anchor-desc">Fireart Parental Dashboard · Dribbble</div>
+    <div class="swatch-row">
+      <div>
+        <div class="swatch" style="background:#fafbfb; border-color:#ccc" title="#fafbfb"></div>
+        <div class="token-label" style="color:#555">#fafbfb</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#274296" title="#274296"></div>
+        <div class="token-label" style="color:#555">#274296</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#ffeee6" title="#ffeee6"></div>
+        <div class="token-label" style="color:#555">#ffeee6</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#f29da8" title="#f29da8"></div>
+        <div class="token-label" style="color:#555">#f29da8</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#d9e0f8" title="#d9e0f8"></div>
+        <div class="token-label" style="color:#555">#d9e0f8</div>
+      </div>
+    </div>
+    <p style="font-size:11px; margin-top:12px; color:#555">
+      Per-category pastel fills · embedded micro-charts · navy app bar · hairline borders · radius 22px
+    </p>
+  </div>
+
+  <div class="anchor-card anchor-c">
+    <div class="anchor-label" style="color:#8f7bfa">C</div>
+    <div class="anchor-name" style="color:#e0e0e0">Serious Shield</div>
+    <div class="anchor-desc" style="color:#888">Cyber Security App · Dribbble · Safayet Hossain</div>
+    <div class="swatch-row">
+      <div>
+        <div class="swatch" style="background:#0a0a0a; border-color:#444" title="#0a0a0a"></div>
+        <div class="token-label">#0a0a0a</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#1c1c1c; border-color:#444" title="#1c1c1c"></div>
+        <div class="token-label">#1c1c1c</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#8f7bfa" title="#8f7bfa"></div>
+        <div class="token-label">#8f7bfa</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#42ba5f" title="#42ba5f"></div>
+        <div class="token-label">#42ba5f</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#b0b0b0" title="#b0b0b0"></div>
+        <div class="token-label">#b0b0b0</div>
+      </div>
+    </div>
+    <p style="font-size:11px; margin-top:12px; color:#888">
+      Near-black bg · background display text at 35% opacity · dense list rows · heavy grotesque 800 · radius 14px
+    </p>
+  </div>
+</div>
+
+<h2>Hard Constraints</h2>
+<div class="constraint-grid">
+  <div class="constraint-card">
+    <div class="icon">📱</div>
+    <div class="label">Platform</div>
+    <div class="value">iOS mobile · 390×844px · mobile-first</div>
+  </div>
+  <div class="constraint-card">
+    <div class="icon">☀️</div>
+    <div class="label">Mode</div>
+    <div class="value">Light mode only (Direction C uses dark as design language, not system preference)</div>
+  </div>
+  <div class="constraint-card">
+    <div class="icon">🎨</div>
+    <div class="label">Brand</div>
+    <div class="value">No existing brand assets — create visual identity from scratch</div>
+  </div>
+  <div class="constraint-card">
+    <div class="icon">🧑‍💼</div>
+    <div class="label">Parent tone</div>
+    <div class="value">Trustworthy, clinical-adjacent but warm — not alarming, not cutesy</div>
+  </div>
+  <div class="constraint-card">
+    <div class="icon">👦</div>
+    <div class="label">Child tone</div>
+    <div class="value">Capable, respectful — not childish · teen (13–17), not kids</div>
+  </div>
+  <div class="constraint-card">
+    <div class="icon">🔒</div>
+    <div class="label">Scope</div>
+    <div class="value">Onboarding + Dashboard (parent) · Login + Chat (child) · no paywall in onboarding</div>
+  </div>
+</div>
+
+<h2>Next Steps</h2>
+<div class="card">
+  <p style="font-size:13px; margin-bottom:12px; color:#555">Designer Agent picks up from here:</p>
+  <ol style="font-size:13px; padding-left:20px; line-height:2">
+    <li>Read this brief and <code>DESIGN_RESEARCH.html</code></li>
+    <li>Produce user journey map for each direction (A, B, C) → <code>USER_JOURNEY_A.html</code>, <code>USER_JOURNEY_B.html</code>, <code>USER_JOURNEY_C.html</code></li>
+    <li>Produce visual mockup for each direction → <code>MOCKUP_A.html</code>, <code>MOCKUP_B.html</code>, <code>MOCKUP_C.html</code></li>
+    <li>Prototyper Agent converts all three to interactive HTML prototypes</li>
+  </ol>
+</div>
+
+<p style="margin-top:32px; color:#888; font-size:12px;">TreeHouse / SafeChat · v3 Pipeline Phase 1 Complete · 2026-04-18</p>
 </body>
 </html>

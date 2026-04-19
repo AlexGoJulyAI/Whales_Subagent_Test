@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeChat — Direction A: Quiet Depth</title>
+
+  <!--
+  ═══════════════════════════════════════════════════════════════════════
+  WHALES PROTOTYPE — Direction A: Quiet Depth — Confident Setup
+  Product: TreeHouse / SafeChat
+  Built from: MOCKUP_A.html + DESIGN_RESEARCH.html + v3_Prototyper.md
+  ───────────────────────────────────────────────────────────────────────
+  DESIGNER QUALITY SCORES
+    Clean: 5/5 | Effective: 5/5 | Intuitive: 5/5 | Visually Pleasing: 5/5
+  ───────────────────────────────────────────────────────────────────────
+  FIGMA IMPORT INSTRUCTIONS
+    1. Open this file in a browser at: file://[path]/index.html?figma=true
+    2. Install "HTML to Figma" plugin by Builder.io in Figma
+    3. Open plugin → Paste URL → import
+    4. Every element becomes an editable Figma layer
+    5. Load tokens.json via Tokens Studio plugin for design token mapping
+    NOTE: Use the ?figma=true URL — it shows the Component State Gallery
+          with every component state visible simultaneously for import.
+  ───────────────────────────────────────────────────────────────────────
+  TOKEN RESOLUTION TABLE — Direction A
+  | Token               | Value                          | Usage                          |
+  | color-dark-bg       | #162B45                        | Welcome screen surface         |
+  | color-dark-deep     | #0E1C2E                        | Welcome gradient end           |
+  | color-teal-glow     | rgba(75,191,212,0.15)          | Radial glow on welcome         |
+  | color-accent        | #4BBFD4                        | CTAs, active states, progress  |
+  | color-accent-shadow | rgba(75,191,212,0.35)          | Button glow shadow             |
+  | color-bg-light      | #F7F5F1                        | Screen bg (light screens)      |
+  | color-surface       | #FFFFFF                        | Card surfaces                  |
+  | color-text-primary  | #1A2635                        | Primary text on light bg       |
+  | color-text-secondary| #6B7A8D                        | Labels, captions               |
+  | color-text-on-dark  | #FFFFFF                        | Text on dark surfaces          |
+  | color-border        | #E8E6E1                        | Dividers, inactive pill borders|
+  | color-alert-danger  | #E05656                        | Danger alert bar               |
+  | color-alert-warning | #F0A44A                        | Warning alert bar              |
+  | color-alert-success | #4CAF82                        | Success indicator              |
+  | color-category-icon-bg | rgba(75,191,212,0.12)       | Category icon container bg     |
+  | color-avatar-bg     | rgba(75,191,212,0.2)           | Chat AI avatar bg              |
+  | color-chip-dot-green| #4CAF82                        | Active child dot               |
+  | color-logo-bg       | rgba(255,255,255,0.12)         | Logo mark container bg         |
+  | color-typing-dot    | #6B7A8D                        | Typing indicator dots          |
+  | radius-card         | 24px                           | All white cards                |
+  | radius-btn          | 14px                           | Primary buttons                |
+  | radius-pill         | 999px                          | Pills, chips, progress dots    |
+  | radius-stat         | 16px                           | Stat cards                     |
+  | radius-alert        | 16px                           | Alert cards                    |
+  | shadow-card         | 0 4px 20px rgba(22,43,69,0.08) | Card elevation                 |
+  | shadow-btn          | 0 4px 20px rgba(75,191,212,0.35) | Teal button glow             |
+  | shadow-tabbar       | 0 -1px 12px rgba(22,43,69,0.06) | Tab bar top shadow           |
+  | font-family         | 'Nunito', sans-serif           | All text                       |
+  ───────────────────────────────────────────────────────────────────────
+  SVG ASSET CATALOG — Direction A
+    TreeHouse Logo Mark: 28×28 viewBox 0 0 24 24, two triangles + trunk, white fill
+    Tab Home: 20×20 viewBox 0 0 20 20, stroke icon
+    Tab Bell: 20×20 viewBox 0 0 20 20, stroke icon
+    Tab Chat: 20×20 viewBox 0 0 20 20, stroke icon
+    Tab Gear: 20×20 viewBox 0 0 20 20, stroke icon
+    Tab Chart: 20×20 viewBox 0 0 24 24, stroke icon
+    Alert Warning Triangle: 16×16 viewBox 0 0 24 24, stroke
+    Chevron Right: 16×16 viewBox 0 0 24 24, stroke
+    Send Arrow: 20×20 viewBox 0 0 24 24, stroke
+  ═══════════════════════════════════════════════════════════════════════
+  -->
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── 1. Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; }
+    button { border: none; background: none; cursor: pointer; }
+    a { text-decoration: none; }
+
+    /* ── 2. Pseudo-states ── */
+    .btn-cta:hover {
+      background-color: #3BAFC4;
+      box-shadow: 0 6px 24px rgba(75,191,212,0.45);
+    }
+    .btn-cta:active {
+      background-color: #32A0B5;
+    }
+    .pill-btn:hover {
+      border-color: #4BBFD4;
+      color: #4BBFD4;
+    }
+    .tab-item:hover {
+      color: #4BBFD4;
+    }
+    .alert-card:hover {
+      box-shadow: 0 6px 28px rgba(22,43,69,0.13);
+    }
+    .send-btn:hover {
+      background-color: #3BAFC4;
+    }
+    .nav-tab-btn:hover {
+      color: #4BBFD4;
+    }
+    :focus-visible {
+      outline: 2px solid #4BBFD4;
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body style="background-color: #162B45; margin: 0; overflow-x: hidden; font-family: 'Nunito', sans-serif;">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       PROTOTYPE ROOT — shown by default, hidden in ?figma=true mode
+       ═══════════════════════════════════════════════════════════════ -->
+  <div id="prototype-root" style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+  ">
+    <!-- Phone frame wrapper -->
+    <div style="
+      width: 390px;
+      background-color: #1C1C1E;
+      border-radius: 50px;
+      padding: 12px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 40px 80px rgba(0,0,0,0.6), 0 16px 32px rgba(0,0,0,0.4);
+      position: relative;
+    ">
+      <!-- Dynamic Island -->
+      <div aria-hidden="true" style="
+        position: absolute;
+        top: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 32px;
+        background-color: #000000;
+        border-radius: 20px;
+        z-index: 20;
+      "></div>
+
+      <!-- Screen viewport -->
+      <div style="
+        width: 366px;
+        height: 790px;
+        border-radius: 42px;
+        overflow: hidden;
+        position: relative;
+        background-color: #F7F5F1;
+      ">
+
+        <!-- ═══ SCREEN 1: WELCOME ═══ -->
+        <div id="screen-1" data-screen="1" style="
+          width: 100%;
+          height: 100%;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        ">
+          <!-- Layer 1: Gradient bg -->
+          <div aria-hidden="true" style="
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #162B45 0%, #0E1C2E 100%);
+            z-index: 0;
+          "></div>
+          <!-- Layer 2: Radial glow -->
+          <div aria-hidden="true" style="
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(75,191,212,0.15) 0%, transparent 60%);
+            z-index: 1;
+          "></div>
+          <!-- Layer 3: Content -->
+          <div style="
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            padding: 72px 28px 44px;
+            height: 100%;
+          ">
+            <!-- Logo block -->
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <!-- Logo mark container -->
+              <div style="
+                width: 48px;
+                height: 48px;
+                background-color: rgba(255,255,255,0.12);
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="white" aria-hidden="true" focusable="false">
+                  <polygon points="12,4 4,14 20,14" fill="white"/>
+                  <polygon points="12,9 3,20 21,20" fill="white"/>
+                  <rect x="10" y="20" width="4" height="4" fill="white"/>
+                </svg>
+              </div>
+              <!-- Wordmark -->
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 26px;
+                font-weight: 900;
+                color: #FFFFFF;
+                line-height: 1;
+                letter-spacing: 0em;
+              ">TreeHouse</span>
+              <!-- Tagline -->
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.55);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+              ">SAFECHAT INSIDE</span>
+            </div>
+
+            <!-- Spacer -->
+            <div style="flex: 1;"></div>
+
+            <!-- Headline block -->
+            <p style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 24px;
+              font-weight: 800;
+              color: #FFFFFF;
+              line-height: 1.25;
+              max-width: 220px;
+              letter-spacing: 0em;
+            ">Choose how AI works for your family.</p>
+
+            <p style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 13px;
+              font-weight: 400;
+              color: rgba(255,255,255,0.7);
+              line-height: 1.6;
+              margin-top: 12px;
+              letter-spacing: 0em;
+            ">Set up safety in 5 minutes. Your child gets a smarter AI. You stay in control.</p>
+
+            <!-- Spacer -->
+            <div style="flex: 1; min-height: 32px;"></div>
+
+            <!-- CTA button -->
+            <button class="btn-cta" onclick="showScreen(2)" aria-label="Set up SafeChat" style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              height: 52px;
+              background-color: #4BBFD4;
+              border-radius: 14px;
+              border: none;
+              box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+              font-family: 'Nunito', sans-serif;
+              font-size: 15px;
+              font-weight: 800;
+              color: #FFFFFF;
+              letter-spacing: 0em;
+              line-height: 1;
+            ">Set Up SafeChat</button>
+
+            <!-- Sign-in link -->
+            <p style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 13px;
+              font-weight: 600;
+              color: rgba(255,255,255,0.55);
+              text-align: center;
+              margin-top: 14px;
+              letter-spacing: 0em;
+              line-height: 1.4;
+            ">Already have an account? Sign in</p>
+          </div>
+        </div>
+
+        <!-- ═══ SCREEN 2: ONBOARDING – CONTENT MODERATION ═══ -->
+        <div id="screen-2" data-screen="2" style="
+          width: 100%;
+          height: 100%;
+          background-color: #F7F5F1;
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+        ">
+          <!-- Status bar placeholder -->
+          <div aria-hidden="true" style="height: 48px; flex-shrink: 0;"></div>
+
+          <!-- Progress dots row -->
+          <div style="
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-shrink: 0;
+          ">
+            <!-- Active dot (dot 1) -->
+            <div style="width: 24px; height: 8px; border-radius: 999px; background-color: #4BBFD4;" aria-hidden="true"></div>
+            <!-- Inactive dots -->
+            <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #E8E6E1;" aria-hidden="true"></div>
+            <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #E8E6E1;" aria-hidden="true"></div>
+            <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #E8E6E1;" aria-hidden="true"></div>
+            <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #E8E6E1;" aria-hidden="true"></div>
+          </div>
+
+          <!-- White card -->
+          <div style="
+            margin: 0 12px;
+            background-color: #FFFFFF;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+            padding: 24px 20px;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+          ">
+            <!-- Category row -->
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <!-- Category icon container -->
+              <div style="
+                width: 36px;
+                height: 36px;
+                background-color: rgba(75,191,212,0.12);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+              ">
+                <!-- Shield icon (custom Path C) -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                  <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6l-8-4z" stroke="#4BBFD4" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M9 12l2 2 4-4" stroke="#4BBFD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 13px;
+                font-weight: 700;
+                color: #6B7A8D;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+              ">CONTENT</span>
+            </div>
+
+            <!-- Headline -->
+            <h2 style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 20px;
+              font-weight: 800;
+              color: #1A2635;
+              line-height: 1.3;
+              margin-bottom: 6px;
+              letter-spacing: 0em;
+            ">What should SafeChat filter?</h2>
+
+            <!-- Description -->
+            <p style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 13px;
+              font-weight: 400;
+              color: #6B7A8D;
+              line-height: 1.5;
+              letter-spacing: 0em;
+            ">Choose topics your child can explore with the AI.</p>
+
+            <!-- Divider -->
+            <div style="height: 1px; background-color: #E8E6E1; margin: 16px 0;" aria-hidden="true"></div>
+
+            <!-- Setting row: Violence & Gore -->
+            <div style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 10px 0;
+              border-bottom: 1px solid #E8E6E1;
+            ">
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                color: #1A2635;
+                letter-spacing: 0em;
+              ">Violence &amp; Gore</span>
+              <div style="display: flex; gap: 4px;">
+                <!-- Off selected -->
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="true" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: #4BBFD4;
+                  border: 1.5px solid #4BBFD4;
+                  color: #FFFFFF;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Off</button>
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="false" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: transparent;
+                  border: 1.5px solid #E8E6E1;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Lenient</button>
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="false" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: transparent;
+                  border: 1.5px solid #E8E6E1;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Strict</button>
+              </div>
+            </div>
+
+            <!-- Setting row: Adult Content -->
+            <div style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 10px 0;
+              border-bottom: 1px solid #E8E6E1;
+            ">
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                color: #1A2635;
+                letter-spacing: 0em;
+              ">Adult Content</span>
+              <div style="display: flex; gap: 4px;">
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="false" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: transparent;
+                  border: 1.5px solid #E8E6E1;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Off</button>
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="false" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: transparent;
+                  border: 1.5px solid #E8E6E1;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Lenient</button>
+                <!-- Strict selected -->
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="true" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: #4BBFD4;
+                  border: 1.5px solid #4BBFD4;
+                  color: #FFFFFF;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Strict</button>
+              </div>
+            </div>
+
+            <!-- Setting row: Drug References -->
+            <div style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 10px 0;
+            ">
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                color: #1A2635;
+                letter-spacing: 0em;
+              ">Drug References</span>
+              <div style="display: flex; gap: 4px;">
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="false" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: transparent;
+                  border: 1.5px solid #E8E6E1;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Off</button>
+                <!-- Lenient selected -->
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="true" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: #4BBFD4;
+                  border: 1.5px solid #4BBFD4;
+                  color: #FFFFFF;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Lenient</button>
+                <button class="pill-btn" onclick="selectPill(this)" aria-pressed="false" style="
+                  height: 26px;
+                  padding: 0 10px;
+                  border-radius: 999px;
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 700;
+                  background-color: transparent;
+                  border: 1.5px solid #E8E6E1;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                  white-space: nowrap;
+                ">Strict</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer: Continue + Skip -->
+          <div style="padding: 12px 0 0; flex-shrink: 0;">
+            <button class="btn-cta" onclick="showScreen(3)" style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: calc(100% - 24px);
+              margin: 0 12px;
+              height: 52px;
+              background-color: #4BBFD4;
+              border-radius: 14px;
+              border: none;
+              box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+              font-family: 'Nunito', sans-serif;
+              font-size: 15px;
+              font-weight: 800;
+              color: #FFFFFF;
+              letter-spacing: 0em;
+              line-height: 1;
+            ">Continue →</button>
+            <p style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 12px;
+              font-weight: 600;
+              color: #6B7A8D;
+              text-align: center;
+              margin-top: 10px;
+              padding-bottom: 16px;
+              letter-spacing: 0em;
+            ">Skip for now</p>
+          </div>
+        </div>
+
+        <!-- ═══ SCREEN 3: PARENT DASHBOARD ═══ -->
+        <div id="screen-3" data-screen="3" style="
+          width: 100%;
+          height: 100%;
+          background-color: #F7F5F1;
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+        ">
+          <!-- Header -->
+          <div style="
+            padding: 52px 20px 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          ">
+            <h1 style="
+              font-family: 'Nunito', sans-serif;
+              font-size: 18px;
+              font-weight: 800;
+              color: #1A2635;
+              letter-spacing: 0em;
+              line-height: 1.2;
+            ">My Dashboard</h1>
+            <!-- Child chip -->
+            <div style="
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              background-color: #FFFFFF;
+              border: 1px solid #E8E6E1;
+              border-radius: 999px;
+              padding: 3px 10px 3px 7px;
+            ">
+              <!-- Green active dot -->
+              <div style="
+                width: 7px;
+                height: 7px;
+                border-radius: 999px;
+                background-color: #4CAF82;
+                flex-shrink: 0;
+              " aria-hidden="true"></div>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 12px;
+                font-weight: 600;
+                color: #1A2635;
+                letter-spacing: 0em;
+              ">Zoe · Active</span>
+            </div>
+          </div>
+
+          <!-- Tabs row -->
+          <div style="
+            display: flex;
+            margin: 0 16px;
+            gap: 4px;
+            flex-shrink: 0;
+          " role="tablist">
+            <!-- Overview tab active -->
+            <button id="tab-overview" class="tab-item" onclick="switchDashTab('overview')" role="tab" aria-selected="true" style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 6px 14px;
+              border-radius: 999px;
+              font-family: 'Nunito', sans-serif;
+              font-size: 12px;
+              font-weight: 700;
+              color: #FFFFFF;
+              background-color: #162B45;
+              border: none;
+              letter-spacing: 0em;
+              line-height: 1;
+            ">Overview</button>
+            <!-- SafeChat tab inactive -->
+            <button id="tab-safechat" class="tab-item" onclick="switchDashTab('safechat')" role="tab" aria-selected="false" style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 6px 14px;
+              border-radius: 999px;
+              font-family: 'Nunito', sans-serif;
+              font-size: 12px;
+              font-weight: 700;
+              color: #6B7A8D;
+              background-color: transparent;
+              border: none;
+              letter-spacing: 0em;
+              line-height: 1;
+            ">SafeChat</button>
+          </div>
+
+          <!-- Stats row — 3 across -->
+          <div style="
+            display: flex;
+            margin: 16px 16px 0;
+            gap: 8px;
+            flex-shrink: 0;
+          ">
+            <!-- Stat: Chats today -->
+            <div style="
+              flex: 1;
+              background-color: #FFFFFF;
+              border-radius: 16px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              padding: 12px;
+            ">
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 28px;
+                font-weight: 900;
+                color: #1A2635;
+                line-height: 1;
+                margin-bottom: 3px;
+                letter-spacing: 0em;
+              ">12</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 600;
+                color: #6B7A8D;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+              ">Chats today</div>
+            </div>
+            <!-- Stat: Topics flagged -->
+            <div style="
+              flex: 1;
+              background-color: #FFFFFF;
+              border-radius: 16px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              padding: 12px;
+            ">
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 28px;
+                font-weight: 900;
+                color: #1A2635;
+                line-height: 1;
+                margin-bottom: 3px;
+                letter-spacing: 0em;
+              ">3</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 600;
+                color: #6B7A8D;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+              ">Topics flagged</div>
+            </div>
+            <!-- Stat: Safe score -->
+            <div style="
+              flex: 1;
+              background-color: #FFFFFF;
+              border-radius: 16px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              padding: 12px;
+            ">
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 28px;
+                font-weight: 900;
+                color: #1A2635;
+                line-height: 1;
+                margin-bottom: 3px;
+                letter-spacing: 0em;
+              ">98%</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 600;
+                color: #6B7A8D;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+              ">Safe score</div>
+            </div>
+          </div>
+
+          <!-- Alert cards (2 stacked) -->
+          <div style="
+            margin: 16px 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+          ">
+            <!-- Warning alert -->
+            <div class="alert-card" style="
+              background-color: #FFFFFF;
+              border-radius: 16px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              overflow: hidden;
+              display: flex;
+            ">
+              <!-- Left bar: warning color -->
+              <div style="
+                width: 4px;
+                background-color: #F0A44A;
+                flex-shrink: 0;
+              " aria-hidden="true"></div>
+              <div style="
+                padding: 12px 14px;
+                flex: 1;
+              ">
+                <div style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  margin-bottom: 2px;
+                ">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#F0A44A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="9" x2="12" y2="13" stroke="#F0A44A" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke="#F0A44A" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  <span style="
+                    font-family: 'Nunito', sans-serif;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #1A2635;
+                    letter-spacing: 0em;
+                  ">Gaming Discussion</span>
+                </div>
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #6B7A8D;
+                  margin-bottom: 3px;
+                  letter-spacing: 0em;
+                  line-height: 1.4;
+                ">Zoe asked about online game purchases</p>
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 400;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                ">2h ago</p>
+              </div>
+              <!-- Chevron -->
+              <div style="
+                display: flex;
+                align-items: center;
+                padding-right: 12px;
+              ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                  <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Danger alert -->
+            <div class="alert-card" style="
+              background-color: #FFFFFF;
+              border-radius: 16px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              overflow: hidden;
+              display: flex;
+            ">
+              <!-- Left bar: danger color -->
+              <div style="
+                width: 4px;
+                background-color: #E05656;
+                flex-shrink: 0;
+              " aria-hidden="true"></div>
+              <div style="
+                padding: 12px 14px;
+                flex: 1;
+              ">
+                <div style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  margin-bottom: 2px;
+                ">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E05656" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="9" x2="12" y2="13" stroke="#E05656" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke="#E05656" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  <span style="
+                    font-family: 'Nunito', sans-serif;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #1A2635;
+                    letter-spacing: 0em;
+                  ">Off-topic Request</span>
+                </div>
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #6B7A8D;
+                  margin-bottom: 3px;
+                  letter-spacing: 0em;
+                  line-height: 1.4;
+                ">Request outside allowed topics</p>
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 400;
+                  color: #6B7A8D;
+                  letter-spacing: 0em;
+                ">Yesterday</p>
+              </div>
+              <!-- Chevron -->
+              <div style="
+                display: flex;
+                align-items: center;
+                padding-right: 12px;
+              ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                  <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- SafeChat preview tile -->
+          <button onclick="showScreen(4)" style="
+            margin: 12px 16px 0;
+            border-radius: 16px;
+            background-color: #162B45;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            flex-shrink: 0;
+          " aria-label="Open SafeChat — Zoe last active 1h ago">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <!-- Small TreeHouse logo circle -->
+              <div style="
+                width: 32px;
+                height: 32px;
+                border-radius: 999px;
+                background-color: rgba(75,191,212,0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+              ">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                  <polygon points="12,4 4,14 20,14" fill="#4BBFD4"/>
+                  <polygon points="12,9 3,20 21,20" fill="#4BBFD4"/>
+                  <rect x="10" y="20" width="4" height="4" fill="#4BBFD4"/>
+                </svg>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start;">
+                <span style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 14px;
+                  font-weight: 800;
+                  color: #FFFFFF;
+                  letter-spacing: 0em;
+                  line-height: 1;
+                ">SafeChat</span>
+                <span style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 11px;
+                  font-weight: 400;
+                  color: rgba(255,255,255,0.6);
+                  letter-spacing: 0em;
+                  line-height: 1.3;
+                ">Zoe last active 1h ago</span>
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- Spacer -->
+          <div style="flex: 1;"></div>
+
+          <!-- Bottom tab bar -->
+          <nav style="
+            height: 56px;
+            background-color: #FFFFFF;
+            border-top: 1px solid #E8E6E1;
+            box-shadow: 0 -1px 12px rgba(22,43,69,0.06);
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+          " aria-label="Main navigation">
+
+            <!-- Home tab (active) -->
+            <button class="nav-tab-btn" onclick="void(0)" aria-label="Home" aria-current="page" style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 2px;
+              border: none;
+              background-color: transparent;
+              padding: 0;
+            ">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                <path d="M3 10L10 3l7 7" stroke="#4BBFD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 8.5V16a1 1 0 001 1h3v-3h2v3h3a1 1 0 001-1V8.5" stroke="#4BBFD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 9px;
+                font-weight: 700;
+                color: #4BBFD4;
+                letter-spacing: 0em;
+              ">Home</span>
+            </button>
+
+            <!-- Alerts tab -->
+            <button class="nav-tab-btn" onclick="void(0)" aria-label="Alerts" style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 2px;
+              border: none;
+              background-color: transparent;
+              padding: 0;
+            ">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#6B7A8D" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M8 14a2 2 0 004 0" stroke="#6B7A8D" stroke-width="1.5"/>
+              </svg>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 9px;
+                font-weight: 700;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Alerts</span>
+            </button>
+
+            <!-- Convos tab -->
+            <button class="nav-tab-btn" onclick="void(0)" aria-label="Conversations" style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 2px;
+              border: none;
+              background-color: transparent;
+              padding: 0;
+            ">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                <path d="M4 4h12a1 1 0 011 1v7a1 1 0 01-1 1H7l-3 3V5a1 1 0 011-1z" stroke="#6B7A8D" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 9px;
+                font-weight: 700;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Convos</span>
+            </button>
+
+            <!-- Reports tab -->
+            <button class="nav-tab-btn" onclick="void(0)" aria-label="Reports" style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 2px;
+              border: none;
+              background-color: transparent;
+              padding: 0;
+            ">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <line x1="18" y1="20" x2="18" y2="10" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+                <line x1="12" y1="20" x2="12" y2="4" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+                <line x1="6" y1="20" x2="6" y2="14" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 9px;
+                font-weight: 700;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Reports</span>
+            </button>
+
+            <!-- Settings tab -->
+            <button class="nav-tab-btn" onclick="void(0)" aria-label="Settings" style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 2px;
+              border: none;
+              background-color: transparent;
+              padding: 0;
+            ">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                <circle cx="10" cy="10" r="2.5" stroke="#6B7A8D" stroke-width="1.5"/>
+                <path d="M10 3v2M10 15v2M3 10h2M15 10h2M5.05 5.05l1.41 1.41M13.54 13.54l1.41 1.41M5.05 14.95l1.41-1.41M13.54 6.46l1.41-1.41" stroke="#6B7A8D" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 9px;
+                font-weight: 700;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Settings</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- ═══ SCREEN 4: CHILD CHAT (SAFECHAT) ═══ -->
+        <div id="screen-4" data-screen="4" style="
+          width: 100%;
+          height: 100%;
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+        ">
+          <!-- Top bar -->
+          <div style="
+            position: relative;
+            overflow: hidden;
+            background-color: #162B45;
+            height: 80px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 12px;
+          ">
+            <!-- Subtle glow layer on top bar -->
+            <div aria-hidden="true" style="
+              position: absolute;
+              inset: 0;
+              background: radial-gradient(circle at 50% 80%, rgba(75,191,212,0.1) 0%, transparent 70%);
+              z-index: 0;
+            "></div>
+            <div style="
+              position: relative;
+              z-index: 1;
+              display: flex;
+              align-items: center;
+              gap: 7px;
+            ">
+              <!-- Logo circle -->
+              <div style="
+                width: 28px;
+                height: 28px;
+                border-radius: 999px;
+                background-color: rgba(75,191,212,0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+              ">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                  <polygon points="12,4 4,14 20,14" fill="#4BBFD4"/>
+                  <polygon points="12,9 3,20 21,20" fill="#4BBFD4"/>
+                  <rect x="10" y="20" width="4" height="4" fill="#4BBFD4"/>
+                </svg>
+              </div>
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 16px;
+                font-weight: 800;
+                color: #FFFFFF;
+                letter-spacing: 0em;
+                line-height: 1;
+              ">SafeChat</span>
+            </div>
+          </div>
+
+          <!-- Chat thread area -->
+          <div style="
+            flex: 1;
+            background-color: #F7F5F1;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: hidden;
+          ">
+            <!-- AI message 1 -->
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <!-- Avatar -->
+              <div style="
+                width: 28px;
+                height: 28px;
+                border-radius: 999px;
+                background-color: rgba(75,191,212,0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+              ">
+                <span style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: #4BBFD4;
+                  letter-spacing: 0em;
+                ">S</span>
+              </div>
+              <!-- AI bubble -->
+              <div style="
+                background-color: #FFFFFF;
+                border-radius: 0 16px 16px 16px;
+                padding: 10px 14px;
+                box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+                max-width: 75%;
+              ">
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #1A2635;
+                  line-height: 1.45;
+                  letter-spacing: 0em;
+                ">Hi Zoe! I'm SafeChat. What would you like to explore today?</p>
+              </div>
+            </div>
+
+            <!-- User message 1 -->
+            <div style="display: flex; justify-content: flex-end;">
+              <div style="
+                background-color: #4BBFD4;
+                border-radius: 16px 0 16px 16px;
+                padding: 10px 14px;
+                max-width: 75%;
+              ">
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #FFFFFF;
+                  line-height: 1.45;
+                  letter-spacing: 0em;
+                ">Can you help me write a poem about space?</p>
+              </div>
+            </div>
+
+            <!-- AI message 2 -->
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <div style="
+                width: 28px;
+                height: 28px;
+                border-radius: 999px;
+                background-color: rgba(75,191,212,0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+              ">
+                <span style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: #4BBFD4;
+                  letter-spacing: 0em;
+                ">S</span>
+              </div>
+              <div style="
+                background-color: #FFFFFF;
+                border-radius: 0 16px 16px 16px;
+                padding: 10px 14px;
+                box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+                max-width: 75%;
+              ">
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #1A2635;
+                  line-height: 1.45;
+                  letter-spacing: 0em;
+                ">Of course! Here's one:<br><br><span style="font-style: italic; opacity: 0.85;">Stars above, so far and bright,<br>Silent worlds in endless night...</span><br><br>Want me to make it longer?</p>
+              </div>
+            </div>
+
+            <!-- User message 2 -->
+            <div style="display: flex; justify-content: flex-end;">
+              <div style="
+                background-color: #4BBFD4;
+                border-radius: 16px 0 16px 16px;
+                padding: 10px 14px;
+                max-width: 75%;
+              ">
+                <p style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #FFFFFF;
+                  line-height: 1.45;
+                  letter-spacing: 0em;
+                ">Yes, make it way longer!</p>
+              </div>
+            </div>
+
+            <!-- AI typing indicator -->
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <div style="
+                width: 28px;
+                height: 28px;
+                border-radius: 999px;
+                background-color: rgba(75,191,212,0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+              ">
+                <span style="
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: #4BBFD4;
+                  letter-spacing: 0em;
+                ">S</span>
+              </div>
+              <!-- Typing bubble -->
+              <div style="
+                background-color: #FFFFFF;
+                border-radius: 0 16px 16px 16px;
+                padding: 14px 16px;
+                box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+                display: flex;
+                align-items: center;
+                gap: 5px;
+              ">
+                <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #6B7A8D;" aria-hidden="true"></div>
+                <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #6B7A8D;" aria-hidden="true"></div>
+                <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #6B7A8D;" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input bar -->
+          <div style="
+            background-color: #FFFFFF;
+            border-top: 1px solid #E8E6E1;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+          ">
+            <!-- Input pill -->
+            <div style="
+              flex: 1;
+              background-color: #F7F5F1;
+              border-radius: 999px;
+              height: 40px;
+              padding: 0 16px;
+              display: flex;
+              align-items: center;
+            ">
+              <span style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 13px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Ask SafeChat anything…</span>
+            </div>
+            <!-- Send button -->
+            <button class="send-btn" aria-label="Send message" style="
+              width: 40px;
+              height: 40px;
+              border-radius: 999px;
+              background-color: #4BBFD4;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-shrink: 0;
+            ">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <line x1="22" y1="2" x2="11" y2="13" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /screen viewport -->
+    </div><!-- /phone frame -->
+  </div><!-- /prototype-root -->
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FIGMA GALLERY — hidden by default, shown at ?figma=true
+       ═══════════════════════════════════════════════════════════════ -->
+  <div id="figma-gallery" style="
+    display: none;
+    flex-direction: column;
+    gap: 64px;
+    padding: 64px;
+    background-color: #EDEFF2;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+  ">
+
+    <!-- Gallery header -->
+    <div style="
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #999999;
+    ">COMPONENT STATE GALLERY — Direction A: Quiet Depth — Import this page at ?figma=true</div>
+
+    <!-- ─── COMPONENT: Primary Button ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Primary Button</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+        <!-- Default -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Default</div>
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 52px;
+            background-color: #4BBFD4;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0em;
+          ">Set Up SafeChat</div>
+        </div>
+        <!-- Hover -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Hover</div>
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 52px;
+            background-color: #3BAFC4;
+            border-radius: 14px;
+            box-shadow: 0 6px 24px rgba(75,191,212,0.45);
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0em;
+          ">Set Up SafeChat</div>
+        </div>
+        <!-- Disabled -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Disabled</div>
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 52px;
+            background-color: #4BBFD4;
+            border-radius: 14px;
+            opacity: 0.4;
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0em;
+          ">Set Up SafeChat</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: Pill Selector ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Pill Selector</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+        <!-- Inactive -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Inactive</div>
+          <div style="
+            height: 26px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            background-color: transparent;
+            border: 1.5px solid #E8E6E1;
+            color: #6B7A8D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">Lenient</div>
+        </div>
+        <!-- Active -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Active</div>
+          <div style="
+            height: 26px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            background-color: #4BBFD4;
+            border: 1.5px solid #4BBFD4;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">Strict</div>
+        </div>
+        <!-- Hover -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Hover</div>
+          <div style="
+            height: 26px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            background-color: transparent;
+            border: 1.5px solid #4BBFD4;
+            color: #4BBFD4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">Off</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: Progress Dot ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Progress Dot</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center;">
+        <!-- Inactive -->
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Inactive</div>
+          <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #E8E6E1;"></div>
+        </div>
+        <!-- Active -->
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Active</div>
+          <div style="width: 24px; height: 8px; border-radius: 999px; background-color: #4BBFD4;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: Alert Card ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Alert Card</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+        <!-- Warning variant -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Warning</div>
+          <div style="
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+            overflow: hidden;
+            display: flex;
+            width: 300px;
+          ">
+            <div style="width: 4px; background-color: #F0A44A; flex-shrink: 0;"></div>
+            <div style="padding: 12px 14px; flex: 1;">
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 13px;
+                font-weight: 700;
+                color: #1A2635;
+                letter-spacing: 0em;
+                margin-bottom: 2px;
+              ">Gaming Discussion</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 12px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+                margin-bottom: 3px;
+              ">Zoe asked about online game purchases</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">2h ago</div>
+            </div>
+          </div>
+        </div>
+        <!-- Danger variant -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Danger</div>
+          <div style="
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+            overflow: hidden;
+            display: flex;
+            width: 300px;
+          ">
+            <div style="width: 4px; background-color: #E05656; flex-shrink: 0;"></div>
+            <div style="padding: 12px 14px; flex: 1;">
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 13px;
+                font-weight: 700;
+                color: #1A2635;
+                letter-spacing: 0em;
+                margin-bottom: 2px;
+              ">Off-topic Request</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 12px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+                margin-bottom: 3px;
+              ">Request outside allowed topics</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Yesterday</div>
+            </div>
+          </div>
+        </div>
+        <!-- Success variant -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Success</div>
+          <div style="
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+            overflow: hidden;
+            display: flex;
+            width: 300px;
+          ">
+            <div style="width: 4px; background-color: #4CAF82; flex-shrink: 0;"></div>
+            <div style="padding: 12px 14px; flex: 1;">
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 13px;
+                font-weight: 700;
+                color: #1A2635;
+                letter-spacing: 0em;
+                margin-bottom: 2px;
+              ">All Clear</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 12px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+                margin-bottom: 3px;
+              ">No issues in last 24 hours</div>
+              <div style="
+                font-family: 'Nunito', sans-serif;
+                font-size: 11px;
+                font-weight: 400;
+                color: #6B7A8D;
+                letter-spacing: 0em;
+              ">Today</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: Tab Bar Item ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Tab Bar Item</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end;">
+        <!-- Inactive -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Inactive</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#6B7A8D" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M8 14a2 2 0 004 0" stroke="#6B7A8D" stroke-width="1.5"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Alerts</span>
+          </div>
+        </div>
+        <!-- Active -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Active</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M3 10L10 3l7 7" stroke="#4BBFD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 8.5V16a1 1 0 001 1h3v-3h2v3h3a1 1 0 001-1V8.5" stroke="#4BBFD4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 700; color: #4BBFD4; letter-spacing: 0em;">Home</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: Chat Bubble ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Chat Bubble</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+        <!-- AI default -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">AI Default</div>
+          <div style="display: flex; align-items: flex-end; gap: 8px;">
+            <div style="
+              width: 28px; height: 28px; border-radius: 999px;
+              background-color: rgba(75,191,212,0.2);
+              display: flex; align-items: center; justify-content: center;
+              flex-shrink: 0;
+            ">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #4BBFD4;">S</span>
+            </div>
+            <div style="
+              background-color: #FFFFFF;
+              border-radius: 0 16px 16px 16px;
+              padding: 10px 14px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              max-width: 220px;
+            ">
+              <p style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 400; color: #1A2635; line-height: 1.45; letter-spacing: 0em;">Hi! What would you like to explore?</p>
+            </div>
+          </div>
+        </div>
+        <!-- User -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">User</div>
+          <div style="
+            background-color: #4BBFD4;
+            border-radius: 16px 0 16px 16px;
+            padding: 10px 14px;
+            max-width: 220px;
+          ">
+            <p style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 400; color: #FFFFFF; line-height: 1.45; letter-spacing: 0em;">Can you help me write a poem?</p>
+          </div>
+        </div>
+        <!-- Typing indicator -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #999999;">Typing</div>
+          <div style="display: flex; align-items: flex-end; gap: 8px;">
+            <div style="
+              width: 28px; height: 28px; border-radius: 999px;
+              background-color: rgba(75,191,212,0.2);
+              display: flex; align-items: center; justify-content: center;
+              flex-shrink: 0;
+            ">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #4BBFD4;">S</span>
+            </div>
+            <div style="
+              background-color: #FFFFFF;
+              border-radius: 0 16px 16px 16px;
+              padding: 14px 16px;
+              box-shadow: 0 4px 20px rgba(22,43,69,0.08);
+              display: flex; align-items: center; gap: 5px;
+            ">
+              <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #6B7A8D;"></div>
+              <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #6B7A8D;"></div>
+              <div style="width: 8px; height: 8px; border-radius: 999px; background-color: #6B7A8D;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── FULL PAGE LAYOUT SNAPSHOTS ─── -->
+
+    <!-- Screen 1 snapshot -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Full Screen Snapshot — Screen 1: Welcome</div>
+      <div style="
+        transform: scale(0.35);
+        transform-origin: top left;
+        width: 390px;
+        height: 790px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 42px;
+      ">
+        <!-- Gradient bg -->
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, #162B45 0%, #0E1C2E 100%); z-index: 0;"></div>
+        <!-- Glow -->
+        <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, rgba(75,191,212,0.15) 0%, transparent 60%); z-index: 1;"></div>
+        <!-- Content -->
+        <div style="position: relative; z-index: 3; display: flex; flex-direction: column; padding: 72px 28px 44px; height: 100%;">
+          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div style="width: 48px; height: 48px; background-color: rgba(255,255,255,0.12); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="12,4 4,14 20,14" fill="white"/><polygon points="12,9 3,20 21,20" fill="white"/><rect x="10" y="20" width="4" height="4" fill="white"/></svg>
+            </div>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #FFFFFF; line-height: 1; letter-spacing: 0em;">TreeHouse</span>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; text-transform: uppercase;">SAFECHAT INSIDE</span>
+          </div>
+          <div style="flex: 1;"></div>
+          <p style="font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800; color: #FFFFFF; line-height: 1.25; max-width: 220px; letter-spacing: 0em;">Choose how AI works for your family.</p>
+          <p style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7); line-height: 1.6; margin-top: 12px; letter-spacing: 0em;">Set up safety in 5 minutes. Your child gets a smarter AI. You stay in control.</p>
+          <div style="flex: 1; min-height: 32px;"></div>
+          <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 52px; background-color: #4BBFD4; border-radius: 14px; box-shadow: 0 4px 20px rgba(75,191,212,0.35); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Set Up SafeChat</div>
+          <p style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); text-align: center; margin-top: 14px; letter-spacing: 0em;">Already have an account? Sign in</p>
+        </div>
+      </div>
+      <!-- Spacer for transform-origin clipping -->
+      <div style="height: 120px;"></div>
+    </div>
+
+    <!-- Screen 3 snapshot -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="
+        font-family: 'Nunito', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333333;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DDDDDD;
+      ">Full Screen Snapshot — Screen 3: Parent Dashboard</div>
+      <div style="
+        transform: scale(0.35);
+        transform-origin: top left;
+        width: 390px;
+        height: 790px;
+        background-color: #F7F5F1;
+        border-radius: 42px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      ">
+        <div style="padding: 52px 20px 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #1A2635; letter-spacing: 0em;">My Dashboard</span>
+          <div style="display: flex; align-items: center; gap: 5px; background-color: #FFFFFF; border: 1px solid #E8E6E1; border-radius: 999px; padding: 3px 10px 3px 7px;">
+            <div style="width: 7px; height: 7px; border-radius: 999px; background-color: #4CAF82;"></div>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600; color: #1A2635; letter-spacing: 0em;">Zoe · Active</span>
+          </div>
+        </div>
+        <div style="display: flex; margin: 0 16px; gap: 4px; flex-shrink: 0;">
+          <div style="padding: 6px 14px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; color: #FFFFFF; background-color: #162B45; letter-spacing: 0em;">Overview</div>
+          <div style="padding: 6px 14px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">SafeChat</div>
+        </div>
+        <div style="display: flex; margin: 16px 16px 0; gap: 8px; flex-shrink: 0;">
+          <div style="flex: 1; background-color: #FFFFFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); padding: 12px;">
+            <div style="font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #1A2635; letter-spacing: 0em; margin-bottom: 3px;">12</div>
+            <div style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 600; color: #6B7A8D; text-transform: uppercase; letter-spacing: 0.05em;">Chats today</div>
+          </div>
+          <div style="flex: 1; background-color: #FFFFFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); padding: 12px;">
+            <div style="font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #1A2635; letter-spacing: 0em; margin-bottom: 3px;">3</div>
+            <div style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 600; color: #6B7A8D; text-transform: uppercase; letter-spacing: 0.05em;">Topics flagged</div>
+          </div>
+          <div style="flex: 1; background-color: #FFFFFF; border-radius: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); padding: 12px;">
+            <div style="font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #1A2635; letter-spacing: 0em; margin-bottom: 3px;">98%</div>
+            <div style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 600; color: #6B7A8D; text-transform: uppercase; letter-spacing: 0.05em;">Safe score</div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 120px;"></div>
+    </div>
+
+  </div><!-- /figma-gallery -->
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       MODE SWITCH — runs before any other JS
+       ═══════════════════════════════════════════════════════════════ */
+    const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
+
+    if (FIGMA_MODE) {
+      document.getElementById('prototype-root').style.display = 'none';
+      document.getElementById('figma-gallery').style.display = 'flex';
+    } else {
+      document.getElementById('figma-gallery').style.display = 'none';
+      initPrototype();
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PROTOTYPE INITIALIZATION
+       ═══════════════════════════════════════════════════════════════ */
+    function initPrototype() {
+      showScreen(1);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════════════ */
+    function showScreen(n) {
+      const screens = document.querySelectorAll('[data-screen]');
+      screens.forEach(function(s) {
+        s.style.display = 'none';
+      });
+      const target = document.getElementById('screen-' + n);
+      if (target) {
+        target.style.display = 'flex';
+        target.style.flexDirection = 'column';
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PILL SELECTOR — exclusive within group
+       ═══════════════════════════════════════════════════════════════ */
+    function selectPill(btn) {
+      // Find sibling pills in same group
+      var group = btn.parentElement;
+      var siblings = group.querySelectorAll('button');
+      siblings.forEach(function(sib) {
+        sib.style.backgroundColor = 'transparent';
+        sib.style.borderColor = '#E8E6E1';
+        sib.style.color = '#6B7A8D';
+        sib.setAttribute('aria-pressed', 'false');
+      });
+      // Apply active state to clicked pill
+      btn.style.backgroundColor = '#4BBFD4';
+      btn.style.borderColor = '#4BBFD4';
+      btn.style.color = '#FFFFFF';
+      btn.setAttribute('aria-pressed', 'true');
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DASHBOARD TAB SWITCH
+       ═══════════════════════════════════════════════════════════════ */
+    function switchDashTab(which) {
+      var overviewBtn = document.getElementById('tab-overview');
+      var safechatBtn = document.getElementById('tab-safechat');
+      if (!overviewBtn || !safechatBtn) return;
+
+      // Reset both
+      overviewBtn.style.backgroundColor = 'transparent';
+      overviewBtn.style.color = '#6B7A8D';
+      overviewBtn.setAttribute('aria-selected', 'false');
+      safechatBtn.style.backgroundColor = 'transparent';
+      safechatBtn.style.color = '#6B7A8D';
+      safechatBtn.setAttribute('aria-selected', 'false');
+
+      // Activate selected
+      var active = which === 'overview' ? overviewBtn : safechatBtn;
+      active.style.backgroundColor = '#162B45';
+      active.style.color = '#FFFFFF';
+      active.setAttribute('aria-selected', 'true');
+    }
+  </script>
+
+</body>
+</html>

@@ -3,1384 +3,1159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SafeChat by Tree House — Direction C Prototype</title>
+  <title>SafeChat — Direction C: Trust Layer</title>
+  <!--
+  ═══════════════════════════════════════════════════════════════════
+  WHALES PROTOTYPE — Direction C: Trust Layer — Non-linear Setup
+  Built from: MOCKUP_C.html + DESIGN_RESEARCH.html + Direction C spec
+  ───────────────────────────────────────────────────────────────────
+  TOKEN RESOLUTION TABLE — Direction C
+  | Token               | Value                          | Usage                        |
+  | color-dark-bg       | #162B45                        | Welcome bg                   |
+  | color-dark-deep     | #0E1C2E                        | Gradient end                 |
+  | color-teal-glow     | rgba(75,191,212,0.15)          | Welcome glow                 |
+  | color-accent        | #4BBFD4                        | CTAs, active                 |
+  | color-accent-shadow | rgba(75,191,212,0.35)          | Button glow                  |
+  | color-accent-bg     | rgba(75,191,212,0.08)          | Active category bg           |
+  | color-bg-light      | #F7F5F1                        | Screen bg                    |
+  | color-surface       | #FFFFFF                        | Cards, sheet                 |
+  | color-text-primary  | #1A2635                        | Primary text                 |
+  | color-text-secondary| #6B7A8D                        | Muted text                   |
+  | color-text-on-dark  | #FFFFFF                        | Dark surface text            |
+  | color-border        | #E8E6E1                        | Borders                      |
+  | color-success       | #4CAF82                        | Success state                |
+  | color-pill-active-bg| #4BBFD4                        | Active pill bg               |
+  | color-pill-inactive-bg| #F0EDE8                      | Inactive pill bg             |
+  | color-pill-inactive-text| #6B7A8D                    | Inactive pill text           |
+  | color-sheet-scrim   | rgba(22,43,69,0.4)             | Sheet overlay                |
+  | color-drag-handle   | #E8E6E1                        | Sheet drag handle            |
+  | radius-card         | 24px                           | Cards                        |
+  | radius-btn          | 14px                           | Buttons                      |
+  | radius-pill         | 999px                          | Pills                        |
+  | radius-sheet        | 24px                           | Sheet top corners            |
+  | shadow-card         | 0 4px 20px rgba(22,43,69,0.08) | Cards                        |
+  | shadow-btn          | 0 4px 20px rgba(75,191,212,0.35)| CTA                         |
+  | shadow-sheet        | 0 -8px 40px rgba(22,43,69,0.16)| Sheet top shadow             |
+  | font-family         | 'Nunito', sans-serif           | All text                     |
+  ═══════════════════════════════════════════════════════════════════
+  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
-    /* ── Reset ─────────────────────────────────────── */
+    /* 1. Reset */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-    button { font-family: inherit; border: none; background: none; cursor: pointer; }
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; }
+    button { border: none; background: none; cursor: pointer; font-family: inherit; }
     a { text-decoration: none; }
 
-    /* ── Prototype stage ────────────────────────────── */
-    body {
-      background-color: #E2E8F0;
-      background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
-      background-size: 20px 20px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 48px 24px 80px;
+    /* 2. Bottom-sheet animation — Column C, style block only */
+    #bottom-sheet {
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+    #bottom-sheet.sheet-open {
+      transform: translateY(0);
     }
 
-    /* ── Stage label ────────────────────────────────── */
-    .stage-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #94A3B8;
-      margin-bottom: 24px;
-      text-align: center;
+    /* 3. Hover states */
+    .btn-primary-cta:hover {
+      opacity: 0.92;
     }
-    .stage-label a {
-      color: #4B7BE5;
-      font-weight: 700;
+    .btn-secondary-cta:hover {
+      background-color: #F0EDE8;
     }
-
-    /* ── Phone shell ────────────────────────────────── */
-    .phone {
-      width: 390px;
-      height: 844px;
-      border-radius: 50px;
-      background-color: #F8F9FB;
-      box-shadow: 0 0 0 8px #1A1A28, 0 32px 80px rgba(0,0,0,0.32);
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
+    .category-row-tappable:hover {
+      background-color: rgba(75,191,212,0.06);
+      cursor: pointer;
+    }
+    .pill-selector:hover {
+      opacity: 0.85;
+      cursor: pointer;
+    }
+    .tab-item-btn:hover {
+      opacity: 0.75;
+      cursor: pointer;
     }
 
-    /* ── Status bar ─────────────────────────────────── */
-    .sbar {
-      height: 48px;
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      background-color: #F8F9FB;
+    /* 4. Progress bar animation */
+    @keyframes fill-progress {
+      from { width: 0%; }
+      to   { width: 100%; }
     }
-    .sbar--white { background-color: #FFFFFF; }
-    .sbar__time { font-size: 15px; font-weight: 600; color: #1C1C28; }
-    .sbar__icons { display: flex; gap: 6px; align-items: center; }
-
-    /* ── Screen layer ───────────────────────────────── */
-    .screen-container {
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-    }
-    .screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 250ms ease;
-      overflow: hidden;
-    }
-    .screen.active {
-      opacity: 1;
-      pointer-events: auto;
+    .progress-fill {
+      animation: fill-progress 2s linear forwards;
     }
 
-    /* ── Home indicator ─────────────────────────────── */
-    .home-bar {
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      background-color: #F8F9FB;
-    }
-    .home-bar--white { background-color: #FFFFFF; }
-    .home-bar__pill {
-      width: 134px;
-      height: 5px;
-      background-color: #1C1C28;
-      border-radius: 100px;
-    }
-
-    /* ── Scrollable screen body ─────────────────────── */
-    .scroll-body {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .scroll-body::-webkit-scrollbar { display: none; }
-
-    /* ── Pseudo-states (Column C — style block only) ── */
-    .tier-opt-btn:active { transform: scale(0.98); }
-    .cta-btn:active { transform: scale(0.97); opacity: 0.9; }
-    .back-btn:hover { background-color: #F3F4F6; }
-    .review-row-btn:active { background-color: #F9FAFB; }
-    .chat-send:active { transform: scale(0.92); }
-
-    /* ── Progress bar fill animation ───────────────── */
-    .pbar-fill { transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1); }
-
-    /* ── Figma gallery ──────────────────────────────── */
-    #figma-gallery {
-      display: none;
-      flex-direction: column;
-      gap: 64px;
-      padding: 64px;
-      background-color: #F5F5F5;
-      min-height: 100vh;
-    }
-    .gallery-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #999;
-    }
-    .gallery-section-title {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #E0E0E0;
-    }
-    .gallery-state-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      color: #999;
+    /* 5. Focus ring */
+    :focus-visible {
+      outline: 2px solid #4BBFD4;
+      outline-offset: 2px;
+      border-radius: 4px;
     }
   </style>
 </head>
-<body>
 
-<!-- ══════════════════════════════════════════════════
-     PROTOTYPE ROOT
-══════════════════════════════════════════════════ -->
-<div id="prototype-root">
+<body style="background-color: #E8E4DC; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 48px 24px 80px;">
 
-  <div class="stage-label">
-    SafeChat — Direction C · Category-by-Category ·
-    <a href="?figma=true">Open Figma mode →</a>
-  </div>
+  <!-- ═══════════════════════════════════════════════════════════════
+       PROTOTYPE ROOT
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="prototype-root" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
 
-  <!-- Phone frame -->
-  <div class="phone">
-
-    <!-- STATUS BAR (shared, swapped per screen) -->
-    <div class="sbar" id="status-bar">
-      <span class="sbar__time">9:41</span>
-      <div class="sbar__icons">
-        <!-- Signal -->
-        <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="0" y="7" width="3" height="5" rx="1" fill="#1C1C28"/>
-          <rect x="4.5" y="4.5" width="3" height="7.5" rx="1" fill="#1C1C28"/>
-          <rect x="9" y="2" width="3" height="10" rx="1" fill="#1C1C28"/>
-          <rect x="13.5" y="0" width="3" height="12" rx="1" fill="#1C1C28"/>
-        </svg>
-        <!-- Wifi -->
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M8 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" fill="#1C1C28"/>
-          <path d="M4.2 7.3C5.2 6.3 6.5 5.7 8 5.7s2.8.6 3.8 1.6" stroke="#1C1C28" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M1.4 4.5C3 2.9 5.4 1.9 8 1.9s5 1 6.6 2.6" stroke="#1C1C28" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <!-- Battery -->
-        <svg width="25" height="12" viewBox="0 0 25 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#1C1C28" stroke-opacity="0.35"/>
-          <rect x="2" y="2" width="17" height="8" rx="1.5" fill="#1C1C28"/>
-          <path d="M22.5 4v4a2 2 0 000-4z" fill="#1C1C28" fill-opacity="0.4"/>
-        </svg>
-      </div>
+    <!-- Stage label -->
+    <div style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #8A9BAD; margin-bottom: 24px; text-align: center;">
+      SafeChat · Direction C · Trust Layer
     </div>
 
-    <!-- SCREENS -->
-    <div class="screen-container">
+    <!-- Phone frame -->
+    <div style="
+      width: 390px;
+      min-height: 844px;
+      border-radius: 50px;
+      background-color: #1A1A2E;
+      box-shadow: 0 0 0 8px #1A1A28, 0 32px 80px rgba(0,0,0,0.32);
+      overflow: hidden;
+      position: relative;
+    ">
 
-      <!-- ══════════════════════════════════════════════
-           SCREEN 1 — WELCOME
-      ══════════════════════════════════════════════ -->
-      <div class="screen active" id="screen-1" style="background-color: #F8F9FB;">
-        <div class="scroll-body" style="padding: 16px 24px 24px;">
+      <!-- STATUS BAR -->
+      <div style="
+        height: 44px;
+        background-color: #162B45;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+      ">
+        <span style="font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">9:41</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true" focusable="false">
+            <rect x="0" y="4" width="3" height="8" rx="1" fill="#FFFFFF"/>
+            <rect x="4.5" y="2.5" width="3" height="9.5" rx="1" fill="#FFFFFF"/>
+            <rect x="9" y="0.5" width="3" height="11.5" rx="1" fill="#FFFFFF"/>
+            <rect x="13.5" y="0" width="2.5" height="12" rx="1" fill="rgba(255,255,255,0.35)"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 20 15" fill="none" aria-hidden="true" focusable="false">
+            <path d="M10 3C13.5 3 16.6 4.4 18.8 6.7L20 5.4C17.4 2.7 13.9 1 10 1C6.1 1 2.6 2.7 0 5.4L1.2 6.7C3.4 4.4 6.5 3 10 3Z" fill="#FFFFFF"/>
+            <path d="M10 7C12.2 7 14.2 7.9 15.6 9.4L16.8 8.1C15.1 6.2 12.7 5 10 5C7.3 5 4.9 6.2 3.2 8.1L4.4 9.4C5.8 7.9 7.8 7 10 7Z" fill="#FFFFFF"/>
+            <circle cx="10" cy="13" r="2" fill="#FFFFFF"/>
+          </svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true" focusable="false">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#FFFFFF" stroke-opacity="0.35"/>
+            <rect x="2" y="2" width="16" height="8" rx="2" fill="#FFFFFF"/>
+            <path d="M23 4.5V7.5C23.8 7.2 24.5 6.7 24.5 6C24.5 5.3 23.8 4.8 23 4.5Z" fill="#FFFFFF" fill-opacity="0.4"/>
+          </svg>
+        </div>
+      </div>
 
-          <!-- Logo badge -->
-          <div style="display: flex; align-items: center; gap: 12px; padding: 20px 0 28px;">
-            <div style="
-              width: 44px; height: 44px; border-radius: 12px;
-              background-color: #4B7BE5;
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 4px 14px rgba(75,123,229,0.35);
-            ">
-              <!-- Shield icon -->
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#ffffff"/>
-              </svg>
-            </div>
-            <div>
-              <div style="font-size: 16px; font-weight: 700; color: #1C1C28; line-height: 1.2;">SafeChat</div>
-              <div style="font-size: 11px; color: #9CA3AF; font-weight: 500;">by Tree House</div>
-            </div>
+      <!-- ─── SCREEN 1: WELCOME ─── -->
+      <div id="screen-1" data-screen="1" style="display: block; position: relative; overflow: hidden; min-height: 800px; background-color: #162B45;">
+
+        <!-- Gradient layer -->
+        <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, #162B45 0%, #0E1C2E 100%); z-index: 0;"></div>
+
+        <!-- Glow layer -->
+        <div aria-hidden="true" style="position: absolute; top: 120px; left: 50%; width: 260px; height: 260px; border-radius: 999px; background-color: rgba(75,191,212,0.15); transform: translateX(-50%); z-index: 1;"></div>
+
+        <!-- Content -->
+        <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; padding: 72px 32px 48px; min-height: 800px;">
+
+          <!-- Wordmark row -->
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 48px; align-self: flex-start;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="white" aria-hidden="true" focusable="false">
+              <polygon points="12,3 4,13 20,13"/>
+              <polygon points="12,8 3,19 21,19"/>
+              <rect x="10" y="19" width="4" height="5"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; color: #FFFFFF; letter-spacing: 0.04em; text-transform: uppercase;">TreeHouse</span>
+          </div>
+
+          <!-- Chat bubble logo -->
+          <div style="margin-bottom: 32px; width: 80px; height: 80px; border-radius: 24px; background-color: rgba(75,191,212,0.12); display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(75,191,212,0.3);">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="rgba(75,191,212,0.2)" stroke="#4BBFD4" stroke-width="1.5" stroke-linejoin="round"/>
+              <polygon points="12,6 9,11 15,11" fill="#4BBFD4"/>
+              <polygon points="12,9 8.5,14 15.5,14" fill="#4BBFD4"/>
+            </svg>
+          </div>
+
+          <!-- Product name -->
+          <div style="margin-bottom: 4px; text-align: center;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #FFFFFF; letter-spacing: -0.02em;">SafeChat</span>
+          </div>
+          <div style="margin-bottom: 40px; text-align: center;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 600; color: #4BBFD4; letter-spacing: 0.12em; text-transform: uppercase;">by TreeHouse</span>
           </div>
 
           <!-- Headline -->
-          <div style="font-size: 26px; font-weight: 700; color: #1C1C28; line-height: 1.2; margin-bottom: 10px;">
-            Set up your child's AI safety
-          </div>
-          <div style="font-size: 14px; color: #6B7280; line-height: 1.6; margin-bottom: 28px;">
-            Choose how the AI responds to sensitive topics — one category at a time. Takes about 5 minutes.
+          <div style="margin-bottom: 12px; text-align: center; max-width: 240px;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; line-height: 1.25;">Built for trust. Set up in 30 seconds.</span>
           </div>
 
-          <!-- Tier overview card -->
-          <div style="
-            background-color: #FFFFFF;
-            border: 1px solid #E5E7EB;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            margin-bottom: 28px;
-          ">
-            <div style="padding: 12px 16px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF;">
-              How settings work
-            </div>
-            <!-- Off row -->
-            <div style="display: flex; align-items: flex-start; gap: 12px; padding: 11px 16px; border-top: 1px solid #F3F4F6;">
-              <div style="
-                width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-                background-color: #F9FAFB; border: 2px solid #9CA3AF; margin-top: 1px;
-              "></div>
-              <div>
-                <div style="font-size: 13px; font-weight: 700; color: #1C1C28; margin-bottom: 2px;">Off</div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.5;">AI answers without restriction. Not recommended for minors.</div>
-              </div>
-            </div>
-            <!-- Balanced row -->
-            <div style="display: flex; align-items: flex-start; gap: 12px; padding: 11px 16px; border-top: 1px solid #F3F4F6;">
-              <div style="
-                width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-                background-color: #FFFBEB; border: 2px solid #F59E0B; margin-top: 1px;
-              "></div>
-              <div>
-                <div style="font-size: 13px; font-weight: 700; color: #1C1C28; margin-bottom: 2px;">Balanced</div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.5;">AI answers educationally, avoids harmful specifics, promotes conversation.</div>
-              </div>
-            </div>
-            <!-- Strict row -->
-            <div style="display: flex; align-items: flex-start; gap: 12px; padding: 11px 16px; border-top: 1px solid #F3F4F6;">
-              <div style="
-                width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-                background-color: #FEF2F2; border: 2px solid #EF4444; margin-top: 1px;
-              "></div>
-              <div>
-                <div style="font-size: 13px; font-weight: 700; color: #1C1C28; margin-bottom: 2px;">Strict</div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.5;">AI refuses the topic entirely and redirects your child to a trusted adult.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Topics count note -->
-          <div style="
-            display: flex; align-items: center; gap: 8px;
-            padding: 10px 14px; border-radius: 10px;
-            background-color: #EEF3FC; margin-bottom: 28px;
-          ">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle cx="12" cy="12" r="10" fill="#4B7BE5" fill-opacity="0.15"/>
-              <path d="M12 8v4M12 16h.01" stroke="#4B7BE5" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <span style="font-size: 12px; color: #4B7BE5; font-weight: 600;">11 topics, one at a time</span>
+          <!-- Subhead -->
+          <div style="margin-bottom: 56px; text-align: center; max-width: 280px;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7); line-height: 1.55; letter-spacing: 0em;">We pre-configure smart defaults. You're in control from day one.</span>
           </div>
 
           <!-- CTA -->
-          <button class="cta-btn" onclick="goTo(2)" style="
-            width: 100%; padding: 16px; border-radius: 12px;
-            background-color: #4B7BE5; color: #FFFFFF;
-            font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
-            box-shadow: 0 4px 16px rgba(75,123,229,0.35);
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-          ">
-            Get started
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <button
+            class="btn-primary-cta"
+            onclick="showScreen('screen-2')"
+            style="
+              width: 100%;
+              height: 52px;
+              border-radius: 14px;
+              background-color: #4BBFD4;
+              box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 6px;
+              cursor: pointer;
+            "
+            aria-label="See what's included"
+          >
+            <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">See what's included →</span>
           </button>
 
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════════════
-           SCREEN 2 — CATEGORY 1/11: SELF-HARM (unselected)
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-2" style="background-color: #F8F9FB;">
+      <!-- ─── SCREEN 2: OVERVIEW PANEL (THE FORK) ─── -->
+      <div id="screen-2" data-screen="2" style="display: none; background-color: #F7F5F1; min-height: 800px; padding: 32px 20px 40px;">
 
-        <!-- Nav + progress -->
-        <div style="padding: 4px 18px 0; background-color: #F8F9FB;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-            <button class="back-btn" onclick="goTo(1)" style="
-              width: 36px; height: 36px; border-radius: 50%;
-              background-color: #FFFFFF; border: 1px solid #E5E7EB;
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            ">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M19 12H5M11 6l-6 6 6 6" stroke="#1C1C28" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Header -->
+        <div style="margin-bottom: 6px;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: #1A2635; letter-spacing: -0.01em; line-height: 1.2;">Here's how SafeChat protects your child</span>
+        </div>
+        <div style="margin-bottom: 24px;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: #6B7A8D; line-height: 1.5; letter-spacing: 0em;">We've set thoughtful defaults. Activate now or tune any category.</span>
+        </div>
+
+        <!-- Category card -->
+        <div style="background-color: #FFFFFF; border-radius: 24px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); padding: 4px 0; margin-bottom: 20px; overflow: hidden;">
+
+          <!-- Row: Content Moderation -->
+          <div class="category-row-tappable" id="row-content" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="handleRowTap('Content Moderation')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Content Moderation</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+            </div>
+            <div id="chev-content" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </button>
-            <span style="font-size: 11px; font-weight: 600; color: #9CA3AF;">1 of 11</span>
-          </div>
-          <!-- Progress bar -->
-          <div style="height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden; margin-bottom: 2px;">
-            <div class="pbar-fill" style="width: 9%; height: 100%; background-color: #4B7BE5; border-radius: 2px;"></div>
-          </div>
-        </div>
-
-        <div class="scroll-body" style="padding: 16px 18px 24px;">
-
-          <!-- Section tag -->
-          <div style="
-            display: inline-block; padding: 3px 9px; border-radius: 6px;
-            background-color: #EEF3FC; color: #4B7BE5;
-            font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-            margin-bottom: 14px;
-          ">Content Settings</div>
-
-          <!-- Category focus -->
-          <div style="font-size: 32px; margin-bottom: 6px;">🛡️</div>
-          <div style="font-size: 20px; font-weight: 700; color: #1C1C28; margin-bottom: 6px;">Self-harm</div>
-          <div style="font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 14px;">
-            Content related to self-injury, suicidal ideation, or deliberate physical harm.
-          </div>
-
-          <!-- Example box -->
-          <div style="
-            background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px;
-            padding: 10px 13px; margin-bottom: 16px;
-          ">
-            <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 4px;">For Example</div>
-            <div style="font-size: 11px; color: #6B7280; line-height: 1.55; font-style: italic;">"How do I hide cuts on my arms from my parents?"</div>
-          </div>
-
-          <!-- Tier cards (unselected) -->
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-
-            <!-- Off -->
-            <button class="tier-opt-btn" onclick="selectTier(2, 'off', 3)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px;
-                background-color: #FFFFFF;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #1C1C28;">Off</span>
-                  <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #F3F4F6; color: #9CA3AF;">Unrestricted</span>
-                </div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">AI answers the question directly. Not recommended.</div>
-              </div>
-            </button>
-
-            <!-- Balanced -->
-            <button class="tier-opt-btn" onclick="selectTier(2, 'balanced', 3)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px;
-                background-color: #FFFFFF;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #1C1C28;">Balanced</span>
-                  <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Monitored</span>
-                </div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">Provides compassionate resources, avoids harmful methods.</div>
-              </div>
-            </button>
-
-            <!-- Strict -->
-            <button class="tier-opt-btn" onclick="selectTier(2, 'strict', 3)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px;
-                background-color: #FFFFFF;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #1C1C28;">Strict</span>
-                  <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444;">Blocked</span>
-                </div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">Refuses topic, alerts parent, redirects to crisis resources.</div>
-              </div>
-            </button>
-
-          </div>
-
-          <!-- Tap hint -->
-          <div style="text-align: center; font-size: 10px; color: #D1D5DB; padding: 14px 0 4px; font-weight: 500;">
-            Tap a choice to continue →
-          </div>
-        </div>
-      </div>
-
-      <!-- ══════════════════════════════════════════════
-           SCREEN 3 — CATEGORY 2/11: DRUGS (Balanced selected)
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-3" style="background-color: #F8F9FB;">
-
-        <div style="padding: 4px 18px 0; background-color: #F8F9FB;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-            <button class="back-btn" onclick="goTo(2)" style="
-              width: 36px; height: 36px; border-radius: 50%;
-              background-color: #FFFFFF; border: 1px solid #E5E7EB;
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            ">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M19 12H5M11 6l-6 6 6 6" stroke="#1C1C28" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <span style="font-size: 11px; font-weight: 600; color: #9CA3AF;">2 of 11</span>
-          </div>
-          <div style="height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden; margin-bottom: 2px;">
-            <div class="pbar-fill" style="width: 18%; height: 100%; background-color: #4B7BE5; border-radius: 2px;"></div>
-          </div>
-        </div>
-
-        <div class="scroll-body" style="padding: 16px 18px 24px;">
-
-          <div style="
-            display: inline-block; padding: 3px 9px; border-radius: 6px;
-            background-color: #EEF3FC; color: #4B7BE5;
-            font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-            margin-bottom: 14px;
-          ">Content Settings</div>
-
-          <div style="font-size: 32px; margin-bottom: 6px;">💊</div>
-          <div style="font-size: 20px; font-weight: 700; color: #1C1C28; margin-bottom: 6px;">Substance Use</div>
-          <div style="font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 14px;">
-            Alcohol, tobacco, vaping, recreational drugs, and illicit substances.
-          </div>
-
-          <div style="
-            background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px;
-            padding: 10px 13px; margin-bottom: 16px;
-          ">
-            <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 4px;">For Example</div>
-            <div style="font-size: 11px; color: #6B7280; line-height: 1.55; font-style: italic;">"What does a vape high actually feel like?"</div>
-          </div>
-
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-
-            <!-- Off (unselected) -->
-            <button class="tier-opt-btn" onclick="selectTier(3, 'off', 4)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px;
-                background-color: #FFFFFF;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #1C1C28;">Off</span>
-                </div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">Answers neutrally. Not recommended.</div>
-              </div>
-            </button>
-
-            <!-- Balanced (SELECTED) -->
-            <button class="tier-opt-btn" onclick="selectTier(3, 'balanced', 4)" style="
-              width: 100%; background-color: #EEF3FC; border: 2px solid #4B7BE5;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 2px 10px rgba(75,123,229,0.15); text-align: left;
-            ">
-              <!-- Selected radio dot -->
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #4B7BE5; flex-shrink: 0; margin-top: 2px;
-                background-color: #4B7BE5;
-                box-shadow: inset 0 0 0 3px #EEF3FC;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #4B7BE5;">Balanced</span>
-                  <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Monitored</span>
-                </div>
-                <div style="font-size: 11px; color: #4B7BE5; line-height: 1.45; font-weight: 500;">Explains health risks scientifically, discourages use, allows educational questions.</div>
-              </div>
-            </button>
-
-            <!-- Strict (unselected) -->
-            <button class="tier-opt-btn" onclick="selectTier(3, 'strict', 4)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px;
-                background-color: #FFFFFF;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #1C1C28;">Strict</span>
-                  <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444;">Blocked</span>
-                </div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">Refuses topic entirely and alerts parent.</div>
-              </div>
-            </button>
-
-          </div>
-
-          <!-- Continue CTA (shown when tier selected) -->
-          <button class="cta-btn" onclick="goTo(4)" style="
-            width: 100%; padding: 15px; border-radius: 12px; margin-top: 18px;
-            background-color: #4B7BE5; color: #FFFFFF;
-            font-size: 15px; font-weight: 700;
-            box-shadow: 0 4px 14px rgba(75,123,229,0.3);
-          ">Continue →</button>
-
-        </div>
-      </div>
-
-      <!-- ══════════════════════════════════════════════
-           SCREEN 4 — CATEGORY 9/11: HONESTY LEVEL (Balanced selected)
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-4" style="background-color: #F8F9FB;">
-
-        <div style="padding: 4px 18px 0; background-color: #F8F9FB;">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-            <button class="back-btn" onclick="goTo(3)" style="
-              width: 36px; height: 36px; border-radius: 50%;
-              background-color: #FFFFFF; border: 1px solid #E5E7EB;
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            ">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M19 12H5M11 6l-6 6 6 6" stroke="#1C1C28" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <span style="font-size: 11px; font-weight: 600; color: #9CA3AF;">9 of 11</span>
-          </div>
-          <div style="height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden; margin-bottom: 2px;">
-            <div class="pbar-fill" style="width: 82%; height: 100%; background-color: #4B7BE5; border-radius: 2px;"></div>
-          </div>
-        </div>
-
-        <div class="scroll-body" style="padding: 16px 18px 24px;">
-
-          <div style="
-            display: inline-block; padding: 3px 9px; border-radius: 6px;
-            background-color: #EEF3FC; color: #4B7BE5;
-            font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-            margin-bottom: 14px;
-          ">AI Personality</div>
-
-          <div style="font-size: 32px; margin-bottom: 6px;">🎯</div>
-          <div style="font-size: 20px; font-weight: 700; color: #1C1C28; margin-bottom: 6px;">Honesty Level</div>
-          <div style="font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 14px;">
-            How candid should the AI be when your child asks questions that have uncomfortable truths?
-          </div>
-
-          <div style="
-            background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px;
-            padding: 10px 13px; margin-bottom: 16px;
-          ">
-            <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 4px;">For Example</div>
-            <div style="font-size: 11px; color: #6B7280; line-height: 1.55; font-style: italic;">"Is Santa Claus real?" or "Why do people die?"</div>
-          </div>
-
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-
-            <!-- Off → Age-appropriate -->
-            <button class="tier-opt-btn" onclick="selectTier(4, 'off', 5)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px; background-color: #FFFFFF;"></div>
-              <div>
-                <div style="font-size: 13px; font-weight: 700; color: #1C1C28; margin-bottom: 3px;">Age-appropriate</div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">Softens difficult truths and frames answers for younger audiences.</div>
-              </div>
-            </button>
-
-            <!-- Balanced → Honest (SELECTED) -->
-            <button class="tier-opt-btn" onclick="selectTier(4, 'balanced', 5)" style="
-              width: 100%; background-color: #EEF3FC; border: 2px solid #4B7BE5;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 2px 10px rgba(75,123,229,0.15); text-align: left;
-            ">
-              <div style="
-                width: 18px; height: 18px; border-radius: 50%;
-                border: 2px solid #4B7BE5; flex-shrink: 0; margin-top: 2px;
-                background-color: #4B7BE5; box-shadow: inset 0 0 0 3px #EEF3FC;
-              "></div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #4B7BE5;">Honest</span>
-                  <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Recommended</span>
-                </div>
-                <div style="font-size: 11px; color: #4B7BE5; line-height: 1.45; font-weight: 500;">Answers truthfully with gentle context. Encourages follow-up with parents.</div>
-              </div>
-            </button>
-
-            <!-- Strict → Fully candid -->
-            <button class="tier-opt-btn" onclick="selectTier(4, 'strict', 5)" style="
-              width: 100%; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-              border-radius: 12px; padding: 12px 14px;
-              display: flex; align-items: flex-start; gap: 11px;
-              box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: left;
-            ">
-              <div style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px; background-color: #FFFFFF;"></div>
-              <div>
-                <div style="font-size: 13px; font-weight: 700; color: #1C1C28; margin-bottom: 3px;">Fully candid</div>
-                <div style="font-size: 11px; color: #6B7280; line-height: 1.45;">Answers all factual questions directly without softening.</div>
-              </div>
-            </button>
-
-          </div>
-
-          <button class="cta-btn" onclick="goTo(5)" style="
-            width: 100%; padding: 15px; border-radius: 12px; margin-top: 18px;
-            background-color: #4B7BE5; color: #FFFFFF;
-            font-size: 15px; font-weight: 700;
-            box-shadow: 0 4px 14px rgba(75,123,229,0.3);
-          ">Continue →</button>
-
-        </div>
-      </div>
-
-      <!-- ══════════════════════════════════════════════
-           SCREEN 5 — SUMMARY REVIEW
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-5" style="background-color: #F3F4F6;">
-
-        <div style="padding: 4px 18px 0; background-color: #F3F4F6;">
-          <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 10px;">
-            <div style="
-              display: flex; align-items: center; gap: 5px;
-              padding: 4px 10px; border-radius: 20px;
-              background-color: #D1FAE5;
-            ">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 13l4 4L19 7" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span style="font-size: 11px; font-weight: 700; color: #10B981;">11 of 11</span>
             </div>
           </div>
-          <!-- Complete progress bar (green) -->
-          <div style="height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden; margin-bottom: 2px;">
-            <div class="pbar-fill" style="width: 100%; height: 100%; background-color: #10B981; border-radius: 2px;"></div>
-          </div>
-        </div>
 
-        <div class="scroll-body" style="padding: 14px 18px 100px;">
-
-          <div style="font-size: 20px; font-weight: 700; color: #1C1C28; margin-bottom: 4px;">Review your settings</div>
-          <div style="font-size: 12px; color: #6B7280; line-height: 1.55; margin-bottom: 18px;">Tap any row to adjust before saving.</div>
-
-          <!-- Content Safety group -->
-          <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 6px; padding-left: 2px;">Content Safety</div>
-          <div style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 16px;">
-            <button class="review-row-btn" onclick="goTo(2)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">🛡️</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Self-harm</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444;">Strict</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(3)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">💊</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Substance Use</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(2)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">🍽️</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Eating Disorders</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444;">Strict</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(2)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">⚖️</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Illegal Activities</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444;">Strict</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
+          <!-- Row: Screen Time -->
+          <div class="category-row-tappable" id="row-screentime" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="handleRowTap('Screen Time')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" stroke="#6B7A8D" stroke-width="2"/>
+              <polyline points="12 6 12 12 16 14" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Screen Time</span>
+            <div style="border-radius: 999px; background-color: #F0EDE8; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
+            </div>
+            <div id="chev-screentime" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
 
-          <!-- Behavioral group -->
-          <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 6px; padding-left: 2px;">Behavioral</div>
-          <div style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 16px;">
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">💙</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Loneliness Patterns</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">📢</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Radicalization Watch</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444;">Strict</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">🔒</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Personal Info Sharing</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
+          <!-- Row: Language & Tone -->
+          <div class="category-row-tappable" id="row-language" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="handleRowTap('Language &amp; Tone')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Language &amp; Tone</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Moderate</span>
+            </div>
+            <div id="chev-language" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
 
-          <!-- Personality & Learning group -->
-          <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 6px; padding-left: 2px;">Personality &amp; Learning</div>
-          <div style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07);">
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">🎯</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Honesty Level</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">🤝</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Relational Style</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid #F3F4F6; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">📚</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Homework Completion</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
-            <button class="review-row-btn" onclick="goTo(4)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; text-align: left; background: none;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 15px;">📈</span>
-                <span style="font-size: 12px; font-weight: 600; color: #1C1C28;">Over-reliance Watch</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B;">Balanced</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="#D1D5DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </button>
+          <!-- Row: Topics -->
+          <div class="category-row-tappable" id="row-topics" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="handleRowTap('Topics')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Topics</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Standard</span>
+            </div>
+            <div id="chev-topics" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Row: Safety Alerts -->
+          <div class="category-row-tappable" id="row-alerts" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px;" onclick="handleRowTap('Safety Alerts')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#4CAF82" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M8 14a2 2 0 004 0" stroke="#4CAF82" stroke-width="1.5"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Safety Alerts</span>
+            <div style="border-radius: 999px; background-color: #4CAF82; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">On</span>
+            </div>
+            <div id="chev-alerts" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
 
         </div>
 
-        <!-- Sticky Save button -->
-        <div style="
-          position: absolute; bottom: 0; left: 0; right: 0;
-          padding: 12px 18px 20px;
-          background: linear-gradient(to top, #F3F4F6 70%, rgba(243,244,246,0) 100%);
-        ">
-          <button class="cta-btn" onclick="goTo(6)" style="
-            width: 100%; padding: 16px; border-radius: 12px;
-            background-color: #1C1C28; color: #FFFFFF;
-            font-size: 16px; font-weight: 700;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-          ">Save settings</button>
-        </div>
+        <!-- PRIMARY CTA -->
+        <button
+          class="btn-primary-cta"
+          onclick="showScreen('screen-5'); startProgress();"
+          style="
+            width: 100%;
+            height: 52px;
+            border-radius: 14px;
+            background-color: #4BBFD4;
+            box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+          "
+          aria-label="Trust these defaults — Activate"
+        >
+          <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Trust these defaults — Activate</span>
+        </button>
+
+        <!-- SECONDARY CTA -->
+        <button
+          class="btn-secondary-cta"
+          onclick="goCustomize()"
+          style="
+            width: 100%;
+            height: 44px;
+            border-radius: 14px;
+            background-color: transparent;
+            border: 1.5px solid #E8E6E1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          "
+          aria-label="Customize settings"
+        >
+          <span style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Customize settings</span>
+        </button>
 
       </div>
 
-      <!-- ══════════════════════════════════════════════
-           SCREEN 6 — COMPLETION
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-6" style="background-color: #F8F9FB;">
-        <div class="scroll-body" style="padding: 24px 24px 100px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <!-- ─── SCREEN 3: CUSTOMIZE CATEGORY LIST ─── -->
+      <div id="screen-3" data-screen="3" style="display: none; background-color: #F7F5F1; min-height: 800px; padding: 32px 20px 40px; position: relative;">
 
-          <!-- Success ring -->
-          <div style="
-            width: 72px; height: 72px; border-radius: 50%;
-            background-color: #10B981;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 0 12px rgba(16,185,129,0.12), 0 8px 24px rgba(16,185,129,0.28);
-            margin-top: 32px; margin-bottom: 22px;
-          ">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M5 13l4 4L19 7" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Back + header -->
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+          <button onclick="showScreen('screen-2')" style="display: flex; align-items: center; cursor: pointer; padding: 4px;" aria-label="Go back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="15 18 9 12 15 6" stroke="#1A2635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <span style="font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #1A2635; letter-spacing: -0.01em;">Customize SafeChat</span>
+        </div>
+        <div style="margin-bottom: 24px; padding-left: 32px;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: #6B7A8D; letter-spacing: 0em;">Tap any category to adjust its settings.</span>
+        </div>
+
+        <!-- Category card (tappable rows, chevrons always visible) -->
+        <div style="background-color: #FFFFFF; border-radius: 24px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); padding: 4px 0; margin-bottom: 24px; overflow: hidden;">
+
+          <div class="category-row-tappable" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="openSheet('Content Moderation')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Content Moderation</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
 
-          <div style="font-size: 24px; font-weight: 700; color: #1C1C28; margin-bottom: 6px;">You're all set!</div>
-          <div style="font-size: 14px; color: #6B7280; line-height: 1.55; margin-bottom: 28px;">Your child's SafeChat is configured and active.</div>
-
-          <!-- Next steps card -->
-          <div style="
-            width: 100%; background-color: #FFFFFF;
-            border: 1px solid #E5E7EB; border-radius: 14px;
-            overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            margin-bottom: 18px; text-align: left;
-          ">
-            <div style="padding: 12px 16px 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #9CA3AF;">What happens next</div>
-            <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-top: 1px solid #F3F4F6;">
-              <div style="
-                width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-                background-color: #EEF3FC; display: flex; align-items: center; justify-content: center;
-                font-size: 9px; font-weight: 700; color: #4B7BE5; margin-top: 1px;
-              ">1</div>
-              <div style="font-size: 12px; color: #6B7280; line-height: 1.55;">Hand the device back to your child — SafeChat is live immediately.</div>
+          <div class="category-row-tappable" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="openSheet('Screen Time')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" stroke="#6B7A8D" stroke-width="2"/>
+              <polyline points="12 6 12 12 16 14" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Screen Time</span>
+            <div style="border-radius: 999px; background-color: #F0EDE8; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
             </div>
-            <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-top: 1px solid #F3F4F6;">
-              <div style="
-                width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-                background-color: #EEF3FC; display: flex; align-items: center; justify-content: center;
-                font-size: 9px; font-weight: 700; color: #4B7BE5; margin-top: 1px;
-              ">2</div>
-              <div style="font-size: 12px; color: #6B7280; line-height: 1.55;">You'll receive an alert if the AI blocks a Strict-tier topic.</div>
-            </div>
-            <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-top: 1px solid #F3F4F6;">
-              <div style="
-                width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-                background-color: #EEF3FC; display: flex; align-items: center; justify-content: center;
-                font-size: 9px; font-weight: 700; color: #4B7BE5; margin-top: 1px;
-              ">3</div>
-              <div style="font-size: 12px; color: #6B7280; line-height: 1.55;">Update settings anytime from the Parent Dashboard.</div>
-            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
 
-          <!-- Reassurance -->
-          <div style="
-            font-size: 11px; color: #9CA3AF; line-height: 1.65;
-            padding: 0 8px; font-style: italic;
-          ">"Think of SafeChat as a seatbelt, not a substitute for conversation."</div>
+          <div class="category-row-tappable" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="openSheet('Language &amp; Tone')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Language &amp; Tone</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Moderate</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="category-row-tappable" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0EDE8;" onclick="openSheet('Topics')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Topics</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Standard</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="category-row-tappable" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px;" onclick="openSheet('Safety Alerts')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#4CAF82" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M8 14a2 2 0 004 0" stroke="#4CAF82" stroke-width="1.5"/>
+            </svg>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Safety Alerts</span>
+            <div style="border-radius: 999px; background-color: #4CAF82; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">On</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
 
         </div>
 
         <!-- Done button -->
-        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 24px 20px; background-color: #F8F9FB;">
-          <button class="cta-btn" onclick="goTo(7)" style="
-            width: 100%; padding: 16px; border-radius: 12px;
-            background-color: #1C1C28; color: #FFFFFF;
-            font-size: 16px; font-weight: 700;
-          ">Done</button>
+        <button
+          class="btn-primary-cta"
+          onclick="showScreen('screen-5'); startProgress();"
+          style="
+            width: 100%;
+            height: 52px;
+            border-radius: 14px;
+            background-color: #4BBFD4;
+            box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          "
+          aria-label="Done — save all"
+        >
+          <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Done — save all</span>
+        </button>
+
+        <!-- BOTTOM SHEET SCRIM (inside screen-3 so it only shows on screen-3) -->
+        <div id="sheet-scrim" style="position: fixed; inset: 0; background-color: rgba(22,43,69,0.4); z-index: 99; display: none;" onclick="closeSheet()"></div>
+
+        <!-- BOTTOM SHEET -->
+        <div
+          id="bottom-sheet"
+          style="
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            max-width: 390px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -8px 40px rgba(22,43,69,0.16);
+            z-index: 100;
+            padding: 12px 20px 40px;
+          "
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sheet-title-text"
+        >
+          <!-- Drag handle -->
+          <div style="width: 40px; height: 4px; border-radius: 2px; background-color: #E8E6E1; margin: 0 auto 16px;"></div>
+
+          <!-- Sheet header -->
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <div id="sheet-icon" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
+              <!-- icon injected by JS -->
+            </div>
+            <span id="sheet-title-text" style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; color: #1A2635; letter-spacing: -0.01em;"></span>
+            <button onclick="closeSheet()" style="display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 4px;" aria-label="Close">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+                <line x1="6" y1="6" x2="18" y2="18" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Setting rows -->
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+
+            <!-- Setting row 1 -->
+            <div style="display: flex; align-items: center; padding: 12px 16px; background-color: #F7F5F1; border-radius: 14px;">
+              <span id="sheet-label-1" style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: #1A2635; letter-spacing: 0em;"></span>
+              <div style="display: flex; gap: 6px;">
+                <button class="pill-selector" onclick="selectPill(this, 'off-1')" data-pill-group="group-1" data-pill-id="off-1" style="border-radius: 999px; background-color: #F0EDE8; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
+                </button>
+                <button class="pill-selector" onclick="selectPill(this, 'balanced-1')" data-pill-group="group-1" data-pill-id="balanced-1" data-active="true" style="border-radius: 999px; background-color: #4BBFD4; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+                </button>
+                <button class="pill-selector" onclick="selectPill(this, 'strict-1')" data-pill-group="group-1" data-pill-id="strict-1" style="border-radius: 999px; background-color: #F0EDE8; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Strict</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Setting row 2 -->
+            <div style="display: flex; align-items: center; padding: 12px 16px; background-color: #F7F5F1; border-radius: 14px;">
+              <span id="sheet-label-2" style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: #1A2635; letter-spacing: 0em;"></span>
+              <div style="display: flex; gap: 6px;">
+                <button class="pill-selector" onclick="selectPill(this, 'off-2')" data-pill-group="group-2" data-pill-id="off-2" style="border-radius: 999px; background-color: #F0EDE8; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
+                </button>
+                <button class="pill-selector" onclick="selectPill(this, 'balanced-2')" data-pill-group="group-2" data-pill-id="balanced-2" data-active="true" style="border-radius: 999px; background-color: #4BBFD4; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+                </button>
+                <button class="pill-selector" onclick="selectPill(this, 'strict-2')" data-pill-group="group-2" data-pill-id="strict-2" style="border-radius: 999px; background-color: #F0EDE8; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Strict</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Setting row 3 -->
+            <div style="display: flex; align-items: center; padding: 12px 16px; background-color: #F7F5F1; border-radius: 14px;">
+              <span id="sheet-label-3" style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: #1A2635; letter-spacing: 0em;"></span>
+              <div style="display: flex; gap: 6px;">
+                <button class="pill-selector" onclick="selectPill(this, 'off-3')" data-pill-group="group-3" data-pill-id="off-3" style="border-radius: 999px; background-color: #F0EDE8; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
+                </button>
+                <button class="pill-selector" onclick="selectPill(this, 'balanced-3')" data-pill-group="group-3" data-pill-id="balanced-3" data-active="true" style="border-radius: 999px; background-color: #4BBFD4; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+                </button>
+                <button class="pill-selector" onclick="selectPill(this, 'strict-3')" data-pill-group="group-3" data-pill-id="strict-3" style="border-radius: 999px; background-color: #F0EDE8; padding: 5px 12px; cursor: pointer;">
+                  <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Strict</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Done button -->
+          <button
+            class="btn-primary-cta"
+            onclick="closeSheet()"
+            style="
+              width: 100%;
+              height: 48px;
+              border-radius: 14px;
+              background-color: #4BBFD4;
+              box-shadow: 0 4px 20px rgba(75,191,212,0.35);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+            "
+            aria-label="Done"
+          >
+            <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Done</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- ─── SCREEN 5: SUCCESS ─── -->
+      <div id="screen-5" data-screen="5" style="display: none; background-color: #F7F5F1; min-height: 800px; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 48px 32px;">
+
+        <!-- Checkmark -->
+        <div style="margin-bottom: 24px;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="10" stroke="#4CAF82" stroke-width="2"/>
+            <polyline points="9 12 11 14 15 10" stroke="#4CAF82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- Text -->
+        <div style="margin-bottom: 8px; text-align: center;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: #1A2635; letter-spacing: -0.02em;">SafeChat is active</span>
+        </div>
+        <div style="margin-bottom: 40px; text-align: center; max-width: 260px;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 400; color: #6B7A8D; line-height: 1.5; letter-spacing: 0em;">Your child can now start chatting safely.</span>
+        </div>
+
+        <!-- Progress bar container -->
+        <div style="width: 100%; height: 4px; border-radius: 2px; background-color: #E8E6E1; overflow: hidden; margin-bottom: 12px;">
+          <div id="progress-bar-fill" style="height: 4px; border-radius: 2px; background-color: #4BBFD4; width: 0%;"></div>
+        </div>
+
+        <!-- Caption -->
+        <div style="text-align: center;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 400; color: #6B7A8D; letter-spacing: 0em;">Taking you to your dashboard...</span>
         </div>
 
       </div>
 
-      <!-- ══════════════════════════════════════════════
-           SCREEN 7 — CHILD CHAT (Normal)
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-7" style="background-color: #FFFFFF;">
+      <!-- ─── SCREEN 6: PARENT DASHBOARD ─── -->
+      <div id="screen-6" data-screen="6" style="display: none; background-color: #F7F5F1; min-height: 800px; padding: 28px 20px 90px;">
 
-        <!-- Chat nav bar -->
-        <div style="
-          padding: 6px 16px 10px; background-color: #FFFFFF;
-          border-bottom: 1px solid #F3F4F6;
-          display: flex; align-items: center; justify-content: space-between;
-        ">
-          <div style="font-size: 12px; font-weight: 500; color: #6B7280;">SafeChat</div>
-          <!-- SafeChat badge -->
-          <div style="
-            display: flex; align-items: center; gap: 5px;
-            padding: 4px 10px; border-radius: 20px;
-            background-color: #EEF3FC;
-          ">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#4B7BE5"/>
+        <!-- Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <span style="font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #1A2635; letter-spacing: -0.01em;">Hi! SafeChat is live.</span>
+          <div style="width: 36px; height: 36px; border-radius: 999px; background-color: #4BBFD4; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="7" r="4" stroke="#FFFFFF" stroke-width="2"/>
             </svg>
-            <span style="font-size: 11px; font-weight: 700; color: #4B7BE5;">SafeChat ✓</span>
           </div>
-          <!-- Blocked demo trigger -->
-          <button onclick="goTo(8)" style="
-            font-size: 10px; font-weight: 600; color: #9CA3AF;
-            padding: 4px 8px; border-radius: 6px; background: none; border: 1px solid #E5E7EB;
-          ">Block demo →</button>
         </div>
 
-        <!-- Chat messages -->
-        <div class="scroll-body" style="padding: 16px; background-color: #F8F9FB; flex: 1; display: flex; flex-direction: column; gap: 14px;">
+        <!-- Status card -->
+        <div style="
+          border-radius: 16px;
+          background-color: rgba(76,175,130,0.08);
+          border: 1px solid rgba(76,175,130,0.2);
+          padding: 16px;
+          margin-bottom: 20px;
+          border-left: 4px solid #4CAF82;
+        ">
+          <div style="margin-bottom: 4px;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: #4CAF82; letter-spacing: 0em;">Active · 5 categories configured</span>
+          </div>
+          <div>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: #6B7A8D; letter-spacing: 0em;">All settings are running. You can adjust anytime.</span>
+          </div>
+        </div>
 
-          <div style="text-align: center; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #D1D5DB;">Today</div>
+        <!-- 3-across tiles -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
 
-          <!-- AI message -->
-          <div style="display: flex; gap: 8px; max-width: 88%;">
-            <div style="
-              width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-              background-color: #EEF3FC; display: flex; align-items: center; justify-content: center;
-              margin-top: auto; border: 1px solid #E5E7EB;
-              font-size: 14px;
-            ">🤖</div>
-            <div style="
-              background-color: #FFFFFF; border: 1px solid #E5E7EB;
-              border-radius: 14px 14px 14px 4px;
-              padding: 10px 13px;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-            ">
-              <div style="font-size: 13px; color: #1C1C28; line-height: 1.6;">Hi! I'm Sage, your study assistant. What are we working on today?</div>
-            </div>
+          <div style="flex: 1; background-color: #FFFFFF; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #1A2635; letter-spacing: 0em; text-align: center;">View Chats</span>
           </div>
 
-          <!-- User message -->
-          <div style="display: flex; justify-content: flex-end;">
-            <div style="
-              background-color: #4B7BE5; border-radius: 14px 14px 4px 14px;
-              padding: 10px 13px; max-width: 82%;
-              box-shadow: 0 2px 8px rgba(75,123,229,0.25);
-            ">
-              <div style="font-size: 13px; color: #FFFFFF; line-height: 1.6;">Can you write a paragraph on photosynthesis I can paste into my homework?</div>
-            </div>
+          <div style="flex: 1; background-color: #FFFFFF; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#4BBFD4" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M8 14a2 2 0 004 0" stroke="#4BBFD4" stroke-width="1.5"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #1A2635; letter-spacing: 0em; text-align: center;">Alerts</span>
           </div>
 
-          <!-- AI response (Balanced — guides, doesn't write) -->
-          <div style="display: flex; gap: 8px; max-width: 92%;">
-            <div style="
-              width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-              background-color: #EEF3FC; display: flex; align-items: center; justify-content: center;
-              margin-top: auto; border: 1px solid #E5E7EB; font-size: 14px;
-            ">🤖</div>
-            <div style="
-              background-color: #FFFFFF; border: 1px solid #E5E7EB;
-              border-radius: 14px 14px 14px 4px;
-              padding: 10px 13px;
-              box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-            ">
-              <div style="font-size: 13px; color: #1C1C28; line-height: 1.6;">I can't write it for you to copy, but I can help you understand it! 🌱<br><br>Plants make food using sunlight, water, and CO₂. Try writing one sentence about that and I'll help you improve it.</div>
-            </div>
+          <div style="flex: 1; background-color: #FFFFFF; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="3" stroke="#4BBFD4" stroke-width="2"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #1A2635; letter-spacing: 0em; text-align: center;">Settings</span>
           </div>
 
         </div>
 
-        <!-- Input bar -->
-        <div style="
-          padding: 10px 14px 16px; background-color: #FFFFFF;
-          border-top: 1px solid #F3F4F6;
-          display: flex; align-items: center; gap: 10px;
-        ">
-          <div style="
-            flex: 1; background-color: #F8F9FB;
-            border: 1px solid #E5E7EB; border-radius: 22px;
-            padding: 10px 16px;
-            font-size: 13px; color: #9CA3AF;
-          ">Message Sage…</div>
-          <button class="chat-send" style="
-            width: 38px; height: 38px; border-radius: 50%;
-            background-color: #4B7BE5;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 8px rgba(75,123,229,0.3); flex-shrink: 0;
-          ">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Recent activity placeholder -->
+        <div style="background-color: #FFFFFF; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(22,43,69,0.08);">
+          <div style="margin-bottom: 12px;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Recent Activity</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; padding: 20px 0;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" style="margin-bottom: 8px;">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#E8E6E1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: #6B7A8D; letter-spacing: 0em; text-align: center;">No chats yet. Your child's first session will appear here.</span>
+          </div>
+        </div>
+
+        <!-- Bottom tab bar -->
+        <div style="
+          position: fixed;
+          bottom: 0;
+          left: 50%;
+          width: 390px;
+          transform: translateX(-50%);
+          height: 82px;
+          background-color: #FFFFFF;
+          border-top: 1px solid #E8E6E1;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          padding: 0 8px 16px;
+          z-index: 50;
+        ">
+          <!-- Home (active) -->
+          <button class="tab-item-btn" style="display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; background: none; border: none; padding: 6px 8px;" aria-label="Home" aria-current="page">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" fill="rgba(75,191,212,0.15)" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="9 22 9 12 15 12 15 22" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700; color: #4BBFD4; letter-spacing: 0em;">Home</span>
+          </button>
+          <!-- Alerts -->
+          <button class="tab-item-btn" style="display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; background: none; border: none; padding: 6px 8px;" aria-label="Alerts">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M10 2a5 5 0 00-5 5v3L3.5 13v.5h13V13L15 10V7a5 5 0 00-5-5z" stroke="#6B7A8D" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M8 14a2 2 0 004 0" stroke="#6B7A8D" stroke-width="1.5"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 600; color: #6B7A8D; letter-spacing: 0em;">Alerts</span>
+          </button>
+          <!-- Chat -->
+          <button class="tab-item-btn" style="display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; background: none; border: none; padding: 6px 8px;" aria-label="Chat">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 600; color: #6B7A8D; letter-spacing: 0em;">Chat</span>
+          </button>
+          <!-- Reports -->
+          <button class="tab-item-btn" style="display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; background: none; border: none; padding: 6px 8px;" aria-label="Reports">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="14 2 14 8 20 8" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 600; color: #6B7A8D; letter-spacing: 0em;">Reports</span>
+          </button>
+          <!-- Settings -->
+          <button class="tab-item-btn" style="display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; background: none; border: none; padding: 6px 8px;" aria-label="Settings">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="3" stroke="#6B7A8D" stroke-width="2"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 600; color: #6B7A8D; letter-spacing: 0em;">Settings</span>
           </button>
         </div>
 
       </div>
 
-      <!-- ══════════════════════════════════════════════
-           SCREEN 8 — CHILD CHAT (Blocked)
-      ══════════════════════════════════════════════ -->
-      <div class="screen" id="screen-8" style="background-color: #FFFFFF;">
+    </div><!-- /phone frame -->
 
-        <!-- Chat nav bar -->
-        <div style="
-          padding: 6px 16px 10px; background-color: #FFFFFF;
-          border-bottom: 1px solid #F3F4F6;
-          display: flex; align-items: center; justify-content: space-between;
-        ">
-          <button onclick="goTo(7)" style="font-size: 12px; font-weight: 500; color: #6B7280; background: none; border: none; cursor: pointer;">← Back</button>
-          <div style="
-            display: flex; align-items: center; gap: 5px;
-            padding: 4px 10px; border-radius: 20px;
-            background-color: #EEF3FC;
-          ">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#4B7BE5"/>
+  </div><!-- /prototype-root -->
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FIGMA GALLERY
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="figma-gallery" style="
+    display: none;
+    flex-direction: column;
+    gap: 64px;
+    padding: 64px;
+    background-color: #F0EDE8;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    width: 100%;
+  ">
+
+    <!-- Gallery header -->
+    <div style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #8A9BAD;">
+      COMPONENT STATE GALLERY — Direction C: Trust Layer — Import at ?figma=true
+    </div>
+
+    <!-- ─── COMPONENT: Summary Pill ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; padding-bottom: 8px; border-bottom: 1px solid #E8E6E1;">Summary Pill</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+        <!-- Active teal -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Active (teal)</div>
+          <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px; display: inline-flex;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+          </div>
+        </div>
+        <!-- Inactive gray -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Inactive (gray)</div>
+          <div style="border-radius: 999px; background-color: #F0EDE8; padding: 3px 10px; display: inline-flex;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
+          </div>
+        </div>
+        <!-- Green (Safety Alerts) -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Green (Safety Alerts)</div>
+          <div style="border-radius: 999px; background-color: #4CAF82; padding: 3px 10px; display: inline-flex;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">On</span>
+          </div>
+        </div>
+        <!-- Moderate teal -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Moderate (teal)</div>
+          <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px; display: inline-flex;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Moderate</span>
+          </div>
+        </div>
+        <!-- Standard teal -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Standard (teal)</div>
+          <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px; display: inline-flex;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Standard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: CTA Buttons ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; padding-bottom: 8px; border-bottom: 1px solid #E8E6E1;">CTA Buttons</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+        <!-- Primary default -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Primary — Default</div>
+          <div style="width: 280px; height: 52px; border-radius: 14px; background-color: #4BBFD4; box-shadow: 0 4px 20px rgba(75,191,212,0.35); display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Trust these defaults — Activate</span>
+          </div>
+        </div>
+        <!-- Primary hover -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Primary — Hover</div>
+          <div style="width: 280px; height: 52px; border-radius: 14px; background-color: #4BBFD4; box-shadow: 0 4px 20px rgba(75,191,212,0.35); display: flex; align-items: center; justify-content: center; opacity: 0.92;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Trust these defaults — Activate</span>
+          </div>
+        </div>
+        <!-- Secondary default -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Secondary — Default</div>
+          <div style="width: 280px; height: 44px; border-radius: 14px; background-color: transparent; border: 1.5px solid #E8E6E1; display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Customize settings</span>
+          </div>
+        </div>
+        <!-- Secondary hover -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Secondary — Hover</div>
+          <div style="width: 280px; height: 44px; border-radius: 14px; background-color: #F0EDE8; border: 1.5px solid #E8E6E1; display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Customize settings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPONENT: Category Row ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; padding-bottom: 8px; border-bottom: 1px solid #E8E6E1;">Category Row</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+        <!-- Default (no chevron) -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Default (overview mode)</div>
+          <div style="width: 340px; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background-color: #FFFFFF; border-radius: 14px; box-shadow: 0 4px 20px rgba(22,43,69,0.08);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span style="font-size: 11px; font-weight: 700; color: #4B7BE5;">SafeChat ✓</span>
-          </div>
-          <div style="width: 48px;"></div>
-        </div>
-
-        <!-- Chat messages -->
-        <div class="scroll-body" style="padding: 16px; background-color: #F8F9FB; flex: 1; display: flex; flex-direction: column; gap: 14px;">
-
-          <div style="text-align: center; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #D1D5DB;">Today</div>
-
-          <!-- User trigger message -->
-          <div style="display: flex; justify-content: flex-end;">
-            <div style="
-              background-color: #4B7BE5; border-radius: 14px 14px 4px 14px;
-              padding: 10px 13px; max-width: 84%;
-              box-shadow: 0 2px 8px rgba(75,123,229,0.25);
-            ">
-              <div style="font-size: 13px; color: #FFFFFF; line-height: 1.6;">I feel terrible today. I just want to hurt myself.</div>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Content Moderation</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
             </div>
           </div>
-
-          <!-- Blocked intercept card -->
-          <div style="display: flex; gap: 8px; width: 98%;">
-            <div style="
-              width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-              background-color: #FFF7ED; display: flex; align-items: center; justify-content: center;
-              margin-top: auto; border: 1px solid #FDE68A; font-size: 14px;
-            ">🧡</div>
-            <div style="
-              flex: 1;
-              background-color: #FFF7ED;
-              border: 1px solid #FDE68A;
-              border-left: 3px solid #F97316;
-              border-radius: 0 14px 14px 14px;
-              padding: 12px 14px;
-              box-shadow: 0 2px 8px rgba(249,115,22,0.12);
-            ">
-              <!-- Header label -->
-              <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 9px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#F97316"/>
-                </svg>
-                <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #F97316;">SafeChat Guardian</span>
-              </div>
-
-              <div style="font-size: 13px; color: #1C1C28; line-height: 1.65; margin-bottom: 12px;">
-                I hear you, and what you're feeling is real. I'm an AI and I'm not able to give you the support you deserve right now — but there are people who care and want to help.
-              </div>
-
-              <div style="font-size: 13px; color: #1C1C28; line-height: 1.65; margin-bottom: 14px; font-weight: 500;">
-                Please talk to a parent or trusted adult today. They want to know how you're feeling.
-              </div>
-
-              <!-- Divider -->
-              <div style="height: 1px; background-color: #FDE68A; margin-bottom: 12px;"></div>
-
-              <!-- Crisis resource -->
-              <div style="
-                background-color: #FFFFFF;
-                border: 1px solid #FDE68A;
-                border-radius: 10px;
-                padding: 10px 12px;
-                display: flex; align-items: center; justify-content: space-between;
-              ">
-                <div>
-                  <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 2px;">Crisis Text Line</div>
-                  <div style="font-size: 13px; font-weight: 700; color: #1C1C28;">Text HOME to 741741</div>
-                </div>
-                <div style="
-                  width: 32px; height: 32px; border-radius: 50%;
-                  background-color: #FFF7ED; border: 1px solid #FDE68A;
-                  display: flex; align-items: center; justify-content: center;
-                ">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M7 17L17 7M17 7H7M17 7v10" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
         </div>
-
-        <!-- Disabled input bar -->
-        <div style="
-          padding: 10px 14px 16px; background-color: #FFFFFF;
-          border-top: 1px solid #F3F4F6;
-          display: flex; align-items: center; gap: 10px;
-        ">
-          <div style="
-            flex: 1; background-color: #F9FAFB;
-            border: 1px solid #E5E7EB; border-radius: 22px;
-            padding: 10px 16px;
-            display: flex; align-items: center; gap: 8px; opacity: 0.55;
-          ">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2" stroke="#9CA3AF" stroke-width="2"/>
-              <path d="M7 11V7a5 5 0 0110 0v4" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+        <!-- Active (chevron visible) -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Active (customize mode — chevron visible)</div>
+          <div style="width: 340px; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background-color: #FFFFFF; border-radius: 14px; box-shadow: 0 4px 20px rgba(22,43,69,0.08);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span style="font-size: 13px; color: #9CA3AF;">Chat paused…</span>
-          </div>
-        </div>
-
-      </div>
-
-    </div><!-- /screen-container -->
-
-    <!-- HOME INDICATOR -->
-    <div class="home-bar" id="home-bar">
-      <div class="home-bar__pill"></div>
-    </div>
-
-  </div><!-- /phone -->
-
-</div><!-- /prototype-root -->
-
-
-<!-- ══════════════════════════════════════════════════
-     FIGMA GALLERY
-══════════════════════════════════════════════════ -->
-<div id="figma-gallery">
-
-  <div class="gallery-label">COMPONENT STATE GALLERY — SafeChat Direction C — Import at ?figma=true</div>
-
-  <!-- ── Tier Option Card ──────────────────────────── -->
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <div class="gallery-section-title">Tier Option Card</div>
-    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
-
-      <!-- Default / Unselected -->
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">Unselected</div>
-        <div style="
-          width: 300px; background-color: #FFFFFF; border: 1.5px solid #E5E7EB;
-          border-radius: 12px; padding: 12px 14px;
-          display: flex; align-items: flex-start; gap: 11px;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-        ">
-          <div style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #E5E7EB; flex-shrink: 0; margin-top: 2px; background-color: #FFFFFF;"></div>
-          <div>
-            <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-              <span style="font-size: 13px; font-weight: 700; color: #1C1C28; font-family: 'DM Sans', sans-serif;">Balanced</span>
-              <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B; font-family: 'DM Sans', sans-serif;">Monitored</span>
+            <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635; letter-spacing: 0em;">Content Moderation</span>
+            <div style="border-radius: 999px; background-color: #4BBFD4; padding: 3px 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
             </div>
-            <div style="font-size: 11px; color: #6B7280; line-height: 1.45; font-family: 'DM Sans', sans-serif;">Answers educationally, avoids harmful specifics.</div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <polyline points="9 18 15 12 9 6" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Selected (Balanced) -->
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">Selected — Balanced</div>
-        <div style="
-          width: 300px; background-color: #EEF3FC; border: 2px solid #4B7BE5;
-          border-radius: 12px; padding: 12px 14px;
-          display: flex; align-items: flex-start; gap: 11px;
-          box-shadow: 0 2px 10px rgba(75,123,229,0.15);
-        ">
-          <div style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #4B7BE5; flex-shrink: 0; margin-top: 2px; background-color: #4B7BE5; box-shadow: inset 0 0 0 3px #EEF3FC;"></div>
-          <div>
-            <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-              <span style="font-size: 13px; font-weight: 700; color: #4B7BE5; font-family: 'DM Sans', sans-serif;">Balanced</span>
-              <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B; font-family: 'DM Sans', sans-serif;">Monitored</span>
+    <!-- ─── COMPONENT: Bottom Sheet (open state) ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; padding-bottom: 8px; border-bottom: 1px solid #E8E6E1;">Bottom Sheet</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+        <!-- Closed state -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Closed state (offscreen)</div>
+          <div style="width: 350px; height: 24px; background-color: #E8E6E1; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 600; color: #6B7A8D; letter-spacing: 0em;">Sheet — translateY(100%) — off screen</span>
+          </div>
+        </div>
+        <!-- Open state -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Open state</div>
+          <div style="width: 350px; background-color: #FFFFFF; border-radius: 24px 24px 0 0; box-shadow: 0 -8px 40px rgba(22,43,69,0.16); padding: 12px 20px 32px;">
+            <div style="width: 40px; height: 4px; border-radius: 2px; background-color: #E8E6E1; margin: 0 auto 16px;"></div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#4BBFD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; color: #1A2635; letter-spacing: -0.01em;">Content Moderation</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+                <line x1="6" y1="6" x2="18" y2="18" stroke="#6B7A8D" stroke-width="2" stroke-linecap="round"/>
+              </svg>
             </div>
-            <div style="font-size: 11px; color: #4B7BE5; line-height: 1.45; font-weight: 500; font-family: 'DM Sans', sans-serif;">Answers educationally, avoids harmful specifics.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Selected (Strict) -->
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">Selected — Strict</div>
-        <div style="
-          width: 300px; background-color: #EEF3FC; border: 2px solid #4B7BE5;
-          border-radius: 12px; padding: 12px 14px;
-          display: flex; align-items: flex-start; gap: 11px;
-          box-shadow: 0 2px 10px rgba(75,123,229,0.15);
-        ">
-          <div style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #4B7BE5; flex-shrink: 0; margin-top: 2px; background-color: #4B7BE5; box-shadow: inset 0 0 0 3px #EEF3FC;"></div>
-          <div>
-            <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 3px;">
-              <span style="font-size: 13px; font-weight: 700; color: #4B7BE5; font-family: 'DM Sans', sans-serif;">Strict</span>
-              <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 6px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444; font-family: 'DM Sans', sans-serif;">Blocked</span>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+              <div style="display: flex; align-items: center; padding: 10px 14px; background-color: #F7F5F1; border-radius: 12px;">
+                <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: #1A2635; letter-spacing: 0em;">Explicit Content</span>
+                <div style="display: flex; gap: 5px;">
+                  <div style="border-radius: 999px; background-color: #F0EDE8; padding: 4px 10px;">
+                    <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Off</span>
+                  </div>
+                  <div style="border-radius: 999px; background-color: #4BBFD4; padding: 4px 10px;">
+                    <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #FFFFFF; letter-spacing: 0em;">Balanced</span>
+                  </div>
+                  <div style="border-radius: 999px; background-color: #F0EDE8; padding: 4px 10px;">
+                    <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #6B7A8D; letter-spacing: 0em;">Strict</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style="font-size: 11px; color: #4B7BE5; line-height: 1.45; font-weight: 500; font-family: 'DM Sans', sans-serif;">Refuses topic entirely and alerts parent.</div>
+            <div style="width: 100%; height: 44px; border-radius: 14px; background-color: #4BBFD4; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0em;">Done</span>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
-  </div>
 
-  <!-- ── Progress Bar ─────────────────────────────── -->
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <div class="gallery-section-title">Progress Bar</div>
-    <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start;">
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">9% (1 of 11)</div>
-        <div style="width: 280px; height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden;">
-          <div style="width: 9%; height: 100%; background-color: #4B7BE5; border-radius: 2px;"></div>
-        </div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">82% (9 of 11)</div>
-        <div style="width: 280px; height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden;">
-          <div style="width: 82%; height: 100%; background-color: #4B7BE5; border-radius: 2px;"></div>
-        </div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">100% — Complete (green)</div>
-        <div style="width: 280px; height: 4px; background-color: #E5E7EB; border-radius: 2px; overflow: hidden;">
-          <div style="width: 100%; height: 100%; background-color: #10B981; border-radius: 2px;"></div>
+    <!-- ─── COMPONENT: Success Screen ─── -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; padding-bottom: 8px; border-bottom: 1px solid #E8E6E1;">Success Screen</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Default state</div>
+          <div style="width: 320px; background-color: #F7F5F1; border-radius: 24px; padding: 40px 32px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" stroke="#4CAF82" stroke-width="2"/>
+              <polyline points="9 12 11 14 15 10" stroke="#4CAF82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: #1A2635; letter-spacing: -0.02em; text-align: center;">SafeChat is active</span>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 400; color: #6B7A8D; letter-spacing: 0em; text-align: center;">Your child can now start chatting safely.</span>
+            <div style="width: 100%; height: 4px; border-radius: 2px; background-color: #E8E6E1;">
+              <div style="height: 4px; border-radius: 2px; background-color: #4BBFD4; width: 60%;"></div>
+            </div>
+            <span style="font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 400; color: #6B7A8D; letter-spacing: 0em;">Taking you to your dashboard...</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ── Tier Badge ───────────────────────────────── -->
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <div class="gallery-section-title">Tier Badges</div>
-    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-      <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 8px; background-color: #F3F4F6; color: #9CA3AF; font-family: 'DM Sans', sans-serif;">Off</span>
-      <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 8px; background-color: #FFFBEB; color: #F59E0B; font-family: 'DM Sans', sans-serif;">Balanced</span>
-      <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 8px; background-color: #FEF2F2; color: #EF4444; font-family: 'DM Sans', sans-serif;">Strict</span>
+    <!-- ─── FULL PAGE LAYOUT SNAPSHOTS ─── -->
+    <div style="display: flex; flex-direction: column; gap: 32px;">
+      <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #1A2635; padding-bottom: 8px; border-bottom: 1px solid #E8E6E1;">Full Screen Snapshots (0.3 scale)</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+
+        <!-- Screen 1 snapshot -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Screen 1 — Welcome</div>
+          <div style="transform: scale(0.3); transform-origin: top left; width: 390px; min-height: 800px; background-color: #162B45; border-radius: 24px; padding: 72px 32px 48px; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden;">
+            <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, #162B45 0%, #0E1C2E 100%);"></div>
+            <div aria-hidden="true" style="position: absolute; top: 120px; left: 50%; width: 260px; height: 260px; border-radius: 999px; background-color: rgba(75,191,212,0.15); transform: translateX(-50%);"></div>
+            <div style="position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%;">
+              <div style="margin-bottom: 24px; text-align: center;">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #FFFFFF;">SafeChat</span>
+              </div>
+              <div style="margin-bottom: 16px; text-align: center; max-width: 240px;">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800; color: #FFFFFF; line-height: 1.25;">Built for trust. Set up in 30 seconds.</span>
+              </div>
+              <div style="margin-bottom: 32px; text-align: center;">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7);">We pre-configure smart defaults.</span>
+              </div>
+              <div style="width: 100%; height: 52px; border-radius: 14px; background-color: #4BBFD4; display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #FFFFFF;">See what's included →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 2 snapshot -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Screen 2 — Overview / Fork</div>
+          <div style="transform: scale(0.3); transform-origin: top left; width: 390px; min-height: 800px; background-color: #F7F5F1; border-radius: 24px; padding: 32px 20px;">
+            <div style="margin-bottom: 6px; font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: #1A2635;">Here's how SafeChat protects your child</div>
+            <div style="margin-bottom: 20px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: #6B7A8D;">We've set thoughtful defaults.</div>
+            <div style="background-color: #FFFFFF; border-radius: 24px; box-shadow: 0 4px 20px rgba(22,43,69,0.08); padding: 4px 0; margin-bottom: 16px;">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #F0EDE8;">
+                <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635;">Content Moderation</span>
+                <div style="border-radius: 999px; background-color: #4BBFD4; padding: 2px 8px;"><span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700; color: #FFFFFF;">Balanced</span></div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #F0EDE8;">
+                <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635;">Screen Time</span>
+                <div style="border-radius: 999px; background-color: #F0EDE8; padding: 2px 8px;"><span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700; color: #6B7A8D;">Off</span></div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px;">
+                <span style="flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1A2635;">Safety Alerts</span>
+                <div style="border-radius: 999px; background-color: #4CAF82; padding: 2px 8px;"><span style="font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700; color: #FFFFFF;">On</span></div>
+              </div>
+            </div>
+            <div style="width: 100%; height: 48px; border-radius: 14px; background-color: #4BBFD4; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; color: #FFFFFF;">Trust these defaults — Activate</span>
+            </div>
+            <div style="width: 100%; height: 40px; border-radius: 14px; border: 1.5px solid #E8E6E1; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: #6B7A8D;">Customize settings</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screen 6 snapshot -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Nunito', sans-serif; font-size: 11px; color: #8A9BAD;">Screen 6 — Dashboard</div>
+          <div style="transform: scale(0.3); transform-origin: top left; width: 390px; min-height: 800px; background-color: #F7F5F1; border-radius: 24px; padding: 28px 20px;">
+            <div style="font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #1A2635; margin-bottom: 16px;">Hi! SafeChat is live.</div>
+            <div style="border-radius: 16px; background-color: rgba(76,175,130,0.08); border: 1px solid rgba(76,175,130,0.2); border-left: 4px solid #4CAF82; padding: 14px; margin-bottom: 16px;">
+              <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: #4CAF82; margin-bottom: 4px;">Active · 5 categories configured</div>
+              <div style="font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 400; color: #6B7A8D;">All settings are running.</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div style="flex: 1; background-color: #FFFFFF; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 4px 20px rgba(22,43,69,0.08);">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #1A2635; text-align: center;">View Chats</span>
+              </div>
+              <div style="flex: 1; background-color: #FFFFFF; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 4px 20px rgba(22,43,69,0.08);">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #1A2635; text-align: center;">Alerts</span>
+              </div>
+              <div style="flex: 1; background-color: #FFFFFF; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 4px 20px rgba(22,43,69,0.08);">
+                <span style="font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700; color: #1A2635; text-align: center;">Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
 
-  <!-- ── Blocked Chat Card ────────────────────────── -->
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <div class="gallery-section-title">Blocked Chat Intercept Card</div>
-    <div style="
-      width: 320px;
-      background-color: #FFF7ED;
-      border: 1px solid #FDE68A;
-      border-left: 3px solid #F97316;
-      border-radius: 0 14px 14px 14px;
-      padding: 12px 14px;
-      box-shadow: 0 2px 8px rgba(249,115,22,0.12);
-    ">
-      <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 9px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#F97316"/>
-        </svg>
-        <span style="font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #F97316; font-family: 'DM Sans', sans-serif;">SafeChat Guardian</span>
-      </div>
-      <div style="font-size: 13px; color: #1C1C28; line-height: 1.65; margin-bottom: 10px; font-family: 'DM Sans', sans-serif;">
-        I hear you, and what you're feeling is real. Please talk to a parent or trusted adult today.
-      </div>
-      <div style="height: 1px; background-color: #FDE68A; margin-bottom: 10px;"></div>
-      <div style="background-color: #FFFFFF; border: 1px solid #FDE68A; border-radius: 10px; padding: 8px 10px;">
-        <div style="font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA3AF; margin-bottom: 2px; font-family: 'DM Sans', sans-serif;">Crisis Text Line</div>
-        <div style="font-size: 13px; font-weight: 700; color: #1C1C28; font-family: 'DM Sans', sans-serif;">Text HOME to 741741</div>
-      </div>
-    </div>
-  </div>
+  </div><!-- /figma-gallery -->
 
-  <!-- ── CTA Button ───────────────────────────────── -->
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <div class="gallery-section-title">Primary CTA Buttons</div>
-    <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">Primary (Blue)</div>
-        <button style="
-          width: 220px; padding: 15px; border-radius: 12px;
-          background-color: #4B7BE5; color: #FFFFFF;
-          font-size: 15px; font-weight: 700;
-          font-family: 'DM Sans', sans-serif;
-          box-shadow: 0 4px 14px rgba(75,123,229,0.3); border: none;
-        ">Get started</button>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div class="gallery-state-label">Primary (Dark — Save)</div>
-        <button style="
-          width: 220px; padding: 15px; border-radius: 12px;
-          background-color: #1C1C28; color: #FFFFFF;
-          font-size: 15px; font-weight: 700;
-          font-family: 'DM Sans', sans-serif;
-          box-shadow: 0 4px 14px rgba(0,0,0,0.18); border: none;
-        ">Save settings</button>
-      </div>
-    </div>
-  </div>
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       MODE SWITCH — runs first
+    ═══════════════════════════════════════════════════════════════ */
+    const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
 
-</div><!-- /figma-gallery -->
-
-
-<script>
-  /* ── Dual-mode switch ─────────────────────────── */
-  const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
-
-  if (FIGMA_MODE) {
-    document.getElementById('prototype-root').style.display = 'none';
-    document.getElementById('figma-gallery').style.display = 'flex';
-  } else {
-    document.getElementById('figma-gallery').style.display = 'none';
-  }
-
-  /* ── Screen navigation ────────────────────────── */
-  let currentScreen = 1;
-  const TOTAL_SCREENS = 8;
-
-  function goTo(n) {
-    const prev = document.getElementById('screen-' + currentScreen);
-    const next = document.getElementById('screen-' + n);
-    if (!next) return;
-
-    prev.classList.remove('active');
-    next.classList.add('active');
-    currentScreen = n;
-
-    // Swap status bar and home bar background for chat screens
-    const statusBar = document.getElementById('status-bar');
-    const homeBar = document.getElementById('home-bar');
-    if (n === 7 || n === 8) {
-      statusBar.classList.add('sbar--white');
-      homeBar.classList.add('home-bar--white');
+    if (FIGMA_MODE) {
+      document.getElementById('prototype-root').style.display = 'none';
+      document.getElementById('figma-gallery').style.display = 'flex';
     } else {
-      statusBar.classList.remove('sbar--white');
-      homeBar.classList.remove('home-bar--white');
+      document.getElementById('figma-gallery').style.display = 'none';
+      showScreen('screen-1');
     }
-  }
 
-  /* ── Tier selection (advances to next screen) ─── */
-  function selectTier(screenNum, tier, nextScreen) {
-    // In a real prototype this would persist state.
-    // Here we just advance to the next screen.
-    goTo(nextScreen);
-  }
-</script>
+    /* ═══════════════════════════════════════════════════════════════
+       SCREEN NAVIGATION
+    ═══════════════════════════════════════════════════════════════ */
+    function showScreen(id) {
+      document.querySelectorAll('[data-screen]').forEach(function(s) {
+        s.style.display = 'none';
+      });
+      var target = document.getElementById(id);
+      if (target) {
+        target.style.display = (id === 'screen-5') ? 'flex' : 'block';
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FORK: CUSTOMIZE PATH
+    ═══════════════════════════════════════════════════════════════ */
+    function goCustomize() {
+      // Show chevrons on overview screen rows
+      ['content','screentime','language','topics','alerts'].forEach(function(key) {
+        var chev = document.getElementById('chev-' + key);
+        if (chev) chev.style.display = 'flex';
+      });
+      showScreen('screen-3');
+    }
+
+    /* In overview mode, row taps only do anything if we're in customize path */
+    function handleRowTap(name) {
+      // No-op in overview mode (chevrons are hidden, no sheet needed)
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BOTTOM SHEET
+    ═══════════════════════════════════════════════════════════════ */
+    var currentCategory = '';
+
+    var categorySettings = {
+      'Content Moderation':  ['Explicit Content', 'Violence', 'Adult Themes'],
+      'Screen Time':         ['Daily Limit', 'Bedtime Block', 'Weekend Hours'],
+      'Language & Tone':     ['Profanity Filter', 'Aggressive Tone', 'Slang Level'],
+      'Topics':              ['Politics', 'Relationships', 'Self-Harm Topics'],
+      'Safety Alerts':       ['Crisis Keywords', 'Location Sharing', 'Stranger Contact']
+    };
+
+    function openSheet(name) {
+      currentCategory = name;
+      document.getElementById('sheet-title-text').textContent = name;
+
+      var settings = categorySettings[name] || ['Setting 1', 'Setting 2', 'Setting 3'];
+      document.getElementById('sheet-label-1').textContent = settings[0] || '';
+      document.getElementById('sheet-label-2').textContent = settings[1] || '';
+      document.getElementById('sheet-label-3').textContent = settings[2] || '';
+
+      document.getElementById('sheet-scrim').style.display = 'block';
+      document.getElementById('bottom-sheet').classList.add('sheet-open');
+      document.getElementById('bottom-sheet').setAttribute('aria-modal', 'true');
+    }
+
+    function closeSheet() {
+      document.getElementById('sheet-scrim').style.display = 'none';
+      document.getElementById('bottom-sheet').classList.remove('sheet-open');
+      document.getElementById('bottom-sheet').removeAttribute('aria-modal');
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PILL SELECTOR
+    ═══════════════════════════════════════════════════════════════ */
+    function selectPill(btn, pillId) {
+      var group = btn.getAttribute('data-pill-group');
+      // Reset all in group
+      document.querySelectorAll('[data-pill-group="' + group + '"]').forEach(function(p) {
+        p.style.backgroundColor = '#F0EDE8';
+        p.querySelector('span').style.color = '#6B7A8D';
+      });
+      // Activate selected
+      btn.style.backgroundColor = '#4BBFD4';
+      btn.querySelector('span').style.color = '#FFFFFF';
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SUCCESS SCREEN PROGRESS + AUTO-ADVANCE
+    ═══════════════════════════════════════════════════════════════ */
+    function startProgress() {
+      var fill = document.getElementById('progress-bar-fill');
+      if (fill) {
+        fill.style.width = '0%';
+        // Force reflow
+        fill.getBoundingClientRect();
+        fill.classList.add('progress-fill');
+      }
+      setTimeout(function() {
+        showScreen('screen-6');
+      }, 2000);
+    }
+  </script>
 
 </body>
 </html>

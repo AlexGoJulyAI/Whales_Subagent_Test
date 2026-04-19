@@ -3,1277 +3,1648 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mockup A — Question by Question — SafeChat</title>
+  <title>Direction A — Lavender Companion — Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
-      background: #F2F2F7;
-      color: #000;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      background: #EEEEEE;
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
       font-size: 14px;
       -webkit-font-smoothing: antialiased;
       line-height: 1.5;
+      color: #242529;
     }
 
-    /* ── PAGE HEADER ──────────────────────────────────────────────────── */
+    /* ─── DESIGN TOKENS ─── */
+    :root {
+      --page-bg:        #f8f7fc;
+      --card-bg:        #ffffff;
+      --accent:         #6b2aed;
+      --bubble-user:    #d7d0fe;
+      --bubble-ai:      #ffecba;
+      --text-primary:   #242529;
+      --text-secondary: #6b6b8a;
+      --nav-bg:         #ddd7ed;
+      --chip-lavender:  #d7d0fe;
+      --chip-yellow:    #ffecba;
+      --chip-lavender2: #f3f0fd;
+      --toggle-off:     #f0eef9;
+      --shadow-card:    0 2px 10px rgba(107,42,237,0.09);
+    }
+
+    /* ══════════════════════════════════════
+       PAGE HEADER
+    ══════════════════════════════════════ */
     .page-header {
       background: #083386;
-      color: #fff;
-      padding: 20px 28px 18px;
-    }
-    .page-header-row1 {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-    .header-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-    .header-pill-a {
-      background: #1A6B4A;
-      color: #fff;
-    }
-    .header-pill-dir {
-      background: rgba(255,255,255,0.18);
-      color: #fff;
-    }
-    .header-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.01em;
-      margin-left: 4px;
-    }
-    .header-screens-badge {
-      margin-left: auto;
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.7);
-      white-space: nowrap;
-    }
-    .page-header-row2 {
-      font-size: 12px;
-      color: rgba(255,255,255,0.65);
-      margin-bottom: 12px;
-      letter-spacing: 0.01em;
-    }
-    .header-goal-box {
-      border: 1.5px solid #2DD4BF;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.88);
-      line-height: 1.6;
-    }
-
-    /* ── WHAT THIS CHANGES BOX ────────────────────────────────────────── */
-    .what-changes-box {
-      background: #fff;
-      border: 1px solid #E5E7EB;
-      border-radius: 10px;
-      padding: 14px 20px;
-      margin: 16px 24px 0;
-    }
-    .what-changes-label {
-      font-size: 10px;
-      font-weight: 700;
-      color: #083386;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
-    }
-    .what-changes-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .what-changes-list li {
-      font-size: 12.5px;
-      color: #374151;
-      line-height: 1.55;
+      padding: 20px 32px 16px;
       display: flex;
       align-items: flex-start;
-      gap: 7px;
-    }
-    .wc-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #D97706;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    /* ── SCREEN SECTION WRAPPER ───────────────────────────────────────── */
-    .screen-section {
-      display: flex;
-      gap: 32px;
-      padding: 24px;
-      align-items: flex-start;
-      border-bottom: 1px solid #E5E7EB;
-    }
-    .screen-section:last-child {
-      border-bottom: none;
-    }
-
-    /* ── LEFT COLUMN ──────────────────────────────────────────────────── */
-    .left-col {
-      width: 320px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
       gap: 16px;
     }
 
-    /* ── PHONE FRAME ──────────────────────────────────────────────────── */
-    .phone {
-      width: 320px;
-      background: #fff;
-      border-radius: 36px;
-      border: 7px solid #1C1C1E;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+    .dir-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      color: #c5b8ff;
+      font-size: 15px;
+      font-weight: 800;
       flex-shrink: 0;
+      margin-top: 2px;
     }
+
+    .page-header-text {}
+
+    .dir-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .dir-anchor {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    .dir-anchor strong {
+      color: rgba(255,255,255,0.75);
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════
+       PHONES STAGE
+    ══════════════════════════════════════ */
+    .phones-stage {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      padding: 36px 32px 28px;
+      flex-wrap: wrap;
+    }
+
+    .phone-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .phone-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #777;
+    }
+
+    /* ── Phone frame ── */
+    .phone-frame {
+      width: 220px;
+      background: #111111;
+      border-radius: 44px;
+      padding: 10px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.10),
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        0 30px 80px rgba(0,0,0,0.45),
+        0 12px 32px rgba(0,0,0,0.30);
+      position: relative;
+    }
+
+    /* Side buttons */
+    .phone-frame::before {
+      content: "";
+      position: absolute;
+      left: -3px;
+      top: 80px;
+      width: 3px;
+      height: 28px;
+      background: #2a2a2a;
+      border-radius: 2px 0 0 2px;
+    }
+
+    .phone-frame::after {
+      content: "";
+      position: absolute;
+      right: -3px;
+      top: 96px;
+      width: 3px;
+      height: 48px;
+      background: #2a2a2a;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .phone-screen {
+      border-radius: 36px;
+      overflow: hidden;
+      height: 476px;
+      background: var(--page-bg);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic island */
+    .dyn-island {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 22px;
+      background: #000;
+      border-radius: 13px;
+      z-index: 30;
+    }
+
+    /* iOS status bar */
     .status-bar {
-      height: 44px;
-      background: #fff;
+      height: 34px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 16px 5px;
+      font-size: 9.5px;
+      font-weight: 700;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+      color: var(--text-primary);
+    }
+
+    .status-bar.on-dark { color: #ffffff; }
+    .status-bar.on-light { color: var(--text-primary); }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ══════════════════════════════════════
+       SHARED INNER UTILITIES
+    ══════════════════════════════════════ */
+    .section-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .see-all {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .section-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 28px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #000;
     }
-    .nav-bar {
-      padding: 8px 16px 12px;
-      background: #fff;
-      border-bottom: 0.5px solid #C6C6C8;
-    }
-    .nav-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: #000;
-      text-align: center;
-    }
-    .nav-large {
-      font-size: 28px;
-      font-weight: 700;
-      color: #000;
-      padding: 4px 16px 0;
-    }
-    .screen-body {
-      background: #fff;
-      min-height: 520px;
-    }
-    .screen-grouped {
-      background: #F2F2F7;
-      min-height: 520px;
-    }
-    .tab-bar {
-      height: 82px;
-      background: #fff;
-      border-top: 0.5px solid #C6C6C8;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 8px 16px;
-    }
-    .tab-item {
+
+
+    /* ══════════════════════════════════════
+       PHONE 1 — PARENT DASHBOARD HOME
+    ══════════════════════════════════════ */
+    .s1 {
+      width: 100%;
+      height: 100%;
+      background: var(--page-bg);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* App header bar */
+    .s1-header {
+      padding: 6px 14px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .s1-wordmark {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .s1-wordmark span {
+      color: var(--accent);
+    }
+
+    .s1-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .s1-bell {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .s1-bell-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 6px;
+      height: 6px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 1.5px solid var(--page-bg);
+    }
+
+    .s1-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Greeting */
+    .s1-greeting {
+      padding: 4px 14px 14px;
+      flex-shrink: 0;
+    }
+
+    .s1-h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .s1-subtitle {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    .s1-safe-check {
+      display: inline-flex;
       align-items: center;
       gap: 3px;
-      font-size: 10px;
-      font-weight: 500;
-      color: #AEAEB2;
-      min-width: 48px;
-    }
-    .tab-item.active {
-      color: #1A6B4A;
-    }
-    .tab-icon {
-      font-size: 22px;
-    }
-    .pill-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 0;
-      border-radius: 999px;
-      font-size: 17px;
-      font-weight: 600;
-      width: 100%;
-    }
-    .pill-primary {
-      background: #1A6B4A;
-      color: #fff;
-      border: none;
-    }
-    .pill-ghost {
-      background: transparent;
-      color: #1A6B4A;
-      font-size: 15px;
-      font-weight: 500;
-      border: none;
-    }
-    .cell {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      background: #fff;
-      border-bottom: 0.5px solid #C6C6C8;
-    }
-    .cell-title {
-      font-size: 17px;
-      color: #000;
-    }
-    .cell-value {
-      font-size: 17px;
-      color: #AEAEB2;
-    }
-    .section-header {
-      font-size: 13px;
-      color: #6D6D72;
-      padding: 16px 16px 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-    }
-    .inset-group {
-      margin: 0 16px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 0.5px solid #C6C6C8;
     }
 
-    /* ── CALLOUT NUMBER ───────────────────────────────────────────────── */
-    .num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
+    .s1-check-icon {
+      width: 13px;
+      height: 13px;
+      background: #22c55e;
       border-radius: 50%;
-      background: #D97706;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
-      margin-left: auto;
     }
 
-    /* ── SPATIAL SUMMARY ──────────────────────────────────────────────── */
-    .spatial-summary {
-      background: #1C1C1E;
-      color: #E5E7EB;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 11px;
-      line-height: 1.7;
-      font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
-      white-space: pre;
-    }
-    .spatial-summary-label {
-      font-size: 10px;
-      font-weight: 700;
-      color: #9CA3AF;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
+    /* 2x2 action chip grid — THE SIGNATURE ELEMENT */
+    .s1-chip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 0 14px;
+      flex-shrink: 0;
     }
 
-    /* ── RIGHT COLUMN — SPEC PANEL ────────────────────────────────────── */
-    .right-col {
-      flex: 1;
+    .action-chip {
+      border-radius: 20px;
+      padding: 12px 11px;
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 6px;
     }
-    .spec-panel {
-      background: #fff;
-      border: 1px solid #E5E7EB;
-      border-radius: 10px;
-      overflow: hidden;
+
+    .chip-lavender { background: var(--chip-lavender); }
+    .chip-yellow   { background: var(--chip-yellow); }
+    .chip-lavender2 { background: var(--chip-lavender2); }
+
+    .chip-icon-wrap {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .spec-block {
-      padding: 14px 18px;
-      border-bottom: 1px solid #F3F4F6;
-    }
-    .spec-block:last-child {
-      border-bottom: none;
-    }
-    .spec-heading {
-      font-size: 10px;
+
+    .chip-title {
+      font-size: 10.5px;
       font-weight: 700;
-      color: #083386;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
+      color: var(--text-primary);
+      line-height: 1.2;
     }
-    .spec-text {
-      font-size: 12px;
-      color: #374151;
-      line-height: 1.65;
+
+    .chip-sub {
+      font-size: 9px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: -2px;
     }
-    .spec-bullet-list {
-      list-style: none;
+
+    /* Recent alerts */
+    .s1-alerts {
+      padding: 12px 14px 6px;
+      flex-shrink: 0;
+    }
+
+    .s1-alert-rows {
+      margin-top: 8px;
       display: flex;
       flex-direction: column;
       gap: 5px;
     }
-    .spec-bullet-list li {
+
+    .alert-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 7px 10px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .alert-icon-wrap {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      background: #fef2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 12px;
-      color: #374151;
-      line-height: 1.55;
-      padding-left: 14px;
-      position: relative;
+      flex-shrink: 0;
     }
-    .spec-bullet-list li::before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      color: #9CA3AF;
+
+    .alert-icon-wrap.warn {
+      background: #fff7ed;
     }
-    .spec-component {
-      margin-top: 10px;
+
+    .alert-text-col {
+      flex: 1;
+      min-width: 0;
     }
-    .spec-component-title {
-      font-size: 11px;
+
+    .alert-title {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .alert-time {
+      font-size: 8px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    /* Bottom nav bar */
+    .s1-bottom-nav {
+      margin-top: auto;
+      height: 52px;
+      background: var(--nav-bg);
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      padding: 0 4px;
+    }
+
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .nav-tab-lbl {
+      font-size: 8px;
+      font-weight: 600;
+      color: rgba(107,42,237,0.4);
+    }
+
+    .nav-tab.active .nav-tab-lbl {
+      color: var(--accent);
+    }
+
+    /* ══════════════════════════════════════
+       PHONE 2 — SAFETY CONFIGURATION
+    ══════════════════════════════════════ */
+    .s2 {
+      width: 100%;
+      height: 100%;
+      background: var(--page-bg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .s2-nav {
+      padding: 6px 14px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .s2-back-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(107,42,237,0.09);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .s2-nav-title {
+      font-size: 13px;
       font-weight: 700;
-      color: #1C1C1E;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .s2-scroll {
+      flex: 1;
+      overflow: hidden;
+      padding: 2px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .s2-group-label {
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      color: var(--text-secondary);
+      padding: 4px 0 2px;
+    }
+
+    /* Category row card */
+    .cat-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 9px 11px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .cat-row-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 7px;
+    }
+
+    .cat-icon-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .cat-icon-badge.red   { background: #fef2f2; }
+    .cat-icon-badge.amber { background: #fff7ed; }
+    .cat-icon-badge.blue  { background: #eff6ff; }
+    .cat-icon-badge.green { background: #f0fdf4; }
+    .cat-icon-badge.purple { background: #f5f3ff; }
+    .cat-icon-badge.rose  { background: #fff1f2; }
+    .cat-icon-badge.sky   { background: #f0f9ff; }
+
+    .cat-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.25;
+      flex: 1;
+    }
+
+    /* Pill toggle group */
+    .toggle-group {
+      display: flex;
+      background: var(--toggle-off);
+      border-radius: 999px;
+      height: 21px;
+      overflow: hidden;
+    }
+
+    .tg-seg {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7.5px;
+      font-weight: 700;
+      color: #9b97b8;
+    }
+
+    .tg-seg.active-bal {
+      background: #b8a8f0;
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    .tg-seg.active-strict {
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    .tg-seg.active-off {
+      background: #c8c0e8;
+      color: #ffffff;
+      border-radius: 999px;
+    }
+
+    /* AI personality section */
+    .s2-personality-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 9px 11px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .personality-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .personality-row + .personality-row {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #f3f0fd;
+    }
+
+    .personality-label {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .personality-sub {
+      font-size: 8px;
+      color: var(--text-secondary);
+    }
+
+    /* Save button */
+    .s2-save-btn {
+      margin: 8px 10px 10px;
+      height: 38px;
+      background: var(--accent);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 18px rgba(107,42,237,0.32);
+    }
+
+    /* ══════════════════════════════════════
+       PHONE 3 — CHILD CHATBOT
+    ══════════════════════════════════════ */
+    .s3 {
+      width: 100%;
+      height: 100%;
+      background: var(--page-bg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .s3-topbar {
+      background: var(--nav-bg);
+      padding: 6px 14px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .s3-title-col {
       display: flex;
       align-items: center;
       gap: 7px;
     }
-    .comp-badge {
-      font-size: 10px;
+
+    .s3-ai-badge {
+      width: 26px;
+      height: 26px;
+      background: var(--accent);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s3-title {
+      font-size: 13px;
       font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 4px;
-      background: #FEF3C7;
-      color: #92400E;
-      letter-spacing: 0.03em;
+      color: var(--text-primary);
     }
-    .comp-badge-p1 {
-      background: #EDE9FE;
-      color: #5B21B6;
+
+    .s3-settings-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(107,42,237,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .spec-table {
+
+    /* Chat area */
+    .s3-thread {
+      flex: 1;
+      overflow: hidden;
+      padding: 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: var(--page-bg);
+    }
+
+    .chat-date-label {
+      text-align: center;
+      font-size: 8px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+    }
+
+    .msg-row.user-row {
+      justify-content: flex-end;
+    }
+
+    .ai-avatar-sm {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 800;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    /* Pill chat bubbles — NO TAIL per anchor spec */
+    .bubble-user {
+      background: var(--bubble-user);
+      border-radius: 18px 18px 4px 18px;
+      padding: 8px 11px;
+      font-size: 9.5px;
+      font-weight: 400;
+      color: var(--text-primary);
+      max-width: 76%;
+      line-height: 1.45;
+    }
+
+    .bubble-ai {
+      background: var(--bubble-ai);
+      border-radius: 18px 18px 18px 4px;
+      padding: 8px 11px;
+      font-size: 9.5px;
+      font-weight: 400;
+      color: var(--text-primary);
+      max-width: 78%;
+      line-height: 1.45;
+    }
+
+    /* SIGNATURE: embedded data card inside AI bubble */
+    .data-card-embed {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 7px 9px;
+      margin-top: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .data-card-label {
+      font-size: 7.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .data-card-stat {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .data-card-stat-sub {
+      font-size: 7.5px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* mini bar chart */
+    .mini-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+      margin-top: 2px;
+    }
+
+    .mini-bar {
+      width: 7px;
+      background: var(--accent);
+      border-radius: 2px 2px 0 0;
+      opacity: 0.75;
+    }
+
+    .mini-bar:nth-child(1) { height: 6px; }
+    .mini-bar:nth-child(2) { height: 10px; }
+    .mini-bar:nth-child(3) { height: 14px; }
+
+    /* Input bar */
+    .s3-input-bar {
+      height: 50px;
+      background: var(--card-bg);
+      border-top: 1px solid #ede9f8;
+      padding: 9px 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .input-field-pill {
+      flex: 1;
+      height: 32px;
+      background: var(--page-bg);
+      border-radius: 999px;
+      border: 1px solid #e5e0f5;
+      padding: 0 13px;
+      font-size: 9px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    .send-btn {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(107,42,237,0.35);
+    }
+
+    /* ══════════════════════════════════════
+       BOTTOM REFERENCE SECTION
+    ══════════════════════════════════════ */
+    .bottom-section {
+      background: #ffffff;
+      margin: 0 32px 40px;
+      border-radius: 16px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* Token table */
+    .token-table-wrap {
+      padding: 24px 28px;
+      border-bottom: 1px solid #f0edf9;
+    }
+
+    .ref-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .token-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11.5px;
+      font-size: 12px;
+    }
+
+    .token-table thead th {
+      text-align: left;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 0 10px 10px 0;
+      border-bottom: 1px solid #f0edf9;
+    }
+
+    .token-table tbody tr + tr td {
+      border-top: 1px solid #f7f5fc;
+    }
+
+    .token-table td {
+      padding: 8px 10px 8px 0;
+      vertical-align: middle;
+    }
+
+    .token-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.07);
+      display: inline-block;
+    }
+
+    .token-name-cell {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .token-hex-cell {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .token-usage-cell {
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
+
+    /* Component translation map */
+    .comp-map-wrap {
+      padding: 24px 28px;
+    }
+
+    .comp-map-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
       margin-top: 4px;
     }
-    .spec-table tr {
-      border-bottom: 1px solid #F9FAFB;
-    }
-    .spec-table tr:last-child {
-      border-bottom: none;
-    }
-    .spec-table td {
-      padding: 4px 0;
-      vertical-align: top;
-    }
-    .spec-table td:first-child {
-      color: #6D6D72;
-      width: 130px;
-      font-size: 11px;
-      padding-right: 12px;
-    }
-    .spec-table td:last-child {
-      color: #1C1C1E;
-      font-family: 'SF Mono', 'Menlo', monospace;
-      font-size: 11px;
-    }
 
-    /* ── SCREEN SECTION TITLE ─────────────────────────────────────────── */
-    .screen-section-header {
-      background: #fff;
-      border-bottom: 1px solid #E5E7EB;
-      padding: 14px 24px 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .screen-section-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #083386;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .screen-section-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1C1C1E;
-    }
-    .screen-section-subtitle {
-      font-size: 12px;
-      color: #6D6D72;
-      margin-left: auto;
-    }
-
-    /* ── SCREEN 1 SPECIFIC ────────────────────────────────────────────── */
-    .progress-bar-track {
-      width: 100%;
-      height: 4px;
-      background: #F2F2F7;
-    }
-    .progress-bar-fill {
-      height: 4px;
-      background: #1A6B4A;
-      width: 33.3%;
-    }
-    .onboarding-body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0;
-      min-height: 520px;
-      position: relative;
-      background: #fff;
-    }
-    .progress-area {
-      width: 100%;
-      position: relative;
-    }
-    .progress-counter {
-      text-align: center;
-      font-size: 13px;
-      color: #AEAEB2;
-      margin-top: 6px;
-      padding-bottom: 2px;
-    }
-    .section-category {
-      text-align: center;
-      font-size: 12px;
-      color: #6D6D72;
-      margin-top: 3px;
-      margin-bottom: 0;
-    }
-    .question-area {
-      width: 100%;
-      padding: 20px 32px 8px;
-      position: relative;
-    }
-    .question-text {
-      font-size: 24px;
-      font-weight: 700;
-      color: #000;
-      text-align: center;
-      line-height: 1.25;
-      margin-bottom: 14px;
-    }
-    .question-example {
-      font-size: 15px;
-      color: #6D6D72;
-      text-align: center;
-      font-style: italic;
-      line-height: 1.5;
-      padding: 0 8px;
-    }
-    .pill-answer-row {
-      display: flex;
-      gap: 8px;
-      padding: 20px 16px 0;
-      width: 100%;
-      position: relative;
-    }
-    .answer-pill {
-      flex: 1;
-      height: 44px;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 400;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1.5px solid #C6C6C8;
-      background: transparent;
-      color: #000;
-      cursor: pointer;
-    }
-    .answer-pill.selected-balanced {
-      background: #FF9500;
-      border-color: #FF9500;
-      color: #fff;
-      font-weight: 600;
-    }
-    .continue-btn-wrapper {
-      padding: 0 16px;
-      position: absolute;
-      bottom: 16px;
-      left: 0;
-      right: 0;
-    }
-    .continue-btn {
-      width: 100%;
-      height: 52px;
-      border-radius: 999px;
-      background: #1A6B4A;
-      color: #fff;
-      font-size: 17px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-    }
-
-    /* ── SCREEN 2 SPECIFIC ────────────────────────────────────────────── */
-    .dashboard-tabs {
-      display: flex;
-      padding: 0 16px;
-      gap: 24px;
-      border-bottom: 0.5px solid #C6C6C8;
-      background: #fff;
-    }
-    .dash-tab {
-      font-size: 14px;
-      font-weight: 500;
-      color: #6D6D72;
-      padding: 10px 0 9px;
-      border-bottom: 2px solid transparent;
-    }
-    .dash-tab.active {
-      color: #1A6B4A;
-      border-bottom: 2px solid #1A6B4A;
-      font-weight: 600;
-    }
-    .alert-list {
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: #F2F2F7;
-      min-height: 420px;
-    }
-    .alert-card {
-      background: #fff;
+    .comp-map-card {
+      background: var(--page-bg);
       border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.10);
-      overflow: hidden;
-      display: flex;
+      padding: 14px 16px;
+      border-left: 3px solid var(--accent);
     }
-    .alert-card-border {
-      width: 3px;
-      flex-shrink: 0;
-    }
-    .alert-card-border.strict {
-      background: #FF3B30;
-    }
-    .alert-card-border.balanced {
-      background: #FF9500;
-    }
-    .alert-card-content {
-      padding: 11px 12px;
-      flex: 1;
-    }
-    .alert-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 3px;
-    }
-    .alert-card-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #000;
-    }
-    .alert-card-title.read {
-      font-weight: 400;
-      color: #6D6D72;
-    }
-    .severity-pill {
-      font-size: 10px;
+
+    .comp-map-num {
+      font-size: 9px;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 999px;
-      color: #fff;
-    }
-    .severity-pill.strict {
-      background: #FF3B30;
-    }
-    .severity-pill.balanced {
-      background: #FF9500;
-    }
-    .alert-card-time {
-      font-size: 12px;
-      color: #AEAEB2;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
       margin-bottom: 4px;
     }
-    .alert-card-snippet {
-      font-size: 13px;
-      color: #6D6D72;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .alert-card-snippet.lighter {
-      color: #AEAEB2;
-    }
-    /* ── SCREEN 3 SPECIFIC ────────────────────────────────────────────── */
-    .chat-body {
-      background: #fff;
-      min-height: 430px;
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .chat-ai-group {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 3px;
-      max-width: 75%;
-    }
-    .chat-sender-label {
-      font-size: 11px;
-      color: #AEAEB2;
-      padding-left: 2px;
-    }
-    .bubble-ai {
-      background: #F2F2F7;
-      color: #000;
-      border-radius: 16px;
-      border-top-left-radius: 0px;
-      padding: 12px 14px;
-      font-size: 15px;
-      line-height: 1.45;
-    }
-    .chat-user-group {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 3px;
-      max-width: 75%;
-      align-self: flex-end;
-      position: relative;
-    }
-    .bubble-user {
-      background: #1A6B4A;
-      color: #fff;
-      border-radius: 16px;
-      border-top-right-radius: 0px;
-      padding: 12px 14px;
-      font-size: 15px;
-      line-height: 1.45;
-    }
-    .chat-input-bar {
-      background: #fff;
-      border-top: 0.5px solid #C6C6C8;
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .chat-input-field {
-      flex: 1;
-      background: #F2F2F7;
-      border-radius: 16px;
-      padding: 8px 14px;
-      font-size: 15px;
-      color: #AEAEB2;
-    }
-    .chat-send-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #1A6B4A;
-      color: #fff;
-      font-size: 14px;
+
+    .comp-map-anchor {
+      font-size: 12px;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+      line-height: 1.3;
     }
-    /* Inline callout helper */
-    .callout-inline {
-      display: inline-flex;
-      align-items: center;
-      margin-left: 6px;
-      vertical-align: middle;
+
+    .comp-map-arrow {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin: 4px 0;
+    }
+
+    .comp-map-translated {
+      font-size: 11px;
+      color: #3a3a4e;
+      line-height: 1.55;
+    }
+
+    .comp-map-screen {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-bottom: 6px;
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════════════════════════
-       PAGE HEADER
-  ═══════════════════════════════════════════════════════════════════════ -->
-  <div class="page-header">
-    <div class="page-header-row1">
-      <span class="header-pill header-pill-a">Mockup A</span>
-      <span class="header-pill header-pill-dir">Question by Question</span>
-      <span class="header-title">SafeChat</span>
-      <span class="header-screens-badge">3 screens</span>
+  <!-- ══ PAGE HEADER ══ -->
+  <header class="page-header">
+    <div class="dir-badge">A</div>
+    <div class="page-header-text">
+      <div class="dir-title">Direction A — Conversational Warmth</div>
+      <div class="dir-anchor">Anchor: <strong>Cooper AI Chat (Dribbble)</strong> — lavender/yellow dual-tone, rounded card chips, embedded data cards in AI bubbles</div>
     </div>
-    <div class="page-header-row2">iOS 390px &nbsp;·&nbsp; Parent Onboarding + Dashboard &nbsp;·&nbsp; Child Chatbot</div>
-    <div class="header-goal-box">
-      <strong>Goal thread:</strong> Direction A converts parents by removing every trace of "settings UI" — each decision is a plain question they already know how to answer. §4 primary metric (&gt;80% completion) is directly served by this one-question-at-a-time model: parents who commit to answering question 10 almost never abandon before 21. §3 identifies the parent as non-technical and cautious; this format meets them exactly where they are.
-    </div>
-  </div>
+  </header>
 
-  <!-- ═══════════════════════════════════════════════════════════════════
-       WHAT THIS CHANGES BOX
-  ═══════════════════════════════════════════════════════════════════════ -->
-  <div class="what-changes-box">
-    <div class="what-changes-label">What this direction does</div>
-    <ul class="what-changes-list">
-      <li>
-        <span class="wc-num">①</span>
-        <span><strong>Question format</strong> — Each safety setting is a full-screen question in plain English instead of a settings row, removing technical framing for non-expert parents.</span>
-      </li>
-      <li>
-        <span class="wc-num">②</span>
-        <span><strong>Progress counter</strong> — A persistent "Question 7 of 21" label and thin progress bar give parents a precise sense of how close they are to done.</span>
-      </li>
-      <li>
-        <span class="wc-num">③</span>
-        <span><strong>Off/Balanced/Strict pills</strong> — Three answer pills replace toggles; the selected state fills with the severity color (gray/amber/red) so the choice is impossible to miss.</span>
-      </li>
-      <li>
-        <span class="wc-num">④</span>
-        <span><strong>Alert card</strong> — Left-border severity coding on each dashboard card communicates urgency before the parent reads a word.</span>
-      </li>
-      <li>
-        <span class="wc-num">⑤</span>
-        <span><strong>Chat bubbles</strong> — Parent and child share the same SF Pro + forest-green token set, unified visual language across both user types.</span>
-      </li>
-    </ul>
-  </div>
+  <!-- ══ PHONES STAGE ══ -->
+  <div class="phones-stage">
 
-  <!-- ═══════════════════════════════════════════════════════════════════
-       SCREEN 1 — PARENT ONBOARDING: QUESTION SCREEN
-  ═══════════════════════════════════════════════════════════════════════ -->
-  <div class="screen-section-header">
-    <span class="screen-section-num">1</span>
-    <span class="screen-section-title">Parent Onboarding — Question Screen</span>
-    <span class="screen-section-subtitle">Direction A · One question per screen</span>
-  </div>
-  <div class="screen-section">
+    <!-- ═══════════════════════════════════
+         PHONE 1 — PARENT DASHBOARD HOME
+    ═══════════════════════════════════ -->
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="dyn-island"></div>
+        <div class="phone-screen">
+          <div class="s1">
 
-    <!-- LEFT COL -->
-    <div class="left-col">
-
-      <!-- PHONE -->
-      <div class="phone">
-        <!-- Status bar -->
-        <div class="status-bar">
-          <span>9:41</span>
-          <span>●●● WiFi 🔋</span>
-        </div>
-
-        <!-- Onboarding body -->
-        <div class="onboarding-body">
-
-          <!-- Progress area ② -->
-          <div class="progress-area">
-            <div class="progress-bar-track">
-              <div class="progress-bar-fill"></div>
-            </div>
-            <div style="display:flex; align-items:center; justify-content:center; gap:6px; padding:0 12px; margin-top:6px;">
-              <div class="progress-counter" style="flex:1; text-align:center;">Question 7 of 21</div>
-              <span class="num">②</span>
-            </div>
-            <div class="section-category">Content · Violent content</div>
-          </div>
-
-          <!-- Question card ① -->
-          <div class="question-area" style="position:relative;">
-            <div style="display:flex; align-items:flex-start; gap:0;">
-              <div style="flex:1;">
-                <div class="question-text">How strict should SafeChat be about violent content?</div>
-                <div class="question-example">"Your child asks the AI to describe a violent scene in vivid detail. The AI gives a toned-down version instead."</div>
+            <!-- Status bar -->
+            <div class="status-bar on-light">
+              <span>9:41</span>
+              <div class="status-icons">
+                <!-- Signal bars -->
+                <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
+                  <rect x="0"  y="5" width="2.5" height="5" rx="0.6" fill="#242529"/>
+                  <rect x="3.5" y="3" width="2.5" height="7" rx="0.6" fill="#242529"/>
+                  <rect x="7"  y="1" width="2.5" height="9" rx="0.6" fill="#242529"/>
+                  <rect x="10.5" y="0" width="2.5" height="10" rx="0.6" fill="#242529" opacity="0.3"/>
+                </svg>
+                <!-- WiFi -->
+                <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+                  <path d="M6 7.5a1 1 0 100-2 1 1 0 000 2z" fill="#242529"/>
+                  <path d="M3.2 4.8A4 4 0 018.8 4.8" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
+                  <path d="M1 2.6A7 7 0 0111 2.6" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                <!-- Battery -->
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                  <rect x="0.5" y="0.5" width="12" height="9" rx="2" stroke="#242529" stroke-width="1"/>
+                  <rect x="1.5" y="1.5" width="9" height="7" rx="1.2" fill="#242529"/>
+                  <path d="M13.5 3.5v3" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
               </div>
-              <span class="num" style="margin-left:8px; margin-top:4px; flex-shrink:0;">①</span>
             </div>
-          </div>
 
-          <!-- Pill answer row ③ -->
-          <div class="pill-answer-row" style="position:relative;">
-            <div class="answer-pill">Off</div>
-            <div class="answer-pill selected-balanced">Balanced ✓</div>
-            <div class="answer-pill">Strict</div>
-            <span class="num" style="position:absolute; right:-2px; top:50%; transform:translateY(-50%) translateX(100%);">③</span>
-          </div>
-
-          <!-- Spacer -->
-          <div style="flex:1; min-height:80px;"></div>
-
-          <!-- Continue button -->
-          <div style="padding:0 16px 24px; width:100%;">
-            <div class="continue-btn">Continue →</div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- SPATIAL SUMMARY -->
-      <div>
-        <div class="spatial-summary-label">Spatial Summary</div>
-        <div class="spatial-summary">Direction:               A — Question by Question
-Layout:                  Full-screen single question, centered column
-Distinctive layout move: The entire screen is one question —
-                         no competing UI elements whatsoever
-New/changed zones:       Question area, progress counter, pill answer row
-Proportional note:       Phone frame scaled to 320px from iOS 390px [estimated]</div>
-      </div>
-
-    </div>
-
-    <!-- RIGHT COL — SPEC PANEL -->
-    <div class="right-col">
-      <div class="spec-panel">
-
-        <div class="spec-block">
-          <div class="spec-heading">Direction at a Glance</div>
-          <ul class="spec-bullet-list">
-            <li>One safety setting = one full-screen question in plain English</li>
-            <li>Off/Balanced/Strict answers are pill buttons, not toggle rows — tapping fills with severity color</li>
-            <li>Extreme whitespace ensures the question is the only thing competing for attention</li>
-          </ul>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-heading">Strategy</div>
-          <p class="spec-text">Direction A exists because §3 identifies the parent as non-technical and potentially overwhelmed by AI terminology. The question-per-screen format removes the word "settings" entirely — replacing it with decisions parents already know how to make intuitively. §4's primary metric (&gt;80% completion) is served by removing every reason to stall: there is nothing to scroll, nothing to compare, and nothing to configure — only a question to answer. Parents who commit to answering question 10 almost never abandon before 21.</p>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-heading">Above the Fold</div>
-          <ol style="font-size:12px; color:#374151; padding-left:16px; display:flex; flex-direction:column; gap:5px; line-height:1.55;">
-            <li><strong>Question text</strong> — earns first position because it IS the complete task for this screen</li>
-            <li><strong>Example</strong> — contextualizes what "balanced" means without requiring AI expertise</li>
-            <li><strong>Pill answers</strong> — decision affordances positioned after the user has read the question</li>
-          </ol>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              <span class="wc-num">①</span>
-              Question card
-              <span class="comp-badge">P0</span>
+            <!-- App header -->
+            <div class="s1-header">
+              <div class="s1-wordmark">Tree<span>House</span></div>
+              <div class="s1-header-right">
+                <div class="s1-bell">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M6.5 1.5C4.567 1.5 3 3.067 3 5v3.5l-1 1h9l-1-1V5c0-1.933-1.567-3.5-3.5-3.5z" stroke="#242529" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M5.5 9.5a1 1 0 002 0" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
+                  </svg>
+                  <div class="s1-bell-dot"></div>
+                </div>
+                <div class="s1-avatar">S</div>
+              </div>
             </div>
-            <table class="spec-table">
-              <tr><td>Source</td><td>New — Direction A signature element</td></tr>
-              <tr><td>Background</td><td>#FFFFFF — clean white, no visual noise</td></tr>
-              <tr><td>Question text</td><td>SF Pro Display 24px / Bold / #000000 / centered / 32px lr padding</td></tr>
-              <tr><td>Example text</td><td>SF Pro Text 15px / Regular / italic / #6D6D72 / centered / 24px lr padding</td></tr>
-              <tr><td>Max width</td><td>320px (screen width)</td></tr>
-              <tr><td>Gap below Q</td><td>24px before pill row</td></tr>
-            </table>
-          </div>
-        </div>
 
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              <span class="wc-num">②</span>
-              Progress counter
-              <span class="comp-badge">P0</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Source</td><td>New — Direction A only</td></tr>
-              <tr><td>Progress bar</td><td>4px height / #1A6B4A fill (33% for Q7 of 21) / #F2F2F7 track / full width</td></tr>
-              <tr><td>Counter label</td><td>SF Pro Text 13px / Regular / #AEAEB2 / centered / "Question 7 of 21"</td></tr>
-              <tr><td>Section label</td><td>SF Pro Text 12px / Regular / #6D6D72 / centered / "Content · Violent content"</td></tr>
-              <tr><td>Position</td><td>Pinned below status bar, above question</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              <span class="wc-num">③</span>
-              Off/Balanced/Strict pill row
-              <span class="comp-badge">P0</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Source</td><td>New — replaces standard iOS segmented control</td></tr>
-              <tr><td>Pill height</td><td>44px</td></tr>
-              <tr><td>Pill width</td><td>Equal thirds of screen minus 48px padding</td></tr>
-              <tr><td>Border radius</td><td>999px (full pill)</td></tr>
-              <tr><td>Off selected</td><td>bg #8E8E93 / text #FFFFFF / weight 600</td></tr>
-              <tr><td>Balanced sel.</td><td>bg #FF9500 / text #FFFFFF / weight 600</td></tr>
-              <tr><td>Strict sel.</td><td>bg #FF3B30 / text #FFFFFF / weight 600</td></tr>
-              <tr><td>Unselected</td><td>bg transparent / border 1.5px #C6C6C8 / text #000000 / weight 400</td></tr>
-              <tr><td>Gap</td><td>8px between pills</td></tr>
-              <tr><td>Padding</td><td>0 16px outer</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              Continue button
-              <span class="comp-badge">P0</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Background</td><td>#1A6B4A</td></tr>
-              <tr><td>Text</td><td>"Continue →" / #FFFFFF / 17px / Semibold</td></tr>
-              <tr><td>Height</td><td>52px</td></tr>
-              <tr><td>Border radius</td><td>999px</td></tr>
-              <tr><td>Width</td><td>Full minus 32px margin</td></tr>
-              <tr><td>Position</td><td>Fixed 16px above safe area</td></tr>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════════
-       SCREEN 2 — PARENT DASHBOARD: ALERT FEED
-  ═══════════════════════════════════════════════════════════════════════ -->
-  <div class="screen-section-header">
-    <span class="screen-section-num">2</span>
-    <span class="screen-section-title">Parent Dashboard — Alert Feed</span>
-    <span class="screen-section-subtitle">Direction A · Severity-coded cards</span>
-  </div>
-  <div class="screen-section">
-
-    <!-- LEFT COL -->
-    <div class="left-col">
-
-      <!-- PHONE -->
-      <div class="phone">
-        <!-- Status bar -->
-        <div class="status-bar">
-          <span>9:41</span>
-          <span>●●● WiFi 🔋</span>
-        </div>
-
-        <!-- Large title -->
-        <div style="background:#fff; padding:4px 16px 0;">
-          <div class="nav-large">Dashboard</div>
-        </div>
-
-        <!-- Dual tabs -->
-        <div class="dashboard-tabs">
-          <div class="dash-tab active">Alerts</div>
-          <div class="dash-tab">Usage</div>
-        </div>
-
-        <!-- Alert list -->
-        <div class="alert-list">
-
-          <!-- Card 1 — Strict unread -->
-          <div class="alert-card" style="position:relative;">
-            <div class="alert-card-border strict"></div>
-            <div class="alert-card-content">
-              <div class="alert-card-top">
-                <span class="alert-card-title">🥊 Violent content</span>
-                <span style="display:flex; align-items:center; gap:6px;">
-                  <span class="severity-pill strict">Strict</span>
-                  <span class="num">④</span>
+            <!-- Greeting — Component 1 translation -->
+            <div class="s1-greeting">
+              <div class="s1-h1">Good morning, Sarah</div>
+              <div class="s1-subtitle">
+                <span class="s1-safe-check">
+                  <span class="s1-check-icon">
+                    <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
+                      <path d="M1.5 3.5l1.5 1.5 2.5-2.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  Emma and James are safe today
                 </span>
               </div>
-              <div class="alert-card-time">Today, 3:42 PM</div>
-              <div class="alert-card-snippet">Your child asked the AI to describe a violent fight scene in vivid detail...</div>
             </div>
-          </div>
 
-          <!-- Card 2 — Balanced read -->
-          <div class="alert-card">
-            <div class="alert-card-content" style="padding-left:15px;">
-              <div class="alert-card-top">
-                <span class="alert-card-title read">🍷 Substance use</span>
-                <span class="severity-pill balanced">Balanced</span>
+            <!-- 2x2 Action Chip Grid — Component 2 translation -->
+            <div class="s1-chip-grid">
+              <!-- Top-left: Lavender — Emma's chats -->
+              <div class="action-chip chip-lavender">
+                <div class="chip-icon-wrap">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M2 2h9a.8.8 0 01.8.8v5.8a.8.8 0 01-.8.8H5L2 11.5V2.8A.8.8 0 012 2z" stroke="#6b2aed" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M4.5 5.5h4M4.5 7h2.5" stroke="#6b2aed" stroke-width="1" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="chip-title">Emma's chats</div>
+                <div class="chip-sub">View activity</div>
               </div>
-              <div class="alert-card-time">Yesterday, 7:18 PM</div>
-              <div class="alert-card-snippet lighter">Asked about how alcohol affects the body, AI gave age-appropriate context.</div>
-            </div>
-          </div>
 
-          <!-- Card 3 — Strict unread -->
-          <div class="alert-card">
-            <div class="alert-card-border strict"></div>
-            <div class="alert-card-content">
-              <div class="alert-card-top">
-                <span class="alert-card-title">🧠 AI dependency</span>
-                <span class="severity-pill strict">Strict</span>
+              <!-- Top-right: Yellow — Add child -->
+              <div class="action-chip chip-yellow">
+                <div class="chip-icon-wrap">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <circle cx="6.5" cy="4.5" r="2.5" stroke="#92400e" stroke-width="1.2"/>
+                    <path d="M2 11c0-2.21 2.015-4 4.5-4s4.5 1.79 4.5 4" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M9.5 2.5v3M8 4h3" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="chip-title" style="color:#92400e;">Add child</div>
+                <div class="chip-sub">Set up profile</div>
               </div>
-              <div class="alert-card-time">Yesterday, 4:05 PM</div>
-              <div class="alert-card-snippet">Requested the AI complete a school essay in full without any edits.</div>
+
+              <!-- Bottom-left: Lavender2 — Safety settings -->
+              <div class="action-chip chip-lavender2">
+                <div class="chip-icon-wrap">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M6.5 1.5L2 3.5v3c0 2.76 1.92 5.34 4.5 6 2.58-.66 4.5-3.24 4.5-6v-3L6.5 1.5z" stroke="#5b21b6" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M4.5 6.5l1.5 1.5 2.5-2.5" stroke="#5b21b6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="chip-title">Safety settings</div>
+                <div class="chip-sub">9 categories</div>
+              </div>
+
+              <!-- Bottom-right: Lavender2 — This week -->
+              <div class="action-chip chip-lavender2">
+                <div class="chip-icon-wrap">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <rect x="1.5" y="8.5" width="2" height="3" rx="0.5" fill="#5b21b6"/>
+                    <rect x="4.5" y="6" width="2" height="5.5" rx="0.5" fill="#5b21b6"/>
+                    <rect x="7.5" y="4" width="2" height="7.5" rx="0.5" fill="#5b21b6"/>
+                    <rect x="10.5" y="2" width="2" height="9.5" rx="0.5" fill="#5b21b6" opacity="0.35"/>
+                  </svg>
+                </div>
+                <div class="chip-title">This week</div>
+                <div class="chip-sub">3 alerts</div>
+              </div>
             </div>
-          </div>
 
-        </div>
+            <!-- Recent Alerts — Component 4 translation -->
+            <div class="s1-alerts">
+              <div class="section-header-row">
+                <span class="section-label">Recent Alerts</span>
+                <span class="see-all">See all</span>
+              </div>
+              <div class="s1-alert-rows">
+                <!-- Row 1 -->
+                <div class="alert-row">
+                  <div class="alert-icon-wrap">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M6 2v4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+                      <circle cx="6" cy="9" r="0.8" fill="#ef4444"/>
+                      <path d="M5.1 1.2L1 9.5a1 1 0 00.9 1.5h8.2a1 1 0 00.9-1.5L6.9 1.2a1 1 0 00-1.8 0z" stroke="#ef4444" stroke-width="1.1" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="alert-text-col">
+                    <div class="alert-title">Emma asked about feeling lonely</div>
+                    <div class="alert-time">2h ago</div>
+                  </div>
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <path d="M2.5 1.5L5.5 4l-3 2.5" stroke="#6b6b8a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <!-- Row 2 -->
+                <div class="alert-row">
+                  <div class="alert-icon-wrap warn">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <circle cx="6" cy="6" r="4.5" stroke="#f97316" stroke-width="1.1"/>
+                      <path d="M6 4v2.5" stroke="#f97316" stroke-width="1.3" stroke-linecap="round"/>
+                      <circle cx="6" cy="8.2" r="0.7" fill="#f97316"/>
+                    </svg>
+                  </div>
+                  <div class="alert-text-col">
+                    <div class="alert-title">James searched for violent games</div>
+                    <div class="alert-time">Yesterday</div>
+                  </div>
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <path d="M2.5 1.5L5.5 4l-3 2.5" stroke="#6b6b8a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <!-- Row 3 -->
+                <div class="alert-row">
+                  <div class="alert-icon-wrap">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M6 2v4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
+                      <circle cx="6" cy="9" r="0.8" fill="#ef4444"/>
+                      <path d="M5.1 1.2L1 9.5a1 1 0 00.9 1.5h8.2a1 1 0 00.9-1.5L6.9 1.2a1 1 0 00-1.8 0z" stroke="#ef4444" stroke-width="1.1" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="alert-text-col">
+                    <div class="alert-title">Emma mentioned feeling anxious</div>
+                    <div class="alert-time">2 days ago</div>
+                  </div>
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <path d="M2.5 1.5L5.5 4l-3 2.5" stroke="#6b6b8a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
 
-        <!-- Tab bar -->
-        <div class="tab-bar">
-          <div class="tab-item active">
-            <span class="tab-icon">🏠</span>
-            <span>Dashboard</span>
-          </div>
-          <div class="tab-item">
-            <span class="tab-icon">🔔</span>
-            <span>Alerts</span>
-          </div>
-          <div class="tab-item">
-            <span class="tab-icon">⚙️</span>
-            <span>Settings</span>
-          </div>
-        </div>
-      </div>
+            <!-- Bottom nav -->
+            <div class="s1-bottom-nav">
+              <div class="nav-tab active">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M2.5 9.5L9 3l6.5 6.5" stroke="#6b2aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 7.8V14.5a.5.5 0 00.5.5H7.5v-3h3v3H13.5a.5.5 0 00.5-.5V7.8" stroke="#6b2aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="nav-tab-lbl">Home</div>
+              </div>
+              <div class="nav-tab">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M3 2.5h12a1 1 0 011 1v7a1 1 0 01-1 1H6l-3 3V3.5a1 1 0 011-1z" stroke="#6b6b8a" stroke-width="1.4" stroke-linejoin="round"/>
+                </svg>
+                <div class="nav-tab-lbl">Activity</div>
+              </div>
+              <div class="nav-tab">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="6" r="3" stroke="#6b6b8a" stroke-width="1.4"/>
+                  <path d="M3 15c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#6b6b8a" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                <div class="nav-tab-lbl">Kids</div>
+              </div>
+              <div class="nav-tab">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="3" stroke="#6b6b8a" stroke-width="1.4"/>
+                  <path d="M9 1v1.5M9 15.5V17M1 9h1.5M15.5 9H17M3.2 3.2l1 1M13.8 13.8l1 1M3.2 14.8l1-1M13.8 4.2l1-1" stroke="#6b6b8a" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                <div class="nav-tab-lbl">Settings</div>
+              </div>
+            </div>
 
-      <!-- SPATIAL SUMMARY -->
-      <div>
-        <div class="spatial-summary-label">Spatial Summary</div>
-        <div class="spatial-summary">Direction:               A — Dashboard
-Layout:                  Large title + dual tabs + alert card list
-Distinctive layout move: Left-border severity coding communicates
-                         urgency before any text is read
-New/changed zones:       Alert cards with severity borders,
-                         dual-tab dashboard</div>
-      </div>
-
+          </div><!-- /s1 -->
+        </div><!-- /phone-screen -->
+      </div><!-- /phone-frame -->
+      <div class="phone-label">01 — Parent Dashboard</div>
     </div>
 
-    <!-- RIGHT COL — SPEC PANEL -->
-    <div class="right-col">
-      <div class="spec-panel">
 
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              <span class="wc-num">④</span>
-              Alert card
-              <span class="comp-badge">P0</span>
+    <!-- ═══════════════════════════════════
+         PHONE 2 — SAFETY CONFIGURATION
+    ═══════════════════════════════════ -->
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="dyn-island"></div>
+        <div class="phone-screen">
+          <div class="s2">
+
+            <!-- Status bar -->
+            <div class="status-bar on-light">
+              <span>9:41</span>
+              <div class="status-icons">
+                <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
+                  <rect x="0"  y="5" width="2.5" height="5" rx="0.6" fill="#242529"/>
+                  <rect x="3.5" y="3" width="2.5" height="7" rx="0.6" fill="#242529"/>
+                  <rect x="7"  y="1" width="2.5" height="9" rx="0.6" fill="#242529"/>
+                  <rect x="10.5" y="0" width="2.5" height="10" rx="0.6" fill="#242529" opacity="0.3"/>
+                </svg>
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                  <rect x="0.5" y="0.5" width="12" height="9" rx="2" stroke="#242529" stroke-width="1"/>
+                  <rect x="1.5" y="1.5" width="9" height="7" rx="1.2" fill="#242529"/>
+                  <path d="M13.5 3.5v3" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+              </div>
             </div>
-            <table class="spec-table">
-              <tr><td>Source</td><td>New</td></tr>
-              <tr><td>Background</td><td>#FFFFFF</td></tr>
-              <tr><td>Border radius</td><td>12px</td></tr>
-              <tr><td>Shadow</td><td>0 1px 3px rgba(0,0,0,0.10)</td></tr>
-              <tr><td>Margin</td><td>0 16px / gap 8px between cards</td></tr>
-              <tr><td>Left border</td><td>3px solid — #FF3B30 (Strict) / #FF9500 (Balanced) / none (read/off)</td></tr>
-              <tr><td>Title font</td><td>SF Pro Text 17px / Semibold (unread) / Regular (read)</td></tr>
-              <tr><td>Severity pill</td><td>10px label / #FF3B30 or #FF9500 bg / #fff text / 999px radius / 4px 8px padding</td></tr>
-              <tr><td>Timestamp</td><td>13px / Regular / #AEAEB2</td></tr>
-              <tr><td>Snippet</td><td>15px / Regular / #6D6D72 / 2 lines max</td></tr>
-            </table>
-          </div>
+
+            <!-- Nav bar -->
+            <div class="s2-nav">
+              <div class="s2-back-btn">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M6.5 2L3.5 5l3 3" stroke="#6b2aed" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="s2-nav-title">Safety Settings</div>
+            </div>
+
+            <!-- Scrollable content -->
+            <div class="s2-scroll">
+
+              <!-- Content Controls -->
+              <div class="s2-group-label">Content Controls</div>
+
+              <!-- Card: Self-harm — Strict -->
+              <div class="cat-card">
+                <div class="cat-row-top">
+                  <div class="cat-icon-badge red">🚨</div>
+                  <div class="cat-name">Self-harm &amp; suicide</div>
+                </div>
+                <div class="toggle-group">
+                  <div class="tg-seg">Off</div>
+                  <div class="tg-seg">Balanced</div>
+                  <div class="tg-seg active-strict">Strict</div>
+                </div>
+              </div>
+
+              <!-- Card: Drugs — Balanced -->
+              <div class="cat-card">
+                <div class="cat-row-top">
+                  <div class="cat-icon-badge amber">💊</div>
+                  <div class="cat-name">Drugs &amp; substance use</div>
+                </div>
+                <div class="toggle-group">
+                  <div class="tg-seg">Off</div>
+                  <div class="tg-seg active-bal">Balanced</div>
+                  <div class="tg-seg">Strict</div>
+                </div>
+              </div>
+
+              <!-- Card: Eating disorders — Balanced -->
+              <div class="cat-card">
+                <div class="cat-row-top">
+                  <div class="cat-icon-badge rose">🍽</div>
+                  <div class="cat-name">Eating disorders</div>
+                </div>
+                <div class="toggle-group">
+                  <div class="tg-seg">Off</div>
+                  <div class="tg-seg active-bal">Balanced</div>
+                  <div class="tg-seg">Strict</div>
+                </div>
+              </div>
+
+              <!-- Card: Illegal activities — Off -->
+              <div class="cat-card">
+                <div class="cat-row-top">
+                  <div class="cat-icon-badge blue">⚖️</div>
+                  <div class="cat-name">Illegal activities</div>
+                </div>
+                <div class="toggle-group">
+                  <div class="tg-seg active-off">Off</div>
+                  <div class="tg-seg">Balanced</div>
+                  <div class="tg-seg">Strict</div>
+                </div>
+              </div>
+
+              <!-- Pattern Monitoring -->
+              <div class="s2-group-label">Pattern Monitoring</div>
+
+              <div class="cat-card">
+                <div class="cat-row-top">
+                  <div class="cat-icon-badge purple">🔗</div>
+                  <div class="cat-name">Loneliness &amp; AI dependency</div>
+                </div>
+                <div class="toggle-group">
+                  <div class="tg-seg">Off</div>
+                  <div class="tg-seg active-bal">Balanced</div>
+                  <div class="tg-seg">Strict</div>
+                </div>
+              </div>
+
+              <div class="cat-card">
+                <div class="cat-row-top">
+                  <div class="cat-icon-badge amber">📡</div>
+                  <div class="cat-name">Radicalization</div>
+                </div>
+                <div class="toggle-group">
+                  <div class="tg-seg">Off</div>
+                  <div class="tg-seg">Balanced</div>
+                  <div class="tg-seg active-strict">Strict</div>
+                </div>
+              </div>
+
+              <!-- AI Personality -->
+              <div class="s2-group-label">AI Personality</div>
+
+              <div class="s2-personality-card">
+                <div class="personality-row">
+                  <div>
+                    <div class="personality-label">Honesty level</div>
+                    <div class="personality-sub">Friend vs Tool mode</div>
+                  </div>
+                  <!-- mini toggle pill -->
+                  <div style="display:flex;background:#f0eef9;border-radius:999px;height:20px;overflow:hidden;width:90px;">
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#9b97b8;">Tool</div>
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;background:#6b2aed;color:#fff;border-radius:999px;">Friend</div>
+                  </div>
+                </div>
+                <div class="personality-row">
+                  <div>
+                    <div class="personality-label">Schoolwork limits</div>
+                    <div class="personality-sub">Prevent essay writing</div>
+                  </div>
+                  <div style="display:flex;background:#f0eef9;border-radius:999px;height:20px;overflow:hidden;width:90px;">
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#9b97b8;">Off</div>
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;background:#b8a8f0;color:#fff;border-radius:999px;">On</div>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /s2-scroll -->
+
+            <!-- Save button -->
+            <div class="s2-save-btn">Save Settings</div>
+
+          </div><!-- /s2 -->
+        </div>
+      </div>
+      <div class="phone-label">02 — Safety Config</div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════
+         PHONE 3 — CHILD CHATBOT
+    ═══════════════════════════════════ -->
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <div class="dyn-island"></div>
+        <div class="phone-screen">
+          <div class="s3">
+
+            <!-- Status bar on nav-bg -->
+            <div class="status-bar on-light" style="background:var(--nav-bg);">
+              <span>9:41</span>
+              <div class="status-icons">
+                <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
+                  <rect x="0"  y="5" width="2.5" height="5" rx="0.6" fill="#242529"/>
+                  <rect x="3.5" y="3" width="2.5" height="7" rx="0.6" fill="#242529"/>
+                  <rect x="7"  y="1" width="2.5" height="9" rx="0.6" fill="#242529"/>
+                  <rect x="10.5" y="0" width="2.5" height="10" rx="0.6" fill="#242529" opacity="0.3"/>
+                </svg>
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                  <rect x="0.5" y="0.5" width="12" height="9" rx="2" stroke="#242529" stroke-width="1"/>
+                  <rect x="1.5" y="1.5" width="9" height="7" rx="1.2" fill="#242529"/>
+                  <path d="M13.5 3.5v3" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Top bar on nav-bg -->
+            <div class="s3-topbar">
+              <div class="s3-title-col">
+                <div class="s3-ai-badge">
+                  <!-- sparkle icon -->
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 1.5l1 3.2L11.5 7l-3.5 2.3L7 12.5l-1-3.2L2 7l3.5-2.3L7 1.5z" fill="#fff"/>
+                  </svg>
+                </div>
+                <div class="s3-title">Cooper AI</div>
+              </div>
+              <div class="s3-settings-btn">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <circle cx="6.5" cy="6.5" r="2" stroke="#6b2aed" stroke-width="1.2"/>
+                  <path d="M6.5 1.5v1M6.5 10v1M1.5 6.5h1M10 6.5h1M3.2 3.2l.7.7M9.1 9.1l.7.7M9.8 3.2l-.7.7M3.9 9.1l-.7.7" stroke="#6b2aed" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Chat thread -->
+            <div class="s3-thread">
+
+              <div class="chat-date-label">Today</div>
+
+              <!-- User bubble — Component 5 translation -->
+              <div class="msg-row user-row">
+                <div class="bubble-user">Hey! Can you explain climate change?</div>
+              </div>
+
+              <!-- AI bubble with embedded data card — Component 3 translation (SIGNATURE) -->
+              <div class="msg-row">
+                <div class="ai-avatar-sm">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M5 1l.8 2.4 2.7 1.6-2.7.8L5 9 4.2 5.8 1.5 5l2.7-.8L5 1z" fill="#fff"/>
+                  </svg>
+                </div>
+                <div class="bubble-ai">
+                  Sure! Climate change is a long-term shift in global temperatures and weather patterns.
+                  <!-- SIGNATURE: embedded data card -->
+                  <div class="data-card-embed">
+                    <div class="data-card-label">Key stat</div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <div>
+                        <div class="data-card-stat">+1.5°C</div>
+                        <div class="data-card-stat-sub">global avg rise since 1880</div>
+                      </div>
+                      <!-- Mini bar chart -->
+                      <div class="mini-bars" style="margin-left:auto;">
+                        <div class="mini-bar"></div>
+                        <div class="mini-bar"></div>
+                        <div class="mini-bar"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- User bubble -->
+              <div class="msg-row user-row">
+                <div class="bubble-user">What can we do to help?</div>
+              </div>
+
+              <!-- AI bubble — plain, smaller -->
+              <div class="msg-row">
+                <div class="ai-avatar-sm">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M5 1l.8 2.4 2.7 1.6-2.7.8L5 9 4.2 5.8 1.5 5l2.7-.8L5 1z" fill="#fff"/>
+                  </svg>
+                </div>
+                <div class="bubble-ai">Great question! Here are 3 things you can do: reduce energy use, eat less meat, and talk to others about it.</div>
+              </div>
+
+            </div><!-- /s3-thread -->
+
+            <!-- Input bar -->
+            <div class="s3-input-bar">
+              <div class="input-field-pill">Ask anything...</div>
+              <div class="send-btn">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <path d="M1.5 6.5l10-5-5 10V6.5H1.5z" fill="#ffffff"/>
+                </svg>
+              </div>
+            </div>
+
+          </div><!-- /s3 -->
+        </div>
+      </div>
+      <div class="phone-label">03 — Child Chatbot</div>
+    </div>
+
+  </div><!-- /phones-stage -->
+
+
+  <!-- ══ BOTTOM REFERENCE SECTION ══ -->
+  <div class="bottom-section">
+
+    <!-- TOKEN REFERENCE TABLE -->
+    <div class="token-table-wrap">
+      <div class="ref-section-title">Design Tokens</div>
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th style="width:28px;"></th>
+            <th>Token name</th>
+            <th>Hex value</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="token-swatch" style="background:#f8f7fc;"></span></td>
+            <td class="token-name-cell">Page bg</td>
+            <td class="token-hex-cell">#f8f7fc</td>
+            <td class="token-usage-cell">App background, chat thread area</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#ffffff;"></span></td>
+            <td class="token-name-cell">Card / surface</td>
+            <td class="token-hex-cell">#ffffff</td>
+            <td class="token-usage-cell">Alert rows, category cards, input bar</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#6b2aed;"></span></td>
+            <td class="token-name-cell">Primary accent</td>
+            <td class="token-hex-cell">#6b2aed</td>
+            <td class="token-usage-cell">Wordmark, CTA buttons, active toggle, send button, AI avatar</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#d7d0fe;"></span></td>
+            <td class="token-name-cell">User bubble (lavender)</td>
+            <td class="token-hex-cell">#d7d0fe</td>
+            <td class="token-usage-cell">Child user chat bubbles, Emma's chats chip bg</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#ffecba;"></span></td>
+            <td class="token-name-cell">AI bubble (warm yellow)</td>
+            <td class="token-hex-cell">#ffecba</td>
+            <td class="token-usage-cell">Cooper AI response bubbles, Add child chip bg</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#242529;"></span></td>
+            <td class="token-name-cell">Text primary</td>
+            <td class="token-hex-cell">#242529</td>
+            <td class="token-usage-cell">Headings, body text, chip titles</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#6b6b8a;"></span></td>
+            <td class="token-name-cell">Text secondary</td>
+            <td class="token-hex-cell">#6b6b8a</td>
+            <td class="token-usage-cell">Subtitles, timestamps, chip subs, nav labels</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#ddd7ed;"></span></td>
+            <td class="token-name-cell">Nav bg</td>
+            <td class="token-hex-cell">#ddd7ed</td>
+            <td class="token-usage-cell">Bottom nav bar (Phone 1), Cooper topbar bg (Phone 3)</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#f3f0fd;"></span></td>
+            <td class="token-name-cell">Chip lavender 2</td>
+            <td class="token-hex-cell">#f3f0fd</td>
+            <td class="token-usage-cell">Safety settings + This week chip bg (lighter lavender)</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#f0eef9;"></span></td>
+            <td class="token-name-cell">Toggle OFF bg</td>
+            <td class="token-hex-cell">#f0eef9</td>
+            <td class="token-usage-cell">Inactive toggle track background</td>
+          </tr>
+          <tr>
+            <td><span class="token-swatch" style="background:#b8a8f0;"></span></td>
+            <td class="token-name-cell">Toggle Balanced</td>
+            <td class="token-hex-cell">#b8a8f0</td>
+            <td class="token-usage-cell">Active "Balanced" toggle state</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COMPONENT TRANSLATION MAP -->
+    <div class="comp-map-wrap">
+      <div class="ref-section-title">Component Translation Map — Cooper AI Chat Anchor</div>
+      <div class="comp-map-grid">
+
+        <div class="comp-map-card">
+          <div class="comp-map-num">Component 1</div>
+          <div class="comp-map-anchor">Cooper: "Hello James" Greeting Screen</div>
+          <div class="comp-map-arrow">Large bold greeting + subtitle on lavender/purple bg, avatar initials top-right</div>
+          <div class="comp-map-screen">Phone 1 — Parent Dashboard</div>
+          <div class="comp-map-translated">Translated as: "Good morning, Sarah" (H1, 20px, 700) with "Emma and James are safe today" + green check indicator below. Avatar initials circle (S, accent bg) in header top-right at 28px.</div>
         </div>
 
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              Tab bar
-              <span class="comp-badge comp-badge-p1">P1</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Active tab</td><td>icon + label #1A6B4A</td></tr>
-              <tr><td>Inactive tab</td><td>icon + label #AEAEB2</td></tr>
-              <tr><td>Background</td><td>#FFFFFF</td></tr>
-              <tr><td>Border top</td><td>0.5px #C6C6C8</td></tr>
-              <tr><td>Height</td><td>82px (including 16px safe area padding)</td></tr>
-            </table>
-          </div>
+        <div class="comp-map-card">
+          <div class="comp-map-num">Component 2</div>
+          <div class="comp-map-anchor">Cooper: 2x2 Action Chip Grid (lavender + yellow)</div>
+          <div class="comp-map-arrow">Large lavender rounded cards, small yellow pill chip, 20-24px radius, icon top-left, label + subtitle</div>
+          <div class="comp-map-screen">Phone 1 — Parent Dashboard</div>
+          <div class="comp-map-translated">Translated as: 2x2 grid — "Emma's chats" (lavender #d7d0fe), "Add child" (yellow #ffecba), "Safety settings" (lavender2 #f3f0fd), "This week" (lavender2 #f3f0fd). Each: icon badge, title, subtitle. 20px radius cards.</div>
         </div>
 
-        <div class="spec-block">
-          <div class="spec-heading">Design rationale</div>
-          <p class="spec-text">The left-border severity stripe is a pre-attentive visual cue — parents see red before they read the card title. This directly reduces cognitive load: the most urgent item is immediately obvious without scanning text. Unread cards use Semibold weight; read cards use Regular — a subtle but consistent signal of information status carried from iOS Mail conventions.</p>
+        <div class="comp-map-card">
+          <div class="comp-map-num">Component 3 — Signature</div>
+          <div class="comp-map-anchor">Cooper: AI bubble with embedded data card</div>
+          <div class="comp-map-arrow">Yellow AI bubble (#ffecba) contains white rounded mini card with large stat numeral + small bar chart</div>
+          <div class="comp-map-screen">Phone 3 — Child Chatbot</div>
+          <div class="comp-map-translated">Translated as: Cooper AI response bubble (yellow #ffecba) contains embedded white card showing "Key stat / +1.5°C global avg rise" with 3-bar mini chart. This is the signature differentiator — educational data surfaced inside conversation.</div>
+        </div>
+
+        <div class="comp-map-card">
+          <div class="comp-map-num">Component 4</div>
+          <div class="comp-map-anchor">Cooper: "Recent Search" rows with topic + icon + date</div>
+          <div class="comp-map-arrow">Rows: icon + query text + date label</div>
+          <div class="comp-map-screen">Phone 1 — Parent Dashboard</div>
+          <div class="comp-map-translated">Translated as: "Recent Alerts" feed — white card rows with colored icon badge + alert description ("Emma asked about feeling lonely") + relative timestamp ("2h ago"). Chevron affordance on each row. Red/orange icon tints signal severity.</div>
+        </div>
+
+        <div class="comp-map-card">
+          <div class="comp-map-num">Component 5</div>
+          <div class="comp-map-anchor">Cooper: Dual-tone pill chat bubbles</div>
+          <div class="comp-map-arrow">User = lavender rounded pill (#d7d0fe); AI = warm yellow rounded pill (#ffecba). 18-20px radius, no tail.</div>
+          <div class="comp-map-screen">Phone 3 — Child Chatbot</div>
+          <div class="comp-map-translated">Translated as: Child chat screen uses exact same dual-tone system. User messages (lavender #d7d0fe, right-aligned, 18px radius, very small bottom-right corner cut). AI messages (yellow #ffecba, left-aligned, small bottom-left corner cut). Input pill + accent send button at bottom.</div>
+        </div>
+
+        <div class="comp-map-card">
+          <div class="comp-map-num">Component 6 — Extended</div>
+          <div class="comp-map-anchor">Cooper: Pill toggle group (Off / Balanced / Strict)</div>
+          <div class="comp-map-arrow">3-segment pill selector, active = accent fill, inactive = muted lavender track</div>
+          <div class="comp-map-screen">Phone 2 — Safety Config</div>
+          <div class="comp-map-translated">Translated as: Every safety category card in Phone 2 features the pill toggle group. States: Off (#c8c0e8), Balanced (#b8a8f0), Strict (#6b2aed accent). Track bg: #f0eef9. This replaces checkbox lists for faster parent scanning and lower cognitive load.</div>
         </div>
 
       </div>
     </div>
 
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════════
-       SCREEN 3 — CHILD CHATBOT
-  ═══════════════════════════════════════════════════════════════════════ -->
-  <div class="screen-section-header">
-    <span class="screen-section-num">3</span>
-    <span class="screen-section-title">Child Chatbot</span>
-    <span class="screen-section-subtitle">Direction A · Unified token language</span>
-  </div>
-  <div class="screen-section">
-
-    <!-- LEFT COL -->
-    <div class="left-col">
-
-      <!-- PHONE -->
-      <div class="phone">
-        <!-- Status bar -->
-        <div class="status-bar">
-          <span>9:41</span>
-          <span>●●● WiFi 🔋</span>
-        </div>
-
-        <!-- Nav bar -->
-        <div class="nav-bar" style="display:flex; align-items:center; justify-content:space-between;">
-          <span style="font-size:15px; color:#1A6B4A; font-weight:500; visibility:hidden;">History</span>
-          <span class="nav-title">SafeChat 🌳</span>
-          <span style="font-size:15px; color:#1A6B4A; font-weight:500;">History</span>
-        </div>
-
-        <!-- Chat body -->
-        <div class="chat-body">
-
-          <!-- User message — shown first in conversation order but rendered below AI to show reply flow -->
-          <div class="chat-user-group" style="position:relative;">
-            <div class="bubble-user">Can you explain the French Revolution?</div>
-            <span class="num" style="position:absolute; right:-28px; top:4px;">⑤</span>
-          </div>
-
-          <!-- AI response -->
-          <div class="chat-ai-group">
-            <div class="chat-sender-label">SafeChat</div>
-            <div class="bubble-ai">Sure! The French Revolution began in 1789 when widespread social inequality, financial crisis, and political unrest led ordinary citizens to challenge the monarchy...</div>
-          </div>
-
-          <!-- AI follow-up question -->
-          <div class="chat-ai-group">
-            <div class="bubble-ai">What part are you most curious about — the causes, the key events, or the impact?</div>
-          </div>
-
-        </div>
-
-        <!-- Input bar -->
-        <div class="chat-input-bar">
-          <div class="chat-input-field">Message SafeChat…</div>
-          <div class="chat-send-btn">↑</div>
-        </div>
-
-        <!-- Tab bar -->
-        <div class="tab-bar">
-          <div class="tab-item active">
-            <span class="tab-icon">💬</span>
-            <span>Chat</span>
-          </div>
-          <div class="tab-item">
-            <span class="tab-icon">🕐</span>
-            <span>History</span>
-          </div>
-          <div class="tab-item">
-            <span class="tab-icon">👤</span>
-            <span>Profile</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- SPATIAL SUMMARY -->
-      <div>
-        <div class="spatial-summary-label">Spatial Summary</div>
-        <div class="spatial-summary">Direction:               A — Child Chatbot
-Layout:                  Full-screen chat thread, bubbles fill bottom-up
-Distinctive layout move: Same #1A6B4A brand accent on user bubbles
-                         unifies parent + child UI tokens
-New/changed zones:       Chat bubbles, input bar, history tab</div>
-      </div>
-
-    </div>
-
-    <!-- RIGHT COL — SPEC PANEL -->
-    <div class="right-col">
-      <div class="spec-panel">
-
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              <span class="wc-num">⑤</span>
-              User chat bubble
-              <span class="comp-badge">P0</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Background</td><td>#1A6B4A (brand-primary — same token as parent CTAs)</td></tr>
-              <tr><td>Text color</td><td>#FFFFFF</td></tr>
-              <tr><td>Font</td><td>SF Pro Text 15px / Regular</td></tr>
-              <tr><td>Border radius</td><td>16px — square top-right corner (0px)</td></tr>
-              <tr><td>Max width</td><td>75% of screen</td></tr>
-              <tr><td>Alignment</td><td>Trailing (right)</td></tr>
-              <tr><td>Padding</td><td>12px 14px</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              AI chat bubble
-              <span class="comp-badge">P0</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Background</td><td>#F2F2F7</td></tr>
-              <tr><td>Text color</td><td>#000000</td></tr>
-              <tr><td>Border radius</td><td>16px — square top-left corner (0px)</td></tr>
-              <tr><td>Max width</td><td>75% of screen</td></tr>
-              <tr><td>Alignment</td><td>Leading (left)</td></tr>
-              <tr><td>Label above</td><td>"SafeChat" — 11px / #AEAEB2 / first bubble in group only</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-component">
-            <div class="spec-component-title">
-              Input bar
-              <span class="comp-badge">P0</span>
-            </div>
-            <table class="spec-table">
-              <tr><td>Background</td><td>#FFFFFF</td></tr>
-              <tr><td>Border top</td><td>0.5px #C6C6C8</td></tr>
-              <tr><td>Field bg</td><td>#F2F2F7</td></tr>
-              <tr><td>Field radius</td><td>16px</td></tr>
-              <tr><td>Placeholder</td><td>"Message SafeChat…" — 17px / #AEAEB2</td></tr>
-              <tr><td>Send button</td><td>#1A6B4A / 28px circle / ↑ symbol</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="spec-block">
-          <div class="spec-heading">Integration</div>
-          <ul class="spec-bullet-list">
-            <li>Forest green (#1A6B4A) on user bubbles and parent CTAs — same token, unified feel across both users</li>
-            <li>#F2F2F7 AI bubble matches grouped background on parent screens — consistent surface language</li>
-            <li>Tab bar icons and colors identical to parent tab bar — zero context switch between user types</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
+  </div><!-- /bottom-section -->
 
 </body>
 </html>
