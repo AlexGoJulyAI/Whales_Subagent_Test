@@ -309,7 +309,7 @@ Before sending Phase 1, validate every question against the confirmed inventory:
 
 - If the question is answerable from confirmed inventory — **strike it**
 - If the question survives — confirm it has a P0/P1/P2 tag and is in the correct cluster
-- If the question presents enumerated options — confirm the final option is **"Other — describe your own"**. If it is missing, add it before sending. No exceptions.
+- If the question presents enumerated options — confirm the last two options are **"Other — describe your own"** followed by **"Unsure — test different options by letting the agent explore the best design variations"**. If either is missing, add them before sending. No exceptions.
 
 **Forward completeness check:** After validating existing questions, walk the 15 brief sections (§1–§15) and confirm that the confirmed inventory can populate each one without assumptions. If any section would be empty, incomplete, or assumption-dependent, add a question for it now. This is not a prescribed list — it is a professional final sweep. A senior designer does not send Phase 1 questions that leave gaps in the brief they are about to write.
 
@@ -349,7 +349,7 @@ Confirm the exact screens and features in scope. Identify the primary user — r
 What does success look like in measurable terms? What are the 1–3 outcomes that define whether this worked? Hard constraints — technical, timeline, accessibility standard.
 
 **Cluster 3 — Visual direction (P1):**
-Ask for 3 aesthetic adjectives drawn from UX-grounded vocabulary (see Aesthetic direction vocabulary below). For each adjective, present two concrete UI implications as options plus "Other — describe your own." Ask for one reference product and what specific UX pattern to take from it (e.g., navigation structure, card layout, interaction model — not general "look and feel"). Token questions not answered by uploads: primary action color, type families, corner radius, navigation pattern, dark/light mode.
+Ask for 3 aesthetic adjectives drawn from UX-grounded vocabulary (see Aesthetic direction vocabulary below). For each adjective, present two concrete UI implications as options plus "Other — describe your own" and "Unsure — test different options by letting the agent explore the best design variations." Ask for one reference product and what specific UX pattern to take from it (e.g., navigation structure, card layout, interaction model — not general "look and feel"). Token questions not answered by uploads: primary action color, type families, corner radius, navigation pattern, dark/light mode.
 
 When the client provides aesthetic adjectives, translate each to a concrete pixel decision and confirm the translation before writing the brief.
 
@@ -994,4 +994,4 @@ Multiple problems on the same screenshot = multiple `.annotation-box` divs. Each
 - Never record only the default state of a component — extract every state that exists
 - Never treat a section as having one asset layer without enumerating ALL `<img>` elements and `background-image` values in its DOM subtree
 - Never mark a URL-extracted value as confirmed if the URL was inaccessible or the content was session-generated
-- Never send a question with enumerated options that does not include a final "Other — describe your own" option
+- Never send a question with enumerated options that does not include "Other — describe your own" followed by "Unsure — test different options by letting the agent explore the best design variations" as the final two options
