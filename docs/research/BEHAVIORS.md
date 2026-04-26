@@ -1,45 +1,61 @@
-# Behaviors — gojuly-ux-v17
-*Extracted from live Playwright MCP session, 2026-04-13*
+# Audible Authors Page — Behavior Bible
 
----
+## Interaction Model Summary
+- **No sticky header** — nav header is `position: static`, scrolls off-screen on scroll
+- **No smooth-scroll library** (no Lenis, no Locomotive)
+- **No scroll-snap** on body or page container
+- **No scroll-driven animations** — page is static content, no IntersectionObserver animations
+- **No auto-playing carousels** or cycling content
 
-## Scroll Behaviors
-- **Navbar:** sticky top-0 — stays fixed on scroll on both pages
-- **Sidebar:** fixed position, overflow-y: auto — scrolls independently from main content
-- **Home page:** standard document scroll, no snap points
-- **Learning page:** main content area may scroll independently of sidebar
+## Scroll Sweep Results
+- Scrolled to 600px: nav header disappeared off screen, no positional change. Stays `position: static`.
+- Scrolled to bottom: pagination appears, footer appears. No elements animate in.
+- **CONCLUSION**: No scroll-driven behaviors. Pure static layout.
 
-## Click Behaviors
-- **Module card header:** toggles expanded/collapsed state (cursor-pointer)
-- **Sidebar section items:** toggle sub-section expand/collapse (cursor-pointer)
-- **Challenge items:** navigate to that challenge (cursor-pointer)
-- **Back arrow in sidebar:** navigates to previous page
-- **Home nav item:** navigates to /home
-- **"Go to Job Application" (NEW):** navigates to Red Team Sample Submission module
+## Click Sweep Results
+- **Category chip links**: Navigate to sub-category pages. Plain anchor links.
+- **"Try Standard free" button**: Links to `/subscription/confirmation?...`. Plain anchor.
+- **"▶ Preview" link**: Below each cover image. Plays audio preview (out of scope for clone).
+- **Title link** (blue): Navigates to product detail page.
+- **Author link** (blue): Navigates to author page.
+- **Narrator link** (blue): Navigates to narrator search.
+- **Pagination links**: Navigate to page N of results.
+- **"Show [20▾] items per page"** dropdown: Form submit to change page size (20 or 30).
 
-## Hover States
-- **Module card header:** no visible hover state (cursor-pointer only)
-- **Sidebar items:** `hover:bg-gray-50` (#f9fafb) background on hover
-- **Sidebar collapse button:** `hover:bg-gray-100` background
-- **Nav items:** `hover:text-gray-800` for inactive nav items
-- **Buttons:** brightness change on hover (standard btn behavior)
+## Hover Sweep Results
+- **Blue links**: `text-decoration: underline` on hover (standard browser behavior).
+- **"Try Standard free" button**: Background darkens slightly on hover.
+- **Category chips**: Border darkens on hover.
 
-## Active/Selected States
-- **Nav Home item:** after: underline pseudo-element (2px, blue-600, full width)
-- **Active challenge:** bg-pink-50 (#fdf2f8) + border-l-4 border-pink-500 (#ec4899) + font-medium text-gray-900
+## Responsive Sweep Results
+- **Desktop (1440px)**: 3-column list item layout (cover / metadata / price+button). Content max-width 1000px centered.
+- **Mobile (390px)**: Same 3-column layout compressed. The site sets `meta viewport` to `width=1040` (not truly responsive). Clone will implement proper mobile-first responsive layout.
 
-## Transitions
-- Sidebar: `transition-all` for collapse animation
-- Chevron rotation: `transition-transform` with `rotate-90`
-- Nav items: `transition-colors`
+## Component-Level Behaviors
 
-## v17 Prototype Interaction Model
-- Both screens: STATIC (no real navigation between them)
-- Home page: AI Red Team module shown COLLAPSED (static — no toggle needed)
-- Learning page: sidebar shown with "Go to Job Application" button (static)
-- The button and collapsed state are the VISUAL PROOF of the UX fix
-- No real tab-switching or accordion animation required in prototype
+### PromoBanner — STATIC
+- No animation, no dismiss, no hover effect.
+- "Get this deal" button: plain anchor link.
 
-## Responsive
-- Desktop only (1440px viewport) for this prototype
-- Mobile out of scope
+### NavHeader — STATIC (no sticky)
+- Does NOT become sticky on scroll. Scrolls off page normally.
+- Browse dropdown: OUT OF SCOPE (render as static link).
+- Sign in button: plain anchor link.
+
+### CategoryChips — STATIC
+- 2 rows of chips with flex-wrap layout, centered.
+- No active/selected state. All chips are plain links.
+
+### AudiobookItem — STATIC
+- Cover image: plain `<img>` with aspect ratio 1:1.
+- "▶ Preview" below image: plain link with play triangle.
+- Star rating: filled stars (orange `rgb(255,160,0)`) + empty stars (dark `rgb(1,14,25)`) rendered with CSS icon approach.
+- Description: truncated with `…`.
+- Price text: `$XX.XX or free with 30-day trial`
+- Button: "Try Standard free" orange pill, 232px wide, 28px tall, borderRadius 32px.
+
+### Pagination — CLICK-DRIVEN
+- "Show" dropdown: `<select>` options 20/30.
+- Page number links: plain anchors.
+- Current page "1": not a link, plain text (bold).
+- Format: `< 1  2  …  25 >`
