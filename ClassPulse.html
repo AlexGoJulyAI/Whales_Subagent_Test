@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClassPulse — Classroom Device Management</title>
+
+  <!--
+  ══════════════════════════════════════════════════════════════════════
+  ClassPulse — Calm Authority Design System
+  ──────────────────────────────────────────────────────────────────────
+  Visual Direction: Deep navy sidebar · warm white content · teal accent
+  Typeface: Plus Jakarta Sans 400/500/600/700/800
+
+  COLOR TOKENS
+    --navy-900   #0F1E33   Sidebar bg
+    --navy-800   #162740   Sidebar hover
+    --navy-700   #1F3556   Sidebar active tint
+    --accent     #2B95AE   CTAs, active states, links
+    --accent-h   #237E9A   Accent hover
+    --accent-lt  rgba(43,149,174,0.10)  Accent bg tint
+    --on-task    #27996A   On-task green
+    --on-task-bg rgba(39,153,106,0.10)  On-task bg
+    --off-task   #E07535   Off-task amber (not red — not alarming)
+    --off-task-bg rgba(224,117,53,0.10) Off-task bg
+    --offline    #A0B0BE   Offline/unknown gray
+    --warn       #F0A84A   Threshold alerts
+    --danger     #D45C5C   Blocked/severe
+    --surface    #FFFFFF   Card/panel bg
+    --bg         #F2F4F6   App background
+    --border     #E1E8EF   Dividers, borders
+    --text-1     #1A2635   Primary text
+    --text-2     #5A6A7A   Secondary text
+    --text-3     #8A9BAA   Muted/caption text
+
+  SPACING SCALE: 4 8 12 16 20 24 32 40 48
+  RADIUS: 6(sm) 8(btn) 10(input) 12(card) 16(lg) 20(xl) 999(pill)
+  SHADOWS:
+    --s-card   0 1px 3px rgba(15,30,51,0.08), 0 4px 12px rgba(15,30,51,0.04)
+    --s-modal  0 8px 32px rgba(15,30,51,0.16)
+  ══════════════════════════════════════════════════════════════════════
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; background: #F2F4F6; }
+
+    :root {
+      --navy-900: #0F1E33;
+      --navy-800: #162740;
+      --navy-700: #1F3556;
+      --accent: #2B95AE;
+      --accent-h: #237E9A;
+      --accent-lt: rgba(43,149,174,0.10);
+      --on-task: #27996A;
+      --on-task-bg: rgba(39,153,106,0.10);
+      --off-task: #E07535;
+      --off-task-bg: rgba(224,117,53,0.10);
+      --offline: #A0B0BE;
+      --warn: #F0A84A;
+      --danger: #D45C5C;
+      --surface: #FFFFFF;
+      --bg: #F2F4F6;
+      --border: #E1E8EF;
+      --text-1: #1A2635;
+      --text-2: #5A6A7A;
+      --text-3: #8A9BAA;
+      --sidebar-w: 228px;
+      --topbar-h: 56px;
+      --s-card: 0 1px 3px rgba(15,30,51,0.08), 0 4px 12px rgba(15,30,51,0.04);
+      --s-modal: 0 8px 32px rgba(15,30,51,0.16);
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .tweaks-panel {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; box-shadow: var(--s-modal);
+      padding: 18px; width: 256px; z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ── DATA ─────────────────────────────────────────────────────────────── */
+
+const STUDENTS = [
+  { id:1,  name:'Aaliyah B.',  ini:'AB', app:'Google Docs', status:'on',      t:'12m' },
+  { id:2,  name:'Marcus T.',   ini:'MT', app:'YouTube',     status:'off',     t:'4m'  },
+  { id:3,  name:'Sofia R.',    ini:'SR', app:'Google Docs', status:'on',      t:'9m'  },
+  { id:4,  name:'Devon K.',    ini:'DK', app:'TikTok',      status:'off',     t:'7m'  },
+  { id:5,  name:'Priya M.',    ini:'PM', app:'Google Docs', status:'on',      t:'15m' },
+  { id:6,  name:'Jackson W.',  ini:'JW', app:'—',           status:'offline', t:'—'   },
+  { id:7,  name:'Zoe C.',      ini:'ZC', app:'Google Docs', status:'on',      t:'11m' },
+  { id:8,  name:'Elias F.',    ini:'EF', app:'Instagram',   status:'off',     t:'2m'  },
+  { id:9,  name:'Nadia H.',    ini:'NH', app:'Google Docs', status:'on',      t:'8m'  },
+  { id:10, name:'Luca P.',     ini:'LP', app:'Google Docs', status:'on',      t:'13m' },
+  { id:11, name:'Amara O.',    ini:'AO', app:'Google Docs', status:'on',      t:'6m'  },
+  { id:12, name:'Tyler N.',    ini:'TN', app:'Discord',     status:'off',     t:'5m'  },
+  { id:13, name:'Isabella L.', ini:'IL', app:'Google Docs', status:'on',      t:'14m' },
+  { id:14, name:'Omar S.',     ini:'OS', app:'Google Docs', status:'on',      t:'10m' },
+  { id:15, name:'Chloe V.',    ini:'CV', app:'Google Docs', status:'on',      t:'3m'  },
+  { id:16, name:'Jaylen M.',   ini:'JM', app:'—',           status:'offline', t:'—'   },
+  { id:17, name:'Emma K.',     ini:'EK', app:'Google Docs', status:'on',      t:'17m' },
+  { id:18, name:'Kai T.',      ini:'KT', app:'Roblox',      status:'off',     t:'8m'  },
+  { id:19, name:'Fatima A.',   ini:'FA', app:'Google Docs', status:'on',      t:'5m'  },
+  { id:20, name:'Noah B.',     ini:'NB', app:'Google Docs', status:'on',      t:'11m' },
+  { id:21, name:'Lily C.',     ini:'LC', app:'Google Docs', status:'on',      t:'9m'  },
+  { id:22, name:'Dante R.',    ini:'DR', app:'Spotify',     status:'off',     t:'1m'  },
+  { id:23, name:'Mia S.',      ini:'MS', app:'Google Docs', status:'on',      t:'7m'  },
+  { id:24, name:'Ethan W.',    ini:'EW', app:'Google Docs', status:'on',      t:'4m'  },
+];
+
+const POLICIES = [
+  { id:1, name:'Silent Reading',   type:'allow', apps:['Libby','Kindle','District Library'],        shared:false },
+  { id:2, name:'Research Day',     type:'allow', apps:['Google','Google Docs','Wikipedia'],          shared:true  },
+  { id:3, name:'Test Mode',        type:'allow', apps:['TestNav','Chromebook Kiosk'],                shared:true  },
+  { id:4, name:'No Social Media',  type:'block', apps:['TikTok','Instagram','Discord','Snapchat'],   shared:false },
+  { id:5, name:'Writing Workshop', type:'allow', apps:['Google Docs','Grammarly','Dictionary.com'],  shared:false },
+];
+
+const APP_CATALOG = [
+  { id:1,  name:'Google Docs',  cat:'Productivity', color:'#4285F4' },
+  { id:2,  name:'Google Slides',cat:'Productivity', color:'#F4B400' },
+  { id:3,  name:'YouTube',      cat:'Video',        color:'#FF0000' },
+  { id:4,  name:'Khan Academy', cat:'Education',    color:'#14BF96' },
+  { id:5,  name:'Duolingo',     cat:'Education',    color:'#58CC02' },
+  { id:6,  name:'Libby',        cat:'Education',    color:'#E25D32' },
+  { id:7,  name:'TestNav',      cat:'Assessment',   color:'#0066CC' },
+  { id:8,  name:'Grammarly',    cat:'Writing',      color:'#15C39A' },
+  { id:9,  name:'TikTok',       cat:'Social',       color:'#010101' },
+  { id:10, name:'Instagram',    cat:'Social',       color:'#E1306C' },
+  { id:11, name:'Discord',      cat:'Social',       color:'#5865F2' },
+  { id:12, name:'Wikipedia',    cat:'Reference',    color:'#333'    },
+];
+
+const APP_COLORS = {
+  'Google Docs':'#4285F4','YouTube':'#FF0000','TikTok':'#010101',
+  'Discord':'#5865F2','Instagram':'#E1306C','Spotify':'#1DB954',
+  'Roblox':'#E10A0A','Google Slides':'#F4B400',
+};
+
+/* ── ICONS ────────────────────────────────────────────────────────────── */
+
+const ICONS = {
+  home:      <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>,
+  monitor:   <><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></>,
+  shield:    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>,
+  chart:     <><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></>,
+  cog:       <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></>,
+  bell:      <><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></>,
+  zap:       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>,
+  pause:     <><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></>,
+  check:     <polyline points="20 6 9 17 4 12"/>,
+  x:         <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>,
+  plus:      <><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>,
+  chevR:     <polyline points="9 18 15 12 9 6"/>,
+  chevD:     <polyline points="6 9 12 15 18 9"/>,
+  search:    <><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></>,
+  wifi:      <><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></>,
+  wifiOff:   <><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7.07-.12"/><path d="M5.35 12.36A10.02 10.02 0 0 1 12 10c.56 0 1.1.05 1.63.14"/><path d="M10.72 17.28A5 5 0 0 1 12 17"/></>,
+  logout:    <><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></>,
+  grid:      <><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></>,
+  clock:     <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>,
+  eye:       <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>,
+  send:      <><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></>,
+  dl:        <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></>,
+  alert:     <><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></>,
+  back:      <><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></>,
+  users:     <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>,
+  book:      <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></>,
+  mail:      <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
+};
+
+const Ic = ({ n, size=16, color='currentColor' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    aria-hidden="true" style={{flexShrink:0}}>
+    {ICONS[n]}
+  </svg>
+);
+
+/* ── PRIMITIVES ──────────────────────────────────────────────────────── */
+
+const AVATAR_COLORS = ['#2B95AE','#27996A','#8B5CF6','#E07535','#EC4899','#3B82F6','#10B981','#F59E0B'];
+
+const Ava = ({ ini, size=36 }) => {
+  const bg = AVATAR_COLORS[ini.charCodeAt(0) % AVATAR_COLORS.length];
+  return (
+    <div style={{
+      width:size, height:size, borderRadius:'50%', background:bg, color:'#fff',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      fontSize:size*0.33, fontWeight:700, letterSpacing:'-0.01em', flexShrink:0,
+    }}>{ini}</div>
+  );
+};
+
+const Badge = ({ children, variant='default' }) => {
+  const bMap = {
+    default: { background:'var(--bg)', color:'var(--text-2)', border:'1px solid var(--border)' },
+    accent:  { background:'var(--accent-lt)', color:'var(--accent)' },
+    success: { background:'var(--on-task-bg)', color:'var(--on-task)' },
+    warning: { background:'var(--off-task-bg)', color:'var(--off-task)' },
+    offline: { background:'rgba(160,176,190,0.12)', color:'var(--offline)' },
+  };
+  return (
+    <span style={{
+      display:'inline-flex', alignItems:'center', gap:4,
+      padding:'2px 8px', borderRadius:999, fontSize:11, fontWeight:600,
+      ...bMap[variant],
+    }}>{children}</span>
+  );
+};
+
+const Btn = ({ children, variant='primary', size='md', onClick, icon, disabled, sx }) => {
+  const [hov, setHov] = useState(false);
+  const baseS = { display:'inline-flex', alignItems:'center', gap:6, fontFamily:'inherit', fontWeight:600, cursor:disabled?'not-allowed':'pointer', border:'none', borderRadius:8, transition:'all 0.15s', opacity:disabled?0.5:1 };
+  const sizeS = { sm:{padding:'6px 12px',fontSize:12}, md:{padding:'9px 16px',fontSize:13}, lg:{padding:'12px 20px',fontSize:14} };
+  const varS = {
+    primary: { background:hov?'var(--accent-h)':'var(--accent)', color:'#fff' },
+    secondary: { background:hov?'var(--bg)':'transparent', color:'var(--text-2)', border:'1px solid var(--border)' },
+    ghost: { background:hov?'var(--bg)':'transparent', color:'var(--text-2)' },
+    danger: { background:hov?'#C0504F':'var(--danger)', color:'#fff' },
+  };
+  return (
+    <button style={{ ...baseS, ...sizeS[size], ...varS[variant], ...sx }}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      onClick={onClick} disabled={disabled}>
+      {icon && <Ic n={icon} size={size==='sm'?12:14} />}
+      {children}
+    </button>
+  );
+};
+
+const SearchInput = ({ placeholder, value, onChange, sx }) => (
+  <div style={{ position:'relative', ...sx }}>
+    <span style={{ position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', color:'var(--text-3)', pointerEvents:'none' }}>
+      <Ic n="search" size={14} />
+    </span>
+    <input placeholder={placeholder} value={value} onChange={onChange} style={{
+      width:'100%', padding:'8px 12px 8px 32px', fontFamily:'inherit',
+      fontSize:13, color:'var(--text-1)', background:'var(--surface)',
+      border:'1px solid var(--border)', borderRadius:8, outline:'none',
+    }} />
+  </div>
+);
+
+/* ── SIDEBAR ─────────────────────────────────────────────────────────── */
+
+const NAV_ITEMS = [
+  { id:'classes',      label:'Classes',   icon:'home'  },
+  { id:'live',         label:'Live View', icon:'monitor', badge:'LIVE' },
+  { id:'policies',     label:'Policies',  icon:'shield' },
+  { id:'reports',      label:'Reports',   icon:'chart'  },
+  { id:'settings',     label:'Settings',  icon:'cog'    },
+];
+
+const Sidebar = ({ screen, setScreen }) => {
+  const activeFor = (id) =>
+    screen === id ||
+    (id === 'policies' && screen === 'policyEditor') ||
+    (id === 'classes' && screen === 'onboarding');
+
+  return (
+    <nav style={{
+      width:'var(--sidebar-w)', background:'var(--navy-900)',
+      display:'flex', flexDirection:'column', height:'100vh',
+      position:'fixed', top:0, left:0, zIndex:100,
+    }}>
+      {/* Wordmark */}
+      <div style={{ padding:'20px 20px 10px', display:'flex', alignItems:'center', gap:10 }}>
+        <div style={{ width:32, height:32, borderRadius:9, background:'var(--accent)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <Ic n="zap" size={17} color="#fff" />
+        </div>
+        <span style={{ fontSize:15, fontWeight:800, color:'#fff', letterSpacing:'-0.025em' }}>ClassPulse</span>
+      </div>
+
+      {/* Class switcher */}
+      <div style={{ padding:'8px 12px 6px' }}>
+        <button style={{
+          width:'100%', background:'rgba(255,255,255,0.06)',
+          border:'1px solid rgba(255,255,255,0.08)', borderRadius:8,
+          padding:'8px 12px', cursor:'pointer',
+          display:'flex', alignItems:'center', justifyContent:'space-between',
+          fontFamily:'inherit',
+        }}>
+          <div style={{ display:'flex', alignItems:'center', gap:7 }}>
+            <div style={{ width:7, height:7, borderRadius:'50%', background:'#27996A' }} />
+            <span style={{ fontSize:12, fontWeight:600, color:'rgba(255,255,255,0.88)' }}>7th Period — English</span>
+          </div>
+          <Ic n="chevD" size={12} color="rgba(255,255,255,0.4)" />
+        </button>
+      </div>
+
+      {/* Nav */}
+      <div style={{ padding:'4px 8px', flex:1 }}>
+        {NAV_ITEMS.map(item => {
+          const active = activeFor(item.id);
+          return (
+            <button key={item.id} onClick={()=>setScreen(item.id)} style={{
+              width:'100%', display:'flex', alignItems:'center', gap:10,
+              padding:'9px 12px', borderRadius:7, cursor:'pointer', marginBottom:2,
+              background: active ? 'rgba(43,149,174,0.18)' : 'transparent',
+              border:'none', color: active ? '#fff' : 'rgba(255,255,255,0.52)',
+              fontSize:13, fontWeight: active ? 600 : 500,
+              textAlign:'left', transition:'all 0.15s', fontFamily:'inherit',
+            }}>
+              <Ic n={item.icon} size={16} color={active ? 'var(--accent)' : 'rgba(255,255,255,0.38)'} />
+              {item.label}
+              {item.badge && (
+                <span style={{ marginLeft:'auto', background:'rgba(39,153,106,0.2)', color:'#27996A', fontSize:9, fontWeight:800, padding:'2px 6px', borderRadius:999, letterSpacing:'0.04em' }}>
+                  {item.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* User */}
+      <div style={{ padding:'12px 12px 18px', borderTop:'1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+          <Ava ini="MR" size={30} />
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontSize:12, fontWeight:600, color:'#fff', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>Ms. Rivera</div>
+            <div style={{ fontSize:10, color:'rgba(255,255,255,0.38)' }}>Jefferson Middle</div>
+          </div>
+          <button style={{ background:'none', border:'none', cursor:'pointer', color:'rgba(255,255,255,0.3)', padding:4 }}>
+            <Ic n="logout" size={14} />
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+/* ── TOP BAR ─────────────────────────────────────────────────────────── */
+
+const TopBar = ({ screen, onFocus, focusActive }) => {
+  const ctx = {
+    live:         '7th Period — English · 24 students',
+    classes:      'Today, Thursday · 5 classes scheduled',
+    policies:     'Policy Library · 5 policies',
+    policyEditor: 'Policy Editor · New policy',
+    reports:      'Reports · Week of April 14–18',
+    settings:     'Settings · Account & preferences',
+  }[screen] || '';
+
+  return (
+    <header style={{
+      height:'var(--topbar-h)', background:'var(--surface)',
+      borderBottom:'1px solid var(--border)',
+      display:'flex', alignItems:'center', padding:'0 24px', gap:12,
+      position:'sticky', top:0, zIndex:50,
+    }}>
+      <div style={{ flex:1, fontSize:13, color:'var(--text-3)' }}>{ctx}</div>
+
+      <button style={{ position:'relative', background:'none', border:'none', cursor:'pointer', color:'var(--text-2)', padding:6, borderRadius:6 }}>
+        <Ic n="bell" size={18} />
+        <span style={{ position:'absolute', top:4, right:4, width:8, height:8, borderRadius:'50%', background:'var(--off-task)', border:'2px solid var(--surface)' }} />
+      </button>
+
+      <button onClick={onFocus} style={{
+        display:'flex', alignItems:'center', gap:6,
+        background: focusActive ? 'var(--on-task)' : 'var(--accent)',
+        color:'#fff', border:'none', borderRadius:8,
+        padding:'7px 14px', fontSize:12, fontWeight:700,
+        cursor:'pointer', transition:'all 0.15s', fontFamily:'inherit',
+        boxShadow: focusActive ? '0 2px 10px rgba(39,153,106,0.3)' : '0 2px 10px rgba(43,149,174,0.25)',
+      }}>
+        <Ic n={focusActive ? 'pause' : 'zap'} size={13} />
+        {focusActive ? 'Session Active' : 'Focus Session'}
+      </button>
+    </header>
+  );
+};
+
+/* ── FOCUS BANNER ────────────────────────────────────────────────────── */
+
+const FocusBanner = ({ onEnd, timeLeft, setTimeLeft }) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const mins = Math.floor(timeLeft / 60);
+  const secs = String(timeLeft % 60).padStart(2, '0');
+
+  useEffect(() => {
+    const t = setInterval(() => setTimeLeft(v => v > 0 ? v - 1 : 0), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  if (collapsed) return (
+    <button onClick={()=>setCollapsed(false)} style={{
+      position:'fixed', bottom:24, left:'50%', transform:'translateX(-50%)',
+      background:'var(--on-task)', color:'#fff', border:'none',
+      borderRadius:999, padding:'8px 20px', fontSize:12, fontWeight:700,
+      cursor:'pointer', display:'flex', alignItems:'center', gap:8,
+      boxShadow:'0 4px 20px rgba(39,153,106,0.35)', zIndex:200, fontFamily:'inherit',
+    }}>
+      <div style={{ width:8, height:8, borderRadius:'50%', background:'#fff', animation:'pulse 1.5s infinite' }} />
+      Focus Active · {mins}:{secs}
+    </button>
+  );
+
+  return (
+    <div style={{
+      position:'fixed', top:'var(--topbar-h)', left:'var(--sidebar-w)', right:0,
+      background:'var(--navy-900)', color:'#fff', zIndex:150,
+      display:'flex', alignItems:'center', gap:16, padding:'12px 24px',
+      borderBottom:'2px solid var(--on-task)',
+    }}>
+      <div style={{ width:10, height:10, borderRadius:'50%', background:'var(--on-task)', flexShrink:0 }} />
+      <div style={{ flex:1 }}>
+        <div style={{ fontSize:13, fontWeight:700 }}>Silent Reading Session · Writing Workshop policy active</div>
+        <div style={{ fontSize:11, color:'rgba(255,255,255,0.45)', marginTop:2 }}>24 devices locked · 18 on-task, 4 off-task, 2 offline</div>
+      </div>
+      <div style={{ fontSize:30, fontWeight:800, fontVariantNumeric:'tabular-nums', color:timeLeft<60?'var(--warn)':'#fff', minWidth:72, textAlign:'right' }}>
+        {mins}:{secs}
+      </div>
+      <Btn variant="secondary" size="sm" onClick={()=>setCollapsed(true)}>Minimize</Btn>
+      <Btn variant="danger" size="sm" onClick={onEnd}>End Session</Btn>
+    </div>
+  );
+};
+
+/* ── LOGIN SCREEN ────────────────────────────────────────────────────── */
+
+const LoginScreen = ({ setScreen }) => (
+  <div style={{
+    minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center',
+    background:'linear-gradient(145deg, #0F1E33 0%, #1D3556 55%, #2B4A6B 100%)',
+  }}>
+    <div style={{ width:400 }}>
+      {/* Logo */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:14, marginBottom:32 }}>
+        <div style={{ width:52, height:52, borderRadius:15, background:'var(--accent)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <Ic n="zap" size={26} color="#fff" />
+        </div>
+        <span style={{ fontSize:28, fontWeight:800, color:'#fff', letterSpacing:'-0.03em' }}>ClassPulse</span>
+      </div>
+
+      <div style={{ background:'rgba(255,255,255,0.04)', backdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:20, padding:'36px' }}>
+        <h1 style={{ fontSize:20, fontWeight:700, color:'#fff', marginBottom:6, textAlign:'center' }}>Sign in to your school account</h1>
+        <p style={{ fontSize:13, color:'rgba(255,255,255,0.45)', marginBottom:28, textAlign:'center', lineHeight:1.6 }}>
+          Use your district credentials. ClassPulse only monitors during school hours.
+        </p>
+
+        <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+          {[
+            { label:'Continue with Google',    letter:'G',  color:'#4285F4' },
+            { label:'Continue with Microsoft', letter:'M',  color:'#00A4EF' },
+            { label:'Continue with Clever',    letter:'C',  color:'#1060D7' },
+            { label:'Continue with ClassLink', letter:'CL', color:'#F05022' },
+          ].map(p => (
+            <button key={p.label} onClick={()=>setScreen('consent')} style={{
+              display:'flex', alignItems:'center', gap:12, width:'100%',
+              background:'rgba(255,255,255,0.07)', border:'1px solid rgba(255,255,255,0.1)',
+              borderRadius:10, padding:'12px 16px', cursor:'pointer',
+              fontFamily:'inherit', fontSize:13, fontWeight:600, color:'#fff',
+              transition:'all 0.15s',
+            }}>
+              <div style={{ width:26, height:26, borderRadius:7, background:p.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, fontWeight:800, color:'#fff', flexShrink:0 }}>
+                {p.letter}
+              </div>
+              {p.label}
+            </button>
+          ))}
+        </div>
+
+        <p style={{ fontSize:11, color:'rgba(255,255,255,0.28)', lineHeight:1.6, textAlign:'center' }}>
+          Monitoring is limited to school-issued devices during published school hours on school premises. No personal data is collected outside that window.
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
+/* ── CONSENT SCREEN ──────────────────────────────────────────────────── */
+
+const ConsentScreen = ({ setScreen }) => (
+  <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'var(--bg)', padding:24 }}>
+    <div style={{ width:520, background:'var(--surface)', borderRadius:20, boxShadow:'var(--s-modal)', overflow:'hidden' }}>
+      <div style={{ padding:'32px 36px 24px' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:24 }}>
+          <div style={{ width:40, height:40, borderRadius:11, background:'var(--accent-lt)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <Ic n="eye" size={20} color="var(--accent)" />
+          </div>
+          <div>
+            <h1 style={{ fontSize:18, fontWeight:800, color:'var(--text-1)' }}>What ClassPulse can see</h1>
+            <p style={{ fontSize:12, color:'var(--text-3)' }}>Review before monitoring begins</p>
+          </div>
+        </div>
+
+        <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
+          {[
+            { ic:'check', col:'var(--on-task)', bg:'var(--on-task-bg)', label:'Current app or website name', note:'App-level only — no screenshots, no keystrokes.' },
+            { ic:'check', col:'var(--on-task)', bg:'var(--on-task-bg)', label:'Time spent per app', note:'Aggregated per class period.' },
+            { ic:'check', col:'var(--on-task)', bg:'var(--on-task-bg)', label:'Device online/offline status', note:'Online or offline — nothing more.' },
+            { ic:'x',     col:'var(--danger)',  bg:'rgba(212,92,92,0.07)', label:'Activity outside school hours', note:'Never monitored. Hard schedule fence.' },
+            { ic:'x',     col:'var(--danger)',  bg:'rgba(212,92,92,0.07)', label:'Screen recordings or screenshots', note:'Permanently out of scope.' },
+            { ic:'x',     col:'var(--danger)',  bg:'rgba(212,92,92,0.07)', label:'Messages, keystrokes, or calls', note:'Permanently out of scope.' },
+          ].map((row, i) => (
+            <div key={i} style={{ display:'flex', gap:12, padding:'10px 12px', borderRadius:8, background:row.bg }}>
+              <div style={{ width:22, height:22, borderRadius:'50%', background:row.col, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
+                <Ic n={row.ic} size={11} color="#fff" />
+              </div>
+              <div>
+                <div style={{ fontSize:13, fontWeight:600, color:'var(--text-1)' }}>{row.label}</div>
+                <div style={{ fontSize:11, color:'var(--text-2)', marginTop:2 }}>{row.note}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ fontSize:12, color:'var(--text-3)', lineHeight:1.7 }}>
+          Data is retained for 90 days. Students and parents can request a full export at any time via Settings → Privacy.
+        </p>
+      </div>
+
+      <div style={{ padding:'16px 36px 28px', borderTop:'1px solid var(--border)', display:'flex', gap:10 }}>
+        <Btn variant="primary" size="lg" onClick={()=>setScreen('onboarding')} sx={{ flex:1 }}>I understand — Continue</Btn>
+        <Btn variant="ghost" size="lg">Decline</Btn>
+      </div>
+    </div>
+  </div>
+);
+
+/* ── ONBOARDING SCREEN ───────────────────────────────────────────────── */
+
+const OnboardingScreen = ({ setScreen }) => {
+  const [step, setStep] = useState(1);
+  const [pushed, setPushed] = useState(false);
+
+  const steps = [
+    {
+      title: 'Your classes are ready',
+      desc: 'We found 5 classes from your Google Workspace roster. Review and confirm before we import.',
+      body: (
+        <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+          {['English 7A · 26 students','English 7B · 28 students','Advisory · 16 students','English 7C · 24 students','English 7D · 27 students'].map((c,i) => (
+            <div key={i} style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 14px', background:'var(--bg)', borderRadius:8, fontSize:13, color:'var(--text-1)', fontWeight:500 }}>
+              <Ic n="check" size={14} color="var(--on-task)" />{c}
+            </div>
+          ))}
+        </div>
+      ),
+      cta: 'Import 5 Classes →',
+    },
+    {
+      title: 'Try a sample policy',
+      desc: 'This uses a practice class — no real students are affected. Push the policy to see how it works.',
+      body: (
+        <div style={{ background:'var(--bg)', borderRadius:12, padding:'20px' }}>
+          <div style={{ display:'flex', align:'center', gap:8, marginBottom:12 }}>
+            <div style={{ width:32, height:32, borderRadius:8, background:'var(--accent-lt)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <Ic n="shield" size={16} color="var(--accent)" />
+            </div>
+            <div>
+              <div style={{ fontSize:13, fontWeight:700, color:'var(--text-1)' }}>Writing Workshop</div>
+              <Badge variant="success"><Ic n="check" size={9} />Allow list</Badge>
+            </div>
+          </div>
+          {['Google Docs','Grammarly','Dictionary.com'].map(a => (
+            <div key={a} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6, fontSize:12, color:'var(--text-2)' }}>
+              <Ic n="check" size={12} color="var(--on-task)" />{a} — allowed
+            </div>
+          ))}
+          <Btn variant="primary" size="sm" icon="zap" onClick={()=>setPushed(true)} sx={{ marginTop:12 }}>
+            {pushed ? '✓ Pushed to sample class' : 'Push to Sample Class'}
+          </Btn>
+        </div>
+      ),
+      cta: 'Continue →',
+    },
+    {
+      title: "You're all set",
+      desc: 'ClassPulse is configured. Open your first class whenever your students arrive.',
+      body: (
+        <div style={{ textAlign:'center', padding:'24px 0' }}>
+          <div style={{ width:72, height:72, borderRadius:22, background:'var(--on-task-bg)', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 16px' }}>
+            <Ic n="check" size={36} color="var(--on-task)" />
+          </div>
+          <p style={{ fontSize:13, color:'var(--text-2)', lineHeight:1.7 }}>
+            5 classes imported · Writing Workshop policy saved · Devices sync when students log in.
+          </p>
+        </div>
+      ),
+      cta: 'Open ClassPulse →',
+    },
+  ];
+
+  const cur = steps[step - 1];
+
+  return (
+    <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'var(--bg)', padding:24 }}>
+      <div style={{ width:480 }}>
+        {/* Progress dots */}
+        <div style={{ display:'flex', justifyContent:'center', gap:6, marginBottom:24 }}>
+          {steps.map((_,i) => (
+            <div key={i} style={{ width:i===step-1?28:8, height:8, borderRadius:4, background:i<step?'var(--accent)':'var(--border)', transition:'all 0.3s' }} />
+          ))}
+        </div>
+
+        <div style={{ background:'var(--surface)', borderRadius:20, padding:'32px 36px', boxShadow:'var(--s-modal)' }}>
+          <div style={{ fontSize:11, fontWeight:700, color:'var(--accent)', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:8 }}>Step {step} of 3</div>
+          <h1 style={{ fontSize:20, fontWeight:800, color:'var(--text-1)', marginBottom:8 }}>{cur.title}</h1>
+          <p style={{ fontSize:13, color:'var(--text-2)', lineHeight:1.6, marginBottom:20 }}>{cur.desc}</p>
+          <div style={{ marginBottom:24 }}>{cur.body}</div>
+          <div style={{ display:'flex', gap:8 }}>
+            <Btn variant="primary" onClick={()=>step<3?setStep(s=>s+1):setScreen('classes')} sx={{ flex:1 }}>
+              {cur.cta}
+            </Btn>
+            {step===1 && <Btn variant="ghost" onClick={()=>setScreen('classes')}>Skip</Btn>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── CLASSES SCREEN ──────────────────────────────────────────────────── */
+
+const ClassesScreen = ({ setScreen }) => {
+  const classes = [
+    { p:'1st', sub:'English 7A', time:'8:00–8:50 AM',  n:26, status:'done' },
+    { p:'2nd', sub:'English 7B', time:'9:00–9:50 AM',  n:28, status:'done' },
+    { p:'3rd', sub:'Advisory',   time:'10:00–10:30 AM', n:16, status:'done' },
+    { p:'7th', sub:'English 7C', time:'1:30–2:20 PM',   n:24, status:'live' },
+    { p:'8th', sub:'English 7D', time:'2:30–3:20 PM',   n:27, status:'next' },
+  ];
+
+  return (
+    <div style={{ padding:'28px 28px' }}>
+      <h1 style={{ fontSize:22, fontWeight:800, color:'var(--text-1)', marginBottom:4 }}>Today's Schedule</h1>
+      <p style={{ fontSize:13, color:'var(--text-3)', marginBottom:22 }}>Thursday, April 17 · Jefferson Middle School</p>
+
+      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+        {classes.map((cls,i) => (
+          <div key={i} style={{
+            background:'var(--surface)', borderRadius:14,
+            border:`${cls.status==='live'?'2':'1'}px solid ${cls.status==='live'?'var(--accent)':'var(--border)'}`,
+            padding:'18px 20px',
+            boxShadow: cls.status==='live' ? '0 4px 20px rgba(43,149,174,0.12)' : 'var(--s-card)',
+            display:'flex', alignItems:'center', gap:16,
+          }}>
+            <div style={{ width:42, height:42, borderRadius:11, background:cls.status==='live'?'var(--accent-lt)':'var(--bg)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+              <span style={{ fontSize:9, fontWeight:700, color:cls.status==='live'?'var(--accent)':'var(--text-3)', textTransform:'uppercase', letterSpacing:'0.04em' }}>P</span>
+              <span style={{ fontSize:14, fontWeight:800, color:cls.status==='live'?'var(--accent)':'var(--text-2)', lineHeight:1 }}>{cls.p.replace('st','').replace('nd','').replace('rd','').replace('th','')}</span>
+            </div>
+            <div style={{ flex:1 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
+                <span style={{ fontSize:14, fontWeight:700, color:'var(--text-1)' }}>{cls.sub}</span>
+                {cls.status==='live' && (
+                  <Badge variant="success">
+                    <div style={{ width:6, height:6, borderRadius:'50%', background:'var(--on-task)' }} />
+                    Live now
+                  </Badge>
+                )}
+                {cls.status==='next' && <Badge variant="accent">Up next</Badge>}
+              </div>
+              <div style={{ fontSize:12, color:'var(--text-3)' }}>{cls.time} · {cls.n} students</div>
+            </div>
+            {cls.status==='live' && <Btn variant="primary" size="sm" onClick={()=>setScreen('live')}>Open Live View</Btn>}
+            {cls.status==='done' && <Btn variant="ghost" size="sm">View Report</Btn>}
+            {cls.status==='next' && <Btn variant="secondary" size="sm">Prepare Policy</Btn>}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── LIVE CLASSROOM VIEW ─────────────────────────────────────────────── */
+
+const StudentTile = ({ s, onClick }) => {
+  const [hov, setHov] = useState(false);
+  const statusColor = s.status==='on'?'var(--on-task)':s.status==='off'?'var(--off-task)':'var(--offline)';
+  const statusBg    = s.status==='on'?'var(--on-task-bg)':s.status==='off'?'var(--off-task-bg)':'rgba(160,176,190,0.1)';
+  const appColor    = APP_COLORS[s.app] || '#8B5CF6';
+
+  return (
+    <div onClick={()=>onClick(s)}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{
+        background:'var(--surface)', borderRadius:10,
+        border:`1.5px solid ${hov?statusColor:'var(--border)'}`,
+        padding:'12px', cursor:'pointer', transition:'all 0.15s',
+        opacity:s.status==='offline'?0.6:1,
+        transform:hov?'translateY(-1px)':'none',
+        boxShadow:hov?'var(--s-card)':'none',
+      }}>
+      <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+        <div style={{ position:'relative' }}>
+          <Ava ini={s.ini} size={32} />
+          <div style={{ position:'absolute', bottom:-1, right:-1, width:10, height:10, borderRadius:'50%', background:statusColor, border:'2px solid var(--surface)' }}
+            title={s.status==='on'?'On task':s.status==='off'?'Off task':'Offline'} />
+        </div>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:11, fontWeight:700, color:'var(--text-1)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{s.name}</div>
+          <div style={{ fontSize:10, color:'var(--text-3)', marginTop:1 }}>{s.t}</div>
+        </div>
+      </div>
+      <div style={{ display:'flex', alignItems:'center', gap:6, padding:'5px 8px', borderRadius:6, background:statusBg }}>
+        {s.status!=='offline' && <div style={{ width:12, height:12, borderRadius:3, background:appColor, flexShrink:0 }} />}
+        {s.status==='offline' && <Ic n="wifiOff" size={11} color="var(--offline)" />}
+        <span style={{ fontSize:10, fontWeight:600, color:statusColor, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+          {s.status==='offline' ? 'Offline' : s.app}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const StudentDrawer = ({ s, onClose }) => {
+  const statusColor = s.status==='on'?'var(--on-task)':s.status==='off'?'var(--off-task)':'var(--offline)';
+  const statusLabel = s.status==='on'?'On task':s.status==='off'?'Off task':'Offline';
+  const [nudge, setNudge] = useState('');
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <div style={{
+      position:'fixed', top:0, right:0, bottom:0, width:348,
+      background:'var(--surface)', boxShadow:'-4px 0 28px rgba(15,30,51,0.14)',
+      zIndex:300, display:'flex', flexDirection:'column', fontFamily:'inherit',
+    }}>
+      {/* Header */}
+      <div style={{ padding:'20px', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', gap:12 }}>
+        <div style={{ position:'relative' }}>
+          <Ava ini={s.ini} size={40} />
+          <div style={{ position:'absolute', bottom:0, right:0, width:12, height:12, borderRadius:'50%', background:statusColor, border:'2px solid var(--surface)' }} />
+        </div>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:15, fontWeight:700, color:'var(--text-1)' }}>{s.name}</div>
+          <div style={{ display:'flex', alignItems:'center', gap:6, marginTop:2 }}>
+            <span style={{ fontSize:11, fontWeight:600, color:statusColor }}>{statusLabel}</span>
+            <span style={{ fontSize:11, color:'var(--text-3)' }}>· {s.t} on current app</span>
+          </div>
+        </div>
+        <button onClick={onClose} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text-3)', padding:4 }}>
+          <Ic n="x" size={18} />
+        </button>
+      </div>
+
+      {/* Current app */}
+      <div style={{ padding:'16px 20px', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', marginBottom:8, textTransform:'uppercase', letterSpacing:'0.05em' }}>Current App</div>
+        <div style={{ background:'var(--bg)', borderRadius:8, padding:'12px', display:'flex', alignItems:'center', gap:10 }}>
+          {s.status!=='offline' ? (
+            <>
+              <div style={{ width:24, height:24, borderRadius:6, background:APP_COLORS[s.app]||'#8B5CF6', flexShrink:0 }} />
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:13, fontWeight:600, color:'var(--text-1)' }}>{s.app}</div>
+                <div style={{ fontSize:11, color:'var(--text-3)', display:'flex', alignItems:'center', gap:4, marginTop:2 }}>
+                  <Ic n="eye" size={11} />Tap to reveal full URL (teacher-only)
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={{ display:'flex', alignItems:'center', gap:8, color:'var(--offline)' }}>
+              <Ic n="wifiOff" size={16} color="var(--offline)" />
+              <span style={{ fontSize:13, fontWeight:600 }}>Device offline</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div style={{ padding:'16px 20px', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', marginBottom:10, textTransform:'uppercase', letterSpacing:'0.05em' }}>Quick Actions</div>
+        <button onClick={()=>setPaused(p=>!p)} style={{
+          width:'100%', background:paused?'var(--on-task-bg)':'var(--off-task-bg)',
+          color:paused?'var(--on-task)':'var(--off-task)',
+          border:`1px solid ${paused?'rgba(39,153,106,0.25)':'rgba(224,117,53,0.2)'}`,
+          borderRadius:8, padding:'10px 14px', cursor:'pointer', fontSize:12, fontWeight:600,
+          display:'flex', alignItems:'center', gap:8, fontFamily:'inherit', marginBottom:8,
+        }}>
+          <Ic n={paused?'check':'pause'} size={14} color={paused?'var(--on-task)':'var(--off-task)'} />
+          {paused ? 'Device resuming in 28s…' : 'Pause device · 30 seconds'}
+        </button>
+        <div style={{ display:'flex', gap:8 }}>
+          <input placeholder="Send a silent nudge…" value={nudge} onChange={e=>setNudge(e.target.value)} maxLength={140}
+            style={{ flex:1, padding:'8px 10px', fontFamily:'inherit', fontSize:12, border:'1px solid var(--border)', borderRadius:8, background:'var(--bg)', color:'var(--text-1)', outline:'none' }} />
+          <button style={{ background:'var(--accent)', color:'#fff', border:'none', borderRadius:8, padding:'8px 12px', cursor:'pointer' }}>
+            <Ic n="send" size={14} color="#fff" />
+          </button>
+        </div>
+        <div style={{ fontSize:10, color:'var(--text-3)', marginTop:4 }}>{nudge.length}/140 · Visible only to this student</div>
+      </div>
+
+      {/* Timeline */}
+      <div style={{ padding:'16px 20px', flex:1, overflow:'auto' }}>
+        <div style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', marginBottom:10, textTransform:'uppercase', letterSpacing:'0.05em' }}>Today's Activity</div>
+        {[
+          { app:'Google Docs', start:'8:00', dur:'45m', status:'on' },
+          { app:'YouTube',     start:'8:45', dur:'7m',  status:'off' },
+          { app:'Google Docs', start:'8:52', dur:'28m', status:'on' },
+          { app:s.app,         start:'9:20', dur:s.t,   status:s.status },
+        ].map((ev,i) => (
+          <div key={i} style={{ display:'flex', gap:10, marginBottom:12 }}>
+            <div style={{ width:3, borderRadius:2, flexShrink:0, background:ev.status==='on'?'var(--on-task)':ev.status==='off'?'var(--off-task)':'var(--offline)' }} />
+            <div>
+              <div style={{ fontSize:12, fontWeight:600, color:'var(--text-1)' }}>{ev.app}</div>
+              <div style={{ fontSize:11, color:'var(--text-3)' }}>{ev.start} · {ev.dur}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const LiveScreen = () => {
+  const [sel, setSel] = useState(null);
+  const onN   = STUDENTS.filter(s=>s.status==='on').length;
+  const offN  = STUDENTS.filter(s=>s.status==='off').length;
+  const offlineN = STUDENTS.filter(s=>s.status==='offline').length;
+
+  return (
+    <div style={{ height:'100%', display:'flex', flexDirection:'column' }}>
+      {/* Stats + policy bar */}
+      <div style={{ padding:'14px 24px', background:'var(--surface)', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', gap:20 }}>
+        <div style={{ display:'flex', gap:20, flex:1 }}>
+          {[
+            { label:'On task',  count:onN,      color:'var(--on-task)',  icon:'check'   },
+            { label:'Off task', count:offN,     color:'var(--off-task)', icon:'alert'   },
+            { label:'Offline',  count:offlineN, color:'var(--offline)',  icon:'wifiOff' },
+          ].map(st => (
+            <div key={st.label} style={{ display:'flex', alignItems:'center', gap:8 }}>
+              <div style={{ width:34, height:34, borderRadius:9, background:`${st.color}18`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <Ic n={st.icon} size={14} color={st.color} />
+              </div>
+              <div>
+                <div style={{ fontSize:20, fontWeight:800, color:st.color, lineHeight:1 }}>{st.count}</div>
+                <div style={{ fontSize:10, fontWeight:600, color:'var(--text-3)' }}>{st.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Active policy */}
+        <div style={{ display:'flex', alignItems:'center', gap:8, padding:'7px 14px', background:'var(--accent-lt)', borderRadius:8 }}>
+          <Ic n="shield" size={13} color="var(--accent)" />
+          <span style={{ fontSize:12, fontWeight:600, color:'var(--accent)' }}>Writing Workshop</span>
+          <span style={{ fontSize:11, color:'var(--text-3)' }}>active</span>
+          <button style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text-3)', marginLeft:4 }}>
+            <Ic n="x" size={12} />
+          </button>
+        </div>
+
+        {/* Last updated */}
+        <div style={{ display:'flex', alignItems:'center', gap:5, fontSize:11, color:'var(--text-3)' }}>
+          <Ic n="clock" size={12} />just now
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div style={{ flex:1, overflow:'auto', padding:'20px 24px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(148px,1fr))', gap:10 }}>
+          {STUDENTS.map(s => <StudentTile key={s.id} s={s} onClick={setSel} />)}
+        </div>
+      </div>
+
+      {sel && (
+        <>
+          <div onClick={()=>setSel(null)} style={{ position:'fixed', inset:0, background:'rgba(15,30,51,0.28)', zIndex:299 }} />
+          <StudentDrawer s={sel} onClose={()=>setSel(null)} />
+        </>
+      )}
+    </div>
+  );
+};
+
+/* ── POLICIES SCREEN ─────────────────────────────────────────────────── */
+
+const PoliciesScreen = ({ setScreen }) => (
+  <div style={{ padding:'28px' }}>
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:22 }}>
+      <div>
+        <h1 style={{ fontSize:22, fontWeight:800, color:'var(--text-1)', marginBottom:4 }}>Policy Library</h1>
+        <p style={{ fontSize:13, color:'var(--text-3)' }}>Reusable allow/block lists for your lessons</p>
+      </div>
+      <Btn variant="primary" icon="plus" onClick={()=>setScreen('policyEditor')}>New Policy</Btn>
+    </div>
+
+    <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(300px,1fr))', gap:12 }}>
+      {POLICIES.map(p => (
+        <div key={p.id} style={{ background:'var(--surface)', borderRadius:14, border:'1px solid var(--border)', padding:'18px', boxShadow:'var(--s-card)' }}>
+          <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:10 }}>
+            <div>
+              <div style={{ fontSize:14, fontWeight:700, color:'var(--text-1)', marginBottom:6 }}>{p.name}</div>
+              <div style={{ display:'flex', gap:6 }}>
+                <Badge variant={p.type==='allow'?'success':'warning'}>
+                  <Ic n={p.type==='allow'?'check':'x'} size={9} />
+                  {p.type==='allow' ? 'Allow list' : 'Block list'}
+                </Badge>
+                {p.shared && <Badge variant="accent"><Ic n="users" size={9} />Shared</Badge>}
+              </div>
+            </div>
+            <Ic n="chevR" size={16} color="var(--text-3)" />
+          </div>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:4, marginBottom:14 }}>
+            {p.apps.slice(0,3).map(a => (
+              <span key={a} style={{ fontSize:11, fontWeight:500, color:'var(--text-2)', background:'var(--bg)', padding:'3px 8px', borderRadius:5, border:'1px solid var(--border)' }}>{a}</span>
+            ))}
+            {p.apps.length>3 && <span style={{ fontSize:11, color:'var(--text-3)', padding:'3px 6px' }}>+{p.apps.length-3} more</span>}
+          </div>
+          <div style={{ display:'flex', gap:6 }}>
+            <Btn variant="primary" size="sm" icon="zap" sx={{ flex:1 }}>Push to Class</Btn>
+            <Btn variant="secondary" size="sm"><Ic n="book" size={12} /></Btn>
+          </div>
+        </div>
+      ))}
+
+      {/* New policy card */}
+      <div onClick={()=>setScreen('policyEditor')} style={{
+        background:'transparent', borderRadius:14, border:'2px dashed var(--border)',
+        padding:'24px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+        cursor:'pointer', gap:8, minHeight:148, transition:'all 0.15s',
+      }}>
+        <div style={{ width:38, height:38, borderRadius:11, background:'var(--bg)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <Ic n="plus" size={18} color="var(--text-3)" />
+        </div>
+        <span style={{ fontSize:12, fontWeight:600, color:'var(--text-3)' }}>New policy</span>
+      </div>
+    </div>
+  </div>
+);
+
+/* ── POLICY EDITOR ───────────────────────────────────────────────────── */
+
+const PolicyEditorScreen = ({ setScreen }) => {
+  const [step, setStep] = useState(1);
+  const [mode, setMode] = useState(null);
+  const [policyName, setPolicyName] = useState('');
+  const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState([]);
+  const [platform, setPlatform] = useState('ios');
+
+  const toggle = (app) =>
+    setSelected(prev => prev.find(a=>a.id===app.id) ? prev.filter(a=>a.id!==app.id) : [...prev, app]);
+  const filtered = APP_CATALOG.filter(a => a.name.toLowerCase().includes(query.toLowerCase()));
+
+  return (
+    <div style={{ padding:'28px', maxWidth:760, margin:'0 auto' }}>
+      {/* Header */}
+      <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:24 }}>
+        <button onClick={()=>step>1?setStep(s=>s-1):setScreen('policies')} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text-3)', padding:4 }}>
+          <Ic n="back" size={18} />
+        </button>
+        <div>
+          <h1 style={{ fontSize:18, fontWeight:800, color:'var(--text-1)' }}>New Policy</h1>
+          <p style={{ fontSize:12, color:'var(--text-3)' }}>Step {step} of 3</p>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div style={{ display:'flex', gap:4, marginBottom:28 }}>
+        {[1,2,3].map(s => (
+          <div key={s} style={{ flex:1, height:3, borderRadius:2, background:s<=step?'var(--accent)':'var(--border)', transition:'background 0.3s' }} />
+        ))}
+      </div>
+
+      {/* STEP 1: Choose mode */}
+      {step===1 && (
+        <div>
+          <h2 style={{ fontSize:16, fontWeight:700, color:'var(--text-1)', marginBottom:6 }}>What kind of policy?</h2>
+          <p style={{ fontSize:13, color:'var(--text-2)', marginBottom:20 }}>This determines what students can access during the lesson.</p>
+
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:22 }}>
+            {[
+              { id:'allow', title:'Allow list only', desc:'Students can only use apps you specifically approve. Everything else is blocked. Best for focused sessions.', icon:'check', color:'var(--on-task)', bg:'var(--on-task-bg)' },
+              { id:'block', title:'Block list',      desc:'Students can use anything except the apps you block. Best for open research time with distractions removed.', icon:'x',    color:'var(--off-task)', bg:'var(--off-task-bg)' },
+            ].map(opt => (
+              <div key={opt.id} onClick={()=>setMode(opt.id)} style={{
+                background:'var(--surface)', borderRadius:14, padding:'22px',
+                border:`2px solid ${mode===opt.id?opt.color:'var(--border)'}`,
+                cursor:'pointer', transition:'all 0.15s',
+                boxShadow:mode===opt.id?`0 4px 20px ${opt.bg}`:'var(--s-card)',
+              }}>
+                <div style={{ width:42, height:42, borderRadius:12, background:opt.bg, display:'flex', alignItems:'center', justifyContent:'center', marginBottom:14 }}>
+                  <Ic n={opt.icon} size={22} color={opt.color} />
+                </div>
+                <div style={{ fontSize:15, fontWeight:700, color:'var(--text-1)', marginBottom:8 }}>{opt.title}</div>
+                <div style={{ fontSize:12, color:'var(--text-2)', lineHeight:1.6 }}>{opt.desc}</div>
+                {mode===opt.id && (
+                  <div style={{ marginTop:12, display:'flex', alignItems:'center', gap:6, fontSize:12, fontWeight:600, color:opt.color }}>
+                    <Ic n="check" size={13} color={opt.color} />Selected
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Safety note */}
+          <div style={{ display:'flex', gap:10, padding:'12px 16px', background:'rgba(43,149,174,0.06)', borderRadius:10, border:'1px solid rgba(43,149,174,0.15)', marginBottom:22 }}>
+            <Ic n="shield" size={14} color="var(--accent)" />
+            <p style={{ fontSize:12, color:'var(--text-2)', lineHeight:1.6 }}>
+              Emergency services (911), accessibility features (VoiceOver, TalkBack), and all system functions are always available — regardless of policy settings.
+            </p>
+          </div>
+
+          <div style={{ marginBottom:18 }}>
+            <input placeholder="Policy name (e.g. Silent Reading)"
+              value={policyName} onChange={e=>setPolicyName(e.target.value)}
+              style={{ width:'100%', padding:'10px 14px', fontFamily:'inherit', fontSize:13, color:'var(--text-1)', background:'var(--surface)', border:'1px solid var(--border)', borderRadius:9, outline:'none' }} />
+          </div>
+          <Btn variant="primary" disabled={!mode||!policyName} onClick={()=>setStep(2)}>Continue →</Btn>
+        </div>
+      )}
+
+      {/* STEP 2: Pick apps */}
+      {step===2 && (
+        <div>
+          <h2 style={{ fontSize:16, fontWeight:700, color:'var(--text-1)', marginBottom:6 }}>
+            {mode==='allow' ? 'Which apps can students use?' : 'Which apps should be blocked?'}
+          </h2>
+          <p style={{ fontSize:13, color:'var(--text-2)', marginBottom:20 }}>{selected.length} selected</p>
+          <SearchInput placeholder="Search apps and websites…" value={query} onChange={e=>setQuery(e.target.value)} sx={{ marginBottom:14 }} />
+
+          <div style={{ display:'flex', flexDirection:'column', gap:5, maxHeight:340, overflow:'auto', marginBottom:20 }}>
+            {filtered.map(app => {
+              const isSel = !!selected.find(a=>a.id===app.id);
+              return (
+                <div key={app.id} onClick={()=>toggle(app)} style={{
+                  display:'flex', alignItems:'center', gap:12, padding:'10px 12px', borderRadius:9, cursor:'pointer',
+                  background:isSel?'var(--accent-lt)':'var(--bg)',
+                  border:`1px solid ${isSel?'rgba(43,149,174,0.25)':'transparent'}`,
+                  transition:'all 0.15s',
+                }}>
+                  <div style={{ width:30, height:30, borderRadius:8, background:app.color, flexShrink:0 }} />
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:13, fontWeight:600, color:'var(--text-1)' }}>{app.name}</div>
+                    <div style={{ fontSize:11, color:'var(--text-3)' }}>{app.cat}</div>
+                  </div>
+                  <div style={{
+                    width:20, height:20, borderRadius:'50%',
+                    background:isSel?'var(--accent)':'var(--surface)',
+                    border:`1.5px solid ${isSel?'var(--accent)':'var(--border)'}`,
+                    display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0,
+                  }}>
+                    {isSel && <Ic n="check" size={10} color="#fff" />}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ display:'flex', gap:8 }}>
+            <Btn variant="ghost" onClick={()=>setStep(1)}>← Back</Btn>
+            <Btn variant="primary" disabled={selected.length===0} onClick={()=>setStep(3)}>Preview Policy →</Btn>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 3: Preview */}
+      {step===3 && (
+        <div>
+          <h2 style={{ fontSize:16, fontWeight:700, color:'var(--text-1)', marginBottom:6 }}>Policy preview</h2>
+          <p style={{ fontSize:13, color:'var(--text-2)', marginBottom:20 }}>Exactly what happens on each device platform before you push.</p>
+
+          {/* Platform tabs */}
+          <div style={{ display:'flex', gap:3, marginBottom:16, background:'var(--bg)', padding:4, borderRadius:9, width:'fit-content' }}>
+            {[['ios','iOS'],['android','Android'],['chromebook','ChromeOS'],['macos','macOS'],['windows','Windows']].map(([id,label]) => (
+              <button key={id} onClick={()=>setPlatform(id)} style={{
+                padding:'5px 14px', borderRadius:6, border:'none', cursor:'pointer', fontFamily:'inherit',
+                background:platform===id?'var(--surface)':'transparent',
+                color:platform===id?'var(--text-1)':'var(--text-3)',
+                fontSize:11, fontWeight:platform===id?700:500,
+                boxShadow:platform===id?'var(--s-card)':'none',
+              }}>{label}</button>
+            ))}
+          </div>
+
+          <div style={{ background:'var(--surface)', borderRadius:14, border:'1px solid var(--border)', padding:'20px', marginBottom:20 }}>
+            <div style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', marginBottom:14, textTransform:'uppercase', letterSpacing:'0.06em' }}>
+              {platform.toUpperCase()} — {mode==='allow'?'ALLOW LIST':'BLOCK LIST'} — {policyName}
+            </div>
+            {selected.map(app => (
+              <div key={app.id} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:10 }}>
+                <div style={{ width:24, height:24, borderRadius:6, background:app.color }} />
+                <span style={{ fontSize:13, color:'var(--text-1)', fontWeight:500, flex:1 }}>{app.name}</span>
+                <Ic n="check" size={14} color="var(--on-task)" />
+                <span style={{ fontSize:11, color:'var(--text-3)' }}>App + web</span>
+              </div>
+            ))}
+            {platform==='windows' && (
+              <div style={{ marginTop:14, padding:'9px 12px', background:'rgba(240,168,74,0.1)', borderRadius:7, fontSize:11, color:'#7A5A1A', display:'flex', gap:8 }}>
+                <Ic n="alert" size={13} color="#F0A84A" />
+                Windows: App-level enforcement requires ClassPulse agent v2.3+. URL blocking works on all versions.
+              </div>
+            )}
+          </div>
+
+          <div style={{ display:'flex', gap:8 }}>
+            <Btn variant="ghost" onClick={()=>setStep(2)}>← Back</Btn>
+            <Btn variant="primary" icon="zap">Save & Push to Class</Btn>
+            <Btn variant="secondary">Save for Later</Btn>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ── REPORTS SCREEN ──────────────────────────────────────────────────── */
+
+const ReportsScreen = () => {
+  const weekData = [
+    { day:'Mon', on:82, off:14 },
+    { day:'Tue', on:78, off:18 },
+    { day:'Wed', on:88, off:8  },
+    { day:'Thu', on:73, off:21, today:true },
+    { day:'Fri', on:0,  off:0  },
+  ];
+  const topOff = [
+    { app:'YouTube',   min:38, n:8 },
+    { app:'TikTok',    min:22, n:5 },
+    { app:'Discord',   min:17, n:4 },
+    { app:'Instagram', min:14, n:3 },
+    { app:'Roblox',    min:11, n:2 },
+  ];
+
+  return (
+    <div style={{ padding:'28px' }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:22 }}>
+        <div>
+          <h1 style={{ fontSize:22, fontWeight:800, color:'var(--text-1)', marginBottom:4 }}>Weekly Report</h1>
+          <p style={{ fontSize:13, color:'var(--text-3)' }}>7th Period English · April 14–18, 2026</p>
+        </div>
+        <div style={{ display:'flex', gap:8 }}>
+          <Btn variant="secondary" size="sm" icon="dl">Export PDF</Btn>
+          <Btn variant="secondary" size="sm" icon="mail">Email Principal</Btn>
+        </div>
+      </div>
+
+      {/* Summary cards */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:20 }}>
+        {[
+          { label:'Avg on-task',        val:'80%', sub:'+2% vs last week',       icon:'check',  col:'var(--on-task)'  },
+          { label:'Focus sessions',     val:'8',   sub:'+3 vs last week',        icon:'zap',    col:'var(--accent)'   },
+          { label:'Off-task incidents', val:'43',  sub:'−12 vs last week',       icon:'alert',  col:'var(--off-task)' },
+          { label:'Policies applied',   val:'12',  sub:'4 unique policies used', icon:'shield', col:'#8B5CF6'         },
+        ].map(c => (
+          <div key={c.label} style={{ background:'var(--surface)', borderRadius:14, padding:'16px', boxShadow:'var(--s-card)', border:'1px solid var(--border)' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+              <div style={{ width:30, height:30, borderRadius:8, background:`${c.col}18`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <Ic n={c.icon} size={13} color={c.col} />
+              </div>
+              <span style={{ fontSize:11, fontWeight:600, color:'var(--text-3)' }}>{c.label}</span>
+            </div>
+            <div style={{ fontSize:26, fontWeight:800, color:'var(--text-1)', lineHeight:1 }}>{c.val}</div>
+            <div style={{ fontSize:11, color:'var(--text-3)', marginTop:4 }}>{c.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts row */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:12 }}>
+        {/* Bar chart */}
+        <div style={{ background:'var(--surface)', borderRadius:14, padding:'22px', boxShadow:'var(--s-card)', border:'1px solid var(--border)' }}>
+          <div style={{ fontSize:13, fontWeight:700, color:'var(--text-1)', marginBottom:18 }}>On-task rate by day</div>
+          <div style={{ display:'flex', alignItems:'flex-end', gap:8, height:120, marginBottom:12 }}>
+            {weekData.map((d) => (
+              <div key={d.day} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}>
+                <div style={{ width:'100%', height:120, display:'flex', flexDirection:'column', justifyContent:'flex-end', gap:2 }}>
+                  {d.on>0 ? (
+                    <>
+                      <div style={{ background:'var(--off-task)', height:`${d.off}%`, borderRadius:'2px 2px 0 0', opacity:0.7 }} />
+                      <div style={{ background:'var(--on-task)', height:`${d.on}%`, borderRadius:'2px 2px 0 0' }} />
+                    </>
+                  ) : (
+                    <div style={{ background:'var(--border)', height:'100%', borderRadius:'2px 2px 0 0', opacity:0.4 }} />
+                  )}
+                </div>
+                <span style={{ fontSize:11, fontWeight:d.today?700:500, color:d.today?'var(--accent)':'var(--text-3)' }}>{d.day}</span>
+                {d.today && <span style={{ fontSize:9, color:'var(--accent)', fontWeight:700 }}>today</span>}
+              </div>
+            ))}
+          </div>
+          <div style={{ display:'flex', gap:16 }}>
+            {[['on-task','var(--on-task)'],['off-task','var(--off-task)']].map(([l,c]) => (
+              <div key={l} style={{ display:'flex', alignItems:'center', gap:5 }}>
+                <div style={{ width:8, height:8, borderRadius:2, background:c }} />
+                <span style={{ fontSize:11, color:'var(--text-3)' }}>{l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top off-task apps */}
+        <div style={{ background:'var(--surface)', borderRadius:14, padding:'22px', boxShadow:'var(--s-card)', border:'1px solid var(--border)' }}>
+          <div style={{ fontSize:13, fontWeight:700, color:'var(--text-1)', marginBottom:4 }}>Top off-task apps</div>
+          <div style={{ fontSize:11, color:'var(--text-3)', marginBottom:16 }}>This week · 7th Period English</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+            {topOff.map((item,i) => (
+              <div key={item.app} style={{ display:'flex', alignItems:'center', gap:8 }}>
+                <span style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', width:16, textAlign:'center' }}>{i+1}</span>
+                <div style={{ flex:1 }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
+                    <span style={{ fontSize:12, fontWeight:600, color:'var(--text-1)' }}>{item.app}</span>
+                    <span style={{ fontSize:11, color:'var(--text-3)' }}>{item.min}m · {item.n} students</span>
+                  </div>
+                  <div style={{ height:4, background:'var(--bg)', borderRadius:2 }}>
+                    <div style={{ height:'100%', background:'var(--off-task)', borderRadius:2, width:`${(item.min/38)*100}%`, opacity:0.8 }} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop:16, padding:'10px 12px', background:'var(--bg)', borderRadius:8, fontSize:11, color:'var(--text-3)', lineHeight:1.6 }}>
+            Showing school hours only (8 AM–3:30 PM). Home use is never monitored.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── SETTINGS SCREEN ─────────────────────────────────────────────────── */
+
+const SettingsScreen = () => (
+  <div style={{ padding:'28px', maxWidth:640 }}>
+    <h1 style={{ fontSize:22, fontWeight:800, color:'var(--text-1)', marginBottom:22 }}>Settings</h1>
+    {[
+      { section:'Account', items:[
+        { label:'Display name',    val:'Ms. Rivera',             disabled:true,  note:'Managed by Google Workspace' },
+        { label:'Email',           val:'mrivera@jefferson.edu',  disabled:true  },
+        { label:'School',          val:'Jefferson Middle School', disabled:true  },
+      ]},
+      { section:'Notifications', items:[
+        { label:'Off-task threshold',      val:'3 minutes',   disabled:false },
+        { label:'Policy push failures',    val:'Immediate',   disabled:false },
+        { label:'Weekly report email',     val:'Fridays',     disabled:false },
+      ]},
+      { section:'Privacy', items:[
+        { label:'Monitoring hours',  val:'School hours only (auto)', disabled:true, note:'Set by your district administrator' },
+        { label:'Data retention',    val:'90 days',                  disabled:true  },
+      ]},
+    ].map(group => (
+      <div key={group.section} style={{ marginBottom:24 }}>
+        <div style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:10 }}>{group.section}</div>
+        <div style={{ background:'var(--surface)', borderRadius:13, border:'1px solid var(--border)', overflow:'hidden', boxShadow:'var(--s-card)' }}>
+          {group.items.map((item,i) => (
+            <div key={item.label} style={{
+              display:'flex', alignItems:'center', justifyContent:'space-between',
+              padding:'14px 18px',
+              borderBottom:i<group.items.length-1?'1px solid var(--border)':'none',
+            }}>
+              <div>
+                <div style={{ fontSize:13, fontWeight:500, color:'var(--text-1)' }}>{item.label}</div>
+                {item.note && <div style={{ fontSize:11, color:'var(--text-3)', marginTop:2 }}>{item.note}</div>}
+              </div>
+              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                <span style={{ fontSize:13, color:item.disabled?'var(--text-3)':'var(--text-2)', fontWeight:500 }}>{item.val}</span>
+                {!item.disabled && <Ic n="chevR" size={14} color="var(--text-3)" />}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+/* ── TWEAKS PANEL ────────────────────────────────────────────────────── */
+
+const TweaksPanel = ({ show, tweaks, setTweaks, onClose }) => {
+  if (!show) return null;
+  const opts = [
+    { key:'density',     label:'Grid density',      opts:['Compact','Default','Spacious'] },
+    { key:'accentColor', label:'Accent color',       opts:['Teal','Blue','Indigo','Sage']  },
+    { key:'statusStyle', label:'Status indicator',   opts:['Dot','Background','Border']    },
+    { key:'showTime',    label:'Show "last updated"',opts:['Yes','No']                     },
+  ];
+  return (
+    <div className="tweaks-panel">
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
+        <span style={{ fontSize:12, fontWeight:700, color:'var(--text-1)' }}>Tweaks</span>
+        <button onClick={onClose} style={{ background:'none', border:'none', cursor:'pointer', color:'var(--text-3)' }}>
+          <Ic n="x" size={14} />
+        </button>
+      </div>
+      {opts.map(t => (
+        <div key={t.key} style={{ marginBottom:14 }}>
+          <div style={{ fontSize:11, fontWeight:600, color:'var(--text-2)', marginBottom:6 }}>{t.label}</div>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:4 }}>
+            {t.opts.map(o => (
+              <button key={o} onClick={()=>setTweaks(p=>({...p,[t.key]:o}))} style={{
+                padding:'4px 10px', borderRadius:6, fontSize:11, fontWeight:500, cursor:'pointer', fontFamily:'inherit',
+                background:tweaks[t.key]===o?'var(--accent)':'var(--bg)',
+                color:tweaks[t.key]===o?'#fff':'var(--text-2)',
+                border:`1px solid ${tweaks[t.key]===o?'var(--accent)':'var(--border)'}`,
+              }}>{o}</button>
+            ))}
+          </div>
+        </div>
+      ))}
+      <div style={{ padding:'10px', background:'var(--bg)', borderRadius:8, fontSize:11, color:'var(--text-3)', marginTop:8 }}>
+        Changes apply live in the prototype.
+      </div>
+    </div>
+  );
+};
+
+/* ── APP SHELL ───────────────────────────────────────────────────────── */
+
+const App = () => {
+  const [screen, setScreen]       = useState(() => localStorage.getItem('cp_screen') || 'login');
+  const [focusActive, setFocus]   = useState(false);
+  const [focusTime, setFocusTime] = useState(20 * 60);
+  const [showTweaks, setShowTweaks] = useState(false);
+  const [tweaks, setTweaks]       = useState({ density:'Default', accentColor:'Teal', statusStyle:'Dot', showTime:'Yes' });
+
+  useEffect(() => { localStorage.setItem('cp_screen', screen); }, [screen]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.data?.type === '__activate_edit_mode')   setShowTweaks(true);
+      if (e.data?.type === '__deactivate_edit_mode') setShowTweaks(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  const isAuth = ['login','consent','onboarding'].includes(screen);
+
+  return (
+    <div style={{ minHeight:'100vh', display:'flex', fontFamily:"'Plus Jakarta Sans', sans-serif" }}>
+      {!isAuth && <Sidebar screen={screen} setScreen={setScreen} />}
+
+      <div style={{ flex:1, display:'flex', flexDirection:'column', marginLeft:isAuth?0:'var(--sidebar-w)' }}>
+        {!isAuth && (
+          <TopBar screen={screen}
+            onFocus={()=>{ setFocus(true); setFocusTime(20*60); }}
+            focusActive={focusActive} />
+        )}
+
+        {focusActive && !isAuth && (
+          <FocusBanner onEnd={()=>setFocus(false)} timeLeft={focusTime} setTimeLeft={setFocusTime} />
+        )}
+
+        <div style={{ flex:1, overflow:'auto', marginTop:focusActive&&!isAuth?57:0 }}>
+          {screen==='login'        && <LoginScreen       setScreen={setScreen} />}
+          {screen==='consent'      && <ConsentScreen     setScreen={setScreen} />}
+          {screen==='onboarding'   && <OnboardingScreen  setScreen={setScreen} />}
+          {screen==='classes'      && <ClassesScreen     setScreen={setScreen} />}
+          {screen==='live'         && <LiveScreen />}
+          {screen==='policies'     && <PoliciesScreen    setScreen={setScreen} />}
+          {screen==='policyEditor' && <PolicyEditorScreen setScreen={setScreen} />}
+          {screen==='reports'      && <ReportsScreen />}
+          {screen==='settings'     && <SettingsScreen />}
+        </div>
+      </div>
+
+      <TweaksPanel show={showTweaks} tweaks={tweaks} setTweaks={setTweaks} onClose={()=>setShowTweaks(false)} />
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

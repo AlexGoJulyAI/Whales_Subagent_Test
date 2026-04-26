@@ -1,0 +1,24 @@
+{
+  "fontLinks": [
+    "https://m.media-amazon.com/images/I/71D0-BYgvjL.css?AUIClients/AudibleBrickCitySkin",
+    "https://m.media-amazon.com/images/I/21jLHdJ6hUL.css?AUIClients/AudibleWebNavigationAssets",
+    "https://d2nttevkh1mtzs.cloudfront.net/mosaic-versions/2d41ac52-8e4d-4ac5-80d6-44bc8634c1c6/www/audible-design-system.css",
+    "https://m.media-amazon.com/images/I/01nB9Ffu7mL.css?AUIClients/AudibleLegoWidgetsAssets",
+    "https://m.media-amazon.com/images/I/01PIy4uOPtL.css?AUIClients/AudibleWebSearchAssets",
+    "https://m.media-amazon.com/images/I/012TDX1mv5L.css?AUIClients/AudibleWebNotificationAssets"
+  ],
+  "headingFont": {
+    "fontFamily": "\"Audible Sans\", Arial, sans-serif",
+    "fontSize": "36px",
+    "fontWeight": "700",
+    "color": "rgb(255, 255, 255)",
+    "lineHeight": "42px"
+  },
+  "bodyFont": {
+    "fontFamily": "\"Audible Sans\", Arial, sans-serif",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "color": "rgb(1, 14, 25)",
+    "backgroundColor": "rgb(255, 255, 255)"
+  }
+}

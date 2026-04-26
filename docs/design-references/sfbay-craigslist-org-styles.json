@@ -1,0 +1,145 @@
+{
+  "body": {
+    "tag": "BODY",
+    "text": "CL\n\n    \n\n        \n            \n                    SF bay area\n\n            \n        \n\n\n\n\n\n    \n\n\n ",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "fontFamily": "\"Open Sans\", Helvetica, Arial, sans-serif",
+    "color": "rgb(34, 34, 34)",
+    "backgroundColor": "rgb(255, 255, 255)",
+    "padding": "0px",
+    "paddingTop": "0px",
+    "paddingRight": "0px",
+    "paddingBottom": "0px",
+    "paddingLeft": "0px",
+    "margin": "0px",
+    "width": "1440px",
+    "height": "900px",
+    "display": "block",
+    "border": "0px none rgb(34, 34, 34)",
+    "borderRadius": "0px"
+  },
+  "header": {
+    "error": "not found: #topban"
+  },
+  "logo": {
+    "tag": "H1",
+    "text": "craigslist",
+    "fontSize": "31.3333px",
+    "fontWeight": "500",
+    "fontFamily": "\"Times New Roman\", Times, serif",
+    "lineHeight": "42.3px",
+    "color": "rgb(85, 26, 139)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "paddingTop": "0px",
+    "paddingRight": "0px",
+    "paddingBottom": "0px",
+    "paddingLeft": "0px",
+    "margin": "0px",
+    "width": "196px",
+    "height": "42.2969px",
+    "display": "block",
+    "border": "0px none rgb(85, 26, 139)",
+    "borderRadius": "0px"
+  },
+  "searchInput": {
+    "error": "not found: #query"
+  },
+  "searchForm": {
+    "error": "not found: #search"
+  },
+  "communityHeader": {
+    "error": "not found: .community h4"
+  },
+  "communityLinks": {
+    "tag": "A",
+    "text": "community",
+    "fontSize": "16px",
+    "fontWeight": "700",
+    "fontFamily": "\"Open Sans\", Helvetica, Arial, sans-serif",
+    "color": "rgb(0, 0, 238)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "padding": "0px 5px",
+    "paddingTop": "0px",
+    "paddingRight": "5px",
+    "paddingBottom": "0px",
+    "paddingLeft": "5px",
+    "margin": "0px",
+    "width": "180.5px",
+    "height": "19.3281px",
+    "display": "block",
+    "border": "0px none rgb(0, 0, 238)",
+    "borderRadius": "0px"
+  },
+  "housingHeader": {
+    "error": "not found: .housing h4"
+  },
+  "housingLinks": {
+    "tag": "A",
+    "text": "housing",
+    "fontSize": "16px",
+    "fontWeight": "700",
+    "fontFamily": "\"Open Sans\", Helvetica, Arial, sans-serif",
+    "color": "rgb(0, 0, 238)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "padding": "0px 5px",
+    "paddingTop": "0px",
+    "paddingRight": "5px",
+    "paddingBottom": "0px",
+    "paddingLeft": "5px",
+    "margin": "0px",
+    "width": "204.805px",
+    "height": "19.3281px",
+    "display": "block",
+    "border": "0px none rgb(0, 0, 238)",
+    "borderRadius": "0px"
+  },
+  "categorySection": {
+    "tag": "DIV",
+    "text": "community\n        \n        \nactivities\nartists\nchildcare\nclasses\nevents\ngeneral\ngroups\nlocal news\n\n\n",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "fontFamily": "\"Open Sans\", Helvetica, Arial, sans-serif",
+    "color": "rgb(34, 34, 34)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "padding": "0px",
+    "paddingTop": "0px",
+    "paddingRight": "0px",
+    "paddingBottom": "0px",
+    "paddingLeft": "0px",
+    "margin": "0px",
+    "width": "200.5px",
+    "height": "754.102px",
+    "display": "block",
+    "border": "0px none rgb(34, 34, 34)",
+    "borderRadius": "0px"
+  },
+  "locationHeader": {
+    "error": "not found: .ban h2"
+  },
+  "navPills": {
+    "error": "not found: .sublinks a"
+  },
+  "forSaleHeader": {
+    "error": "not found: .forsale h4"
+  },
+  "gigsHeader": {
+    "error": "not found: .gigs h4"
+  },
+  "jobsHeader": {
+    "error": "not found: .jobs h4"
+  },
+  "discussionHeader": {
+    "error": "not found: .discussion h4"
+  },
+  "servicesHeader": {
+    "error": "not found: .services h4"
+  },
+  "footer": {
+    "error": "not found: #footer"
+  },
+  "sidebar": {
+    "error": "not found: #sidebar"
+  }
+}

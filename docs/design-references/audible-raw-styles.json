@@ -1,0 +1,124 @@
+{
+  "_meta": {
+    "source": "audible.com — authors page + home page nav",
+    "extracted": "2026-04-25",
+    "method": "Playwright MCP browser_evaluate + adoptedStyleSheets + getComputedStyle"
+  },
+
+  "nav": {
+    "browseDropdown": {
+      "host": "ADBL-NAV-MEGA-MENU (custom element, Shadow DOM)",
+      "panel": {
+        "className": "panel",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "boxShadow": "rgba(0,0,0,0.05) 0px 5px 7.5px 0px, rgba(0,0,0,0.05) 0px 20px 12.5px 0px, rgba(0,0,0,0.02) 0px 20px 15px 0px",
+        "padding": "16px max(24px, 50% - 800px)",
+        "zIndex": "9999"
+      },
+      "columns": [
+        {
+          "label": "Get Started",
+          "links": ["Audiobooks", "Podcasts", "Audible Originals", "Latino and Hispanic voices", "All categories", "Plans & Pricing"]
+        },
+        {
+          "label": "Popular Lists",
+          "links": ["Bestsellers", "Coming Soon", "New Releases", "Best of the Year", "Best of #BookTok"]
+        },
+        {
+          "label": "Explore Audible",
+          "links": ["Plus Catalog", "Gifts", "Help Center", "About Audible", "Blog", "Sales & Deals", "Accessibility"]
+        }
+      ]
+    },
+    "navLink": {
+      "host": "adbl-nav-link[variant=tertiary] (Shadow DOM)",
+      "shadowRules": {
+        "container": "display: flex; cursor: pointer; align-items: center; justify-content: space-between; gap: 4px; padding-top: 8px; padding-bottom: 8px",
+        "fontFamily": "var(--adbl-font-family-action-s, 'Audible Sans', Arial, sans-serif)",
+        "fontSizeDesktop": "var(--adbl-font-size-action-s, 16px)",
+        "lineHeightDesktop": "var(--adbl-font-line-height-action-s, 22px)",
+        "color": "var(--adbl-primary-fill)",
+        "hoverColor": "var(--adbl-quaternary-fill)",
+        "activeColor": "var(--adbl-secondary-fill)"
+      }
+    },
+    "navList": {
+      "host": "adbl-nav-list (Shadow DOM)",
+      "shadowRules": {
+        "headingColor": "var(--adbl-quaternary-fill)",
+        "headingFont": "same as navLink (action-s scale)",
+        "listContainer": "display: grid; grid-auto-flow: column; column-gap: 24px; grid-template-columns: repeat(var(--column-count), 1fr); grid-template-rows: repeat(10, auto)"
+      }
+    }
+  },
+
+  "chip": {
+    "host": "ADBL-CHIP (Shadow DOM)",
+    "variant": "outline",
+    "renderedSize": { "width": "176px (varies by text)", "height": "42px" },
+    "shadowRules": {
+      "container": "min-height: 32px; min-width: 40px; border-radius: 8px; border-width: 2px; display: flex; align-items: center; justify-content: normal",
+      "outlineVariant": {
+        "borderColor": "#93ACCD (rgb(147,172,205))",
+        "backgroundDefault": "transparent",
+        "backgroundHover": "#f1f7fe",
+        "backgroundPressed": "#dae9f9"
+      },
+      "chipContent": "margin: 8px; display: flex; overflow: hidden",
+      "textEl": "font-size: 16px (desktop); line-height: 22px; padding-left: 8px; padding-right: 8px; color: var(--adbl-primary-fill); overflow: hidden; text-overflow: ellipsis",
+      "focus": "outline: solid #577cff; outline-offset: -4px (inside chip-group)"
+    },
+    "chipTexts": ["Biographical Fiction", "Women", "Artists, Architects & Photographers", "Memoirs, Diaries & Correspondence", "Musician", "Collections & Anthologies", "Biographies", "Writing & Publishing"]
+  },
+
+  "authorsPage": {
+    "url": "audible.com/search?searchAuthor=&node=18574925011 (or /author/* pattern)",
+    "h1": {
+      "fontSize": "48px",
+      "fontWeight": "700",
+      "lineHeight": "52px",
+      "color": "#010E19"
+    },
+    "bookListItem": {
+      "className": "li.bc-list-item.productListItem",
+      "coverImage": {
+        "renderedSize": "232×232px",
+        "borderRadius": "clamp(8%, -999900% + 1049900px, 14%)"
+      },
+      "titleLink": {
+        "fontSize": "20px",
+        "fontWeight": "400",
+        "color": "#0E5B9B"
+      },
+      "metaLines": [
+        "By: [Author Name]",
+        "Narrated by: [Narrator Name]",
+        "Price: $14.99"
+      ]
+    },
+    "separator": {
+      "className": "bc-divider bc-spacing-small bc-divider-secondary",
+      "borderTop": "1px solid rgba(1, 14, 25, 0.15)",
+      "marginBottom": "15px"
+    },
+    "ctaButton": {
+      "text": "Try Standard free",
+      "containerTag": "SPAN.bc-button.bc-button-primary.bc-button-small",
+      "backgroundColor": "rgb(255, 160, 0)",
+      "color": "rgb(1, 14, 25)",
+      "borderRadius": "32px",
+      "height": "28px"
+    },
+    "filterChipGroup": {
+      "hostTag": "ADBL-CHIP-GROUP",
+      "wrapper": "ADBL-STYLE-SCOPE.bc-spacing-s2.related-tags-adobe.tags-page-mosaic-deflicker"
+    }
+  },
+
+  "pageLayout": {
+    "viewportAtCapture": "1440px",
+    "mainContainer": "#center-2 .centerSlot .bc-container",
+    "mainContainerWidth": "1440px",
+    "navPanelPaddingFormula": "16px max(24px, 50% - 800px)"
+  }
+}

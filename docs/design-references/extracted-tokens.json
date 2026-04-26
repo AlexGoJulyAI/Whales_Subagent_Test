@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "source": "audible.com (authors page + home page nav)",
+    "extracted": "2026-04-25",
+    "method": "Playwright MCP + Shadow DOM traversal + getComputedStyle + adoptedStyleSheets"
+  },
+
+  "color": {
+    "background": {
+      "page": "#FFFFFF",
+      "navPanel": "#FFFFFF",
+      "chipDefault": "transparent",
+      "chipHover": "#F1F7FE",
+      "chipPressed": "#DAE9F9"
+    },
+    "text": {
+      "primary": "#010E19",
+      "muted": "#4A6687",
+      "link": "#0E5B9B",
+      "linkHover": "#1479CF",
+      "linkPressed": "#0E416C",
+      "linkVisited": "#0E416C"
+    },
+    "border": {
+      "default": "#D1D6D7",
+      "chip": "#93ACCD",
+      "separator": "rgba(1, 14, 25, 0.15)"
+    },
+    "action": {
+      "ctaPrimary": "#FFA000",
+      "ctaPrimaryText": "#010E19",
+      "focusRing": "#577CFF"
+    }
+  },
+
+  "typography": {
+    "fontFamily": "\"Audible Sans\", Arial, sans-serif",
+    "scale": {
+      "h1": { "fontSize": "48px", "fontWeight": "700", "lineHeight": "52px" },
+      "actionS": {
+        "mobile": { "fontSize": "14px", "lineHeight": "20px" },
+        "desktop": { "fontSize": "16px", "lineHeight": "22px", "breakpoint": "960px" }
+      },
+      "bodyM": { "fontSize": "16px", "fontWeight": "400" },
+      "small": { "fontSize": "14px", "fontWeight": "400" },
+      "bookTitle": { "fontSize": "20px", "fontWeight": "400", "color": "#0E5B9B" }
+    }
+  },
+
+  "spacing": {
+    "chipMarginInner": "8px",
+    "chipPaddingText": "8px",
+    "navLinkPaddingY": "8px",
+    "navPanelPaddingTop": "16px",
+    "navPanelPaddingX": "max(24px, 50% - 800px)",
+    "separatorMarginBottom": "15px",
+    "navColumnGap": "24px"
+  },
+
+  "borderRadius": {
+    "chip": "8px",
+    "ctaButton": "32px",
+    "bookCover": "clamp(8%, -999900% + 1049900px, 14%)"
+  },
+
+  "shadow": {
+    "navPanel": "rgba(0, 0, 0, 0.05) 0px 5px 7.5px 0px, rgba(0, 0, 0, 0.05) 0px 20px 12.5px 0px, rgba(0, 0, 0, 0.02) 0px 20px 15px 0px"
+  },
+
+  "layout": {
+    "viewportWidth": "1440px",
+    "contentMaxWidth": "1600px",
+    "contentGutterMin": "24px",
+    "bookCoverSize": "232px",
+    "chipHeight": "42px",
+    "chipMinHeight": "32px",
+    "ctaButtonHeight": "28px",
+    "navZIndex": "9999"
+  },
+
+  "wcag": {
+    "bodyTextOnWhite": { "ratio": 19.48, "AA": "PASS", "AALarge": "PASS" },
+    "linkOnWhite": { "ratio": 7.03, "AA": "PASS", "AALarge": "PASS" },
+    "linkHoverOnWhite": { "ratio": 4.5, "AA": "PASS", "AALarge": "PASS" },
+    "ctaTextOnOrange": { "ratio": 9.54, "AA": "PASS", "AALarge": "PASS" },
+    "navSubheadingOnWhite": { "ratio": 5.93, "AA": "PASS", "AALarge": "PASS" }
+  },
+
+  "cssVars": {
+    "--adbl-primary-fill": "#010e19",
+    "--adbl-link": "#0e5b9b",
+    "--adbl-link-hover": "#1479CF",
+    "--adbl-link-pressed": "#0e416c",
+    "--adbl-link-visited": "#0e416c"
+  }
+}

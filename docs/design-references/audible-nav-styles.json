@@ -1,0 +1,91 @@
+{
+  "browseButton": {
+    "color": "rgb(1, 14, 25)",
+    "fontSize": "16px",
+    "fontWeight": "600",
+    "fontFamily": "\"Audible Sans\", Arial, sans-serif",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "padding": "12px 0px",
+    "border": "0px outset rgb(0, 0, 0)",
+    "borderBottom": "0px outset rgb(0, 0, 0)",
+    "display": "flex",
+    "alignItems": "center",
+    "gap": "4px",
+    "cursor": "pointer",
+    "height": "48px",
+    "lineHeight": "22px"
+  },
+  "dropdownPanel": {
+    "bg": "rgb(255, 255, 255)",
+    "color": "rgb(1, 14, 25)",
+    "padding": "16px 24px",
+    "boxShadow": "rgba(0, 0, 0, 0.05) 0px 5px 7.5px 0px, rgba(0, 0, 0, 0.05) 0px 20px 12.5px 0px, rgba(0, 0, 0, 0.02) 0px 20px 15px 0px",
+    "border": "0px none rgb(1, 14, 25)",
+    "borderTop": "0px none rgb(1, 14, 25)",
+    "display": "grid",
+    "width": "1440px",
+    "position": "absolute"
+  },
+  "columns": [
+    {
+      "label": "Language",
+      "links": [],
+      "headingStyle": null,
+      "htmlPreview": "<!----><div id=\"container\">\n      <!--?lit$303295995$--><div id=\"heading\"><!--?lit$303295995$-->Language</div>\n      <div id=\"list-container\">\n        <slot></slot>\n      </div>\n    </div>"
+    },
+    {
+      "label": "Currency",
+      "links": [],
+      "headingStyle": null,
+      "htmlPreview": "<!----><div id=\"container\">\n      <!--?lit$303295995$--><div id=\"heading\"><!--?lit$303295995$-->Currency</div>\n      <div id=\"list-container\">\n        <slot></slot>\n      </div>\n    </div>"
+    },
+    {
+      "label": "Get Started",
+      "links": [
+        "Audiobooks",
+        "Podcasts",
+        "Audible Originals",
+        "Latino and Hispanic voices",
+        "All categories",
+        "Plans & Pricing"
+      ],
+      "headingStyle": null,
+      "htmlPreview": "<!----><div id=\"container\">\n      <!--?lit$303295995$--><div id=\"heading\"><!--?lit$303295995$-->Get Started</div>\n      <div id=\"list-container\">\n        <slot></slot>\n      </div>\n    </div>"
+    },
+    {
+      "label": "Popular Lists",
+      "links": [
+        "Bestsellers",
+        "Coming Soon",
+        "New Releases",
+        "Best of the Year",
+        "Best of #BookTok"
+      ],
+      "headingStyle": null,
+      "htmlPreview": "<!----><div id=\"container\">\n      <!--?lit$303295995$--><div id=\"heading\"><!--?lit$303295995$-->Popular Lists</div>\n      <div id=\"list-container\">\n        <slot></slot>\n      </div>\n    </div>"
+    },
+    {
+      "label": "Explore Audible",
+      "links": [
+        "Plus Catalog",
+        "Gifts",
+        "Help Center",
+        "About Audible",
+        "Blog",
+        "Sales & Deals",
+        "Accessibility"
+      ],
+      "headingStyle": null,
+      "htmlPreview": "<!----><div id=\"container\">\n      <!--?lit$303295995$--><div id=\"heading\"><!--?lit$303295995$-->Explore Audible</div>\n      <div id=\"list-container\">\n        <slot></slot>\n      </div>\n    </div>"
+    }
+  ],
+  "navLinkStyle": {
+    "color": "rgb(0, 0, 238)",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "textDecoration": "none",
+    "padding": "0px",
+    "display": "flex"
+  },
+  "navLinkHtml": "<!---->\n      <a href=\"https://help.audible.com\">\n        <div id=\"container\">\n          <slot name=\"start\"></slot>\n          <slot></slot>\n          <slot name=\"end\"></slot>\n        </div>\n      </a>\n    "
+}

@@ -1,0 +1,42 @@
+{
+  "columnHeading": {
+    "color": "rgb(74, 102, 135)",
+    "fontSize": "16px",
+    "fontWeight": "600",
+    "letterSpacing": "normal",
+    "textTransform": "none",
+    "marginBottom": "0px",
+    "fontFamily": "\"Audible Sans\", Arial, sans-serif",
+    "lineHeight": "22px"
+  },
+  "columnContainer": {
+    "display": "flex",
+    "flexDirection": "column",
+    "gap": "normal",
+    "padding": "0px"
+  },
+  "navLinkAnchor": {
+    "color": "rgb(0, 0, 238)",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "textDecoration": "none",
+    "padding": "0px",
+    "lineHeight": "24px",
+    "fontFamily": "\"Audible Sans\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, Ubuntu, Cantarell, \"Noto Sans\", sans-serif, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+  },
+  "navLinkContainer": {
+    "padding": "8px 0px",
+    "display": "flex",
+    "gap": "4px"
+  },
+  "navLinkLightDom": "<adbl-nav-link variant=\"tertiary\" href=\"/ep/audiobooks?ref_pageloadid=not_applicable&amp;pf_rd_p=4d39f8a3-0d0e-4c4a-a392-071104eb99e7&amp;pf_rd_r=GYMCW6SXT75NKAZ5NE3Z&amp;plink=FS3uyIBXj4rHitJK&amp;pa",
+  "navLinkHref": "/ep/audiobooks?ref_pageloadid=not_applicable&pf_rd_p=4d39f8a3-0d0e-4c4a-a392-071104eb99e7&pf_rd_r=GYMCW6SXT75NKAZ5NE3Z&plink=FS3uyIBXj4rHitJK&pageLoadId=AWInfTB5w2HFPQ4G&creativeId=89c46f53-4188-44a0-9ec6-3f1e76b91d12&ref=a_hp_ndi1_i0_rowitem",
+  "navLinkText": "Audiobooks",
+  "browseActiveIndicator": null,
+  "browseButtonHtml": "<!----><button type=\"button\" aria-controls=\"nav-mega-menu-1\" aria-expanded=\"true\">\n        <!--?lit$303295995$--><adbl-icon data-testid=\"nav-mega-menu-icon\" name=\"discover\"></adbl-icon>\n        <!--?lit$303295995$-->Browse\n        <!--?lit$303295995$--><div id=\"indicator\" data-testid=\"nav-mega-menu-indicator\"></div>\n      </button>\n      <div class=\"panel\" role=\"group\" id=\"nav-mega-menu-1\">\n        <slot></slot>\n      </div>",
+  "megaMenuEl": {
+    "position": "static",
+    "display": "block",
+    "width": "81.5469px"
+  }
+}

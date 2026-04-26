@@ -1,1167 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction B — Trusted Data Dashboard | TreeHouse / SafeChat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Direction B — Prominent Bar | Airbnb Safety Overlay</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif; background: #F0F4F8; color: #222222; -webkit-font-smoothing: antialiased; }
 
-    html, body {
-      background: #EEEEEE;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      min-height: 100vh;
-    }
+  /* ── DOC HEADER ── */
+  .doc-header { background: #1E2A40; padding: 28px 32px 24px; }
+  .doc-kicker { font-size: 10px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 6px; }
+  .doc-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+  .doc-title span { color: #FF385C; }
+  .doc-subtitle { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .doc-quality { display: flex; gap: 14px; flex-wrap: wrap; }
+  .doc-q { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55); }
+  .doc-q span { color: #FF385C; }
+  .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 12px; }
+  .callout-strategy { background: rgba(255,56,92,.12); border-color: #FF385C; }
+  .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 4px; }
+  .callout-body { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.6; }
 
-    /* ===========================
-       PAGE HEADER
-    =========================== */
-    .page-header {
-      background: #083386;
-      padding: 22px 48px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .direction-badge {
-      background: rgba(255,255,255,0.18);
-      color: #fff;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      flex-shrink: 0;
-    }
-    .header-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .header-sub {
-      font-size: 13px;
-      color: rgba(255,255,255,0.62);
-      line-height: 1.5;
-      margin-left: auto;
-      max-width: 420px;
-      text-align: right;
-    }
+  /* ── TWO-COLUMN BODY ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .col { padding: 24px 28px; min-width: 0; }
+  .col-left { background: #F0F4F8; border-right: 1px solid #E2E8F0; }
+  .col-right { background: #FFFFFF; }
+  .col-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; color: #6A6A6A; margin-bottom: 12px; }
+  .col-title { font-size: 18px; font-weight: 800; color: #222222; margin-bottom: 18px; line-height: 1.3; }
 
-    /* ===========================
-       PHONES STAGE
-    =========================== */
-    .stage {
-      display: flex;
-      justify-content: center;
-      gap: 36px;
-      padding: 48px 48px 32px;
-      align-items: flex-start;
-    }
+  /* ── PART A: WIREFRAME DIAGRAM ── */
+  .wireframe { background: #FFFFFF; border: 1px solid #DDDDDD; border-radius: 8px; overflow: hidden; }
+  .wf-header { background: #F8F8F8; border-bottom: 1px solid #DDDDDD; padding: 12px 16px; }
+  .wf-zone-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6A6A6A; }
+  .wf-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .wf-pill { height: 28px; padding: 0 10px; border: 1px solid #DDDDDD; border-radius: 24px; background: #fff; display: inline-flex; align-items: center; font-size: 10px; color: #6A6A6A; }
+  .wf-pill.brand { background: #FF385C; color: #fff; border-color: #FF385C; }
+  .wf-pill.active { background: #222222; color: #fff; border-color: #222222; }
+  .wf-pill.icon { width: 28px; padding: 0; justify-content: center; border-radius: 50%; background: #F2F2F2; border: none; }
 
-    /* Phone wrapper */
-    .phone-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-    .phone-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: #555;
-      text-align: center;
-    }
+  /* DIRECTION B SIGNATURE — Prominent Safety Bar */
+  .wf-safety-bar { background: linear-gradient(90deg, #FFFFFF 0%, #FAFAFA 100%); border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding: 14px 18px; display: flex; align-items: center; gap: 14px; }
+  .wf-safety-bar-label { font-size: 11px; font-weight: 700; color: #222; letter-spacing: .02em; }
+  .wf-safety-segment { display: flex; gap: 0; border: 1px solid #DDDDDD; border-radius: 24px; overflow: hidden; background: #fff; }
+  .wf-seg-tier { padding: 8px 14px; font-size: 10px; font-weight: 600; color: #222; border-right: 1px solid #DDDDDD; display: inline-flex; align-items: center; gap: 6px; }
+  .wf-seg-tier:last-child { border-right: none; }
+  .wf-seg-tier.tier-A { color: #1A7A4A; }
+  .wf-seg-tier.tier-B { color: #B58B00; }
+  .wf-seg-tier.tier-C { color: #D4600A; }
+  .wf-seg-tier.active-A { background: #1A7A4A; color: #fff; }
+  .wf-seg-tier .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .wf-seg-tier .dot.A { background: #1A7A4A; }
+  .wf-seg-tier .dot.B { background: #B58B00; }
+  .wf-seg-tier .dot.C { background: #D4600A; }
+  .wf-seg-tier.active-A .dot { background: #fff; }
 
-    /* iPhone 14 shell */
-    .phone {
-      width: 248px;
-      background: #1c1c1e;
-      border-radius: 44px;
-      padding: 10px;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.07),
-        0 24px 60px rgba(0,0,0,0.38),
-        0 6px 16px rgba(0,0,0,0.22);
-      position: relative;
-      /* Side buttons */
-    }
-    /* Left silent switch */
-    .phone::before {
-      content: '';
-      position: absolute;
-      left: -3px;
-      top: 80px;
-      width: 3px;
-      height: 30px;
-      background: #3a3a3c;
-      border-radius: 2px 0 0 2px;
-    }
-    /* Right power button */
-    .phone::after {
-      content: '';
-      position: absolute;
-      right: -3px;
-      top: 90px;
-      width: 3px;
-      height: 50px;
-      background: #3a3a3c;
-      border-radius: 0 2px 2px 0;
-    }
+  .wf-result-summary { font-size: 11px; color: #6A6A6A; margin-left: auto; }
+  .wf-result-summary strong { color: #222; font-weight: 700; }
 
-    /* Screen area */
-    .phone-screen {
-      width: 228px;
-      height: 492px;
-      border-radius: 36px;
-      overflow: hidden;
-      background: #fafbfb;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
+  .wf-body { display: grid; grid-template-columns: 1.12fr 1fr; gap: 0; min-height: 480px; }
+  .wf-listings { padding: 14px; border-right: 1px solid #DDDDDD; background: #FFFFFF; }
+  .wf-map { background: linear-gradient(135deg, #DCEEF5, #E8F1ED); padding: 14px; position: relative; }
+  .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wf-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #EFEFEF; }
+  .wf-card-photo { aspect-ratio: 1.05/1; background: linear-gradient(135deg, #C8D5DD, #B8C7D1); position: relative; }
+  .wf-card-photo .heart { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; }
+  .wf-card-photo .heart::before { content: "♡"; color: #fff; font-size: 16px; line-height: 1; }
+  .wf-card-photo .gf-badge { position: absolute; top: 8px; left: 8px; height: 16px; padding: 0 6px; border-radius: 24px; background: linear-gradient(357.5deg, rgb(62,86,124), rgb(128,157,192)); color: #fff; font-size: 7px; font-weight: 700; display: inline-flex; align-items: center; }
 
-    /* Dynamic island */
-    .di {
-      position: absolute;
-      top: 9px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 76px;
-      height: 22px;
-      background: #000;
-      border-radius: 14px;
-      z-index: 40;
-      pointer-events: none;
-    }
+  .wf-card-body { padding: 8px 10px; }
+  .wf-card-title-row { height: 8px; background: #E2E8F0; border-radius: 4px; margin-bottom: 5px; width: 70%; }
+  /* DIRECTION B SIGNATURE — Letter-grade chip in metadata row */
+  .wf-card-meta-row-B { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .wf-card-meta-bar { height: 6px; background: #EEF2F6; border-radius: 4px; flex: 1; }
+  .wf-grade-chip { height: 16px; padding: 0 6px; border-radius: 4px; font-size: 8px; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 3px; flex-shrink: 0; }
+  .wf-grade-chip.A { background: #1A7A4A; }
+  .wf-grade-chip.B { background: #B58B00; }
+  .wf-grade-chip.C { background: #D4600A; }
+  .wf-grade-chip.D { background: #C0292B; }
+  .wf-card-price-row { height: 8px; background: #DCE3EA; border-radius: 4px; width: 50%; margin-top: 6px; }
 
-    /* Status bar spacer */
-    .status-bar {
-      height: 42px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding: 0 18px 6px;
-    }
-    .sb-time {
-      font-size: 11px;
-      font-weight: 600;
-      color: #1c1c1e;
-    }
-    .sb-icons {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10px;
-      color: #1c1c1e;
-    }
-    /* On dark headers, status bar text is white */
-    .sb-white .sb-time,
-    .sb-white .sb-icons { color: #fff; }
+  .wf-map-marker { position: absolute; height: 22px; padding: 0 8px; background: rgba(255,255,255,.95); border-radius: 4px; font-size: 9px; font-weight: 600; color: #222; display: inline-flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .wf-heatzone { position: absolute; border-radius: 50%; filter: blur(20px); }
 
-    /* ===========================
-       SHARED ATOMS
-    =========================== */
-    /* Avatar circle */
-    .avatar {
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    /* Section label */
-    .section-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: #a2a0b9;
-      padding: 8px 14px 4px;
-    }
+  /* Callout numbers */
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #FF385C; color: #fff; font-size: 10px; font-weight: 700; flex-shrink: 0; vertical-align: middle; margin-left: 4px; }
 
-    /* ===========================
-       PHONE 1 — CHILD OVERVIEW
-    =========================== */
-    .p1 {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: #fafbfb;
-      overflow: hidden;
-    }
-    .p1-header {
-      background: #274296;
-      padding: 0 14px 12px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .p1-header-wordmark {
-      font-size: 17px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-    .p1-header-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .p1-body {
-      flex: 1;
-      overflow: hidden;
-      padding: 0 10px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    /* Child card (peach) */
-    .child-card {
-      background: #ffeee6;
-      border-radius: 20px;
-      border: 1px solid #f0d8ce;
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 7px;
-    }
-    .child-card-initials {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: #f29da8;
-      color: #283b85;
-      font-size: 14px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .child-card-info { flex: 1; min-width: 0; }
-    .child-card-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: #283b85;
-    }
-    .child-card-sub {
-      font-size: 10px;
-      color: #77797a;
-      margin-top: 1px;
-    }
-    .safe-badge {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: #edf9f1;
-      border: 1px solid #88d4a2;
-      border-radius: 999px;
-      padding: 3px 8px;
-      font-size: 9px;
-      font-weight: 700;
-      color: #2a7a4e;
-      flex-shrink: 0;
-    }
-    .dot-green {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #34c759;
-      flex-shrink: 0;
-    }
-    /* Add child button */
-    .add-child-btn {
-      border: 1.5px dashed #274296;
-      border-radius: 999px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: #274296;
-      gap: 4px;
-      margin: 2px 0 8px;
-      background: transparent;
-    }
-    /* Weekly Summary card */
-    .weekly-card {
-      background: #fff;
-      border: 1px solid #e0e1e3;
-      border-radius: 20px;
-      padding: 12px 14px;
-      box-shadow: 0 2px 12px rgba(39,66,150,0.08);
-    }
-    .weekly-card-title {
-      font-size: 10px;
-      font-weight: 700;
-      color: #283b85;
-      letter-spacing: 0.01em;
-      margin-bottom: 10px;
-    }
-    .weekly-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 5px 0;
-      border-bottom: 1px solid #f0f0f2;
-    }
-    .weekly-row:last-child { border-bottom: none; }
-    .weekly-row-label {
-      font-size: 10px;
-      color: #77797a;
-    }
-    .weekly-row-val {
-      font-size: 11px;
-      font-weight: 700;
-      color: #283b85;
-    }
-    .alert-num-badge {
-      background: #f5a623;
-      color: #fff;
-      border-radius: 999px;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 2px 7px;
-    }
-    .flag-badge {
-      background: #d9e0f8;
-      color: #274296;
-      border-radius: 999px;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 7px;
-    }
+  /* ── PART B: SPEC TABLE ── */
+  .spec-section { margin-bottom: 22px; }
+  .spec-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #E2E8F0; }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .spec-table td { padding: 6px 8px; vertical-align: top; line-height: 1.5; border-bottom: 1px solid #F1F5F9; }
+  .spec-table td:first-child { width: 38%; font-weight: 600; color: #6A6A6A; }
+  .spec-table td:last-child { color: #222222; font-family: "SF Mono", Menlo, monospace; font-size: 11px; }
+  .spec-bullet { font-size: 12px; color: #222222; line-height: 1.6; padding-left: 14px; position: relative; margin-bottom: 6px; }
+  .spec-bullet::before { content: "•"; position: absolute; left: 0; color: #FF385C; font-weight: 700; }
+  .spec-bullet strong { color: #222222; font-weight: 700; }
 
-    /* ===========================
-       PHONE 2 — PARENT DASHBOARD
-    =========================== */
-    .p2 {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: #fafbfb;
-      overflow: hidden;
-    }
+  .state-block { background: #F8F8F8; border-left: 3px solid #FF385C; border-radius: 0 6px 6px 0; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; line-height: 1.55; }
+  .state-name { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #FF385C; margin-bottom: 4px; }
 
-    /* Dashboard top bar with name + period picker */
-    .p2-topbar {
-      background: #274296;
-      padding: 0 14px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-    .p2-topbar-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .period-chip {
-      background: rgba(255,255,255,0.2);
-      border-radius: 999px;
-      padding: 4px 11px;
-      font-size: 10px;
-      font-weight: 600;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .period-chip-arrow { font-size: 8px; opacity: 0.8; }
+  /* ── DESIGNER NOTES ── */
+  .notes-section { background: #1E2A40; padding: 28px 32px; }
+  .notes-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.5); margin-bottom: 16px; }
+  .note-group { margin-bottom: 18px; }
+  .note-group-label { font-size: 11px; font-weight: 700; color: #FF385C; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+  .note-item { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.65; padding-left: 12px; border-left: 2px solid rgba(255,56,92,.4); margin-bottom: 6px; }
+  .note-item code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 3px; font-size: 11px; color: #fff; }
 
-    /* Hero metric block — THE DOMINANT ELEMENT */
-    .hero-metric-block {
-      background: #fff;
-      border-radius: 22px;
-      border: 1px solid #e0e1e3;
-      box-shadow: 0 2px 12px rgba(39,66,150,0.08);
-      margin: 10px 10px 0;
-      padding: 16px 16px 14px;
-      flex-shrink: 0;
-    }
-    .hero-metric-number {
-      font-size: 42px;
-      font-weight: 800;
-      color: #283b85;
-      line-height: 1;
-      letter-spacing: -0.03em;
-    }
-    .hero-metric-sub {
-      font-size: 11px;
-      font-weight: 400;
-      color: #77797a;
-      margin-top: 5px;
-    }
+  .debate-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .debate-cell { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px 12px; font-size: 11px; color: rgba(255,255,255,.78); line-height: 1.5; }
+  .debate-cell strong { color: #FF385C; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
 
-    /* 2-column pill action buttons */
-    .pill-btn-row {
-      display: flex;
-      gap: 8px;
-      margin: 10px 10px 0;
-      flex-shrink: 0;
-    }
-    .pill-btn {
-      flex: 1;
-      height: 44px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: #283b85;
-      text-align: center;
-      line-height: 1.3;
-      padding: 0 8px;
-    }
-    .pill-btn-coral { background: #f29da8; }
-    .pill-btn-blue  { background: #d9e0f8; }
-
-    /* Multi-color bar chart card */
-    .chart-card {
-      background: #fff;
-      border-radius: 20px;
-      border: 1px solid #e0e1e3;
-      box-shadow: 0 2px 12px rgba(39,66,150,0.08);
-      margin: 10px 10px 0;
-      padding: 12px 12px 10px;
-      flex-shrink: 0;
-    }
-    .chart-title {
-      font-size: 10px;
-      font-weight: 700;
-      color: #283b85;
-      margin-bottom: 10px;
-    }
-    .chart-area {
-      display: flex;
-      align-items: flex-end;
-      gap: 0;
-      height: 72px;
-      padding-bottom: 0;
-      border-bottom: 1.5px solid #e0e1e3;
-    }
-    .bar-col {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0;
-    }
-    .bar {
-      width: 18px;
-      border-radius: 4px 4px 0 0;
-    }
-    .bar-label {
-      font-size: 7px;
-      font-weight: 500;
-      color: #a2a0b9;
-      margin-top: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 28px;
-      text-align: center;
-    }
-    /* y-axis tick labels */
-    .chart-y-labels {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 72px;
-      padding-bottom: 0;
-      margin-right: 4px;
-    }
-    .y-label {
-      font-size: 7px;
-      color: #c0bfd0;
-      line-height: 1;
-    }
-
-    /* Flagged topics preview rows (in Phone 2) */
-    .p2-topic-preview {
-      margin: 10px 10px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      flex: 1;
-      overflow: hidden;
-    }
-    .p2-topic-row {
-      background: #fff;
-      border: 1px solid #e0e1e3;
-      border-radius: 12px;
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .topic-icon {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: #fff;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .topic-info { flex: 1; min-width: 0; }
-    .topic-name {
-      font-size: 10px;
-      font-weight: 700;
-      color: #283b85;
-    }
-    .topic-sub {
-      font-size: 9px;
-      color: #77797a;
-      margin-top: 1px;
-    }
-    .severity-badge {
-      border-radius: 999px;
-      font-size: 8px;
-      font-weight: 800;
-      padding: 3px 7px;
-      flex-shrink: 0;
-      letter-spacing: 0.04em;
-    }
-    .sev-high   { background: #e5534b; color: #fff; }
-    .sev-medium { background: #f5a623; color: #fff; }
-    .sev-low    { background: #34c759; color: #fff; }
-
-    /* ===========================
-       PHONE 3 — ALERT / TOPIC DETAIL
-    =========================== */
-    .p3 {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: #fafbfb;
-      overflow: hidden;
-    }
-    .p3-header {
-      background: #274296;
-      padding: 0 14px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .p3-back-btn {
-      font-size: 16px;
-      color: rgba(255,255,255,0.8);
-    }
-    .p3-header-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    /* Topic card rows — anchor "App Usage" rows translated */
-    .topic-cards {
-      flex: 1;
-      padding: 10px 10px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      overflow: hidden;
-    }
-    .topic-card {
-      background: #fff;
-      border: 1px solid #e0e1e3;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(39,66,150,0.08);
-    }
-    .topic-card-inner {
-      padding: 10px 12px 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .topic-card-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: #fff;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-    .topic-card-info { flex: 1; min-width: 0; }
-    .topic-card-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: #283b85;
-    }
-    .topic-card-sub {
-      font-size: 10px;
-      color: #77797a;
-      margin-top: 2px;
-    }
-    .topic-card-badge {
-      border-radius: 999px;
-      font-size: 8px;
-      font-weight: 800;
-      padding: 4px 9px;
-      flex-shrink: 0;
-      letter-spacing: 0.04em;
-    }
-    /* Progress bar at card bottom */
-    .topic-card-bar-track {
-      height: 4px;
-      background: #f0f0f2;
-    }
-    .topic-card-bar-fill {
-      height: 4px;
-    }
-
-    /* History link */
-    .history-link {
-      font-size: 11px;
-      font-weight: 600;
-      color: #274296;
-      padding: 12px 14px 6px;
-      display: block;
-      flex-shrink: 0;
-    }
-
-    /* ===========================
-       TOKEN TABLE + COMPONENT MAP
-    =========================== */
-    .bottom-section {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 48px 56px;
-      display: flex;
-      gap: 28px;
-      align-items: flex-start;
-    }
-    .token-table-wrap, .comp-map-wrap {
-      flex: 1;
-      background: #fff;
-      border: 1px solid #e0e1e3;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(39,66,150,0.06);
-    }
-    .section-header {
-      background: #274296;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      padding: 10px 16px;
-    }
-    /* Token rows */
-    .token-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 16px;
-      border-bottom: 1px solid #f0f0f2;
-      font-size: 11px;
-    }
-    .token-row:last-child { border-bottom: none; }
-    .token-swatch {
-      width: 18px;
-      height: 18px;
-      border-radius: 5px;
-      border: 1px solid rgba(0,0,0,0.09);
-      flex-shrink: 0;
-    }
-    .token-name { flex: 1; color: #283b85; font-weight: 600; }
-    .token-val  { font-family: monospace; font-size: 10px; color: #a2a0b9; }
-
-    /* Comp map rows */
-    .comp-row {
-      padding: 9px 16px;
-      border-bottom: 1px solid #f0f0f2;
-      font-size: 11px;
-      line-height: 1.55;
-      color: #77797a;
-    }
-    .comp-row:last-child { border-bottom: none; }
-    .comp-row strong { display: block; color: #283b85; font-size: 12px; margin-bottom: 2px; }
-    .comp-row .anchor-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #f29da8;
-    }
-    .comp-row .arrow { color: #274296; font-weight: 700; margin: 0 4px; }
-    .comp-row .translated-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #274296;
-    }
-  </style>
+  .quality-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 8px; }
+  .quality-card { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px; text-align: center; }
+  .quality-num { font-size: 20px; font-weight: 800; color: #FF385C; }
+  .quality-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: rgba(255,255,255,.55); margin-top: 4px; }
+</style>
 </head>
 <body>
 
-  <!-- PAGE HEADER -->
-  <div class="page-header">
-    <div class="direction-badge">B</div>
-    <div class="header-title">Direction B — Trusted Data Dashboard</div>
-    <div class="header-sub">Fireart anchor translation · navy authority + warm pastel data · the tool a confident parent trusts</div>
+<!-- ============= DOC HEADER ============= -->
+<div class="doc-header">
+  <div class="doc-kicker">Airbnb Safety Overlay · Designer Agent · v1-pipeline 2026-04-25</div>
+  <div class="doc-title">Direction B — <span>Prominent Bar</span></div>
+  <div class="doc-subtitle">Highest visibility: dedicated horizontal safety bar between search and listings. Safety becomes a first-class peer of search, not a sub-filter.</div>
+  <div class="doc-quality">
+    <span class="doc-q">Clean <span>3/5</span></span>
+    <span class="doc-q">Effective <span>5/5</span></span>
+    <span class="doc-q">Intuitive <span>5/5</span></span>
+    <span class="doc-q">Pleasing <span>4/5</span></span>
+    <span class="doc-q">Total <span>17/20</span></span>
+  </div>
+  <div class="callout callout-strategy">
+    <div class="callout-label">Why this direction exists</div>
+    <div class="callout-body">The brief's §3 Problem 1 calls out "no safety filter exists in the filter bar." Direction A solves this minimally; Direction B solves it loudly. For a user who landed on the page specifically because they care about safety, the bar removes any chance of missing the feature: it sits in their reading path, full-width, with the four tiers always visible. The trade-off is 56px of new vertical real estate above the listings.</div>
+  </div>
+</div>
+
+<!-- ============= TWO-COLUMN BODY ============= -->
+<div class="two-col">
+
+  <!-- ── PART A: LAYOUT WIREFRAME ── -->
+  <div class="col col-left">
+    <div class="col-label">Part A · Layout Diagram</div>
+    <div class="col-title">Page wireframe — dedicated safety bar full-width between search & results</div>
+
+    <div class="wireframe">
+      <!-- Sticky header zone -->
+      <div class="wf-header">
+        <div class="wf-zone-label">Sticky header — 151px (unchanged)</div>
+        <div class="wf-row" style="margin-top: 8px;">
+          <div class="wf-pill" style="font-weight: 700; color: #FF385C;">airbnb</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="height: 48px; padding: 0 24px;">San Francisco · Anywhere · Add guests</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="font-size: 10px;">Become a host</div>
+          <div class="wf-pill icon">⊕</div>
+          <div class="wf-pill icon">≡</div>
+        </div>
+        <div class="wf-row" style="margin-top: 10px;">
+          <div class="wf-pill active">Any</div>
+          <div class="wf-pill">Home</div>
+          <div class="wf-pill">Hotel</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="border: 1px solid #222;">≡ Filters</div>
+        </div>
+      </div>
+
+      <!-- DIRECTION B SIGNATURE — Dedicated Safety Bar -->
+      <div class="wf-safety-bar">
+        <div class="wf-safety-bar-label">Safety</div>
+        <div class="wf-safety-segment">
+          <div class="wf-seg-tier active-A"><span class="dot A"></span>Very Safe</div>
+          <div class="wf-seg-tier tier-B"><span class="dot B"></span>Safe</div>
+          <div class="wf-seg-tier tier-C"><span class="dot C"></span>Average</div>
+          <div class="wf-seg-tier"><span style="font-size:9px;">All</span></div>
+        </div>
+        <div class="wf-result-summary"><strong>12</strong> Very Safe stays<span class="num">1</span></div>
+      </div>
+
+      <div class="wf-body">
+        <div class="wf-listings">
+          <div class="wf-zone-label" style="margin-bottom: 8px;">Listings panel — 734px · 2-col grid</div>
+          <div class="wf-grid">
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="gf-badge">Guest favorite</div>
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-B">
+                  <div class="wf-card-meta-bar"></div>
+                  <div class="wf-grade-chip A">★ A</div>
+                  <span class="num">2</span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-B">
+                  <div class="wf-card-meta-bar"></div>
+                  <div class="wf-grade-chip A">★ A</div>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-B">
+                  <div class="wf-card-meta-bar"></div>
+                  <div class="wf-grade-chip B">★ B</div>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-B">
+                  <div class="wf-card-meta-bar"></div>
+                  <div class="wf-grade-chip B">★ B</div>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-B">
+                  <div class="wf-card-meta-bar"></div>
+                  <div class="wf-grade-chip C">★ C</div>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-B">
+                  <div class="wf-card-meta-bar"></div>
+                  <div class="wf-grade-chip A">★ A</div>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-zone-label" style="margin-top: 14px; text-align: center;">Drawer expands inline below tapped card row →<span class="num">3</span></div>
+        </div>
+
+        <div class="wf-map">
+          <div class="wf-zone-label">Map panel — 657px sticky</div>
+          <div class="wf-heatzone" style="background: rgba(26,122,74,0.45); width: 100px; height: 90px; top: 50px; left: 30px;"></div>
+          <div class="wf-heatzone" style="background: rgba(181,139,0,0.45); width: 90px; height: 80px; top: 180px; left: 90px;"></div>
+          <div class="wf-heatzone" style="background: rgba(212,96,10,0.45); width: 80px; height: 70px; top: 100px; right: 60px;"></div>
+          <div class="wf-heatzone" style="background: rgba(192,41,43,0.45); width: 70px; height: 60px; bottom: 90px; left: 60px;"></div>
+
+          <div class="wf-map-marker" style="top: 70px; left: 60px;">$248</div>
+          <div class="wf-map-marker" style="top: 130px; left: 110px;">$312</div>
+          <div class="wf-map-marker" style="top: 220px; left: 80px;">$186</div>
+          <div class="wf-map-marker" style="top: 180px; right: 80px;">$198</div>
+
+          <div style="position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.2);">≋<span class="num" style="position: absolute; top: -8px; right: -8px;">4</span></div>
+          <div style="position: absolute; bottom: 14px; left: 14px; background: rgba(255,255,255,.95); padding: 8px 10px; border-radius: 6px; font-size: 9px; box-shadow: 0 2px 6px rgba(0,0,0,.12);">
+            <div style="font-weight: 700; margin-bottom: 4px; color: #222;">Safety</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#1A7A4A; border-radius:2px;"></span>A</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#B58B00; border-radius:2px;"></span>B</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#D4600A; border-radius:2px;"></span>C</div>
+            <div style="display:flex; align-items:center; gap:5px;"><span style="width:8px; height:8px; background:#C0292B; border-radius:2px;"></span>D</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #fff; border: 1px solid #DDDDDD; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 11px; line-height: 1.7; color: #222;">
+      <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 6px;">Spatial Summary</div>
+      <div><strong>Direction:</strong> Prominent Bar</div>
+      <div><strong>Layout:</strong> Standard Airbnb 2-pane (734px listings · 657px map). Header stays 151px. NEW — 56px-tall full-width safety bar inserted between header and listings.</div>
+      <div><strong>Distinctive layout move:</strong> Safety gets its own horizontal zone — full-width, segmented control, always visible. Positioned as a peer of search, not a member of the filter row.</div>
+      <div><strong>New/changed zones:</strong> NEW safety bar (56px tall, full-width) · Card metadata row (grade chip added) · Map (heatmap + toggle).</div>
+      <div><strong>Proportional note:</strong> Bar height 56px chosen to match Airbnb's existing search-form vertical rhythm.</div>
+    </div>
   </div>
 
-  <!-- THREE PHONE FRAMES -->
-  <div class="stage">
+  <!-- ── PART B: DESIGN SPECIFICATION ── -->
+  <div class="col col-right">
+    <div class="col-label">Part B · Design Specification</div>
+    <div class="col-title">Tokens, components, states, edge cases — for Prototyper handoff</div>
 
-    <!-- ============================================================
-         PHONE 1 — Child Overview / Selector
-    ============================================================ -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="di"></div>
-        <div class="phone-screen">
-
-          <!-- Status bar (dark bg) -->
-          <div class="status-bar sb-white" style="background:#274296;">
-            <span class="sb-time">9:41</span>
-            <span class="sb-icons">▪ ▪ ▪</span>
-          </div>
-
-          <!-- Navy header -->
-          <div class="p1-header">
-            <div class="p1-header-wordmark">TreeHouse</div>
-            <div class="p1-header-avatar">A</div>
-          </div>
-
-          <!-- Body -->
-          <div class="p1-body">
-            <!-- Your Children label -->
-            <div class="section-label">Your Children</div>
-
-            <!-- Emma card -->
-            <div class="child-card">
-              <div class="child-card-initials">E</div>
-              <div class="child-card-info">
-                <div class="child-card-name">Emma, 15</div>
-                <div class="child-card-sub">Active · 2 hrs today</div>
-              </div>
-              <div class="safe-badge">
-                <div class="dot-green"></div>
-                Safe
-              </div>
-            </div>
-
-            <!-- James card -->
-            <div class="child-card">
-              <div class="child-card-initials" style="background:#d9e0f8; color:#283b85;">J</div>
-              <div class="child-card-info">
-                <div class="child-card-name">James, 13</div>
-                <div class="child-card-sub">Active · 45 min</div>
-              </div>
-              <div class="safe-badge">
-                <div class="dot-green"></div>
-                Safe
-              </div>
-            </div>
-
-            <!-- Add child -->
-            <div class="add-child-btn">
-              <span style="font-size:14px; font-weight:800;">+</span>
-              Add child
-            </div>
-
-            <!-- Weekly Summary -->
-            <div class="weekly-card">
-              <div class="weekly-card-title">Weekly Summary</div>
-              <div class="weekly-row">
-                <span class="weekly-row-label">Total AI time</span>
-                <span class="weekly-row-val">2 hrs 14 min</span>
-              </div>
-              <div class="weekly-row">
-                <span class="weekly-row-label">Alerts this week</span>
-                <span class="alert-num-badge">3</span>
-              </div>
-              <div class="weekly-row">
-                <span class="weekly-row-label">Flagged topics</span>
-                <span class="flag-badge">2 categories</span>
-              </div>
-            </div>
-
-          </div><!-- end p1-body -->
-
-        </div><!-- phone-screen -->
-      </div><!-- phone -->
-      <div class="phone-label">Phone 1 — Child Overview</div>
+    <div class="spec-section">
+      <div class="spec-section-title">Living Token Reference</div>
+      <table class="spec-table">
+        <tr><td>color-primary-brand</td><td>#FF385C</td></tr>
+        <tr><td>color-text-primary</td><td>#222222</td></tr>
+        <tr><td>color-text-secondary</td><td>#6A6A6A</td></tr>
+        <tr><td>color-bg-page</td><td>#FFFFFF</td></tr>
+        <tr><td>color-bg-header-light</td><td>#F8F8F8</td></tr>
+        <tr><td>color-border-default</td><td>#DDDDDD</td></tr>
+        <tr><td>color-border-active-pill</td><td>#222222</td></tr>
+        <tr><td>color-bg-icon-button</td><td>#F2F2F2</td></tr>
+        <tr><td>font-family</td><td>"Circular", -apple-system, system-ui</td></tr>
+        <tr><td>font-pill-tab</td><td>12px / 400 / lh 16px</td></tr>
+        <tr><td>font-listing-title</td><td>14px / 500 / lh 18px</td></tr>
+        <tr><td>font-price</td><td>15px / 400 / lh 19px</td></tr>
+        <tr><td>spacing-header-height</td><td>151px</td></tr>
+        <tr><td>spacing-card</td><td>307×398px</td></tr>
+        <tr><td>radius-filter-pill</td><td>24px</td></tr>
+        <tr><td>radius-card-inner</td><td>20px</td></tr>
+        <tr><td colspan="2" style="padding-top: 10px; font-weight: 700; color: #FF385C;">Direction B — Safety bar tokens</td></tr>
+        <tr><td>safety-bar-height</td><td>56px</td></tr>
+        <tr><td>safety-bar-bg</td><td>linear-gradient(90deg, #FFFFFF, #FAFAFA)</td></tr>
+        <tr><td>safety-bar-border</td><td>1px solid #DDDDDD top + bottom</td></tr>
+        <tr><td>safety-bar-padding</td><td>14px 24px</td></tr>
+        <tr><td>safety-segment-radius</td><td>24px</td></tr>
+        <tr><td>safety-segment-h</td><td>34px</td></tr>
+        <tr><td>safety-segment-tier-px</td><td>16px</td></tr>
+        <tr><td>safety-segment-divider</td><td>1px solid #DDDDDD between tiers</td></tr>
+        <tr><td>color-safety-A</td><td>#1A7A4A</td></tr>
+        <tr><td>color-safety-B</td><td>#B58B00</td></tr>
+        <tr><td>color-safety-C</td><td>#D4600A</td></tr>
+        <tr><td>color-safety-D</td><td>#C0292B</td></tr>
+        <tr><td>color-heatmap-A/B/C/D</td><td>same as A but at 0.25 alpha</td></tr>
+        <tr><td>safety-grade-chip-h</td><td>22px</td></tr>
+        <tr><td>safety-grade-chip-radius</td><td>4px (matches map markers)</td></tr>
+        <tr><td>safety-grade-chip-font</td><td>11px / 700 / .04em ls</td></tr>
+        <tr><td>heatmap-toggle</td><td>40px · r 50%</td></tr>
+        <tr><td>safety-transition</td><td>all 200ms ease</td></tr>
+      </table>
     </div>
 
-    <!-- ============================================================
-         PHONE 2 — Parent Dashboard (HERO SCREEN)
-    ============================================================ -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="di"></div>
-        <div class="phone-screen">
-
-          <!-- Status bar (dark bg) -->
-          <div class="status-bar sb-white" style="background:#274296;">
-            <span class="sb-time">9:41</span>
-            <span class="sb-icons">▪ ▪ ▪</span>
-          </div>
-
-          <!-- Top bar -->
-          <div class="p2-topbar">
-            <div class="p2-topbar-title">Emma's Activity</div>
-            <div class="period-chip">Today <span class="period-chip-arrow">▾</span></div>
-          </div>
-
-          <!-- *** HERO METRIC — must dominate *** -->
-          <div class="hero-metric-block">
-            <div class="hero-metric-number">2 hrs 14 min</div>
-            <div class="hero-metric-sub">Total AI time · This week</div>
-          </div>
-
-          <!-- *** 2-COLUMN PILL BUTTONS *** -->
-          <div class="pill-btn-row">
-            <div class="pill-btn pill-btn-coral">View Alerts (3)</div>
-            <div class="pill-btn pill-btn-blue">Edit Settings</div>
-          </div>
-
-          <!-- *** MULTI-COLOR BAR CHART *** -->
-          <div class="chart-card">
-            <div class="chart-title">Conversation Topics</div>
-            <div style="display:flex; align-items:flex-end;">
-              <!-- Y-axis -->
-              <div class="chart-y-labels">
-                <span class="y-label">10</span>
-                <span class="y-label">5</span>
-                <span class="y-label">0</span>
-              </div>
-              <!-- Bars: 6 bars, each different color
-                   Self-harm=6, Loneliness=8, Drugs=3, Radical=1, Personal=4, School=5
-                   Max bar height = 64px for 10 mentions -->
-              <div class="chart-area" style="flex:1;">
-                <!-- Self-harm: 6/10 = 48px -->
-                <div class="bar-col">
-                  <div class="bar" style="height:49px; background:#e5534b;"></div>
-                  <div class="bar-label" style="color:#e5534b;">Self-harm</div>
-                </div>
-                <!-- Loneliness: 8/10 = 64px -->
-                <div class="bar-col">
-                  <div class="bar" style="height:62px; background:#8f7bfa;"></div>
-                  <div class="bar-label" style="color:#8f7bfa;">Lonely</div>
-                </div>
-                <!-- Drugs: 3/10 = 24px -->
-                <div class="bar-col">
-                  <div class="bar" style="height:23px; background:#f0a04b;"></div>
-                  <div class="bar-label" style="color:#f0a04b;">Drugs</div>
-                </div>
-                <!-- Radicalization: 1/10 = 8px -->
-                <div class="bar-col">
-                  <div class="bar" style="height:8px; background:#274296;"></div>
-                  <div class="bar-label" style="color:#274296;">Radical</div>
-                </div>
-                <!-- Personal info: 4/10 = 32px -->
-                <div class="bar-col">
-                  <div class="bar" style="height:32px; background:#4ba8a0;"></div>
-                  <div class="bar-label" style="color:#4ba8a0;">Personal</div>
-                </div>
-                <!-- Schoolwork: 5/10 = 40px -->
-                <div class="bar-col">
-                  <div class="bar" style="height:40px; background:#4b8ef0;"></div>
-                  <div class="bar-label" style="color:#4b8ef0;">School</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Flagged Topics preview rows (App Usage rows translation) -->
-          <div class="p2-topic-preview">
-            <div class="section-label" style="padding-left:2px;">Flagged Topics</div>
-
-            <!-- Row: Loneliness -->
-            <div class="p2-topic-row">
-              <div class="topic-icon" style="background:#8f7bfa;">L</div>
-              <div class="topic-info">
-                <div class="topic-name">Loneliness</div>
-                <div class="topic-sub">Emma · 7 mentions</div>
-              </div>
-              <div class="severity-badge sev-medium">MEDIUM</div>
-            </div>
-            <!-- Row: Self-harm -->
-            <div class="p2-topic-row">
-              <div class="topic-icon" style="background:#e5534b;">S</div>
-              <div class="topic-info">
-                <div class="topic-name">Self-harm</div>
-                <div class="topic-sub">Emma · 3 mentions</div>
-              </div>
-              <div class="severity-badge sev-high">HIGH</div>
-            </div>
-
-          </div>
-
-        </div><!-- phone-screen -->
-      </div><!-- phone -->
-      <div class="phone-label">Phone 2 — Parent Dashboard (Hero)</div>
+    <div class="spec-section">
+      <div class="spec-section-title">Component 1 · Safety Bar (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · sticky horizontal bar</td></tr>
+        <tr><td>Position</td><td>Between sticky header and listings · full-width</td></tr>
+        <tr><td>Sticky behavior</td><td>Sticks at top: 151px on scroll (below header)</td></tr>
+        <tr><td>Background</td><td>linear-gradient(90deg, #FFFFFF, #FAFAFA)</td></tr>
+        <tr><td>Border</td><td>1px solid #DDDDDD (top + bottom)</td></tr>
+        <tr><td>Height</td><td>56px</td></tr>
+        <tr><td>Padding</td><td>14px 24px</td></tr>
+        <tr><td>Layout</td><td>flex · gap 14px · align-items center</td></tr>
+        <tr><td>Children</td><td>Label · Segmented control · Result summary (right-aligned)</td></tr>
+        <tr><td>Label copy</td><td>"Safety"</td></tr>
+        <tr><td>Label font</td><td>13px / 700 / #222222</td></tr>
+      </table>
     </div>
 
-    <!-- ============================================================
-         PHONE 3 — Alert / Topic Detail
-    ============================================================ -->
-    <div class="phone-wrap">
-      <div class="phone">
-        <div class="di"></div>
-        <div class="phone-screen">
+    <div class="spec-section">
+      <div class="spec-section-title">Component 2 · Segmented Tier Control (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · 4 tiers</td></tr>
+        <tr><td>Background</td><td>#FFFFFF</td></tr>
+        <tr><td>Border</td><td>1px solid #DDDDDD</td></tr>
+        <tr><td>Radius</td><td>24px (outer)</td></tr>
+        <tr><td>Height</td><td>34px (matches existing pills)</td></tr>
+        <tr><td>Tier padding</td><td>8px 16px</td></tr>
+        <tr><td>Tier divider</td><td>1px solid #DDDDDD vertical</td></tr>
+        <tr><td>Tier font</td><td>12px / 600 / #222222 (default)</td></tr>
+        <tr><td>Tier copy</td><td>"Very Safe" · "Safe" · "Average" · "All"</td></tr>
+        <tr><td>Tier dot</td><td>8px circle, grade color, before label</td></tr>
+        <tr><td>Result summary copy</td><td>"{N} {tier} stays" · 11px / 400 / #6A6A6A</td></tr>
+      </table>
 
-          <!-- Status bar (dark bg) -->
-          <div class="status-bar sb-white" style="background:#274296;">
-            <span class="sb-time">9:41</span>
-            <span class="sb-icons">▪ ▪ ▪</span>
-          </div>
-
-          <!-- Header -->
-          <div class="p3-header">
-            <div class="p3-back-btn">←</div>
-            <div class="p3-header-title">Flagged Topics</div>
-          </div>
-
-          <!-- Topic Cards — anchor "App Usage rows" translated -->
-          <div class="topic-cards">
-
-            <!-- Row 1: Loneliness — MEDIUM -->
-            <div class="topic-card">
-              <div class="topic-card-inner">
-                <div class="topic-card-icon" style="background:#8f7bfa;">L</div>
-                <div class="topic-card-info">
-                  <div class="topic-card-name">Loneliness</div>
-                  <div class="topic-card-sub">Emma · 7 mentions</div>
-                </div>
-                <div class="topic-card-badge" style="background:#f5a623; color:#fff;">MEDIUM</div>
-              </div>
-              <!-- Progress bar: 80% coral -->
-              <div class="topic-card-bar-track">
-                <div class="topic-card-bar-fill" style="width:80%; background:#f29da8;"></div>
-              </div>
-            </div>
-
-            <!-- Row 2: Self-harm — HIGH -->
-            <div class="topic-card">
-              <div class="topic-card-inner">
-                <div class="topic-card-icon" style="background:#e5534b;">S</div>
-                <div class="topic-card-info">
-                  <div class="topic-card-name">Self-harm</div>
-                  <div class="topic-card-sub">Emma · 3 mentions</div>
-                </div>
-                <div class="topic-card-badge" style="background:#e5534b; color:#fff;">HIGH</div>
-              </div>
-              <!-- Progress bar: 40% red -->
-              <div class="topic-card-bar-track">
-                <div class="topic-card-bar-fill" style="width:40%; background:#e5534b;"></div>
-              </div>
-            </div>
-
-            <!-- Row 3: Drugs — LOW -->
-            <div class="topic-card">
-              <div class="topic-card-inner">
-                <div class="topic-card-icon" style="background:#f0a04b;">D</div>
-                <div class="topic-card-info">
-                  <div class="topic-card-name">Drugs</div>
-                  <div class="topic-card-sub">James · 2 mentions</div>
-                </div>
-                <div class="topic-card-badge" style="background:#34c759; color:#fff;">LOW</div>
-              </div>
-              <!-- Progress bar: 25% orange -->
-              <div class="topic-card-bar-track">
-                <div class="topic-card-bar-fill" style="width:25%; background:#f0a04b;"></div>
-              </div>
-            </div>
-
-            <!-- Row 4: Personal info — MEDIUM -->
-            <div class="topic-card">
-              <div class="topic-card-inner">
-                <div class="topic-card-icon" style="background:#4ba8a0;">P</div>
-                <div class="topic-card-info">
-                  <div class="topic-card-name">Personal info</div>
-                  <div class="topic-card-sub">James · 4 mentions</div>
-                </div>
-                <div class="topic-card-badge" style="background:#f5a623; color:#fff;">MEDIUM</div>
-              </div>
-              <!-- Progress bar: 50% teal -->
-              <div class="topic-card-bar-track">
-                <div class="topic-card-bar-fill" style="width:50%; background:#4ba8a0;"></div>
-              </div>
-            </div>
-
-          </div><!-- end topic-cards -->
-
-          <!-- History link -->
-          <div class="history-link">View full conversation history →</div>
-
-        </div><!-- phone-screen -->
-      </div><!-- phone -->
-      <div class="phone-label">Phone 3 — Alert / Topic Detail</div>
-    </div>
-
-  </div><!-- end stage -->
-
-  <!-- TOKEN TABLE + COMPONENT TRANSLATION MAP -->
-  <div class="bottom-section">
-
-    <!-- Token Table -->
-    <div class="token-table-wrap">
-      <div class="section-header">Design Tokens</div>
-
-      <div class="token-row">
-        <div class="token-swatch" style="background:#fafbfb; border:1px solid #ccc;"></div>
-        <span class="token-name">Page bg</span>
-        <span class="token-val">#fafbfb</span>
+      <div class="state-block">
+        <div class="state-name">State · Default (no tier — equals "All")</div>
+        All 4 tier segments at default style: white bg, grade-color text. "All" segment is bold-weight to indicate default selection.
       </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#ffeee6; border:1px solid #f0d8ce;"></div>
-        <span class="token-name">Peach card surface</span>
-        <span class="token-val">#ffeee6</span>
+      <div class="state-block">
+        <div class="state-name">State · Active (Very Safe selected)</div>
+        Selected tier: bg #1A7A4A · text #FFFFFF · dot #FFFFFF. Other tiers default. Result summary updates: "12 Very Safe stays".
       </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#274296;"></div>
-        <span class="token-name">Navy accent</span>
-        <span class="token-val">#274296</span>
+      <div class="state-block">
+        <div class="state-name">State · Hover (non-selected tier)</div>
+        Bg #F8F8F8 · text unchanged · cursor pointer.
       </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#f29da8;"></div>
-        <span class="token-name">Coral secondary</span>
-        <span class="token-val">#f29da8</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#283b85;"></div>
-        <span class="token-name">Navy text</span>
-        <span class="token-val">#283b85</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#77797a;"></div>
-        <span class="token-name">Body text</span>
-        <span class="token-val">#77797a</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#d9e0f8;"></div>
-        <span class="token-name">Blue pill bg</span>
-        <span class="token-val">#d9e0f8</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#e0e1e3;"></div>
-        <span class="token-name">Card border</span>
-        <span class="token-val">#e0e1e3 · 1px hairline</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#e5534b;"></div>
-        <span class="token-name">Alert red</span>
-        <span class="token-val">#e5534b</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#8f7bfa;"></div>
-        <span class="token-name">Loneliness purple</span>
-        <span class="token-val">#8f7bfa</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#f0a04b;"></div>
-        <span class="token-name">Drugs orange</span>
-        <span class="token-val">#f0a04b</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#4ba8a0;"></div>
-        <span class="token-name">Personal info teal</span>
-        <span class="token-val">#4ba8a0</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#4b8ef0;"></div>
-        <span class="token-name">Schoolwork blue</span>
-        <span class="token-val">#4b8ef0</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#fff; border:1px solid #ccc;"></div>
-        <span class="token-name">Card radius</span>
-        <span class="token-val">20–24px</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#fff; border:1px solid #ccc; border-radius:999px;"></div>
-        <span class="token-name">Button radius</span>
-        <span class="token-val">999px (pill)</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#fff; border:1px solid #ccc;"></div>
-        <span class="token-name">Card shadow</span>
-        <span class="token-val">0 2px 12px rgba(39,66,150,0.08)</span>
-      </div>
-      <div class="token-row">
-        <div class="token-swatch" style="background:#fff; border:1px solid #ccc;"></div>
-        <span class="token-name">Font</span>
-        <span class="token-val">Inter, 700 display / 400 body</span>
+      <div class="state-block">
+        <div class="state-name">State · Switching tiers</div>
+        Active fill animates 200ms ease — translateX between segment positions for fluid feel. Result summary cross-fades.
       </div>
     </div>
 
-    <!-- Component Translation Map -->
-    <div class="comp-map-wrap">
-      <div class="section-header">Component Translation Map — Fireart Anchor → Direction B</div>
+    <div class="spec-section">
+      <div class="spec-section-title">Component 3 · Card Grade Chip (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · in card metadata row</td></tr>
+        <tr><td>Position</td><td>Right-aligned in same row as star rating</td></tr>
+        <tr><td>Background</td><td>color-safety-{grade}</td></tr>
+        <tr><td>Text color</td><td>#FFFFFF</td></tr>
+        <tr><td>Font</td><td>11px / 700 / letter-spacing .04em</td></tr>
+        <tr><td>Padding</td><td>3px 8px</td></tr>
+        <tr><td>Height</td><td>22px</td></tr>
+        <tr><td>Radius</td><td>4px (matches map price markers)</td></tr>
+        <tr><td>Copy</td><td>"★ A" · "★ B" · "★ C" · "★ D"</td></tr>
+        <tr><td>Click behavior</td><td>Expands inline drawer · stops link propagation</td></tr>
+      </table>
 
-      <div class="comp-row">
-        <strong>Component 1 — Hero Metric</strong>
-        <span class="anchor-label">Anchor</span><span class="arrow">→</span><span class="translated-label">Translated</span><br>
-        Fireart center phone: "1 hrs 25 min" as massive navy display text (#283b85, ~40–48px, 700) with "Today" label + period selector chip.<br>
-        Phone 2: "2 hrs 14 min" at 42px / 800 weight navy, card-contained with white bg + hairline border, full-width. Visually dominant — first thing the eye lands on.
+      <div class="state-block">
+        <div class="state-name">State · Default</div>
+        Solid grade-color chip with star + letter. Visually subordinate to listing title but unmistakable due to saturated color.
       </div>
-
-      <div class="comp-row">
-        <strong>Component 2 — 2-Column Pill Buttons</strong>
-        <span class="anchor-label">Anchor</span><span class="arrow">→</span><span class="translated-label">Translated</span><br>
-        Fireart: coral pill "Block Apps &amp; Sites" + blue pill "App Limits", equal-width, ~48px tall, 999px radius.<br>
-        Phone 2: coral (#f29da8) "View Alerts (3)" + blue (#d9e0f8) "Edit Settings". Same 2-column equal-width layout, 44px height, pill radius. Navy text on both.
+      <div class="state-block">
+        <div class="state-name">State · Hover</div>
+        Brightness +10% · cursor pointer · tooltip "View safety details" (300ms delay).
       </div>
-
-      <div class="comp-row">
-        <strong>Component 3 — Multi-Color Bar Chart</strong>
-        <span class="anchor-label">Anchor</span><span class="arrow">→</span><span class="translated-label">Translated</span><br>
-        Fireart right phone: "Screen Time" bar chart with differently-colored bars per app (coral, blue, purple, orange).<br>
-        Phone 2: "Conversation Topics" chart — 6 bars each a unique color: Self-harm red, Loneliness purple, Drugs orange, Radicalization navy, Personal info teal, Schoolwork blue. Heights proportional to mention count (max 10). Labels below bars in matching colors.
+      <div class="state-block">
+        <div class="state-name">State · Active (drawer open)</div>
+        Brightness +15% · 2px white inner ring · the corresponding tier-segment in the bar above pulses once (300ms) to confirm relationship.
       </div>
-
-      <div class="comp-row">
-        <strong>Component 4 — App Usage Rows with Progress Bar</strong>
-        <span class="anchor-label">Anchor</span><span class="arrow">→</span><span class="translated-label">Translated</span><br>
-        Fireart: colored brand icon | app name bold + url muted | time "2h 4m" | horizontal progress bar at card bottom. White card, subtle border, 16px radius.<br>
-        Phone 3: colored category icon (circle, 34px) | topic name bold + "child · N mentions" muted | severity badge (HIGH/MEDIUM/LOW) | colored horizontal progress bar at card bottom. White card, 1px #e0e1e3 border, 20px radius, shadow. 4 rows: Loneliness 80%, Self-harm 40%, Drugs 25%, Personal info 50%.
-      </div>
-
-      <div class="comp-row">
-        <strong>Component 5 — Child Info / Location Card</strong>
-        <span class="anchor-label">Anchor</span><span class="arrow">→</span><span class="translated-label">Translated</span><br>
-        Fireart left phone: map card "Emily's phone" + "School / Locations" + location icons.<br>
-        Phone 1: Per-child profile cards (peach bg #ffeee6, 20px radius) — avatar initials circle (coral for Emma, blue-tinted for James) | name + age bold | activity status muted | green dot "Safe" badge. Two cards side by side in vertical list. Weekly Summary card below provides data context.
-      </div>
-
     </div>
 
-  </div><!-- end bottom-section -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component 4 · Inline Safety Drawer (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · same drawer pattern as Direction A</td></tr>
+        <tr><td>Background</td><td>#F8F8F8</td></tr>
+        <tr><td>Border-top</td><td>4px solid color-safety-{grade}</td></tr>
+        <tr><td>Padding</td><td>20px 24px</td></tr>
+        <tr><td>Width</td><td>734px (full listings panel)</td></tr>
+        <tr><td>Layout</td><td>4-col grid · gap 24px</td></tr>
+        <tr><td>Content</td><td>Walkability · Crime · Hospitals · Transit</td></tr>
+        <tr><td>Animation</td><td>height 0→auto · 250ms ease</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component 5 · Heatmap Toggle (P0)</div>
+      <table class="spec-table">
+        <tr><td>Position</td><td>Map panel · top 14px right 14px</td></tr>
+        <tr><td>Size</td><td>40 × 40px · radius 50%</td></tr>
+        <tr><td>Bg off / on</td><td>#FFFFFF / #222222</td></tr>
+        <tr><td>Icon</td><td>≋ waves</td></tr>
+        <tr><td>Tooltip</td><td>"Safety heatmap"</td></tr>
+        <tr><td>Sync</td><td>Auto-on when bar selection ≠ "All"</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Active States — All Interactive Components</div>
+      <div class="spec-bullet"><strong>Safety bar</strong> — sticky · always visible · no collapse state in v1</div>
+      <div class="spec-bullet"><strong>Segmented control</strong> — default white · hover #F8F8F8 · active grade-fill</div>
+      <div class="spec-bullet"><strong>Grade chip</strong> — solid color · hover +10% · active +15% white-ring</div>
+      <div class="spec-bullet"><strong>Drawer</strong> — collapsed h0 · expanded auto · switching fade150ms</div>
+      <div class="spec-bullet"><strong>Heatmap toggle</strong> — auto-syncs with bar selection but can be manually toggled</div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Edge Cases</div>
+      <div class="state-block">
+        <div class="state-name">Edge · Filter "Very Safe" → 0 results</div>
+        Listings panel renders empty-state at full width below the bar: bold "No Very Safe stays match your filters" · body "Try Safe to see {N} more options." · CTA "Show Safe (B+)" — same brand-pill style. Result summary in bar updates to "0 Very Safe stays" in #C0292B color for emphasis.
+      </div>
+      <div class="state-block">
+        <div class="state-name">Edge · Drawer open + new tier selected</div>
+        Drawer auto-collapses with 150ms fade. Bar updates result summary. If the previously-tapped listing remains in the new filter set, no scroll change. If filtered out, scroll resets to top of panel (smooth, 300ms).
+      </div>
+      <div class="state-block">
+        <div class="state-name">Edge · Heatmap on + bar at "All"</div>
+        All four heatmap colors render at full 0.25 alpha. Map legend visible. Bar shows "{N} stays · all tiers" in result summary.
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component Assembly Order</div>
+      <div class="spec-bullet">1. <strong>Map heatmap zones</strong> — base layer</div>
+      <div class="spec-bullet">2. <strong>Heatmap toggle + legend</strong> — floating</div>
+      <div class="spec-bullet">3. <strong>Safety bar shell</strong> — sticky horizontal container</div>
+      <div class="spec-bullet">4. <strong>Segmented tier control</strong> — inside bar</div>
+      <div class="spec-bullet">5. <strong>Result summary</strong> — right-aligned in bar, syncs to control</div>
+      <div class="spec-bullet">6. <strong>Card grade chip</strong> — added to each card metadata row</div>
+      <div class="spec-bullet">7. <strong>Inline drawer</strong> — conditional render below tapped card row</div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Backward-from-Failure — P0 Components</div>
+      <div class="spec-bullet"><strong>Safety bar:</strong> If users miss it, they have failed not just Task 2 but the entire feature — the bar IS the feature in B. Mitigation — full-width placement directly in scroll path between header and first card row makes missing it physically impossible. Sticky behavior keeps it on screen during long scrolls.</div>
+      <div class="spec-bullet"><strong>Grade chip:</strong> If users overlook it on cards, they will fail Task 1 (per-card assessment). Mitigation — saturated grade-color fill placed in the same row as star rating; eye-tracking shows users always check the meta row.</div>
+      <div class="spec-bullet"><strong>Inline drawer:</strong> Same as Direction A — cursor + hover + first-time tooltip.</div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Distinctiveness Log — what makes B unique</div>
+      <div class="spec-bullet">Safety gets its <strong>own horizontal zone</strong>. A keeps it inline, C hides it in a modal. B owns 56px of vertical real estate.</div>
+      <div class="spec-bullet">Tier control is a <strong>segmented control</strong> with all 4 tiers visible — A uses a single pill that opens a dropdown, C uses checkboxes inside a modal.</div>
+      <div class="spec-bullet">Badge is a <strong>letter-grade chip in the metadata row</strong> — sits next to star rating as a peer. A overlays the photo; C uses a card border.</div>
+      <div class="spec-bullet">Bar shows a <strong>live result summary</strong> — "12 Very Safe stays" — neither A nor C surface this count proactively.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= DESIGNER NOTES ============= -->
+<div class="notes-section">
+  <div class="notes-title">Designer Notes for Prototyper · Direction B</div>
+
+  <div class="note-group">
+    <div class="note-group-label">Internal Design Debate Summary</div>
+    <div class="debate-row">
+      <div class="debate-cell">
+        <strong>Q3 Filter Placement</strong>
+        Three candidates: (a) sub-nav pill, (b) dedicated bar, (c) Filters modal. (b) wins for B because the brief's primary goal demands "within one interaction" — a segmented control with all tiers visible is one visual scan + one click. Zero discovery cost.
+      </div>
+      <div class="debate-cell">
+        <strong>Q5 Badge Style</strong>
+        Three candidates: (a) photo overlay, (b) metadata chip, (c) card border. (b) wins because B's bar already commits to a "loud, declarative" register — a peer-of-star-rating chip continues that register; a photo overlay would compete with Guest Favorite.
+      </div>
+      <div class="debate-cell">
+        <strong>Trade-off Acknowledged</strong>
+        Lowest cleanliness score of the three (3/5) — adds 56px of new UI vertical, real cost on a 1440px design that's already information-dense. Justified by Effective + Intuitive both at 5/5.
+      </div>
+    </div>
+    <div class="quality-grid">
+      <div class="quality-card"><div class="quality-num">3</div><div class="quality-label">Clean</div></div>
+      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Effective</div></div>
+      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Intuitive</div></div>
+      <div class="quality-card"><div class="quality-num">4</div><div class="quality-label">Pleasing</div></div>
+      <div class="quality-card"><div class="quality-num">17</div><div class="quality-label">Total / 20</div></div>
+    </div>
+  </div>
+
+  <div class="note-group">
+    <div class="note-group-label">Final Falsification Pass</div>
+    <div class="note-item"><strong>Failure mode:</strong> Bar feels heavy and slows perceived page load — Airbnb users come for housing, not safety, and a 56px-tall bar above the listings could read as a banner ad on first impression. If a user dismisses the bar mentally before reading it, the feature is invisible.</div>
+    <div class="note-item"><strong>Mitigation:</strong> Use a subtle gradient (<code>linear-gradient(90deg, #FFFFFF, #FAFAFA)</code>) rather than a colored bar — keeps the bar from reading as promotional. Border-top + border-bottom (1px <code>#DDDDDD</code>) ties the bar visually to the existing search-form rhythm. Grade-color dots inside the segments provide just enough chromatic interest to signal "informative" without screaming.</div>
+  </div>
+
+  <div class="note-group">
+    <div class="note-group-label">Exact Build Instructions for Prototyper</div>
+    <div class="note-item">Insert <code>&lt;SafetyBar /&gt;</code> as a sibling of the listings panel, between the sticky header and the <code>.listings-grid</code>. Bar must be sticky with <code>top: 151px</code> so it pins below the header on scroll.</div>
+    <div class="note-item">Segmented control: 4 buttons in a flex row inside a single rounded container. Use a single <code>div.active-fill</code> as an absolute-positioned inner element that animates <code>translateX</code> + <code>width</code> when selection changes — gives the fluid "iOS segmented control" feel.</div>
+    <div class="note-item">Result summary: bind to React state. Format <code>"{count} {tier} stays"</code>. When count is 0, color text <code>#C0292B</code> and add the empty-state CTA inline below the listings panel.</div>
+    <div class="note-item">Card grade chip: add to the metadata row as the LAST flex child with <code>margin-left: auto</code>. The star rating moves slightly left to make room. Star rating + chip share row height 22px.</div>
+    <div class="note-item">Heatmap toggle auto-syncs: when bar selection !== "All", set <code>heatmapOn = true</code> via effect. Allow manual override via direct toggle click.</div>
+    <div class="note-item">Mock SF data — same 8 neighborhoods: Pacific Heights A · Noe Valley A · Mission B · Castro B · SoMa C · Outer Sunset C · Tenderloin D · Civic Center D.</div>
+    <div class="note-item">Font fallback chain: <code>"Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif</code>.</div>
+  </div>
+</div>
 
 </body>
 </html>

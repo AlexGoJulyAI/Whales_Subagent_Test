@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrators Audiobooks | Audible</title>
+  <style>
+    /* ── TOKENS (all url_extracted) ── */
+    :root {
+      --color-text-primary: #010E19;
+      --color-text-link: #0E5B9B;
+      --color-text-muted: #595F63;
+      --color-background: #FFFFFF;
+      --color-cta-primary: #FFA000;
+      --color-cta-primary-hover: #E69100;
+      --color-chip-selected-bg: #E6F3FF;
+      --color-chip-selected-border: #1479CF;
+      --color-chip-unselected-border: #93ACCD;
+      --color-search-border: #7690B2;
+      --color-border-light: #D1D6D7;
+      --color-border-row: #E8ECEF;
+      --color-nav-heading: #D4780A;
+      --color-banner-bg: #0E1D3C;
+      --color-star: #E87722;
+      --color-badge-bg: #F0F4F8;
+      --color-badge-text: #374151;
+      --font: "Audible Sans", Arial, sans-serif;
+      --radius-pill: 9999px;
+      --radius-chip: 8px;
+      --radius-input: 2px;
+      --radius-badge: 4px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: var(--color-text-primary);
+      background: var(--color-background);
+    }
+
+    a { color: var(--color-text-link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── PROMO BANNER ── */
+    .promo-banner {
+      background: var(--color-banner-bg);
+      color: #fff;
+      text-align: center;
+      padding: 8px 24px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .promo-banner strong { font-weight: 700; }
+    .promo-cta {
+      background: var(--color-cta-primary);
+      color: var(--color-text-primary);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    /* ── NAV SHELL ── */
+    .nav-shell {
+      background: var(--color-background);
+      border-bottom: 1px solid var(--color-border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px 0;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .nav-logo { display: block; line-height: 1; text-decoration: none; }
+
+    .nav-utility { display: flex; align-items: center; gap: 16px; }
+    .nav-utility a { font-size: 14px; color: var(--color-text-primary); text-decoration: none; }
+    .nav-utility a:hover { text-decoration: underline; }
+
+    .btn-sign-in {
+      background: var(--color-cta-primary);
+      color: var(--color-text-primary);
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 400;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      line-height: 24px;
+    }
+    .btn-sign-in:hover { background: var(--color-cta-primary-hover); text-decoration: none; color: var(--color-text-primary); }
+
+    .nav-search-wrap { position: relative; width: 400px; }
+    .nav-search {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--color-search-border);
+      border-radius: var(--radius-input);
+      padding: 3px 36px 3px 16px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--color-text-primary);
+      outline: none;
+      transition: border-color 0.1s linear, box-shadow 0.1s linear;
+    }
+    .nav-search:focus { border-color: var(--color-chip-selected-border); box-shadow: 0 0 0 2px #E6F3FF; }
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-text-muted);
+      pointer-events: none;
+    }
+
+    .nav-bottom { padding: 0 24px; max-width: 1440px; margin: 0 auto; position: relative; }
+
+    /* Browse button */
+    .browse-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 22px;
+      color: var(--color-text-primary);
+      background: none;
+      border: none;
+      padding: 12px 0;
+      cursor: pointer;
+      position: relative;
+    }
+    .browse-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--color-chip-selected-border);
+      border-radius: 2px 2px 0 0;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    .browse-btn[aria-expanded="true"]::after { opacity: 1; }
+
+    /* Mega menu panel */
+    .mega-panel {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: -24px; right: -24px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      z-index: 200;
+      padding: 16px 24px;
+    }
+    .mega-panel.open { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+
+    .mega-col-heading {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-nav-heading);
+      margin-bottom: 10px;
+    }
+    .mega-col ul { list-style: none; }
+    .mega-col ul li a {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: var(--color-text-primary);
+      text-decoration: none;
+      display: block;
+      padding: 3px 0;
+    }
+    .mega-col ul li a:hover { text-decoration: underline; color: var(--color-text-link); }
+    .mega-col ul li a.is-current { color: var(--color-text-link); font-weight: 600; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+
+    .page-header { text-align: center; padding: 32px 0 24px; }
+    .page-title { font-size: 48px; font-weight: 700; line-height: 52px; color: var(--color-text-primary); }
+
+    /* ── FILTER AREA ── */
+    .filter-area { padding-bottom: 20px; border-bottom: 1px solid var(--color-border-row); margin-bottom: 0; }
+
+    /* Narrator name search */
+    .narrator-search-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .narrator-search-wrap { position: relative; width: 540px; }
+    .narrator-search {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--color-search-border);
+      border-radius: var(--radius-input);
+      padding: 3px 36px 3px 16px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--color-text-primary);
+      outline: none;
+      transition: border-color 0.1s linear, box-shadow 0.1s linear;
+    }
+    .narrator-search::placeholder { color: #8A9BAB; }
+    .narrator-search:focus { border-color: var(--color-chip-selected-border); box-shadow: 0 0 0 2px #E6F3FF; }
+
+    /* Refine row */
+    .refine-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .refine-label { font-size: 13px; font-weight: 700; color: var(--color-text-muted); white-space: nowrap; }
+
+    .filter-select {
+      height: 36px;
+      border: 2px solid var(--color-chip-unselected-border);
+      border-radius: var(--radius-chip);
+      padding: 0 10px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--color-text-primary);
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.1s;
+    }
+    .filter-select:focus { border-color: var(--color-chip-selected-border); }
+
+    /* Genre chips */
+    .chip-group-label { font-size: 13px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 8px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: var(--radius-chip);
+      border: 2px solid var(--color-chip-unselected-border);
+      background: transparent;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.1s, background 0.1s;
+    }
+    .chip:hover { border-color: var(--color-chip-selected-border); }
+    .chip.selected { background: var(--color-chip-selected-bg); border-color: var(--color-chip-selected-border); }
+
+    /* ── RESULTS META BAR ── */
+    .results-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0 10px;
+      max-width: 1000px;
+    }
+    .results-count { font-size: 14px; color: var(--color-text-primary); }
+    .sort-wrap { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--color-text-muted); }
+    .sort-select {
+      height: 32px;
+      border: 1px solid var(--color-chip-unselected-border);
+      border-radius: var(--radius-input);
+      padding: 0 8px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--color-text-primary);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    /* ── NARRATOR LIST ── */
+    .narrator-list { list-style: none; max-width: 1000px; }
+
+    .narrator-item {
+      display: grid;
+      grid-template-columns: 136px 1fr 236px;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--color-border-row);
+      align-items: start;
+    }
+
+    /* Image column */
+    .narrator-img-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .narrator-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #DDE6F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      font-weight: 700;
+      color: #4A7BA8;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .sample-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: var(--font);
+    }
+    .sample-btn:hover { text-decoration: underline; }
+    .sample-btn svg { flex-shrink: 0; }
+
+    /* Detail column */
+    .narrator-detail { padding-right: 8px; }
+
+    .narrator-name {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 26px;
+      color: var(--color-text-link);
+      margin-bottom: 2px;
+      display: block;
+      text-decoration: none;
+    }
+    .narrator-name:hover { text-decoration: underline; }
+
+    .narrator-stats { font-size: 13px; color: var(--color-text-muted); margin-bottom: 6px; }
+
+    .narrator-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .stars { color: var(--color-star); letter-spacing: -1px; font-size: 15px; }
+    .rating-count { font-size: 13px; color: var(--color-text-muted); }
+
+    .narrator-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .tag-genre {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-badge-text);
+      background: var(--color-badge-bg);
+      border-radius: var(--radius-badge);
+      padding: 2px 8px;
+    }
+    .tag-voice {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1E5C8F;
+      background: #DAEeff;
+      border-radius: var(--radius-badge);
+      padding: 2px 8px;
+    }
+
+    .narrator-bio {
+      font-size: 14px;
+      color: var(--color-text-primary);
+      line-height: 20px;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Sample book thumbnails */
+    .sample-books { display: flex; gap: 6px; align-items: flex-start; }
+    .sample-cover {
+      width: 44px;
+      height: 44px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: rgba(255,255,255,.9);
+      text-align: center;
+      line-height: 1.25;
+      padding: 3px;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* Buy box column */
+    .narrator-buybox { display: flex; flex-direction: column; gap: 6px; padding-top: 2px; }
+    .book-count-note { font-size: 13px; color: var(--color-text-muted); margin-bottom: 4px; }
+
+    .btn-orange {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 38px;
+      background: var(--color-cta-primary);
+      color: var(--color-text-primary);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.1s;
+    }
+    .btn-orange:hover { background: var(--color-cta-primary-hover); text-decoration: none; color: var(--color-text-primary); }
+
+    .btn-outline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 38px;
+      background: #fff;
+      color: var(--color-text-primary);
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 400;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border-light);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .btn-outline:hover { background: #F8FAFC; border-color: #8A9BAB; }
+
+    /* ── PAGINATION ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 32px 0 48px;
+      max-width: 1000px;
+    }
+    .pg-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--color-border-light);
+      border-radius: 3px;
+      background: #fff;
+      font-family: var(--font);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-primary);
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .pg-btn:hover { background: #F0F4F8; border-color: var(--color-search-border); }
+    .pg-btn.active { background: var(--color-chip-selected-bg); border-color: var(--color-chip-selected-border); color: var(--color-chip-selected-border); font-weight: 700; }
+    .pg-btn.arrow { font-size: 18px; }
+    .pg-ellipsis { padding: 0 4px; color: #8A9BAB; line-height: 36px; }
+
+    /* ── FOOTER ── */
+    .footer { background: #232F3E; color: #BBB; font-size: 13px; padding: 24px; text-align: center; }
+    .footer a { color: #9AB; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- Promo Banner -->
+<div class="promo-banner">
+  <span><strong>Special Prime Offer</strong> | 2 months free with your first Audible trial</span>
+  <a href="#" class="promo-cta">Get this deal</a>
+</div>
+
+<!-- Nav Shell -->
+<div class="nav-shell">
+  <div class="nav-top">
+    <!-- Logo -->
+    <a href="#" class="nav-logo" aria-label="Audible — home">
+      <svg width="148" height="48" viewBox="0 0 148 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="32" font-family="Arial" font-size="28" font-weight="700" fill="#010E19">audible</text>
+        <text x="0" y="45" font-family="Arial" font-size="9" fill="#595F63">an amazon company</text>
+        <g transform="translate(98, 4)">
+          <path d="M10 14 Q18 4 28 14" stroke="#FFA000" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M6 18 Q16 3 32 18" stroke="#FFA000" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <path d="M2 22 Q14 2 36 22" stroke="#FFA000" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.28"/>
+        </g>
+      </svg>
+    </a>
+
+    <!-- Right zone -->
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <div class="nav-utility">
+        <a href="#">Help</a>
+        <a href="#">🌐 English – USD</a>
+        <a href="#" class="btn-sign-in">Sign in</a>
+      </div>
+      <div class="nav-search-wrap">
+        <input class="nav-search" type="text" placeholder="Find your next great listen" aria-label="Global search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Browse bar -->
+  <div class="nav-bottom">
+    <button class="browse-btn" id="browse-btn" aria-expanded="false" aria-controls="mega-panel" onclick="toggleNav()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#595F63"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Browse
+    </button>
+
+    <!-- Mega menu -->
+    <div class="mega-panel" id="mega-panel" role="group" aria-label="Browse categories">
+      <div class="mega-col">
+        <div class="mega-col-heading">Get Started</div>
+        <ul>
+          <li><a href="#">Audiobooks</a></li>
+          <li><a href="#">Podcasts</a></li>
+          <li><a href="#">Audible Originals</a></li>
+          <li><a href="#">Sleep</a></li>
+          <li><a href="#">Latino and Hispanic voices</a></li>
+          <li><a href="#">All categories</a></li>
+        </ul>
+      </div>
+      <div class="mega-col">
+        <div class="mega-col-heading">Popular Lists</div>
+        <ul>
+          <li><a href="#">Bestsellers</a></li>
+          <li><a href="#">Coming Soon</a></li>
+          <li><a href="#">New Releases</a></li>
+          <li><a href="#">Best of the Best</a></li>
+          <li><a href="index.html" class="is-current">Narrators</a></li>
+          <li><a href="#">Authors</a></li>
+          <li><a href="#">Editors' Picks</a></li>
+          <li><a href="#">Best of #BookTok</a></li>
+        </ul>
+      </div>
+      <div class="mega-col">
+        <div class="mega-col-heading">Explore Audible</div>
+        <ul>
+          <li><a href="#">Plus Catalog</a></li>
+          <li><a href="#">Gifts</a></li>
+          <li><a href="#">Membership FAQs</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">About Audible</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Sales &amp; Deals</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<main id="main" class="page-wrap">
+
+  <!-- H1 -->
+  <div class="page-header">
+    <h1 class="page-title">Narrators</h1>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-area">
+
+    <!-- Narrator name search -->
+    <div class="narrator-search-row">
+      <div class="narrator-search-wrap">
+        <input class="narrator-search" type="search" placeholder="Search by narrator name" aria-label="Search by narrator name">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+    </div>
+
+    <!-- Dropdowns: voice style, language, sort -->
+    <div class="refine-row">
+      <span class="refine-label">Filter by:</span>
+      <select class="filter-select" aria-label="Voice style filter">
+        <option value="">Voice Style</option>
+        <option>Dramatic</option>
+        <option>Conversational</option>
+        <option>Energetic</option>
+        <option>Calm / Meditative</option>
+        <option>Character-differentiated</option>
+        <option>Accent variety</option>
+      </select>
+      <select class="filter-select" aria-label="Language filter">
+        <option value="">Language</option>
+        <option>English</option>
+        <option>Spanish</option>
+        <option>French</option>
+        <option>German</option>
+        <option>Portuguese</option>
+      </select>
+    </div>
+
+    <!-- Genre specialty chips -->
+    <div>
+      <div class="chip-group-label">Genre specialty</div>
+      <div class="chip-group" id="chip-group" role="group" aria-label="Filter by genre">
+        <button class="chip selected" type="button" aria-pressed="true">All</button>
+        <button class="chip" type="button" aria-pressed="false">Mystery &amp; Thriller</button>
+        <button class="chip" type="button" aria-pressed="false">Romance</button>
+        <button class="chip" type="button" aria-pressed="false">Sci-Fi &amp; Fantasy</button>
+        <button class="chip" type="button" aria-pressed="false">Literary Fiction</button>
+        <button class="chip" type="button" aria-pressed="false">Self-Development</button>
+        <button class="chip" type="button" aria-pressed="false">Business</button>
+        <button class="chip" type="button" aria-pressed="false">History &amp; Biography</button>
+        <button class="chip" type="button" aria-pressed="false">Children's</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results meta -->
+  <div class="results-meta">
+    <span class="results-count">1 – 20 of 400 results</span>
+    <div class="sort-wrap">
+      <label for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">
+        <option>Most Listened</option>
+        <option>Highest Rated</option>
+        <option>Most Titles</option>
+        <option>A–Z</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Narrator results list -->
+  <ul class="narrator-list" aria-label="Narrator results">
+
+    <!-- 1. Scott Brick -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">SB</div>
+        <button class="sample-btn" type="button" aria-label="Preview Scott Brick narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">Scott Brick</a>
+        <div class="narrator-stats">328 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.8 out of 5 stars">★★★★★</span>
+          <span>4.8</span>
+          <span class="rating-count">12,400 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Mystery &amp; Thriller</span>
+          <span class="tag-genre">Literary Fiction</span>
+          <span class="tag-genre">Business</span>
+          <span class="tag-voice">Dramatic</span>
+        </div>
+        <p class="narrator-bio">One of the most prolific and acclaimed audiobook narrators working today, known for his intense, immersive style across thriller, business, and literary fiction.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#5B7FA6;">Dune<br>Herbert</div>
+          <div class="sample-cover" style="background:#A66B5B;">The Eye<br>of God</div>
+          <div class="sample-cover" style="background:#6BA67B;">Think &amp;<br>Grow Rich</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">328 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 2. Jim Dale -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">JD</div>
+        <button class="sample-btn" type="button" aria-label="Preview Jim Dale narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">Jim Dale</a>
+        <div class="narrator-stats">47 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.9 out of 5 stars">★★★★★</span>
+          <span>4.9</span>
+          <span class="rating-count">89,200 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Children's</span>
+          <span class="tag-genre">Fantasy</span>
+          <span class="tag-voice">Character-differentiated</span>
+        </div>
+        <p class="narrator-bio">Grammy Award-winning narrator of the US Harry Potter series. His extraordinary range — over 134 distinct character voices in a single recording — set the standard for character-differentiated narration.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#8B6914;">Harry Potter<br>Sorcerer</div>
+          <div class="sample-cover" style="background:#1A4A6E;">Harry Potter<br>Chamber</div>
+          <div class="sample-cover" style="background:#3B7A3B;">Harry Potter<br>Prisoner</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">47 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 3. Bahni Turpin -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">BT</div>
+        <button class="sample-btn" type="button" aria-label="Preview Bahni Turpin narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">Bahni Turpin</a>
+        <div class="narrator-stats">112 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.8 out of 5 stars">★★★★★</span>
+          <span>4.8</span>
+          <span class="rating-count">23,500 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Literary Fiction</span>
+          <span class="tag-genre">History &amp; Biography</span>
+          <span class="tag-voice">Conversational</span>
+        </div>
+        <p class="narrator-bio">Audie Award winner celebrated for empathetic and emotionally resonant performances. Brings quiet power to literary fiction and memoir, making complex narratives feel intimate and immediate.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#6B4C8C;">The Hate<br>U Give</div>
+          <div class="sample-cover" style="background:#C55C5C;">Parable<br>of Sower</div>
+          <div class="sample-cover" style="background:#5C8C6B;">Salvage<br>the Bones</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">112 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 4. Michael Kramer -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">MK</div>
+        <button class="sample-btn" type="button" aria-label="Preview Michael Kramer narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">Michael Kramer</a>
+        <div class="narrator-stats">290 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.7 out of 5 stars">★★★★☆</span>
+          <span>4.7</span>
+          <span class="rating-count">34,800 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Sci-Fi &amp; Fantasy</span>
+          <span class="tag-genre">Mystery &amp; Thriller</span>
+          <span class="tag-voice">Dramatic</span>
+        </div>
+        <p class="narrator-bio">A dominant voice in epic fantasy, co-narrator of The Wheel of Time and Mistborn series. Brings authoritative gravitas and consistent character differentiation to sprawling worlds.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#2C4A7A;">The Eye of<br>the World</div>
+          <div class="sample-cover" style="background:#4A2C7A;">Mistborn<br>Final Empire</div>
+          <div class="sample-cover" style="background:#7A4A2C;">Words of<br>Radiance</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">290 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 5. January LaVoy -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">JL</div>
+        <button class="sample-btn" type="button" aria-label="Preview January LaVoy narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">January LaVoy</a>
+        <div class="narrator-stats">184 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.8 out of 5 stars">★★★★★</span>
+          <span>4.8</span>
+          <span class="rating-count">18,900 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Mystery &amp; Thriller</span>
+          <span class="tag-genre">Romance</span>
+          <span class="tag-voice">Energetic</span>
+        </div>
+        <p class="narrator-bio">Known for sharp wit and remarkable range across suspenseful thrillers and emotionally complex narratives. Her performances feel urgent and propulsive — ideal for late-night listening sessions.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#8C4A5C;">The Woman<br>in Window</div>
+          <div class="sample-cover" style="background:#4A5C8C;">Lock Every<br>Door</div>
+          <div class="sample-cover" style="background:#5C8C4A;">Final<br>Girls</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">184 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 6. Kate Reading -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">KR</div>
+        <button class="sample-btn" type="button" aria-label="Preview Kate Reading narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">Kate Reading</a>
+        <div class="narrator-stats">97 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.9 out of 5 stars">★★★★★</span>
+          <span>4.9</span>
+          <span class="rating-count">28,100 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Sci-Fi &amp; Fantasy</span>
+          <span class="tag-genre">Literary Fiction</span>
+          <span class="tag-voice">Character-differentiated</span>
+        </div>
+        <p class="narrator-bio">The definitive voice for female characters in epic fantasy, co-narrating The Wheel of Time and The Stormlight Archive. Her nuanced performances give each character a distinct and memorable voice.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#2C6A4A;">The Eye of<br>the World</div>
+          <div class="sample-cover" style="background:#6A2C4A;">The Way<br>of Kings</div>
+          <div class="sample-cover" style="background:#4A6A2C;">Winter's<br>Heart</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">97 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 7. MacLeod Andrews -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">MA</div>
+        <button class="sample-btn" type="button" aria-label="Preview MacLeod Andrews narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">MacLeod Andrews</a>
+        <div class="narrator-stats">156 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.8 out of 5 stars">★★★★★</span>
+          <span>4.8</span>
+          <span class="rating-count">14,200 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Mystery &amp; Thriller</span>
+          <span class="tag-genre">Sci-Fi &amp; Fantasy</span>
+          <span class="tag-voice">Dramatic</span>
+        </div>
+        <p class="narrator-bio">A master of atmosphere and tension, the go-to narrator for horror and dark thriller. His measured pacing and ability to sustain dread make him a cult favorite among listeners who seek visceral, immersive performances.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#2A1010;color:#CCC;">Bird<br>Box</div>
+          <div class="sample-cover" style="background:#102A1A;color:#CCC;">Wanderers</div>
+          <div class="sample-cover" style="background:#10102A;color:#CCC;">The<br>Troop</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">156 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+    <!-- 8. Adjoa Andoh -->
+    <li class="narrator-item">
+      <div class="narrator-img-col">
+        <div class="narrator-avatar" aria-hidden="true">AA</div>
+        <button class="sample-btn" type="button" aria-label="Preview Adjoa Andoh narration">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Sample
+        </button>
+      </div>
+      <div class="narrator-detail">
+        <a href="#" class="narrator-name">Adjoa Andoh</a>
+        <div class="narrator-stats">68 titles narrated</div>
+        <div class="narrator-rating">
+          <span class="stars" aria-label="4.9 out of 5 stars">★★★★★</span>
+          <span>4.9</span>
+          <span class="rating-count">9,800 ratings</span>
+        </div>
+        <div class="narrator-tags">
+          <span class="tag-genre">Literary Fiction</span>
+          <span class="tag-genre">History &amp; Biography</span>
+          <span class="tag-voice">Conversational</span>
+        </div>
+        <p class="narrator-bio">Best known as Lady Danbury in Bridgerton, Adjoa Andoh brings extraordinary warmth and wit to the page. Her readings feel like private conversations — intimate, assured, and deeply felt.</p>
+        <div class="sample-books" aria-label="Sample titles">
+          <div class="sample-cover" style="background:#7A5C8C;">Bridgerton<br>Series</div>
+          <div class="sample-cover" style="background:#8C7A5C;">Purple<br>Hibiscus</div>
+          <div class="sample-cover" style="background:#5C8C7A;">An Inspector<br>Calls</div>
+        </div>
+      </div>
+      <div class="narrator-buybox">
+        <div class="book-count-note">68 audiobooks available</div>
+        <a href="#" class="btn-orange">Browse audiobooks</a>
+        <button class="btn-outline" type="button">Add to Wish List</button>
+      </div>
+    </li>
+
+  </ul>
+
+  <!-- Pagination -->
+  <nav class="pagination" aria-label="Page navigation">
+    <button class="pg-btn arrow" type="button" aria-label="Previous page" disabled>&lsaquo;</button>
+    <button class="pg-btn active" type="button" aria-current="page">1</button>
+    <button class="pg-btn" type="button">2</button>
+    <button class="pg-btn" type="button">3</button>
+    <button class="pg-btn" type="button">4</button>
+    <button class="pg-btn" type="button">5</button>
+    <span class="pg-ellipsis" aria-hidden="true">…</span>
+    <button class="pg-btn" type="button">20</button>
+    <button class="pg-btn arrow" type="button" aria-label="Next page">&rsaquo;</button>
+  </nav>
+
+</main>
+
+<footer class="footer">
+  <div>
+    <a href="#">Conditions of Use</a> &nbsp;·&nbsp;
+    <a href="#">Privacy Notice</a> &nbsp;·&nbsp;
+    <a href="#">Accessibility</a> &nbsp;·&nbsp;
+    <a href="#">Your Ads Privacy Choices</a>
+  </div>
+  <div style="margin-top:8px; color:#888;">© 1996–2026, Audible, Inc. or its affiliates.</div>
+</footer>
+
+<script>
+  function toggleNav() {
+    const btn = document.getElementById('browse-btn');
+    const panel = document.getElementById('mega-panel');
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    panel.classList.toggle('open', !open);
+  }
+
+  document.addEventListener('click', function(e) {
+    const btn = document.getElementById('browse-btn');
+    const panel = document.getElementById('mega-panel');
+    if (!btn.contains(e.target) && !panel.contains(e.target)) {
+      btn.setAttribute('aria-expanded', 'false');
+      panel.classList.remove('open');
+    }
+  });
+
+  document.querySelectorAll('#chip-group .chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      const group = this.closest('#chip-group');
+      const allChip = group.querySelector('.chip:first-child');
+      if (this === allChip) {
+        group.querySelectorAll('.chip').forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
+        this.classList.add('selected'); this.setAttribute('aria-pressed', 'true');
+      } else {
+        allChip.classList.remove('selected'); allChip.setAttribute('aria-pressed', 'false');
+        this.classList.toggle('selected');
+        this.setAttribute('aria-pressed', String(this.classList.contains('selected')));
+        const anyActive = [...group.querySelectorAll('.chip:not(:first-child)')].some(c => c.classList.contains('selected'));
+        if (!anyActive) { allChip.classList.add('selected'); allChip.setAttribute('aria-pressed', 'true'); }
+      }
+    });
+  });
+</script>
+</body>
+</html>

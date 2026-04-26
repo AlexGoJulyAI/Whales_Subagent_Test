@@ -1,0 +1,106 @@
+{
+  "chipShadowHtml": "<!----><a id=\"container\" class=\"outline\" href=\"/tag/world_tree-publisher_assigned/Biographical-Fiction-Audiobooks/adbl_rec_tag_4-21-2234?pLink=2bxgzfoCoZsGSRl0&amp;pf_rd_p=bf7ec888-e2cd-44fc-99de-fcfdbc884329&amp;dblp13narts\" aria-disabled=\"false\" tabindex=\"0\">\n        <!--?lit$832281914$--><div id=\"chip-content\">\n      <slot name=\"start\"></slot>\n      <div id=\"text\">\n        <slot></slot>\n      </div>\n      <slot name=\"end\"></slot>\n    </div>\n      </a>",
+  "chipButton": {
+    "color": "rgb(1, 14, 25)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "2px solid rgb(147, 172, 205)",
+    "borderRadius": "8px",
+    "padding": "0px",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "cursor": "pointer",
+    "display": "flex",
+    "height": "42px",
+    "lineHeight": "24px"
+  },
+  "chipStyledEl": {
+    "tag": "A",
+    "color": "rgb(1, 14, 25)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "border": "2px solid rgb(147, 172, 205)",
+    "borderRadius": "8px",
+    "padding": "0px",
+    "fontSize": "16px",
+    "fontWeight": "400"
+  },
+  "chipEl": {
+    "display": "flex",
+    "width": "176.141px"
+  },
+  "chipLabel": "Biographical Fiction",
+  "chipAttrs": {
+    "label": null,
+    "checked": null,
+    "href": "/tag/world_tree-publisher_assigned/Biographical-Fiction-Audiobooks/adbl_rec_tag_4-21-2234?pLink=2bxgzfoCoZsGSRl0&pf_rd_p=bf7ec888-e2cd-44fc-99de-fcfdbc884329&dblp13narts"
+  },
+  "productItem": {
+    "className": "bc-list-item\n\tproductListItem",
+    "padding": "0px",
+    "borderBottom": "0px none rgb(1, 14, 25)",
+    "bg": "rgba(0, 0, 0, 0)"
+  },
+  "bookTitle": {
+    "tag": "H2",
+    "text": "What Remains",
+    "color": "rgb(1, 14, 25)",
+    "fontSize": "20px",
+    "fontWeight": "700"
+  },
+  "bookCoverImg": {
+    "src": "https://m.media-amazon.com/images/I/51VRZVwSCRL._SL500_.jpg",
+    "width": "231.992px",
+    "height": "231.992px",
+    "borderRadius": "clamp(8%, -999900% + 1.0499e+06px, 14%)"
+  },
+  "priceEl": {
+    "tag": "UL",
+    "text": "What Remains\n\n                \n\n\n                \n                    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n                        A Memoir of Fate, Friendship, and Love\n                    \n\n\n                \n                \n                    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n                        By:\n                        Carole Radziwill\n                    \n\n\n                \n                \n                    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n                        Narrated by:\n                        Carole Radziwill\n                    \n\n\n                \n                \n                \n                    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n                        Length: 5 hrs and 57 mins\n                    \n\n\n                \n                \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n                    Abridged",
+    "color": "rgb(6, 22, 36)",
+    "fontSize": "13px",
+    "fontWeight": "400"
+  },
+  "metadata": [
+    {
+      "text": "A stunning, tragic memoir about John F. Kennedy Jr",
+      "color": "rgb(1, 14, 25)",
+      "fontSize": "13px"
+    },
+    {
+      "text": "Cheryle Medeiros",
+      "color": "rgb(1, 14, 25)",
+      "fontSize": "12px"
+    },
+    {
+      "text": "A Memoir of Fate, Friendship, and Love",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "14px"
+    },
+    {
+      "text": "By:\n                                    Carole Rad",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px"
+    },
+    {
+      "text": "Narrated by:\n                                     ",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px"
+    }
+  ],
+  "ctaBtnActual": {
+    "tag": "SPAN",
+    "className": "bc-button\n  bc-button-primary\n  \n  \n  bc-spacing-top-mini \n  bc-button-small",
+    "color": "rgb(1, 14, 25)",
+    "bg": "rgb(255, 160, 0)",
+    "borderRadius": "32px",
+    "padding": "0px",
+    "fontSize": "14px",
+    "fontWeight": "400"
+  },
+  "firstBcButton": {
+    "className": "bc-button\n  bc-button-primary\n  \n  \n  bc-spacing-top-mini \n  bc-button-small",
+    "color": "rgb(1, 14, 25)",
+    "bg": "rgb(255, 160, 0)",
+    "borderRadius": "32px",
+    "padding": "0px"
+  }
+}

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Brief — Audible Narrators audible_narrators_2026_04_25</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
+    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
+
+    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
+    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
+    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
+    .brief-meta-item strong { color: #fff; }
+
+    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
+    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
+    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
+    .section-body { padding: 22px; }
+
+    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
+    .section-body h4:first-child { margin-top: 0; }
+
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
+    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
+    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
+
+    .brief-code { background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px 16px; font-family: 'Fira Code', 'Menlo', monospace; font-size: 12px; color: #1E40AF; overflow-x: auto; margin: 12px 0; white-space: pre; }
+
+    .screenshot-wrap { margin: 16px 0; }
+    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
+    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+    .annotated-img img { display: block; width: 100%; height: auto; }
+    .annotation-box { position: absolute; border: 2.5px solid #DC2626; border-radius: 3px; pointer-events: none; }
+    .annotation-label { position: absolute; top: 0; left: 0; background: #DC2626; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 0 0 3px 0; white-space: nowrap; line-height: 18px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+
+    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
+    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
+    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
+
+    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
+    .pill-blue { background: #DBEAFE; color: #1E40AF; }
+    .pill-green { background: #DCFCE7; color: #166534; }
+    .pill-red { background: #FEE2E2; color: #991B1B; }
+    .pill-gray { background: #F3F4F6; color: #374151; }
+
+    .token-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,.15); vertical-align: middle; margin-right: 6px; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="brief-header">
+    <div class="brief-kicker">Project Brief</div>
+    <div class="brief-title">Audible — Narrators Discovery</div>
+    <div class="brief-meta">
+      <div class="brief-meta-item"><strong>Engagement</strong> audible_narrators_2026_04_25</div>
+      <div class="brief-meta-item"><strong>Date</strong> 2026-04-25</div>
+      <div class="brief-meta-item"><strong>Status</strong> All values client-confirmed or asset-extracted</div>
+    </div>
+  </div>
+
+  <!-- §1 Product Vision -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><div class="section-title">Product Vision</div></div>
+    <div class="section-body">
+      <p>Audible is a digital audiobook and podcast platform owned by Amazon, serving millions of listeners globally with a catalog of audiobooks, Audible Originals, and podcasts. Revenue comes from subscription memberships (Standard plan at $8.99/month after trial) and à-la-carte purchases.</p>
+      <p>This engagement adds a <strong>Narrators discovery path</strong> to the Browse navigation and creates the corresponding Narrators page. Success: a listener who trusts a narrator's voice can find all their work without knowing individual titles — mirroring the existing Authors discovery flow but centered on the performing voice.</p>
+    </div>
+  </div>
+
+  <!-- §2 Problem Statements -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><div class="section-title">Problem Statements</div></div>
+    <div class="section-body">
+      <div class="callout-prob">
+        <div class="callout-label">Problem 1 — Missing narrator discovery path</div>
+        Audiobook listeners frequently choose titles based on the narrator's voice. The current Browse nav has no narrator entry point — no mechanism to browse by narrator, forcing users to rely on keyword search or chance encounters. This is a structural gap in the discovery model.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Problem 2 — "Series" occupies a slot narrator loyalty could fill</div>
+        "Series" browsing is largely redundant with genre pages and individual title pages (which already expose series membership). Narrator browsing has no other surface in the nav. Replacing Series with Narrators adds a unique high-value path without removing functionality users can't find elsewhere.
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Browse nav — Popular Lists column (logged-in state, from client)</div>
+        <div class="annotated-img">
+          <img src="../design-references/audible-browse-nav-open-1440.png" alt="Audible Browse nav open showing Popular Lists column with Series highlighted as the item to replace" />
+          <div class="annotation-box" style="top: 37%; left: 28%; width: 20%; height: 7%;">
+            <span class="annotation-label">Replace "Series" → "Narrators"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Live extraction — Browse nav open at 1440px (logged-out)</div>
+        <div class="annotated-img">
+          <img src="../design-references/audible-browse-nav-open-live.png" alt="Live extracted Browse nav showing Popular Lists column" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 Target Users -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><div class="section-title">Target Users</div></div>
+    <div class="section-body">
+      <p><strong>Primary user:</strong> Intermediate-to-experienced Audible subscriber. Has completed 3+ audiobooks. Has expressed preference for specific narrators by repeat-purchasing books narrated by the same person. Accesses primarily on desktop, browses during leisure time.</p>
+      <p><strong>Emotional state at key task:</strong> Exploratory — looking for their next listen. Willing to spend time browsing but expects the nav to efficiently surface relevant options. Has a narrator name in mind or a voice type preference, but no specific title.</p>
+    </div>
+  </div>
+
+  <!-- §4 Success Metrics -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><div class="section-title">Success Metrics</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Primary metric</td><td>Users entering via Narrators nav who add-to-cart or wishlist a narrator-browsed title</td></tr>
+        <tr><td>Secondary metrics</td><td>Narrators nav click rate within Browse mega menu; time-to-add-to-cart from Narrators page vs. category pages</td></tr>
+        <tr><td>Proxy signals</td><td>Filter UI reduces list to manageable set; narrator-to-book path feels intuitive in prototype</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §5 Scope -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div class="section-title">Key Features &amp; Scope</div></div>
+    <div class="section-body">
+      <h4>In Scope</h4>
+      <table class="brief-table">
+        <tr><th>Screen / Feature</th><th>Description</th></tr>
+        <tr><td>Browse nav — Popular Lists column</td><td>Replace "Series" link with "Narrators" link. No other nav changes.</td></tr>
+        <tr><td>Narrators page</td><td>New page matching Authors page layout: filter chips at top (narrator-specific attributes), paginated results list with book cover + title + narrator credit + price + CTA. Adds narrator search by name and filter controls (genre specialty, voice style, language, most-listened).</td></tr>
+      </table>
+      <h4>Out of Scope</h4>
+      <table class="brief-table">
+        <tr><th>Item</th><th>Reason</th></tr>
+        <tr><td>Individual narrator profile pages</td><td>Not requested; scope is list/browse page only</td></tr>
+        <tr><td>Mobile/responsive layout</td><td>Not specified; desktop prototype only</td></tr>
+        <tr><td>Backend/API integration</td><td>Prototype — representative static data</td></tr>
+        <tr><td>Changes to Authors page</td><td>Authors page is reference, not target</td></tr>
+        <tr><td>Other Browse nav columns</td><td>Only Popular Lists column in scope</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §6 Constraints -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><div class="section-title">Constraints</div></div>
+    <div class="section-body">
+      <p>Match Audible's existing visual design system exactly — no aesthetic deviation from extracted tokens. Desktop only (1440px viewport). HTML prototype output. WCAG AA minimum (4.5:1 normal text, 3:1 large text). No external assets.</p>
+    </div>
+  </div>
+
+  <!-- §7 References & Aesthetic Direction -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">7</div><div class="section-title">References &amp; Aesthetic Direction</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Reference</th><th>Draw from</th></tr>
+        <tr><td>Audible Authors page (live)</td><td>Page layout, filter chip row, list item structure, CTA button pattern</td></tr>
+        <tr><td>Audible Browse nav (live)</td><td>Nav column structure, section heading style, link typography</td></tr>
+      </table>
+      <h4>Aesthetic Keywords Translated</h4>
+      <table class="brief-table">
+        <tr><th>Keyword</th><th>Pixel decision</th><th>Confirmed by</th></tr>
+        <tr><td>Match existing Audible system</td><td>Font: "Audible Sans" Arial; Text: #010E19; CTA: #FFA000; BG: #FFFFFF</td><td>url_extracted</td></tr>
+        <tr><td>Functional / utilitarian</td><td>No decorative additions; filter controls are the sole new design element</td><td>Client brief — "should look like the existing Authors page layout"</td></tr>
+      </table>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Authors page — desktop 1440px (live extraction)</div>
+        <div class="annotated-img">
+          <img src="../design-references/audible-authors-live-viewport.png" alt="Audible Authors page showing filter chips, page title, and book list" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §8 Design System -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">8</div><div class="section-title">Design System</div></div>
+    <div class="section-body">
+      <h4>Design Token Record</h4>
+      <table class="brief-table">
+        <tr><th>Category</th><th>Token</th><th>Value</th><th>Source</th><th>Confirmed</th></tr>
+        <tr><td>Color</td><td>color-text-primary</td><td><span class="token-swatch" style="background:#010E19"></span>#010E19</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-text-link</td><td><span class="token-swatch" style="background:#0E5B9B"></span>#0E5B9B</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-background</td><td><span class="token-swatch" style="background:#FFFFFF; border:1px solid #E2E8F0"></span>#FFFFFF</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-cta-primary-bg</td><td><span class="token-swatch" style="background:#FFA000"></span>#FFA000</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-chip-selected-bg</td><td><span class="token-swatch" style="background:#E6F3FF"></span>#E6F3FF</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-chip-selected-border</td><td><span class="token-swatch" style="background:#1479CF"></span>#1479CF</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-chip-unselected-border</td><td><span class="token-swatch" style="background:#93ACCD"></span>#93ACCD</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>color-search-border</td><td><span class="token-swatch" style="background:#7690B2"></span>#7690B2</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>font-family</td><td>"Audible Sans", Arial, sans-serif</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>font-size-h1 / weight / lh</td><td>48px / 700 / 52px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>font-size-body / weight / lh</td><td>14px / 400 / 20px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>font-size-nav / chip</td><td>16px / 400 / 24px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>font-weight-browse-btn</td><td>600</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>nav-panel-padding</td><td>16px 24px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>nav-panel-gap</td><td>24px (grid column gap)</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>cta-button-padding</td><td>8px 12px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Component</td><td>cta-button-radius</td><td>9999px (pill)</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Component</td><td>cta-button-height</td><td>42px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Component</td><td>chip-radius</td><td>8px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Component</td><td>chip-border-width</td><td>2px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Component</td><td>search-input</td><td>radius 2px, height 40px, border #7690B2</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Component</td><td>product-list-max-width</td><td>1000px</td><td>url_extracted</td><td>yes</td></tr>
+      </table>
+
+      <h4>Component Variant Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Variant Properties</th><th>Confirmed States</th><th>Unconfirmed States</th></tr>
+        <tr><td>adbl-toggle-chip</td><td>selected/unselected; outline style</td><td>selected (#E6F3FF bg, #1479CF border), unselected (transparent, #93ACCD border)</td><td>hover, focus, disabled</td></tr>
+        <tr><td>adbl-button primary</td><td>variant=primary, size=md</td><td>default (#FFA000 bg, 9999px radius)</td><td>hover, focus, disabled</td></tr>
+        <tr><td>nav-link tertiary</td><td>variant=tertiary</td><td>default (16px/400/24px)</td><td>hover</td></tr>
+        <tr><td>search input</td><td>N/A</td><td>default (border #7690B2, h 40px)</td><td>focus</td></tr>
+        <tr><td>product list item</td><td>N/A</td><td>default (~331px height)</td><td>hover</td></tr>
+      </table>
+
+      <h4>Active State Visual Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Active State Treatment</th><th>Source</th></tr>
+        <tr><td>adbl-toggle-chip (selected)</td><td>bg #E6F3FF, border 2px solid #1479CF, radius 8px</td><td>url_extracted</td></tr>
+        <tr><td>Browse nav button (open)</td><td>Blue underline indicator below text, aria-expanded=true</td><td>screenshot + shadow DOM</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §9 Brand Identity -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">9</div><div class="section-title">Brand Identity</div></div>
+    <div class="section-body">
+      <p><strong>Logo:</strong> Audible wordmark with orange sound-wave "ears", "an amazon company" sub-label.</p>
+      <p><strong>Primary brand color:</strong> <span class="token-swatch" style="background:#FFA000"></span>#FFA000 — CTA buttons, promo accents.</p>
+      <p><strong>Primary text:</strong> <span class="token-swatch" style="background:#010E19"></span>#010E19 — near-black.</p>
+      <p><strong>Secondary blue:</strong> <span class="token-swatch" style="background:#0E5B9B"></span>#0E5B9B — links (book titles, "By:" credits).</p>
+      <p><strong>Font:</strong> "Audible Sans" (proprietary), Arial fallback.</p>
+      <p><strong>Voice:</strong> Direct, benefit-first, listener-centric. ("Find your next great listen")</p>
+    </div>
+  </div>
+
+  <!-- §10 Visual Design Language -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">10</div><div class="section-title">Visual Design Language</div></div>
+    <div class="section-body">
+      <p><strong>Aesthetic stance:</strong> Clean, functional, catalog-first. White background, dark text, orange CTAs. The design philosophy is editorial restraint — book covers and titles are the visual interest; the chrome is minimal.</p>
+      <p><strong>Surface and tone:</strong> White page background (#FFFFFF). No gradients or textures in the content area. Nav panel is white with subtle grid layout.</p>
+      <p><strong>Color system:</strong> Three-color palette — #010E19 (text/structure), #FFA000 (CTA), #0E5B9B (links). Filter chips add a fourth pair: #E6F3FF / #1479CF for the selected state.</p>
+      <p><strong>Typography:</strong> Single font family ("Audible Sans"). Hierarchy through size and weight only: 48px/700 for page H1, 16px/400 for nav links and chips, 14px/400 for body and metadata, 16px/600 for the Browse button.</p>
+      <p><strong>Components:</strong> Pill-shaped CTAs (9999px radius). Square-cornered inputs (2px radius). Rounded filter chips (8px radius). List view for content results, not grid cards.</p>
+    </div>
+  </div>
+
+  <!-- §11 Copy Guide -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">11</div><div class="section-title">Copy Guide</div></div>
+    <div class="section-body">
+      <h4>Tone Descriptors</h4>
+      <table class="brief-table">
+        <tr><th>Adjective</th><th>Writing rule</th><th>Confirmed by</th></tr>
+        <tr><td>Direct</td><td>Short labels, no filler words</td><td>Observed across nav and CTA copy</td></tr>
+        <tr><td>Listener-centric</td><td>"Your next great listen" framing</td><td>Live page copy</td></tr>
+      </table>
+      <h4>Locked Strings (verbatim)</h4>
+      <table class="brief-table">
+        <tr><th>String</th><th>Value</th></tr>
+        <tr><td>Page title</td><td>Narrators</td></tr>
+        <tr><td>Nav link label</td><td>Narrators</td></tr>
+        <tr><td>Results count format</td><td>1 – 20 of [N] results</td></tr>
+        <tr><td>Primary CTA</td><td>Try Standard free</td></tr>
+        <tr><td>Secondary CTA</td><td>Add to cart</td></tr>
+        <tr><td>Tertiary CTA</td><td>Add to Wish List</td></tr>
+        <tr><td>Narrator credit prefix</td><td>Narrated by:</td></tr>
+        <tr><td>Author credit prefix</td><td>By:</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §12 User Tasks -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">12</div><div class="section-title">User Tasks</div></div>
+    <div class="section-body">
+      <p><strong>Task 1:</strong> User needs to find audiobooks narrated by a specific person they already enjoy — they know the narrator's name and want to see everything available from them.</p>
+      <p><strong>Task 2:</strong> User needs to discover new narrators in a genre or voice style they prefer — they don't have a specific name in mind but want to filter by narrator attributes (genre specialty, voice style, language) to find new voices worth trusting.</p>
+      <p><strong>Task 3:</strong> User needs to evaluate a narrator before committing to a title — they want to see the narrator's catalog (ratings, book count, genre range) before choosing a specific audiobook.</p>
+    </div>
+  </div>
+
+  <!-- §13 Current Page State -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">13</div><div class="section-title">Current Page State</div></div>
+    <div class="section-body">
+      <h4>Browse Nav — Popular Lists Column</h4>
+      <p>The Browse nav is a three-column mega menu triggered by the "Browse" button in the main nav bar. The panel renders as white dropdown (bg #FFFFFF, padding 16px 24px, CSS grid display with 24px column gap). Current Popular Lists items (logged-in): Bestsellers, Coming Soon, New Releases, Best of the Best, <strong>Series</strong>, Authors, Editors' Picks, Best of #BookTok. "Series" occupies position 5 and is the item being replaced.</p>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Browse nav — current state (logged-in, client screenshot)</div>
+        <div class="annotated-img">
+          <img src="../design-references/audible-browse-nav-open-1440.png" alt="Current Browse nav open showing Popular Lists with Series item" />
+          <div class="annotation-box" style="top: 37%; left: 28%; width: 20%; height: 7%;">
+            <span class="annotation-label">Current: "Series" — will become "Narrators"</span>
+          </div>
+        </div>
+      </div>
+
+      <h4>Authors Page — Reference Layout</h4>
+      <p>The Authors page is the layout reference for the Narrators page. Current structure: white background, centered content max-width 1000px, H1 "Authors" (48px/700), filter chip row (adbl-toggle-chip elements for genre categories), results count "1–20 of 500 results", vertical list of productListItem rows each ~331px tall containing: book cover image left, title+author+narrator+metadata center, price+CTA buttons right.</p>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Authors page — viewport at 1440px (live extraction)</div>
+        <div class="annotated-img">
+          <img src="../design-references/audible-authors-live-viewport.png" alt="Authors page showing H1, filter chips, and first two book list items" />
+        </div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Authors page — full page at 1440px (live extraction)</div>
+        <div class="annotated-img">
+          <img src="../design-references/audible-authors-live-1440.png" alt="Authors page full page showing all list items" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §14 Existing Interaction States -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">14</div><div class="section-title">Existing Interaction States</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Component</th><th>Observed States</th><th>Visual Treatment</th><th>Source</th></tr>
+        <tr><td>adbl-toggle-chip (filter)</td><td>default, selected</td><td>Selected: bg #E6F3FF, 2px solid #1479CF; Default: transparent, 2px solid #93ACCD; both radius 8px</td><td>url_extracted</td></tr>
+        <tr><td>adbl-button primary</td><td>default</td><td>bg #FFA000, radius 9999px, padding 8px 12px, height 42px</td><td>url_extracted</td></tr>
+        <tr><td>Browse nav mega menu</td><td>closed, open</td><td>Closed: hidden panel; Open: white bg panel, grid 3 columns, 24px gap</td><td>url_extracted</td></tr>
+        <tr><td>Search input</td><td>default</td><td>border 1px solid #7690B2, radius 2px, height 40px, padding 3px 36px 3px 16px</td><td>url_extracted</td></tr>
+        <tr><td>nav-link tertiary</td><td>default</td><td>16px/400/24px, color #0E5B9B</td><td>url_extracted</td></tr>
+      </table>
+      <h4>Active State Visual Treatments</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Active treatment</th><th>Source</th></tr>
+        <tr><td>adbl-toggle-chip</td><td>bg #E6F3FF, border 2px solid #1479CF</td><td>url_extracted</td></tr>
+        <tr><td>Browse button (open state)</td><td>Blue underline indicator, aria-expanded=true</td><td>screenshot + shadow DOM</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §15 Delivery & Handoff -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">15</div><div class="section-title">Delivery &amp; Handoff</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th><th>Source</th></tr>
+        <tr><td>Output format</td><td>HTML prototype</td><td>client-confirmed</td></tr>
+        <tr><td>Device targets</td><td>Desktop (1440px)</td><td>client-confirmed</td></tr>
+        <tr><td>Accessibility</td><td>WCAG AA</td><td>client-confirmed (Audible standards)</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

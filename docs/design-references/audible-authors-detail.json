@@ -1,0 +1,49 @@
+{
+  "bcElCount": 0,
+  "filterPillCandidates": [
+    {
+      "tag": "ADBL-CHIP",
+      "className": "adbl_rec_tag_4-21-2234 related-tag",
+      "text": "Biographical Fiction",
+      "color": "rgb(1, 14, 25)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "border": "0px solid rgb(209, 214, 215)",
+      "borderRadius": "0px",
+      "padding": "0px",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "cursor": "auto",
+      "display": "flex"
+    }
+  ],
+  "resultsCountEl": {
+    "tag": "ADBL-TEXT-BLOCK",
+    "text": "1 - 20 of 500 results",
+    "className": "",
+    "color": "rgb(1, 14, 25)",
+    "fontSize": "16px",
+    "fontWeight": "400"
+  },
+  "bookTitleLink": {
+    "tag": "A",
+    "text": "",
+    "color": "rgb(14, 91, 155)",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "textDecoration": "none",
+    "fontFamily": "\"Audible Sans\", Arial, sans-serif"
+  },
+  "ctaButton": {
+    "tag": "A",
+    "className": "bc-button-text",
+    "text": "Try Standard free",
+    "color": "rgb(1, 14, 25)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "borderRadius": "0px",
+    "border": "0px none rgb(1, 14, 25)",
+    "padding": "8px",
+    "fontSize": "14px",
+    "fontWeight": "400",
+    "display": "flex"
+  }
+}

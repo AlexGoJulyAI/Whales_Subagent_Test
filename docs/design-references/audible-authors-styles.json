@@ -1,0 +1,126 @@
+{
+  "starRating": {
+    "tag": "DIV",
+    "className": "bc-review-stars",
+    "color": "rgb(6, 22, 36)",
+    "fontSize": "12px"
+  },
+  "starImg": {},
+  "bookTitleH2": {
+    "color": "rgb(1, 14, 25)",
+    "fontSize": "20px",
+    "fontWeight": "700",
+    "lineHeight": "26px"
+  },
+  "metaDetails": [
+    {
+      "text": "What Remains",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "A Memoir of Fate, Friendship, and Love",
+      "color": "rgb(1, 14, 25)",
+      "fontSize": "14px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "By: Carole Radziwill",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Narrated by: Carole Radziwill",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Length: 5 hrs and 57 mins",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Abridged",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Overall 1,767",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "12px",
+      "fontWeight": "400"
+    },
+    {
+      "text": "Performance 1,561",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "12px",
+      "fontWeight": "400"
+    }
+  ],
+  "spanDetails": [
+    {
+      "text": "A stunning, tragic memoir about John F. Kennedy Jr., his wife Carolyn Bessette-K",
+      "color": "rgb(1, 14, 25)",
+      "fontSize": "13px"
+    },
+    {
+      "text": "Cheryle Medeiros",
+      "color": "rgb(1, 14, 25)",
+      "fontSize": "12px"
+    },
+    {
+      "text": "A Memoir of Fate, Friendship, and Love",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "14px"
+    },
+    {
+      "text": "By: Carole Radziwill",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px"
+    },
+    {
+      "text": "Narrated by: Carole Radziwill",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px"
+    },
+    {
+      "text": "Length: 5 hrs and 57 mins",
+      "color": "rgb(6, 22, 36)",
+      "fontSize": "13px"
+    }
+  ],
+  "separator": {
+    "tag": "DIV",
+    "color": "rgb(1, 14, 25)",
+    "bg": "rgba(0, 0, 0, 0)",
+    "height": "auto",
+    "borderTop": "1px solid rgba(1, 14, 25, 0.15)"
+  },
+  "mainContent": {
+    "maxWidth": "none",
+    "padding": "0px",
+    "margin": "0px",
+    "bg": "rgba(0, 0, 0, 0)"
+  },
+  "chipGroup": {
+    "display": "flex",
+    "flexWrap": "nowrap",
+    "gap": "normal"
+  },
+  "chipGroupShadow": {
+    "display": "flex",
+    "flexWrap": "nowrap",
+    "gap": "16px 12px",
+    "padding": "0px"
+  },
+  "chipGroupShadowHtml": "<!----><fieldset role=\"radiogroup\" id=\"container\" class=\"stacked start\" style=\"--horizontal-container-padding-bottom: 16px;\">\n        <slot></slot>\n      </fieldset>",
+  "pageBg": {
+    "html": "rgb(255, 255, 255)",
+    "body": "rgb(255, 255, 255)"
+  }
+}

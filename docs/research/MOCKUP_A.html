@@ -1,1650 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction A — Lavender Companion — Mockup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      background: #EEEEEE;
-      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-      font-size: 14px;
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
-      color: #242529;
-    }
-
-    /* ─── DESIGN TOKENS ─── */
-    :root {
-      --page-bg:        #f8f7fc;
-      --card-bg:        #ffffff;
-      --accent:         #6b2aed;
-      --bubble-user:    #d7d0fe;
-      --bubble-ai:      #ffecba;
-      --text-primary:   #242529;
-      --text-secondary: #6b6b8a;
-      --nav-bg:         #ddd7ed;
-      --chip-lavender:  #d7d0fe;
-      --chip-yellow:    #ffecba;
-      --chip-lavender2: #f3f0fd;
-      --toggle-off:     #f0eef9;
-      --shadow-card:    0 2px 10px rgba(107,42,237,0.09);
-    }
-
-    /* ══════════════════════════════════════
-       PAGE HEADER
-    ══════════════════════════════════════ */
-    .page-header {
-      background: #083386;
-      padding: 20px 32px 16px;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .dir-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      color: #c5b8ff;
-      font-size: 15px;
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .page-header-text {}
-
-    .dir-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-
-    .dir-anchor {
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      margin-top: 3px;
-      font-weight: 400;
-    }
-
-    .dir-anchor strong {
-      color: rgba(255,255,255,0.75);
-      font-weight: 600;
-    }
-
-    /* ══════════════════════════════════════
-       PHONES STAGE
-    ══════════════════════════════════════ */
-    .phones-stage {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      padding: 36px 32px 28px;
-      flex-wrap: wrap;
-    }
-
-    .phone-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .phone-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #777;
-    }
-
-    /* ── Phone frame ── */
-    .phone-frame {
-      width: 220px;
-      background: #111111;
-      border-radius: 44px;
-      padding: 10px;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.10),
-        inset 0 0 0 1px rgba(255,255,255,0.04),
-        0 30px 80px rgba(0,0,0,0.45),
-        0 12px 32px rgba(0,0,0,0.30);
-      position: relative;
-    }
-
-    /* Side buttons */
-    .phone-frame::before {
-      content: "";
-      position: absolute;
-      left: -3px;
-      top: 80px;
-      width: 3px;
-      height: 28px;
-      background: #2a2a2a;
-      border-radius: 2px 0 0 2px;
-    }
-
-    .phone-frame::after {
-      content: "";
-      position: absolute;
-      right: -3px;
-      top: 96px;
-      width: 3px;
-      height: 48px;
-      background: #2a2a2a;
-      border-radius: 0 2px 2px 0;
-    }
-
-    .phone-screen {
-      border-radius: 36px;
-      overflow: hidden;
-      height: 476px;
-      background: var(--page-bg);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Dynamic island */
-    .dyn-island {
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 72px;
-      height: 22px;
-      background: #000;
-      border-radius: 13px;
-      z-index: 30;
-    }
-
-    /* iOS status bar */
-    .status-bar {
-      height: 34px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding: 0 16px 5px;
-      font-size: 9.5px;
-      font-weight: 700;
-      position: relative;
-      z-index: 10;
-      flex-shrink: 0;
-      color: var(--text-primary);
-    }
-
-    .status-bar.on-dark { color: #ffffff; }
-    .status-bar.on-light { color: var(--text-primary); }
-
-    .status-icons {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* ══════════════════════════════════════
-       SHARED INNER UTILITIES
-    ══════════════════════════════════════ */
-    .section-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .see-all {
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .section-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-
-    /* ══════════════════════════════════════
-       PHONE 1 — PARENT DASHBOARD HOME
-    ══════════════════════════════════════ */
-    .s1 {
-      width: 100%;
-      height: 100%;
-      background: var(--page-bg);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* App header bar */
-    .s1-header {
-      padding: 6px 14px 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-
-    .s1-wordmark {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .s1-wordmark span {
-      color: var(--accent);
-    }
-
-    .s1-header-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .s1-bell {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--card-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-card);
-      position: relative;
-    }
-
-    .s1-bell-dot {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 6px;
-      height: 6px;
-      background: #ef4444;
-      border-radius: 50%;
-      border: 1.5px solid var(--page-bg);
-    }
-
-    .s1-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-
-    /* Greeting */
-    .s1-greeting {
-      padding: 4px 14px 14px;
-      flex-shrink: 0;
-    }
-
-    .s1-h1 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-    }
-
-    .s1-subtitle {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-top: 3px;
-      font-weight: 400;
-    }
-
-    .s1-safe-check {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .s1-check-icon {
-      width: 13px;
-      height: 13px;
-      background: #22c55e;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* 2x2 action chip grid — THE SIGNATURE ELEMENT */
-    .s1-chip-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      padding: 0 14px;
-      flex-shrink: 0;
-    }
-
-    .action-chip {
-      border-radius: 20px;
-      padding: 12px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .chip-lavender { background: var(--chip-lavender); }
-    .chip-yellow   { background: var(--chip-yellow); }
-    .chip-lavender2 { background: var(--chip-lavender2); }
-
-    .chip-icon-wrap {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .chip-title {
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.2;
-    }
-
-    .chip-sub {
-      font-size: 9px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-top: -2px;
-    }
-
-    /* Recent alerts */
-    .s1-alerts {
-      padding: 12px 14px 6px;
-      flex-shrink: 0;
-    }
-
-    .s1-alert-rows {
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .alert-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 7px 10px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .alert-icon-wrap {
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
-      background: #fef2f2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-
-    .alert-icon-wrap.warn {
-      background: #fff7ed;
-    }
-
-    .alert-text-col {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .alert-title {
-      font-size: 9.5px;
-      font-weight: 600;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .alert-time {
-      font-size: 8px;
-      color: var(--text-secondary);
-      margin-top: 1px;
-    }
-
-    /* Bottom nav bar */
-    .s1-bottom-nav {
-      margin-top: auto;
-      height: 52px;
-      background: var(--nav-bg);
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-      padding: 0 4px;
-    }
-
-    .nav-tab {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-    }
-
-    .nav-tab-lbl {
-      font-size: 8px;
-      font-weight: 600;
-      color: rgba(107,42,237,0.4);
-    }
-
-    .nav-tab.active .nav-tab-lbl {
-      color: var(--accent);
-    }
-
-    /* ══════════════════════════════════════
-       PHONE 2 — SAFETY CONFIGURATION
-    ══════════════════════════════════════ */
-    .s2 {
-      width: 100%;
-      height: 100%;
-      background: var(--page-bg);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .s2-nav {
-      padding: 6px 14px 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .s2-back-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(107,42,237,0.09);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .s2-nav-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-primary);
-      flex: 1;
-    }
-
-    .s2-scroll {
-      flex: 1;
-      overflow: hidden;
-      padding: 2px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .s2-group-label {
-      font-size: 8.5px;
-      font-weight: 700;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      padding: 4px 0 2px;
-    }
-
-    /* Category row card */
-    .cat-card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 9px 11px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .cat-row-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 7px;
-    }
-
-    .cat-icon-badge {
-      width: 22px;
-      height: 22px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      flex-shrink: 0;
-    }
-
-    .cat-icon-badge.red   { background: #fef2f2; }
-    .cat-icon-badge.amber { background: #fff7ed; }
-    .cat-icon-badge.blue  { background: #eff6ff; }
-    .cat-icon-badge.green { background: #f0fdf4; }
-    .cat-icon-badge.purple { background: #f5f3ff; }
-    .cat-icon-badge.rose  { background: #fff1f2; }
-    .cat-icon-badge.sky   { background: #f0f9ff; }
-
-    .cat-name {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.25;
-      flex: 1;
-    }
-
-    /* Pill toggle group */
-    .toggle-group {
-      display: flex;
-      background: var(--toggle-off);
-      border-radius: 999px;
-      height: 21px;
-      overflow: hidden;
-    }
-
-    .tg-seg {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 7.5px;
-      font-weight: 700;
-      color: #9b97b8;
-    }
-
-    .tg-seg.active-bal {
-      background: #b8a8f0;
-      color: #ffffff;
-      border-radius: 999px;
-    }
-
-    .tg-seg.active-strict {
-      background: var(--accent);
-      color: #ffffff;
-      border-radius: 999px;
-    }
-
-    .tg-seg.active-off {
-      background: #c8c0e8;
-      color: #ffffff;
-      border-radius: 999px;
-    }
-
-    /* AI personality section */
-    .s2-personality-card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 9px 11px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .personality-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .personality-row + .personality-row {
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px solid #f3f0fd;
-    }
-
-    .personality-label {
-      font-size: 9.5px;
-      font-weight: 600;
-      color: var(--text-primary);
-      flex: 1;
-    }
-
-    .personality-sub {
-      font-size: 8px;
-      color: var(--text-secondary);
-    }
-
-    /* Save button */
-    .s2-save-btn {
-      margin: 8px 10px 10px;
-      height: 38px;
-      background: var(--accent);
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      flex-shrink: 0;
-      box-shadow: 0 4px 18px rgba(107,42,237,0.32);
-    }
-
-    /* ══════════════════════════════════════
-       PHONE 3 — CHILD CHATBOT
-    ══════════════════════════════════════ */
-    .s3 {
-      width: 100%;
-      height: 100%;
-      background: var(--page-bg);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .s3-topbar {
-      background: var(--nav-bg);
-      padding: 6px 14px 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-
-    .s3-title-col {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .s3-ai-badge {
-      width: 26px;
-      height: 26px;
-      background: var(--accent);
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .s3-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .s3-settings-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(107,42,237,0.10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Chat area */
-    .s3-thread {
-      flex: 1;
-      overflow: hidden;
-      padding: 10px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      background: var(--page-bg);
-    }
-
-    .chat-date-label {
-      text-align: center;
-      font-size: 8px;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .msg-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 5px;
-    }
-
-    .msg-row.user-row {
-      justify-content: flex-end;
-    }
-
-    .ai-avatar-sm {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      font-weight: 800;
-      color: #ffffff;
-      flex-shrink: 0;
-    }
-
-    /* Pill chat bubbles — NO TAIL per anchor spec */
-    .bubble-user {
-      background: var(--bubble-user);
-      border-radius: 18px 18px 4px 18px;
-      padding: 8px 11px;
-      font-size: 9.5px;
-      font-weight: 400;
-      color: var(--text-primary);
-      max-width: 76%;
-      line-height: 1.45;
-    }
-
-    .bubble-ai {
-      background: var(--bubble-ai);
-      border-radius: 18px 18px 18px 4px;
-      padding: 8px 11px;
-      font-size: 9.5px;
-      font-weight: 400;
-      color: var(--text-primary);
-      max-width: 78%;
-      line-height: 1.45;
-    }
-
-    /* SIGNATURE: embedded data card inside AI bubble */
-    .data-card-embed {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 7px 9px;
-      margin-top: 7px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .data-card-label {
-      font-size: 7.5px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .data-card-stat {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
-
-    .data-card-stat-sub {
-      font-size: 7.5px;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    /* mini bar chart */
-    .mini-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 14px;
-      margin-top: 2px;
-    }
-
-    .mini-bar {
-      width: 7px;
-      background: var(--accent);
-      border-radius: 2px 2px 0 0;
-      opacity: 0.75;
-    }
-
-    .mini-bar:nth-child(1) { height: 6px; }
-    .mini-bar:nth-child(2) { height: 10px; }
-    .mini-bar:nth-child(3) { height: 14px; }
-
-    /* Input bar */
-    .s3-input-bar {
-      height: 50px;
-      background: var(--card-bg);
-      border-top: 1px solid #ede9f8;
-      padding: 9px 10px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex-shrink: 0;
-    }
-
-    .input-field-pill {
-      flex: 1;
-      height: 32px;
-      background: var(--page-bg);
-      border-radius: 999px;
-      border: 1px solid #e5e0f5;
-      padding: 0 13px;
-      font-size: 9px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      font-family: "Plus Jakarta Sans", sans-serif;
-    }
-
-    .send-btn {
-      width: 32px;
-      height: 32px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 2px 10px rgba(107,42,237,0.35);
-    }
-
-    /* ══════════════════════════════════════
-       BOTTOM REFERENCE SECTION
-    ══════════════════════════════════════ */
-    .bottom-section {
-      background: #ffffff;
-      margin: 0 32px 40px;
-      border-radius: 16px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-      overflow: hidden;
-    }
-
-    /* Token table */
-    .token-table-wrap {
-      padding: 24px 28px;
-      border-bottom: 1px solid #f0edf9;
-    }
-
-    .ref-section-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-
-    .token-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-
-    .token-table thead th {
-      text-align: left;
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      padding: 0 10px 10px 0;
-      border-bottom: 1px solid #f0edf9;
-    }
-
-    .token-table tbody tr + tr td {
-      border-top: 1px solid #f7f5fc;
-    }
-
-    .token-table td {
-      padding: 8px 10px 8px 0;
-      vertical-align: middle;
-    }
-
-    .token-swatch {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      border: 1px solid rgba(0,0,0,0.07);
-      display: inline-block;
-    }
-
-    .token-name-cell {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .token-hex-cell {
-      font-family: "SF Mono", "Fira Code", monospace;
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    .token-usage-cell {
-      color: var(--text-secondary);
-      font-size: 11px;
-    }
-
-    /* Component translation map */
-    .comp-map-wrap {
-      padding: 24px 28px;
-    }
-
-    .comp-map-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 4px;
-    }
-
-    .comp-map-card {
-      background: var(--page-bg);
-      border-radius: 12px;
-      padding: 14px 16px;
-      border-left: 3px solid var(--accent);
-    }
-
-    .comp-map-num {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .comp-map-anchor {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 5px;
-      line-height: 1.3;
-    }
-
-    .comp-map-arrow {
-      font-size: 10px;
-      color: var(--text-secondary);
-      margin: 4px 0;
-    }
-
-    .comp-map-translated {
-      font-size: 11px;
-      color: #3a3a4e;
-      line-height: 1.55;
-    }
-
-    .comp-map-screen {
-      display: inline-block;
-      font-size: 9px;
-      font-weight: 700;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 999px;
-      padding: 2px 8px;
-      margin-bottom: 6px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Direction A — Integrated Pills | Airbnb Safety Overlay</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif; background: #F0F4F8; color: #222222; -webkit-font-smoothing: antialiased; }
+
+  /* ── DOC HEADER ── */
+  .doc-header { background: #1E2A40; padding: 28px 32px 24px; }
+  .doc-kicker { font-size: 10px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 6px; }
+  .doc-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+  .doc-title span { color: #FF385C; }
+  .doc-subtitle { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .doc-quality { display: flex; gap: 14px; flex-wrap: wrap; }
+  .doc-q { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55); }
+  .doc-q span { color: #FF385C; }
+  .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 12px; }
+  .callout-strategy { background: rgba(255,56,92,.12); border-color: #FF385C; }
+  .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 4px; }
+  .callout-body { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.6; }
+
+  /* ── TWO-COLUMN BODY ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .col { padding: 24px 28px; min-width: 0; }
+  .col-left { background: #F0F4F8; border-right: 1px solid #E2E8F0; }
+  .col-right { background: #FFFFFF; }
+  .col-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; color: #6A6A6A; margin-bottom: 12px; }
+  .col-title { font-size: 18px; font-weight: 800; color: #222222; margin-bottom: 18px; line-height: 1.3; }
+
+  /* ── PART A: WIREFRAME DIAGRAM ── */
+  .wireframe { background: #FFFFFF; border: 1px solid #DDDDDD; border-radius: 8px; overflow: hidden; }
+  .wf-header { background: #F8F8F8; border-bottom: 1px solid #DDDDDD; padding: 12px 16px; }
+  .wf-zone-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6A6A6A; }
+  .wf-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .wf-pill { height: 28px; padding: 0 10px; border: 1px solid #DDDDDD; border-radius: 24px; background: #fff; display: inline-flex; align-items: center; font-size: 10px; color: #6A6A6A; }
+  .wf-pill.brand { background: #FF385C; color: #fff; border-color: #FF385C; }
+  .wf-pill.safety-active { background: #222222; color: #fff; border-color: #222222; position: relative; }
+  .wf-pill.safety-active::after { content: ""; position: absolute; left: -2px; top: -2px; right: -2px; bottom: -2px; border: 2px solid #FF385C; border-radius: 24px; }
+  .wf-pill.icon { width: 28px; padding: 0; justify-content: center; border-radius: 50%; background: #F2F2F2; border: none; }
+
+  .wf-body { display: grid; grid-template-columns: 1.12fr 1fr; gap: 0; min-height: 480px; }
+  .wf-listings { padding: 14px; border-right: 1px solid #DDDDDD; background: #FFFFFF; }
+  .wf-map { background: linear-gradient(135deg, #DCEEF5, #E8F1ED); padding: 14px; position: relative; }
+  .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wf-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #EFEFEF; }
+  .wf-card-photo { aspect-ratio: 1.05/1; background: linear-gradient(135deg, #C8D5DD, #B8C7D1); position: relative; }
+  .wf-card-photo .heart { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; }
+  .wf-card-photo .heart::before { content: "♡"; color: #fff; font-size: 16px; line-height: 1; }
+  /* Direction A — Safety badge overlay top-left of photo (small pill) */
+  .wf-card-badge-A { position: absolute; top: 8px; left: 8px; height: 18px; padding: 0 7px; border-radius: 24px; background: #1A7A4A; color: #fff; font-size: 8px; font-weight: 700; display: inline-flex; align-items: center; line-height: 1; }
+  .wf-card-badge-A.B { background: #B58B00; }
+  .wf-card-badge-A.C { background: #D4600A; }
+  .wf-card-body { padding: 8px 10px; }
+  .wf-card-title-row { height: 8px; background: #E2E8F0; border-radius: 4px; margin-bottom: 5px; width: 70%; }
+  .wf-card-meta-row { height: 6px; background: #EEF2F6; border-radius: 4px; margin-bottom: 4px; width: 88%; }
+  .wf-card-price-row { height: 8px; background: #DCE3EA; border-radius: 4px; width: 50%; margin-top: 6px; }
+
+  .wf-map-marker { position: absolute; height: 22px; padding: 0 8px; background: rgba(255,255,255,.95); border-radius: 4px; font-size: 9px; font-weight: 600; color: #222; display: inline-flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .wf-heatzone { position: absolute; border-radius: 50%; filter: blur(20px); }
+
+  /* Callout numbers */
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #FF385C; color: #fff; font-size: 10px; font-weight: 700; flex-shrink: 0; vertical-align: middle; margin-left: 4px; }
+
+  /* ── PART B: SPEC TABLE ── */
+  .spec-section { margin-bottom: 22px; }
+  .spec-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #E2E8F0; }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .spec-table td { padding: 6px 8px; vertical-align: top; line-height: 1.5; border-bottom: 1px solid #F1F5F9; }
+  .spec-table td:first-child { width: 38%; font-weight: 600; color: #6A6A6A; }
+  .spec-table td:last-child { color: #222222; font-family: "SF Mono", Menlo, monospace; font-size: 11px; }
+  .spec-bullet { font-size: 12px; color: #222222; line-height: 1.6; padding-left: 14px; position: relative; margin-bottom: 6px; }
+  .spec-bullet::before { content: "•"; position: absolute; left: 0; color: #FF385C; font-weight: 700; }
+  .spec-bullet strong { color: #222222; font-weight: 700; }
+
+  .state-block { background: #F8F8F8; border-left: 3px solid #FF385C; border-radius: 0 6px 6px 0; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; line-height: 1.55; }
+  .state-name { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #FF385C; margin-bottom: 4px; }
+
+  .grade-A { background: #1A7A4A; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
+  .grade-B { background: #B58B00; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
+  .grade-C { background: #D4600A; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
+  .grade-D { background: #C0292B; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
+
+  /* ── DESIGNER NOTES ── */
+  .notes-section { background: #1E2A40; padding: 28px 32px; }
+  .notes-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.5); margin-bottom: 16px; }
+  .note-group { margin-bottom: 18px; }
+  .note-group-label { font-size: 11px; font-weight: 700; color: #FF385C; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+  .note-item { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.65; padding-left: 12px; border-left: 2px solid rgba(255,56,92,.4); margin-bottom: 6px; }
+  .note-item code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 3px; font-size: 11px; color: #fff; }
+
+  .debate-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .debate-cell { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px 12px; font-size: 11px; color: rgba(255,255,255,.78); line-height: 1.5; }
+  .debate-cell strong { color: #FF385C; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+
+  .quality-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 8px; }
+  .quality-card { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px; text-align: center; }
+  .quality-num { font-size: 20px; font-weight: 800; color: #FF385C; }
+  .quality-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: rgba(255,255,255,.55); margin-top: 4px; }
+</style>
 </head>
 <body>
 
-  <!-- ══ PAGE HEADER ══ -->
-  <header class="page-header">
-    <div class="dir-badge">A</div>
-    <div class="page-header-text">
-      <div class="dir-title">Direction A — Conversational Warmth</div>
-      <div class="dir-anchor">Anchor: <strong>Cooper AI Chat (Dribbble)</strong> — lavender/yellow dual-tone, rounded card chips, embedded data cards in AI bubbles</div>
-    </div>
-  </header>
+<!-- ============= DOC HEADER ============= -->
+<div class="doc-header">
+  <div class="doc-kicker">Airbnb Safety Overlay · Designer Agent · v1-pipeline 2026-04-25</div>
+  <div class="doc-title">Direction A — <span>Integrated Pills</span></div>
+  <div class="doc-subtitle">Most native approach: safety joins the existing sub-nav as one more pill. Smallest visual footprint. Lowest learning cost.</div>
+  <div class="doc-quality">
+    <span class="doc-q">Clean <span>5/5</span></span>
+    <span class="doc-q">Effective <span>3/5</span></span>
+    <span class="doc-q">Intuitive <span>4/5</span></span>
+    <span class="doc-q">Pleasing <span>5/5</span></span>
+    <span class="doc-q">Total <span>17/20</span></span>
+  </div>
+  <div class="callout callout-strategy">
+    <div class="callout-label">Why this direction exists</div>
+    <div class="callout-body">The brief's primary goal (§4) is "safety grade visible without leaving the page, within one interaction." The lowest-friction way to add a fourth filter category is to drop it into the row that already holds the type pills (Any / Home / Hotel). A user who can use those pills can use this one — no learning curve, no new visual grammar. The badge mirrors Guest Favorite's overlay placement so it reads as a peer signal, not a foreign one.</div>
+  </div>
+</div>
 
-  <!-- ══ PHONES STAGE ══ -->
-  <div class="phones-stage">
+<!-- ============= TWO-COLUMN BODY ============= -->
+<div class="two-col">
 
-    <!-- ═══════════════════════════════════
-         PHONE 1 — PARENT DASHBOARD HOME
-    ═══════════════════════════════════ -->
-    <div class="phone-wrap">
-      <div class="phone-frame">
-        <div class="dyn-island"></div>
-        <div class="phone-screen">
-          <div class="s1">
+  <!-- ── PART A: LAYOUT WIREFRAME ── -->
+  <div class="col col-left">
+    <div class="col-label">Part A · Layout Diagram</div>
+    <div class="col-title">Page wireframe — safety pill integrated into sub-nav row</div>
 
-            <!-- Status bar -->
-            <div class="status-bar on-light">
-              <span>9:41</span>
-              <div class="status-icons">
-                <!-- Signal bars -->
-                <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
-                  <rect x="0"  y="5" width="2.5" height="5" rx="0.6" fill="#242529"/>
-                  <rect x="3.5" y="3" width="2.5" height="7" rx="0.6" fill="#242529"/>
-                  <rect x="7"  y="1" width="2.5" height="9" rx="0.6" fill="#242529"/>
-                  <rect x="10.5" y="0" width="2.5" height="10" rx="0.6" fill="#242529" opacity="0.3"/>
-                </svg>
-                <!-- WiFi -->
-                <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
-                  <path d="M6 7.5a1 1 0 100-2 1 1 0 000 2z" fill="#242529"/>
-                  <path d="M3.2 4.8A4 4 0 018.8 4.8" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
-                  <path d="M1 2.6A7 7 0 0111 2.6" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
-                </svg>
-                <!-- Battery -->
-                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-                  <rect x="0.5" y="0.5" width="12" height="9" rx="2" stroke="#242529" stroke-width="1"/>
-                  <rect x="1.5" y="1.5" width="9" height="7" rx="1.2" fill="#242529"/>
-                  <path d="M13.5 3.5v3" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- App header -->
-            <div class="s1-header">
-              <div class="s1-wordmark">Tree<span>House</span></div>
-              <div class="s1-header-right">
-                <div class="s1-bell">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                    <path d="M6.5 1.5C4.567 1.5 3 3.067 3 5v3.5l-1 1h9l-1-1V5c0-1.933-1.567-3.5-3.5-3.5z" stroke="#242529" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M5.5 9.5a1 1 0 002 0" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
-                  </svg>
-                  <div class="s1-bell-dot"></div>
-                </div>
-                <div class="s1-avatar">S</div>
-              </div>
-            </div>
-
-            <!-- Greeting — Component 1 translation -->
-            <div class="s1-greeting">
-              <div class="s1-h1">Good morning, Sarah</div>
-              <div class="s1-subtitle">
-                <span class="s1-safe-check">
-                  <span class="s1-check-icon">
-                    <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
-                      <path d="M1.5 3.5l1.5 1.5 2.5-2.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                  Emma and James are safe today
-                </span>
-              </div>
-            </div>
-
-            <!-- 2x2 Action Chip Grid — Component 2 translation -->
-            <div class="s1-chip-grid">
-              <!-- Top-left: Lavender — Emma's chats -->
-              <div class="action-chip chip-lavender">
-                <div class="chip-icon-wrap">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                    <path d="M2 2h9a.8.8 0 01.8.8v5.8a.8.8 0 01-.8.8H5L2 11.5V2.8A.8.8 0 012 2z" stroke="#6b2aed" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M4.5 5.5h4M4.5 7h2.5" stroke="#6b2aed" stroke-width="1" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <div class="chip-title">Emma's chats</div>
-                <div class="chip-sub">View activity</div>
-              </div>
-
-              <!-- Top-right: Yellow — Add child -->
-              <div class="action-chip chip-yellow">
-                <div class="chip-icon-wrap">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                    <circle cx="6.5" cy="4.5" r="2.5" stroke="#92400e" stroke-width="1.2"/>
-                    <path d="M2 11c0-2.21 2.015-4 4.5-4s4.5 1.79 4.5 4" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
-                    <path d="M9.5 2.5v3M8 4h3" stroke="#92400e" stroke-width="1.2" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <div class="chip-title" style="color:#92400e;">Add child</div>
-                <div class="chip-sub">Set up profile</div>
-              </div>
-
-              <!-- Bottom-left: Lavender2 — Safety settings -->
-              <div class="action-chip chip-lavender2">
-                <div class="chip-icon-wrap">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                    <path d="M6.5 1.5L2 3.5v3c0 2.76 1.92 5.34 4.5 6 2.58-.66 4.5-3.24 4.5-6v-3L6.5 1.5z" stroke="#5b21b6" stroke-width="1.2" stroke-linejoin="round"/>
-                    <path d="M4.5 6.5l1.5 1.5 2.5-2.5" stroke="#5b21b6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <div class="chip-title">Safety settings</div>
-                <div class="chip-sub">9 categories</div>
-              </div>
-
-              <!-- Bottom-right: Lavender2 — This week -->
-              <div class="action-chip chip-lavender2">
-                <div class="chip-icon-wrap">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                    <rect x="1.5" y="8.5" width="2" height="3" rx="0.5" fill="#5b21b6"/>
-                    <rect x="4.5" y="6" width="2" height="5.5" rx="0.5" fill="#5b21b6"/>
-                    <rect x="7.5" y="4" width="2" height="7.5" rx="0.5" fill="#5b21b6"/>
-                    <rect x="10.5" y="2" width="2" height="9.5" rx="0.5" fill="#5b21b6" opacity="0.35"/>
-                  </svg>
-                </div>
-                <div class="chip-title">This week</div>
-                <div class="chip-sub">3 alerts</div>
-              </div>
-            </div>
-
-            <!-- Recent Alerts — Component 4 translation -->
-            <div class="s1-alerts">
-              <div class="section-header-row">
-                <span class="section-label">Recent Alerts</span>
-                <span class="see-all">See all</span>
-              </div>
-              <div class="s1-alert-rows">
-                <!-- Row 1 -->
-                <div class="alert-row">
-                  <div class="alert-icon-wrap">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M6 2v4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
-                      <circle cx="6" cy="9" r="0.8" fill="#ef4444"/>
-                      <path d="M5.1 1.2L1 9.5a1 1 0 00.9 1.5h8.2a1 1 0 00.9-1.5L6.9 1.2a1 1 0 00-1.8 0z" stroke="#ef4444" stroke-width="1.1" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <div class="alert-text-col">
-                    <div class="alert-title">Emma asked about feeling lonely</div>
-                    <div class="alert-time">2h ago</div>
-                  </div>
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M2.5 1.5L5.5 4l-3 2.5" stroke="#6b6b8a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <!-- Row 2 -->
-                <div class="alert-row">
-                  <div class="alert-icon-wrap warn">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <circle cx="6" cy="6" r="4.5" stroke="#f97316" stroke-width="1.1"/>
-                      <path d="M6 4v2.5" stroke="#f97316" stroke-width="1.3" stroke-linecap="round"/>
-                      <circle cx="6" cy="8.2" r="0.7" fill="#f97316"/>
-                    </svg>
-                  </div>
-                  <div class="alert-text-col">
-                    <div class="alert-title">James searched for violent games</div>
-                    <div class="alert-time">Yesterday</div>
-                  </div>
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M2.5 1.5L5.5 4l-3 2.5" stroke="#6b6b8a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <!-- Row 3 -->
-                <div class="alert-row">
-                  <div class="alert-icon-wrap">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M6 2v4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
-                      <circle cx="6" cy="9" r="0.8" fill="#ef4444"/>
-                      <path d="M5.1 1.2L1 9.5a1 1 0 00.9 1.5h8.2a1 1 0 00.9-1.5L6.9 1.2a1 1 0 00-1.8 0z" stroke="#ef4444" stroke-width="1.1" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <div class="alert-text-col">
-                    <div class="alert-title">Emma mentioned feeling anxious</div>
-                    <div class="alert-time">2 days ago</div>
-                  </div>
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                    <path d="M2.5 1.5L5.5 4l-3 2.5" stroke="#6b6b8a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bottom nav -->
-            <div class="s1-bottom-nav">
-              <div class="nav-tab active">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M2.5 9.5L9 3l6.5 6.5" stroke="#6b2aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M4 7.8V14.5a.5.5 0 00.5.5H7.5v-3h3v3H13.5a.5.5 0 00.5-.5V7.8" stroke="#6b2aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div class="nav-tab-lbl">Home</div>
-              </div>
-              <div class="nav-tab">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M3 2.5h12a1 1 0 011 1v7a1 1 0 01-1 1H6l-3 3V3.5a1 1 0 011-1z" stroke="#6b6b8a" stroke-width="1.4" stroke-linejoin="round"/>
-                </svg>
-                <div class="nav-tab-lbl">Activity</div>
-              </div>
-              <div class="nav-tab">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <circle cx="9" cy="6" r="3" stroke="#6b6b8a" stroke-width="1.4"/>
-                  <path d="M3 15c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#6b6b8a" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-                <div class="nav-tab-lbl">Kids</div>
-              </div>
-              <div class="nav-tab">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <circle cx="9" cy="9" r="3" stroke="#6b6b8a" stroke-width="1.4"/>
-                  <path d="M9 1v1.5M9 15.5V17M1 9h1.5M15.5 9H17M3.2 3.2l1 1M13.8 13.8l1 1M3.2 14.8l1-1M13.8 4.2l1-1" stroke="#6b6b8a" stroke-width="1.3" stroke-linecap="round"/>
-                </svg>
-                <div class="nav-tab-lbl">Settings</div>
-              </div>
-            </div>
-
-          </div><!-- /s1 -->
-        </div><!-- /phone-screen -->
-      </div><!-- /phone-frame -->
-      <div class="phone-label">01 — Parent Dashboard</div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════
-         PHONE 2 — SAFETY CONFIGURATION
-    ═══════════════════════════════════ -->
-    <div class="phone-wrap">
-      <div class="phone-frame">
-        <div class="dyn-island"></div>
-        <div class="phone-screen">
-          <div class="s2">
-
-            <!-- Status bar -->
-            <div class="status-bar on-light">
-              <span>9:41</span>
-              <div class="status-icons">
-                <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
-                  <rect x="0"  y="5" width="2.5" height="5" rx="0.6" fill="#242529"/>
-                  <rect x="3.5" y="3" width="2.5" height="7" rx="0.6" fill="#242529"/>
-                  <rect x="7"  y="1" width="2.5" height="9" rx="0.6" fill="#242529"/>
-                  <rect x="10.5" y="0" width="2.5" height="10" rx="0.6" fill="#242529" opacity="0.3"/>
-                </svg>
-                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-                  <rect x="0.5" y="0.5" width="12" height="9" rx="2" stroke="#242529" stroke-width="1"/>
-                  <rect x="1.5" y="1.5" width="9" height="7" rx="1.2" fill="#242529"/>
-                  <path d="M13.5 3.5v3" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Nav bar -->
-            <div class="s2-nav">
-              <div class="s2-back-btn">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M6.5 2L3.5 5l3 3" stroke="#6b2aed" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="s2-nav-title">Safety Settings</div>
-            </div>
-
-            <!-- Scrollable content -->
-            <div class="s2-scroll">
-
-              <!-- Content Controls -->
-              <div class="s2-group-label">Content Controls</div>
-
-              <!-- Card: Self-harm — Strict -->
-              <div class="cat-card">
-                <div class="cat-row-top">
-                  <div class="cat-icon-badge red">🚨</div>
-                  <div class="cat-name">Self-harm &amp; suicide</div>
-                </div>
-                <div class="toggle-group">
-                  <div class="tg-seg">Off</div>
-                  <div class="tg-seg">Balanced</div>
-                  <div class="tg-seg active-strict">Strict</div>
-                </div>
-              </div>
-
-              <!-- Card: Drugs — Balanced -->
-              <div class="cat-card">
-                <div class="cat-row-top">
-                  <div class="cat-icon-badge amber">💊</div>
-                  <div class="cat-name">Drugs &amp; substance use</div>
-                </div>
-                <div class="toggle-group">
-                  <div class="tg-seg">Off</div>
-                  <div class="tg-seg active-bal">Balanced</div>
-                  <div class="tg-seg">Strict</div>
-                </div>
-              </div>
-
-              <!-- Card: Eating disorders — Balanced -->
-              <div class="cat-card">
-                <div class="cat-row-top">
-                  <div class="cat-icon-badge rose">🍽</div>
-                  <div class="cat-name">Eating disorders</div>
-                </div>
-                <div class="toggle-group">
-                  <div class="tg-seg">Off</div>
-                  <div class="tg-seg active-bal">Balanced</div>
-                  <div class="tg-seg">Strict</div>
-                </div>
-              </div>
-
-              <!-- Card: Illegal activities — Off -->
-              <div class="cat-card">
-                <div class="cat-row-top">
-                  <div class="cat-icon-badge blue">⚖️</div>
-                  <div class="cat-name">Illegal activities</div>
-                </div>
-                <div class="toggle-group">
-                  <div class="tg-seg active-off">Off</div>
-                  <div class="tg-seg">Balanced</div>
-                  <div class="tg-seg">Strict</div>
-                </div>
-              </div>
-
-              <!-- Pattern Monitoring -->
-              <div class="s2-group-label">Pattern Monitoring</div>
-
-              <div class="cat-card">
-                <div class="cat-row-top">
-                  <div class="cat-icon-badge purple">🔗</div>
-                  <div class="cat-name">Loneliness &amp; AI dependency</div>
-                </div>
-                <div class="toggle-group">
-                  <div class="tg-seg">Off</div>
-                  <div class="tg-seg active-bal">Balanced</div>
-                  <div class="tg-seg">Strict</div>
-                </div>
-              </div>
-
-              <div class="cat-card">
-                <div class="cat-row-top">
-                  <div class="cat-icon-badge amber">📡</div>
-                  <div class="cat-name">Radicalization</div>
-                </div>
-                <div class="toggle-group">
-                  <div class="tg-seg">Off</div>
-                  <div class="tg-seg">Balanced</div>
-                  <div class="tg-seg active-strict">Strict</div>
-                </div>
-              </div>
-
-              <!-- AI Personality -->
-              <div class="s2-group-label">AI Personality</div>
-
-              <div class="s2-personality-card">
-                <div class="personality-row">
-                  <div>
-                    <div class="personality-label">Honesty level</div>
-                    <div class="personality-sub">Friend vs Tool mode</div>
-                  </div>
-                  <!-- mini toggle pill -->
-                  <div style="display:flex;background:#f0eef9;border-radius:999px;height:20px;overflow:hidden;width:90px;">
-                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#9b97b8;">Tool</div>
-                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;background:#6b2aed;color:#fff;border-radius:999px;">Friend</div>
-                  </div>
-                </div>
-                <div class="personality-row">
-                  <div>
-                    <div class="personality-label">Schoolwork limits</div>
-                    <div class="personality-sub">Prevent essay writing</div>
-                  </div>
-                  <div style="display:flex;background:#f0eef9;border-radius:999px;height:20px;overflow:hidden;width:90px;">
-                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#9b97b8;">Off</div>
-                    <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;background:#b8a8f0;color:#fff;border-radius:999px;">On</div>
-                  </div>
-                </div>
-              </div>
-
-            </div><!-- /s2-scroll -->
-
-            <!-- Save button -->
-            <div class="s2-save-btn">Save Settings</div>
-
-          </div><!-- /s2 -->
+    <div class="wireframe">
+      <!-- Sticky header zone -->
+      <div class="wf-header">
+        <div class="wf-zone-label">Sticky header — 151px</div>
+        <div class="wf-row" style="margin-top: 8px;">
+          <div class="wf-pill" style="font-weight: 700; color: #FF385C;">airbnb</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="height: 48px; padding: 0 24px;">San Francisco · Anywhere · Add guests</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="font-size: 10px;">Become a host</div>
+          <div class="wf-pill icon">⊕</div>
+          <div class="wf-pill icon">≡</div>
+        </div>
+        <!-- Sub-nav row with type pills + filter button -->
+        <div class="wf-row" style="margin-top: 10px;">
+          <div class="wf-pill safety-active">Any</div>
+          <div class="wf-pill">Home</div>
+          <div class="wf-pill">Hotel</div>
+          <!-- THE INTEGRATED SAFETY PILL — DIRECTION A SIGNATURE -->
+          <div class="wf-pill safety-active" style="background: #1A7A4A; border-color: #1A7A4A;">Very Safe ✓<span class="num">1</span></div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="border: 1px solid #222;">≡ Filters</div>
         </div>
       </div>
-      <div class="phone-label">02 — Safety Config</div>
-    </div>
 
-
-    <!-- ═══════════════════════════════════
-         PHONE 3 — CHILD CHATBOT
-    ═══════════════════════════════════ -->
-    <div class="phone-wrap">
-      <div class="phone-frame">
-        <div class="dyn-island"></div>
-        <div class="phone-screen">
-          <div class="s3">
-
-            <!-- Status bar on nav-bg -->
-            <div class="status-bar on-light" style="background:var(--nav-bg);">
-              <span>9:41</span>
-              <div class="status-icons">
-                <svg width="13" height="10" viewBox="0 0 13 10" fill="none">
-                  <rect x="0"  y="5" width="2.5" height="5" rx="0.6" fill="#242529"/>
-                  <rect x="3.5" y="3" width="2.5" height="7" rx="0.6" fill="#242529"/>
-                  <rect x="7"  y="1" width="2.5" height="9" rx="0.6" fill="#242529"/>
-                  <rect x="10.5" y="0" width="2.5" height="10" rx="0.6" fill="#242529" opacity="0.3"/>
-                </svg>
-                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-                  <rect x="0.5" y="0.5" width="12" height="9" rx="2" stroke="#242529" stroke-width="1"/>
-                  <rect x="1.5" y="1.5" width="9" height="7" rx="1.2" fill="#242529"/>
-                  <path d="M13.5 3.5v3" stroke="#242529" stroke-width="1.2" stroke-linecap="round"/>
-                </svg>
+      <!-- Body: listings + map -->
+      <div class="wf-body">
+        <div class="wf-listings">
+          <div class="wf-zone-label" style="margin-bottom: 8px;">Listings panel — 734px · 2-col grid</div>
+          <div class="wf-grid">
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="wf-card-badge-A">A · Pacific Heights<span class="num" style="margin-left: 4px;">2</span></div>
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row"></div>
+                <div class="wf-card-price-row"></div>
               </div>
             </div>
-
-            <!-- Top bar on nav-bg -->
-            <div class="s3-topbar">
-              <div class="s3-title-col">
-                <div class="s3-ai-badge">
-                  <!-- sparkle icon -->
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M7 1.5l1 3.2L11.5 7l-3.5 2.3L7 12.5l-1-3.2L2 7l3.5-2.3L7 1.5z" fill="#fff"/>
-                  </svg>
-                </div>
-                <div class="s3-title">Cooper AI</div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="wf-card-badge-A">A · Noe Valley</div>
+                <div class="heart"></div>
               </div>
-              <div class="s3-settings-btn">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <circle cx="6.5" cy="6.5" r="2" stroke="#6b2aed" stroke-width="1.2"/>
-                  <path d="M6.5 1.5v1M6.5 10v1M1.5 6.5h1M10 6.5h1M3.2 3.2l.7.7M9.1 9.1l.7.7M9.8 3.2l-.7.7M3.9 9.1l-.7.7" stroke="#6b2aed" stroke-width="1.2" stroke-linecap="round"/>
-                </svg>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row"></div>
+                <div class="wf-card-price-row"></div>
               </div>
             </div>
-
-            <!-- Chat thread -->
-            <div class="s3-thread">
-
-              <div class="chat-date-label">Today</div>
-
-              <!-- User bubble — Component 5 translation -->
-              <div class="msg-row user-row">
-                <div class="bubble-user">Hey! Can you explain climate change?</div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="wf-card-badge-A B">B · Mission</div>
+                <div class="heart"></div>
               </div>
-
-              <!-- AI bubble with embedded data card — Component 3 translation (SIGNATURE) -->
-              <div class="msg-row">
-                <div class="ai-avatar-sm">
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <path d="M5 1l.8 2.4 2.7 1.6-2.7.8L5 9 4.2 5.8 1.5 5l2.7-.8L5 1z" fill="#fff"/>
-                  </svg>
-                </div>
-                <div class="bubble-ai">
-                  Sure! Climate change is a long-term shift in global temperatures and weather patterns.
-                  <!-- SIGNATURE: embedded data card -->
-                  <div class="data-card-embed">
-                    <div class="data-card-label">Key stat</div>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                      <div>
-                        <div class="data-card-stat">+1.5°C</div>
-                        <div class="data-card-stat-sub">global avg rise since 1880</div>
-                      </div>
-                      <!-- Mini bar chart -->
-                      <div class="mini-bars" style="margin-left:auto;">
-                        <div class="mini-bar"></div>
-                        <div class="mini-bar"></div>
-                        <div class="mini-bar"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- User bubble -->
-              <div class="msg-row user-row">
-                <div class="bubble-user">What can we do to help?</div>
-              </div>
-
-              <!-- AI bubble — plain, smaller -->
-              <div class="msg-row">
-                <div class="ai-avatar-sm">
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <path d="M5 1l.8 2.4 2.7 1.6-2.7.8L5 9 4.2 5.8 1.5 5l2.7-.8L5 1z" fill="#fff"/>
-                  </svg>
-                </div>
-                <div class="bubble-ai">Great question! Here are 3 things you can do: reduce energy use, eat less meat, and talk to others about it.</div>
-              </div>
-
-            </div><!-- /s3-thread -->
-
-            <!-- Input bar -->
-            <div class="s3-input-bar">
-              <div class="input-field-pill">Ask anything...</div>
-              <div class="send-btn">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <path d="M1.5 6.5l10-5-5 10V6.5H1.5z" fill="#ffffff"/>
-                </svg>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row"></div>
+                <div class="wf-card-price-row"></div>
               </div>
             </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="wf-card-badge-A B">B · Castro</div>
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row"></div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="wf-card-badge-A C">C · SoMa</div>
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row"></div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card">
+              <div class="wf-card-photo">
+                <div class="wf-card-badge-A">A · Pac Heights</div>
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row"></div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-zone-label" style="margin-top: 14px; text-align: center;">Inline drawer expands here on badge tap →<span class="num">3</span></div>
+        </div>
 
-          </div><!-- /s3 -->
+        <div class="wf-map">
+          <div class="wf-zone-label">Map panel — 657px sticky</div>
+          <!-- Heatmap zones -->
+          <div class="wf-heatzone" style="background: rgba(26,122,74,0.45); width: 100px; height: 90px; top: 50px; left: 30px;"></div>
+          <div class="wf-heatzone" style="background: rgba(181,139,0,0.45); width: 90px; height: 80px; top: 180px; left: 90px;"></div>
+          <div class="wf-heatzone" style="background: rgba(212,96,10,0.45); width: 80px; height: 70px; top: 100px; right: 60px;"></div>
+          <div class="wf-heatzone" style="background: rgba(192,41,43,0.45); width: 70px; height: 60px; bottom: 90px; left: 60px;"></div>
+
+          <!-- Price markers -->
+          <div class="wf-map-marker" style="top: 70px; left: 60px;">$248</div>
+          <div class="wf-map-marker" style="top: 130px; left: 110px;">$312</div>
+          <div class="wf-map-marker" style="top: 220px; left: 80px;">$186</div>
+          <div class="wf-map-marker" style="top: 180px; right: 80px;">$198</div>
+
+          <!-- Heatmap toggle -->
+          <div style="position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.2);">≋<span class="num" style="position: absolute; top: -8px; right: -8px;">4</span></div>
+          <div style="position: absolute; bottom: 14px; left: 14px; background: rgba(255,255,255,.95); padding: 8px 10px; border-radius: 6px; font-size: 9px; box-shadow: 0 2px 6px rgba(0,0,0,.12);">
+            <div style="font-weight: 700; margin-bottom: 4px; color: #222;">Safety</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#1A7A4A; border-radius:2px;"></span>A</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#B58B00; border-radius:2px;"></span>B</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#D4600A; border-radius:2px;"></span>C</div>
+            <div style="display:flex; align-items:center; gap:5px;"><span style="width:8px; height:8px; background:#C0292B; border-radius:2px;"></span>D</div>
+          </div>
         </div>
       </div>
-      <div class="phone-label">03 — Child Chatbot</div>
     </div>
 
-  </div><!-- /phones-stage -->
+    <!-- Spatial summary -->
+    <div style="background: #fff; border: 1px solid #DDDDDD; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 11px; line-height: 1.7; color: #222;">
+      <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 6px;">Spatial Summary</div>
+      <div><strong>Direction:</strong> Integrated Pills</div>
+      <div><strong>Layout:</strong> Standard Airbnb 2-pane (734px listings · 657px map). Header height unchanged at 151px. Sub-nav row gains one safety pill — no new structural zones.</div>
+      <div><strong>Distinctive layout move:</strong> The safety filter pill lives inside the existing type-pill row. Zero new vertical real estate consumed.</div>
+      <div><strong>New/changed zones:</strong> Sub-nav (1 added pill) · Card photo top-left (badge overlay) · Map (heatmap toggle + zones) · Inline expandable drawer below tapped card.</div>
+      <div><strong>Proportional note:</strong> All Airbnb dimensions extracted from live URL. Heatmap zone positions are illustrative.</div>
+    </div>
+  </div>
 
+  <!-- ── PART B: DESIGN SPECIFICATION ── -->
+  <div class="col col-right">
+    <div class="col-label">Part B · Design Specification</div>
+    <div class="col-title">Tokens, components, states, edge cases — for Prototyper handoff</div>
 
-  <!-- ══ BOTTOM REFERENCE SECTION ══ -->
-  <div class="bottom-section">
-
-    <!-- TOKEN REFERENCE TABLE -->
-    <div class="token-table-wrap">
-      <div class="ref-section-title">Design Tokens</div>
-      <table class="token-table">
-        <thead>
-          <tr>
-            <th style="width:28px;"></th>
-            <th>Token name</th>
-            <th>Hex value</th>
-            <th>Usage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="token-swatch" style="background:#f8f7fc;"></span></td>
-            <td class="token-name-cell">Page bg</td>
-            <td class="token-hex-cell">#f8f7fc</td>
-            <td class="token-usage-cell">App background, chat thread area</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#ffffff;"></span></td>
-            <td class="token-name-cell">Card / surface</td>
-            <td class="token-hex-cell">#ffffff</td>
-            <td class="token-usage-cell">Alert rows, category cards, input bar</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#6b2aed;"></span></td>
-            <td class="token-name-cell">Primary accent</td>
-            <td class="token-hex-cell">#6b2aed</td>
-            <td class="token-usage-cell">Wordmark, CTA buttons, active toggle, send button, AI avatar</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#d7d0fe;"></span></td>
-            <td class="token-name-cell">User bubble (lavender)</td>
-            <td class="token-hex-cell">#d7d0fe</td>
-            <td class="token-usage-cell">Child user chat bubbles, Emma's chats chip bg</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#ffecba;"></span></td>
-            <td class="token-name-cell">AI bubble (warm yellow)</td>
-            <td class="token-hex-cell">#ffecba</td>
-            <td class="token-usage-cell">Cooper AI response bubbles, Add child chip bg</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#242529;"></span></td>
-            <td class="token-name-cell">Text primary</td>
-            <td class="token-hex-cell">#242529</td>
-            <td class="token-usage-cell">Headings, body text, chip titles</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#6b6b8a;"></span></td>
-            <td class="token-name-cell">Text secondary</td>
-            <td class="token-hex-cell">#6b6b8a</td>
-            <td class="token-usage-cell">Subtitles, timestamps, chip subs, nav labels</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#ddd7ed;"></span></td>
-            <td class="token-name-cell">Nav bg</td>
-            <td class="token-hex-cell">#ddd7ed</td>
-            <td class="token-usage-cell">Bottom nav bar (Phone 1), Cooper topbar bg (Phone 3)</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#f3f0fd;"></span></td>
-            <td class="token-name-cell">Chip lavender 2</td>
-            <td class="token-hex-cell">#f3f0fd</td>
-            <td class="token-usage-cell">Safety settings + This week chip bg (lighter lavender)</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#f0eef9;"></span></td>
-            <td class="token-name-cell">Toggle OFF bg</td>
-            <td class="token-hex-cell">#f0eef9</td>
-            <td class="token-usage-cell">Inactive toggle track background</td>
-          </tr>
-          <tr>
-            <td><span class="token-swatch" style="background:#b8a8f0;"></span></td>
-            <td class="token-name-cell">Toggle Balanced</td>
-            <td class="token-hex-cell">#b8a8f0</td>
-            <td class="token-usage-cell">Active "Balanced" toggle state</td>
-          </tr>
-        </tbody>
+    <!-- LIVING TOKEN REFERENCE -->
+    <div class="spec-section">
+      <div class="spec-section-title">Living Token Reference</div>
+      <table class="spec-table">
+        <tr><td>color-primary-brand</td><td>#FF385C</td></tr>
+        <tr><td>color-text-primary</td><td>#222222</td></tr>
+        <tr><td>color-text-secondary</td><td>#6A6A6A</td></tr>
+        <tr><td>color-bg-page</td><td>#FFFFFF</td></tr>
+        <tr><td>color-bg-header-light</td><td>#F8F8F8</td></tr>
+        <tr><td>color-border-default</td><td>#DDDDDD</td></tr>
+        <tr><td>color-border-active-pill</td><td>#222222</td></tr>
+        <tr><td>color-bg-icon-button</td><td>#F2F2F2</td></tr>
+        <tr><td>font-family</td><td>"Circular", -apple-system, system-ui</td></tr>
+        <tr><td>font-pill-tab</td><td>12px / 400 / lh 16px</td></tr>
+        <tr><td>font-listing-title</td><td>14px / 500 / lh 18px</td></tr>
+        <tr><td>font-price</td><td>15px / 400 / lh 19px</td></tr>
+        <tr><td>spacing-header-height</td><td>151px</td></tr>
+        <tr><td>spacing-filter-pill</td><td>8px 12px · h 34px</td></tr>
+        <tr><td>spacing-card</td><td>307×398px</td></tr>
+        <tr><td>radius-filter-pill</td><td>24px</td></tr>
+        <tr><td>radius-card-inner</td><td>20px</td></tr>
+        <tr><td colspan="2" style="padding-top: 10px; font-weight: 700; color: #FF385C;">Safety tokens (designer-determined)</td></tr>
+        <tr><td>color-safety-A</td><td>#1A7A4A</td></tr>
+        <tr><td>color-safety-B</td><td>#B58B00</td></tr>
+        <tr><td>color-safety-C</td><td>#D4600A</td></tr>
+        <tr><td>color-safety-D</td><td>#C0292B</td></tr>
+        <tr><td>color-heatmap-A</td><td>rgba(26,122,74,0.25)</td></tr>
+        <tr><td>color-heatmap-B</td><td>rgba(181,139,0,0.25)</td></tr>
+        <tr><td>color-heatmap-C</td><td>rgba(212,96,10,0.25)</td></tr>
+        <tr><td>color-heatmap-D</td><td>rgba(192,41,43,0.25)</td></tr>
+        <tr><td>safety-pill (sub-nav)</td><td>same as type-pills · h 34px · r 24px</td></tr>
+        <tr><td>safety-badge-overlay</td><td>h 18px · r 24px · 8px px · 8px font / 700</td></tr>
+        <tr><td>heatmap-toggle</td><td>40px · r 50% · bg #fff → active #222</td></tr>
+        <tr><td>safety-transition</td><td>all 200ms ease</td></tr>
       </table>
     </div>
 
-    <!-- COMPONENT TRANSLATION MAP -->
-    <div class="comp-map-wrap">
-      <div class="ref-section-title">Component Translation Map — Cooper AI Chat Anchor</div>
-      <div class="comp-map-grid">
+    <!-- COMPONENT 1: SAFETY FILTER PILL -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component 1 · Safety Filter Pill (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · sits in sub-nav row</td></tr>
+        <tr><td>Background — default</td><td>#FFFFFF</td></tr>
+        <tr><td>Border — default</td><td>1px solid #DDDDDD</td></tr>
+        <tr><td>Text color — default</td><td>#222222</td></tr>
+        <tr><td>Font</td><td>12px / 400 / lh 16px</td></tr>
+        <tr><td>Padding</td><td>8px 12px</td></tr>
+        <tr><td>Height</td><td>34px</td></tr>
+        <tr><td>Radius</td><td>24px</td></tr>
+        <tr><td>Position</td><td>4th pill in sub-nav, after "Hotel" — gap 8px</td></tr>
+        <tr><td>Copy default</td><td>"Safety"</td></tr>
+        <tr><td>Copy active</td><td>"Very Safe ✓" / "Safe ✓" / "Average ✓"</td></tr>
+        <tr><td>Click behavior</td><td>Dropdown opens · 4 options · single-select</td></tr>
+        <tr><td>Transition</td><td>all 200ms ease</td></tr>
+      </table>
 
-        <div class="comp-map-card">
-          <div class="comp-map-num">Component 1</div>
-          <div class="comp-map-anchor">Cooper: "Hello James" Greeting Screen</div>
-          <div class="comp-map-arrow">Large bold greeting + subtitle on lavender/purple bg, avatar initials top-right</div>
-          <div class="comp-map-screen">Phone 1 — Parent Dashboard</div>
-          <div class="comp-map-translated">Translated as: "Good morning, Sarah" (H1, 20px, 700) with "Emma and James are safe today" + green check indicator below. Avatar initials circle (S, accent bg) in header top-right at 28px.</div>
-        </div>
-
-        <div class="comp-map-card">
-          <div class="comp-map-num">Component 2</div>
-          <div class="comp-map-anchor">Cooper: 2x2 Action Chip Grid (lavender + yellow)</div>
-          <div class="comp-map-arrow">Large lavender rounded cards, small yellow pill chip, 20-24px radius, icon top-left, label + subtitle</div>
-          <div class="comp-map-screen">Phone 1 — Parent Dashboard</div>
-          <div class="comp-map-translated">Translated as: 2x2 grid — "Emma's chats" (lavender #d7d0fe), "Add child" (yellow #ffecba), "Safety settings" (lavender2 #f3f0fd), "This week" (lavender2 #f3f0fd). Each: icon badge, title, subtitle. 20px radius cards.</div>
-        </div>
-
-        <div class="comp-map-card">
-          <div class="comp-map-num">Component 3 — Signature</div>
-          <div class="comp-map-anchor">Cooper: AI bubble with embedded data card</div>
-          <div class="comp-map-arrow">Yellow AI bubble (#ffecba) contains white rounded mini card with large stat numeral + small bar chart</div>
-          <div class="comp-map-screen">Phone 3 — Child Chatbot</div>
-          <div class="comp-map-translated">Translated as: Cooper AI response bubble (yellow #ffecba) contains embedded white card showing "Key stat / +1.5°C global avg rise" with 3-bar mini chart. This is the signature differentiator — educational data surfaced inside conversation.</div>
-        </div>
-
-        <div class="comp-map-card">
-          <div class="comp-map-num">Component 4</div>
-          <div class="comp-map-anchor">Cooper: "Recent Search" rows with topic + icon + date</div>
-          <div class="comp-map-arrow">Rows: icon + query text + date label</div>
-          <div class="comp-map-screen">Phone 1 — Parent Dashboard</div>
-          <div class="comp-map-translated">Translated as: "Recent Alerts" feed — white card rows with colored icon badge + alert description ("Emma asked about feeling lonely") + relative timestamp ("2h ago"). Chevron affordance on each row. Red/orange icon tints signal severity.</div>
-        </div>
-
-        <div class="comp-map-card">
-          <div class="comp-map-num">Component 5</div>
-          <div class="comp-map-anchor">Cooper: Dual-tone pill chat bubbles</div>
-          <div class="comp-map-arrow">User = lavender rounded pill (#d7d0fe); AI = warm yellow rounded pill (#ffecba). 18-20px radius, no tail.</div>
-          <div class="comp-map-screen">Phone 3 — Child Chatbot</div>
-          <div class="comp-map-translated">Translated as: Child chat screen uses exact same dual-tone system. User messages (lavender #d7d0fe, right-aligned, 18px radius, very small bottom-right corner cut). AI messages (yellow #ffecba, left-aligned, small bottom-left corner cut). Input pill + accent send button at bottom.</div>
-        </div>
-
-        <div class="comp-map-card">
-          <div class="comp-map-num">Component 6 — Extended</div>
-          <div class="comp-map-anchor">Cooper: Pill toggle group (Off / Balanced / Strict)</div>
-          <div class="comp-map-arrow">3-segment pill selector, active = accent fill, inactive = muted lavender track</div>
-          <div class="comp-map-screen">Phone 2 — Safety Config</div>
-          <div class="comp-map-translated">Translated as: Every safety category card in Phone 2 features the pill toggle group. States: Off (#c8c0e8), Balanced (#b8a8f0), Strict (#6b2aed accent). Track bg: #f0eef9. This replaces checkbox lists for faster parent scanning and lower cognitive load.</div>
-        </div>
-
+      <div class="state-block">
+        <div class="state-name">State · Default (no filter applied)</div>
+        Background #FFFFFF · border 1px solid #DDDDDD · text "Safety" #222222 / 400. Hover: bg #F8F8F8.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Active (Very Safe selected)</div>
+        Background #1A7A4A · border 1px solid #1A7A4A · text "Very Safe ✓" #FFFFFF / 500. The pill takes the grade color of the selected tier — strongest-possible signal that a filter is engaged. Tier B → #B58B00, C → #D4600A.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Open (dropdown menu)</div>
+        Pill becomes anchor for absolute-positioned menu (white bg, 1px #DDDDDD border, 12px radius, 8px box-shadow). Four options: Very Safe (A) · Safe (A or B) · Average (A–C) · All. Selected option shows checkmark + grade-color left rail.
       </div>
     </div>
 
-  </div><!-- /bottom-section -->
+    <!-- COMPONENT 2: SAFETY BADGE OVERLAY -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component 2 · Safety Badge — Photo Overlay (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · overlaid on card photo</td></tr>
+        <tr><td>Position</td><td>top: 12px · left: 12px (within photo)</td></tr>
+        <tr><td>Background</td><td>color-safety-{grade} solid fill</td></tr>
+        <tr><td>Text color</td><td>#FFFFFF</td></tr>
+        <tr><td>Font</td><td>10px / 700 / lh 14px / letter-spacing .04em</td></tr>
+        <tr><td>Padding</td><td>4px 8px</td></tr>
+        <tr><td>Height</td><td>22px</td></tr>
+        <tr><td>Radius</td><td>24px (matches Guest Favorite pill)</td></tr>
+        <tr><td>Copy</td><td>"A · Pacific Heights" (grade · neighborhood)</td></tr>
+        <tr><td>Shadow</td><td>0 1px 3px rgba(0,0,0,.25)</td></tr>
+        <tr><td>Click behavior</td><td>Stops photo carousel propagation · expands inline drawer</td></tr>
+      </table>
+
+      <div class="state-block">
+        <div class="state-name">State · Default</div>
+        Solid grade color fill. Shadow ensures legibility on light photos.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Hover</div>
+        Brightness +10% · cursor: pointer. Adds 1px outer ring rgba(255,255,255,.6) for affordance.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Drawer-Open (badge active)</div>
+        Brightness +15% · 2px solid #FFFFFF outer ring. Indicates "this card's drawer is the one expanded below".
+      </div>
+    </div>
+
+    <!-- COMPONENT 3: INLINE SAFETY DRAWER -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component 3 · Inline Safety Drawer (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · expands below tapped card row</td></tr>
+        <tr><td>Background</td><td>#F8F8F8 (color-bg-header-light)</td></tr>
+        <tr><td>Border-top</td><td>4px solid color-safety-{grade}</td></tr>
+        <tr><td>Border-other</td><td>1px solid #DDDDDD</td></tr>
+        <tr><td>Padding</td><td>20px 24px</td></tr>
+        <tr><td>Radius</td><td>20px (matches card-inner)</td></tr>
+        <tr><td>Width</td><td>100% of listings panel (734px)</td></tr>
+        <tr><td>Layout</td><td>4-column grid · gap 24px</td></tr>
+        <tr><td>Content</td><td>Night walkability · Dominant crime · Hospitals nearby · Transit nearby</td></tr>
+        <tr><td>Animation</td><td>height 0→auto · opacity 0→1 · 250ms ease</td></tr>
+        <tr><td>Close affordance</td><td>X icon top-right · re-tap badge · tap another badge</td></tr>
+      </table>
+
+      <div class="state-block">
+        <div class="state-name">State · Collapsed (default)</div>
+        Drawer is height 0 · display none. No visual presence.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Expanded</div>
+        Drawer slides into row position between the tapped card's row and the next row. Pushes subsequent rows down. Sticky map remains pinned.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Switching listings</div>
+        If a different badge is tapped while drawer is open: drawer fades out (150ms), repositions, fades in with new content (150ms).
+      </div>
+    </div>
+
+    <!-- COMPONENT 4: HEATMAP TOGGLE -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component 4 · Heatmap Toggle (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · floats over map panel</td></tr>
+        <tr><td>Position</td><td>absolute · top 14px · right 14px (next to zoom)</td></tr>
+        <tr><td>Size</td><td>40px × 40px</td></tr>
+        <tr><td>Radius</td><td>50%</td></tr>
+        <tr><td>Background — off</td><td>#FFFFFF</td></tr>
+        <tr><td>Background — on</td><td>#222222</td></tr>
+        <tr><td>Icon — off</td><td>≋ (waves) · #222222</td></tr>
+        <tr><td>Icon — on</td><td>≋ (waves) · #FFFFFF</td></tr>
+        <tr><td>Shadow</td><td>0 2px 8px rgba(0,0,0,.2)</td></tr>
+        <tr><td>Tooltip</td><td>"Safety heatmap"</td></tr>
+      </table>
+    </div>
+
+    <!-- ACTIVE STATE DOC -->
+    <div class="spec-section">
+      <div class="spec-section-title">Active States — All Interactive Components</div>
+      <div class="spec-bullet"><strong>Safety pill</strong> — default white · hover #F8F8F8 · open white + 8px shadow · active grade-color fill</div>
+      <div class="spec-bullet"><strong>Badge overlay</strong> — default solid color · hover +10% brightness · drawer-open white 2px ring</div>
+      <div class="spec-bullet"><strong>Drawer</strong> — collapsed h0 · expanded h auto · switching fade150ms</div>
+      <div class="spec-bullet"><strong>Heatmap toggle</strong> — off white · on black · zones fade in 200ms when activated</div>
+      <div class="spec-bullet"><strong>Map zones</strong> — render with 0.25 alpha when on · fade out 200ms when off</div>
+    </div>
+
+    <!-- EDGE CASES -->
+    <div class="spec-section">
+      <div class="spec-section-title">Edge Cases</div>
+      <div class="state-block">
+        <div class="state-name">Edge · Filter "Very Safe" → 0 results</div>
+        Listings panel renders empty-state card: bold "No Very Safe stays match your dates" · body "Try expanding to Safe or Average to see more options." · primary CTA "Show Safe (B+)" — button style same as Filters pill, brand color. Map shows only A-zone heatmap with no markers.
+      </div>
+      <div class="state-block">
+        <div class="state-name">Edge · Drawer open + new filter applied</div>
+        Drawer auto-collapses with 150ms fade. If the same listing remains in filtered set, the badge active-state ring is preserved so user can re-tap easily. If listing is filtered out, scroll resets to top of panel.
+      </div>
+      <div class="state-block">
+        <div class="state-name">Edge · Heatmap on + filter "All"</div>
+        All four heatmap colors render simultaneously at full 0.25 alpha. Legend in bottom-left of map shows all four grade swatches. Price markers remain on top of heatmap (z-index: 2).
+      </div>
+    </div>
+
+    <!-- COMPONENT ASSEMBLY ORDER -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component Assembly Order</div>
+      <div class="spec-bullet">1. <strong>Map heatmap zones</strong> — base layer, behind price markers</div>
+      <div class="spec-bullet">2. <strong>Heatmap toggle button</strong> — floats top-right of map</div>
+      <div class="spec-bullet">3. <strong>Map legend</strong> — bottom-left, conditional on heatmap on</div>
+      <div class="spec-bullet">4. <strong>Safety pill</strong> — added to sub-nav row, position 4</div>
+      <div class="spec-bullet">5. <strong>Safety pill dropdown menu</strong> — anchored to pill</div>
+      <div class="spec-bullet">6. <strong>Safety badge overlay</strong> — added to each listing card photo</div>
+      <div class="spec-bullet">7. <strong>Inline drawer</strong> — conditional render below tapped card row</div>
+    </div>
+
+    <!-- BACKWARD-FROM-FAILURE -->
+    <div class="spec-section">
+      <div class="spec-section-title">Backward-from-Failure — P0 Components</div>
+      <div class="spec-bullet"><strong>Safety pill:</strong> If users miss it, they will fail Task 2 (filter to Very Safe). Mitigation — when active, pill takes the full grade color so its activation state is unmissable; when default, it sits at position 4 (read-order priority) and uses the exact pill grammar of the existing type pills it lives next to.</div>
+      <div class="spec-bullet"><strong>Badge overlay:</strong> If users overlook it, they will fail Task 1 (assess safety at a glance). Mitigation — placement matches Guest Favorite (top-left of photo), so eyes already know to look there; the saturated grade color contrasts strongly against typical photography.</div>
+      <div class="spec-bullet"><strong>Inline drawer:</strong> If users don't realize the badge is tappable, they will fail Task 3 (access neighborhood detail). Mitigation — cursor pointer + hover brightness change + tooltip "Tap for safety details" on first hover per session.</div>
+    </div>
+
+    <!-- DISTINCTIVENESS LOG -->
+    <div class="spec-section">
+      <div class="spec-section-title">Distinctiveness Log — what makes A unique</div>
+      <div class="spec-bullet">Safety filter occupies <strong>zero new vertical space</strong> — joins the existing type-pill row. B and C add structural elements; A does not.</div>
+      <div class="spec-bullet">Active filter pill takes the <strong>grade color itself</strong>. Most distinctive activation state of the three directions.</div>
+      <div class="spec-bullet">Badge is a <strong>small overlay pill</strong> on the photo top-left — mirroring Guest Favorite. B uses a metadata chip; C uses a card border.</div>
+      <div class="spec-bullet">Of the three, A is the most <strong>"native"</strong> — a user could be told this was always part of Airbnb.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= DESIGNER NOTES ============= -->
+<div class="notes-section">
+  <div class="notes-title">Designer Notes for Prototyper · Direction A</div>
+
+  <!-- INTERNAL DEBATE SUMMARY -->
+  <div class="note-group">
+    <div class="note-group-label">Internal Design Debate Summary</div>
+    <div class="debate-row">
+      <div class="debate-cell">
+        <strong>Q3 Filter Placement</strong>
+        Three candidates: (a) sub-nav pill, (b) dedicated bar, (c) Filters modal. A wins for Direction A because it preserves Airbnb's existing visual rhythm — every other filter category is a pill in this row.
+      </div>
+      <div class="debate-cell">
+        <strong>Q5 Badge Style</strong>
+        Three candidates: (a) photo overlay pill, (b) metadata chip, (c) card-border. (a) wins for Direction A because it pairs natively with Guest Favorite — same shape grammar, same position grammar.
+      </div>
+      <div class="debate-cell">
+        <strong>Trade-off Acknowledged</strong>
+        Lowest prominence of the three. Effective score 3/5 — a user who is not actively scanning for safety could miss the pill. Mitigation: active state takes the full grade color so engaged use is unmissable.
+      </div>
+    </div>
+    <div class="quality-grid">
+      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Clean</div></div>
+      <div class="quality-card"><div class="quality-num">3</div><div class="quality-label">Effective</div></div>
+      <div class="quality-card"><div class="quality-num">4</div><div class="quality-label">Intuitive</div></div>
+      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Pleasing</div></div>
+      <div class="quality-card"><div class="quality-num">17</div><div class="quality-label">Total / 20</div></div>
+    </div>
+  </div>
+
+  <!-- FALSIFICATION -->
+  <div class="note-group">
+    <div class="note-group-label">Final Falsification Pass</div>
+    <div class="note-item"><strong>Failure mode:</strong> Safety pill is too subtle in default state — sits in a row of 3 other pills with identical grammar and could fail to register as "the safety filter". Users who arrived at the page knowing they want safety filtering would scan and see only "Any / Home / Hotel" until they re-read.</div>
+    <div class="note-item"><strong>Mitigation:</strong> When the user has not engaged the pill, render a subtle 1px <code>#FF385C</code> dot inside the pill at the trailing edge — visual hint that this pill is new, removed once user has interacted with it once (sessionStorage flag).</div>
+  </div>
+
+  <!-- BUILD INSTRUCTIONS -->
+  <div class="note-group">
+    <div class="note-group-label">Exact Build Instructions for Prototyper</div>
+    <div class="note-item">Header height stays at <code>151px</code>. Do not modify. Sub-nav row: keep the existing 3 type pills (Any / Home / Hotel), add the Safety pill at position 4 with <code>gap: 8px</code>. Filters button stays at far right.</div>
+    <div class="note-item">Card photo: add <code>position: absolute; top: 12px; left: 12px;</code> badge as the FIRST child of the photo container — Guest Favorite badge sits below it if both exist. Stack order: badge (z 3) · heart (z 2) · carousel (z 1).</div>
+    <div class="note-item">Inline drawer: render as a sibling of the card grid. Use CSS grid <code>grid-row</code> trick to make the drawer span both columns when expanded. <code>height: auto; max-height: 0; overflow: hidden;</code> with <code>transition: max-height 250ms ease, opacity 200ms ease</code>.</div>
+    <div class="note-item">Map heatmap: render as <code>div</code>s with <code>position: absolute</code> and <code>filter: blur(40px)</code> on the map panel. Coordinates are mock — Pacific Heights top-left, Tenderloin bottom-right of a stylized SF outline. Each zone <code>200×200px</code> at <code>0.25</code> alpha.</div>
+    <div class="note-item">Heatmap toggle: <code>40×40px</code> circular button absolute top: 14px right: 14px. State managed in React via <code>useState</code>. When toggled on, heatmap zones get <code>opacity: 1</code> from 0; transition <code>opacity 200ms ease</code>.</div>
+    <div class="note-item">Mock SF data — Pacific Heights A · Noe Valley A · Mission B · Castro B · SoMa C · Outer Sunset C · Tenderloin D · Civic Center D. Use these eight neighborhoods for all listing cards. Cycle through.</div>
+    <div class="note-item">Font fallback chain (Airbnb Cereal VF unavailable): <code>"Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif</code>. Do not use system serif fallback.</div>
+  </div>
+</div>
 
 </body>
 </html>

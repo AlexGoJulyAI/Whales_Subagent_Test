@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Brief — Craigslist Homepage Redesign craigslist_homepage-redesign_2026_04_25</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
+    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
+
+    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
+    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
+    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
+    .brief-meta-item strong { color: #fff; }
+
+    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
+    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
+    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
+    .section-body { padding: 22px; }
+
+    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
+    .section-body h4:first-child { margin-top: 0; }
+    .section-body ul { font-size: 14px; color: #374151; padding-left: 20px; margin-bottom: 12px; }
+    .section-body li { margin-bottom: 4px; }
+
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
+    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
+    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
+
+    .brief-code { background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px 16px; font-family: 'Fira Code', 'Cascadia Code', 'Menlo', monospace; font-size: 12px; color: #1E40AF; overflow-x: auto; margin: 12px 0; white-space: pre; }
+
+    .screenshot-wrap { margin: 16px 0; }
+    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
+    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+    .annotated-img img { display: block; width: 100%; height: auto; }
+    .annotation-box {
+      position: absolute;
+      border: 2.5px solid #DC2626;
+      border-radius: 3px;
+      pointer-events: none;
+    }
+    .annotation-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #DC2626;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 0 0 3px 0;
+      white-space: nowrap;
+      line-height: 18px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
+    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
+    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
+
+    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
+    .pill-blue { background: #DBEAFE; color: #1E40AF; }
+    .pill-red { background: #FEE2E2; color: #991B1B; }
+    .pill-gray { background: #F3F4F6; color: #374151; }
+    .pill-orange { background: #FFEDD5; color: #9A3412; }
+
+    .direction-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .direction-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px; }
+    .direction-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #083386; margin-bottom: 8px; }
+    .direction-card p { font-size: 12px; color: #374151; margin-bottom: 6px; }
+    .direction-card p:last-child { margin-bottom: 0; }
+    .direction-card strong { color: #1E2A40; }
+
+    .color-swatch { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-family: monospace; color: #374151; margin: 3px 0; }
+    .swatch { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(0,0,0,.1); display: inline-block; flex-shrink: 0; }
+    .fail-badge { background: #FEE2E2; color: #991B1B; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-left: 4px; }
+    .pass-badge { background: #DCFCE7; color: #166534; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-left: 4px; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="brief-header">
+    <div class="brief-kicker">Project Brief</div>
+    <div class="brief-title">Craigslist — Homepage Redesign</div>
+    <div class="brief-meta">
+      <div class="brief-meta-item"><strong>Engagement</strong> craigslist_homepage-redesign_2026_04_25</div>
+      <div class="brief-meta-item"><strong>Date</strong> 2026-04-25</div>
+      <div class="brief-meta-item"><strong>Status</strong> Device confirmed · All UX/aesthetic decisions ★ CLIENT DEFERRED</div>
+    </div>
+  </div>
+
+  <!-- §1 Product Vision -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><div class="section-title">Product Vision</div></div>
+    <div class="section-body">
+      <p>Craigslist is a platform that connects people within geographic communities to buy, sell, trade, hire, find housing, discover services, and engage in local discussions. The SF Bay Area homepage is the primary entry point for the entire product — it must route every user type (renter, job seeker, buyer, community browser) to the right destination with minimal friction.</p>
+      <p>The redesigned homepage replaces the current undifferentiated wall of 200+ hyperlinks with a hierarchically organized interface. Three core elements anchor the redesign: (1) a prominent, centered search bar; (2) six visually distinct category cards (community, housing, jobs, for sale, services, gigs) with subcategories surfaced through progressive disclosure; and (3) a streamlined location selector with optional geolocation, regional grouping, and search.</p>
+    </div>
+  </div>
+
+  <!-- §2 Problem Statements -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><div class="section-title">Problem Statements</div></div>
+    <div class="section-body">
+      <div class="callout-prob">
+        <div class="callout-label">Problem — Layout &amp; Information Hierarchy</div>
+        The center content area presents 8 named sections as undifferentiated columns of blue hyperlinks. Users face 200+ links with no visual hierarchy, grouping weight, or entry-point clarity. The "discussion forums" section alone contains 50+ forum topics across 3 columns.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Problem — Search Entry Point</div>
+        The search input is embedded in the left sidebar (196px wide, #f4f4f4 background) — a non-central, low-prominence position. Basic browser input with 3px padding, no visual emphasis, easy to miss for users whose intent is keyword search.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Problem — Location Selector</div>
+        The location indicator ("SF bay area") is a clickable button with no visual affordance — no dropdown caret, no bordered input, no icon. Sub-area pills (sfc, sby, eby, pen, nby, scz) use bare two-letter abbreviations with no geographic labels, meaningless to unfamiliar users.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Problem — No Visual Differentiation Between Categories</div>
+        All 8 category sections use identical visual treatment: same gray header bar, same blue link color, same font size and weight. No iconography, color coding, or spatial hierarchy to help users locate their target category.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Accessibility — WCAG AA Contrast Failure</div>
+        <code>#post</code> fails WCAG AA: 3.78:1 (threshold 4.5:1, not large text) — text #009900 on bg #ffffff. Must be remediated in all redesign directions.
+      </div>
+
+      <!-- ANNOTATED SCREENSHOT -->
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">sfbay.craigslist.org at 1440px — problems annotated</div>
+        <div class="annotated-img">
+          <img src="../design-references/sfbay-craigslist-org-desktop-1440.png" alt="Current Craigslist SF Bay Area homepage at 1440px desktop" />
+          <!-- Wall of hyperlinks — #center: top 8.76%, left 31.08%, w 42.19%, h 81.33% -->
+          <div class="annotation-box" style="top: 8.76%; left: 31.08%; width: 42.19%; height: 81.33%;">
+            <span class="annotation-label">Wall of undifferentiated hyperlinks — no visual hierarchy</span>
+          </div>
+          <!-- Location selector — .location: top 1.83%, left 31.08%, w 25.12%, h 4.73% -->
+          <div class="annotation-box" style="top: 1.83%; left: 31.08%; width: 25.12%; height: 4.73%;">
+            <span class="annotation-label">Location — text link, no change affordance</span>
+          </div>
+          <!-- Sub-area pills — .cl-subareas: top 3.01%, left 42.6%, w 13.6%, h 2.36% -->
+          <div class="annotation-box" style="top: 3.01%; left: 42.6%; width: 13.6%; height: 2.36%;">
+            <span class="annotation-label">Sub-areas — bare abbreviations, no labels</span>
+          </div>
+          <!-- Post an ad WCAG fail — #post: top 7.37%, left 19%, w 7.69%, h 3.06% -->
+          <div class="annotation-box" style="top: 7.37%; left: 19%; width: 7.69%; height: 3.06%;">
+            <span class="annotation-label">Post an ad — WCAG AA fail (3.78:1)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viewport screenshot -->
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Viewport at 1440×900 — initial load</div>
+        <div class="annotated-img">
+          <img src="../design-references/sfbay-craigslist-org-desktop-1440-viewport.png" alt="Craigslist homepage viewport at initial load 1440px" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 Target Users -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><div class="section-title">Target Users</div></div>
+    <div class="section-body">
+      <div class="callout-note">
+        <div class="callout-label">★ Client Deferred</div>
+        "Unsure — test different options by letting the agent explore the best design variations." Designer Agent to explore one distinct primary persona per direction.
+      </div>
+      <div class="direction-grid">
+        <div class="direction-card">
+          <div class="direction-label">Direction A</div>
+          <p><strong>Task-focused returning user</strong></p>
+          <p>Already knows their category. Needs fast access to it and its subcategories. Values efficiency over discovery.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction B</div>
+          <p><strong>First-time or casual visitor</strong></p>
+          <p>New to Craigslist. Needs discovery and orientation. The search bar is the primary anchor.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction C</div>
+          <p><strong>Multi-purpose browser</strong></p>
+          <p>Uses Craigslist regularly for multiple needs. All 6 categories equally weighted — no single one dominates.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §4 Success Metrics -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><div class="section-title">Success Metrics</div></div>
+    <div class="section-body">
+      <div class="callout-note">
+        <div class="callout-label">★ Client Deferred</div>
+        "Unsure — test different options by letting the agent explore the best design variations." Each direction optimizes for a distinct candidate metric.
+      </div>
+      <table class="brief-table">
+        <tr><th>Direction</th><th>Primary Metric</th><th>Proxy Signals</th></tr>
+        <tr><td>A</td><td>Reduced time-to-task — users reach target category within 1 click</td><td>Clicks before first category selection</td></tr>
+        <tr><td>B</td><td>Reduced bounce rate — users interact with at least one element before leaving</td><td>Session depth, exit rate from homepage</td></tr>
+        <tr><td>C</td><td>Secondary discovery — users who came for one category also engage with adjacent ones</td><td>Multi-category click rate per session</td></tr>
+        <tr><td>All</td><td colspan="2">Search bar usage rate; location selector engagement; category card click-through rate</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §5 Scope -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div class="section-title">Key Features &amp; Scope</div></div>
+    <div class="section-body">
+      <h4>In Scope</h4>
+      <table class="brief-table">
+        <tr><th>Screen / Feature</th><th>Description</th></tr>
+        <tr><td>Homepage redesign</td><td>sfbay.craigslist.org at desktop (1440px primary viewport)</td></tr>
+        <tr><td>6 Category cards</td><td>Community, housing, jobs, for sale, services, gigs — each a visually distinct card with progressive disclosure of subcategories</td></tr>
+        <tr><td>Prominent search bar</td><td>Centered, above or near the category cards — primary keyword entry point</td></tr>
+        <tr><td>Streamlined location selector</td><td>Replaces bare text link; optional geolocation, regional grouping with full labels (not bare abbreviations), and text search</td></tr>
+      </table>
+      <h4>Out of Scope</h4>
+      <table class="brief-table">
+        <tr><th>Item</th><th>Reason</th></tr>
+        <tr><td>Internal pages (listing detail, search results, posting flow)</td><td>Homepage redesign only</td></tr>
+        <tr><td>Mobile optimization</td><td>Desktop-first — client-confirmed; mobile secondary</td></tr>
+        <tr><td>Back-end / functional implementation</td><td>Static HTML prototype output</td></tr>
+        <tr><td>Discussion forums (full section)</td><td>★ Client Deferred — designer judgment: fold under "community" card</td></tr>
+        <tr><td>Resumes (full section)</td><td>★ Client Deferred — designer judgment: fold under "jobs" card</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §6 Constraints -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><div class="section-title">Constraints</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Constraint</th><th>Value</th><th>Source</th></tr>
+        <tr><td>Device target</td><td>Desktop-first — 1440px primary viewport</td><td>Client-confirmed</td></tr>
+        <tr><td>Accessibility standard</td><td>WCAG AA minimum</td><td>Auto-elevated — existing #post contrast failure requires remediation</td></tr>
+        <tr><td>Output format</td><td>Static HTML prototype</td><td>Pipeline default</td></tr>
+        <tr><td>Mobile</td><td>Secondary (not a primary deliverable)</td><td>Client-confirmed</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §7 References & Aesthetic Direction -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">7</div><div class="section-title">References &amp; Aesthetic Direction</div></div>
+    <div class="section-body">
+      <div class="callout-note">
+        <div class="callout-label">★ Client Deferred</div>
+        "Unsure — test different options by letting the agent explore the best design variations." Each direction draws from a distinct reference and brand relationship stance.
+      </div>
+      <table class="brief-table">
+        <tr><th>Direction</th><th>Reference</th><th>Pattern to draw from</th><th>Brand relationship</th></tr>
+        <tr><td>A</td><td>Airbnb</td><td>Prominent centered search + icon-labeled category cards</td><td>Modernize while referencing — purple as accent, neutral-first palette</td></tr>
+        <tr><td>B</td><td>Nextdoor</td><td>Community-first layout, neighborhood context in header</td><td>Extend the brand — purple and blue as primary palette anchors</td></tr>
+        <tr><td>C</td><td>eBay</td><td>Dense-but-organized category grid, marketplace hierarchy</td><td>Fresh design language — new palette; logo wordmark stays</td></tr>
+      </table>
+      <h4>Aesthetic Keywords</h4>
+      <div class="direction-grid">
+        <div class="direction-card">
+          <div class="direction-label">Direction A</div>
+          <p><strong>Clean / Utilitarian / Editorial</strong></p>
+          <p>Generous whitespace, strong typographic hierarchy, minimal color. Content leads, chrome recedes.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction B</div>
+          <p><strong>Warm / Approachable / Community-First</strong></p>
+          <p>Rounded corners (8–12px), warm neutrals, soft shadows. Friendly and local.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction C</div>
+          <p><strong>Bold / Structured / Modern Marketplace</strong></p>
+          <p>Strong grid, confident type scale, distinct color zones per category.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §8 Design System -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">8</div><div class="section-title">Design System</div></div>
+    <div class="section-body">
+      <h4>Existing Site Design Tokens (url_extracted — reference for designer)</h4>
+      <h4 style="margin-top:14px;">Colors</h4>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:16px;">
+        <div class="color-swatch"><span class="swatch" style="background:#551a8b;"></span> #551a8b — brand-purple — logo / visited links <span class="pass-badge">PASS</span></div>
+        <div class="color-swatch"><span class="swatch" style="background:#0000ee;"></span> #0000ee — link-blue — all hyperlinks <span class="pass-badge">PASS</span></div>
+        <div class="color-swatch"><span class="swatch" style="background:#222222;"></span> #222222 — text-primary — body text</div>
+        <div class="color-swatch"><span class="swatch" style="background:#ffffff;border:1px solid #ddd;"></span> #ffffff — bg-page — page background</div>
+        <div class="color-swatch"><span class="swatch" style="background:#f4f4f4;"></span> #f4f4f4 — bg-sidebar — left sidebar</div>
+        <div class="color-swatch"><span class="swatch" style="background:#eeeeee;"></span> #eeeeee — bg-section-header / bg-footer</div>
+        <div class="color-swatch"><span class="swatch" style="background:#dddddd;"></span> #dddddd — border-section — h3.ban border-top</div>
+        <div class="color-swatch"><span class="swatch" style="background:#009900;"></span> #009900 — post-green — "post an ad" <span class="fail-badge">WCAG AA FAIL 3.78:1</span></div>
+      </div>
+      <h4>Typography</h4>
+      <table class="brief-table">
+        <tr><th>Role</th><th>Family</th><th>Size</th><th>Weight</th><th>Line Height</th></tr>
+        <tr><td>Logo</td><td>"Times New Roman", Times, serif</td><td>31.3px</td><td>500</td><td>42.3px</td></tr>
+        <tr><td>Location label</td><td>"Times New Roman", Times, serif</td><td>22px</td><td>400</td><td>16px</td></tr>
+        <tr><td>Body / links</td><td>"Open Sans", Helvetica, Arial, sans-serif</td><td>16px</td><td>400</td><td>—</td></tr>
+        <tr><td>Section header (h3.ban)</td><td>"Open Sans", Helvetica, Arial, sans-serif</td><td>16px</td><td>700</td><td>—</td></tr>
+        <tr><td>Sidebar utility</td><td>"Open Sans", Helvetica, Arial, sans-serif</td><td>13.3px</td><td>400</td><td>—</td></tr>
+        <tr><td>Footer</td><td>"Open Sans", Helvetica, Arial, sans-serif</td><td>12.8px</td><td>400</td><td>—</td></tr>
+      </table>
+      <h4>Spacing</h4>
+      <table class="brief-table">
+        <tr><th>Element</th><th>Value</th></tr>
+        <tr><td>Sidebar width (#leftbar)</td><td>196px</td></tr>
+        <tr><td>Center content width (#center)</td><td>607.6px</td></tr>
+        <tr><td>Section header padding (h3.ban)</td><td>2px 5px</td></tr>
+        <tr><td>Link padding</td><td>0px 5px</td></tr>
+        <tr><td>Border radius (site-wide)</td><td>0px</td></tr>
+        <tr><td>Box shadow (site-wide)</td><td>none</td></tr>
+      </table>
+      <div class="callout-note" style="margin-top:12px;">
+        <div class="callout-label">New Design Tokens</div>
+        ★ Client Deferred — determined per direction by Designer Agent. All new token values must achieve WCAG AA compliance (≥4.5:1 for normal text, ≥3:1 for large text).
+      </div>
+      <h4 style="margin-top:14px;">Component Variant Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Interaction Model</th><th>Confirmed States</th><th>Unconfirmed States</th></tr>
+        <tr><td>CategorySection (h3.ban + .cats)</td><td>Static</td><td>Default only</td><td>Hover, focus (not on current site)</td></tr>
+        <tr><td>LocationSelector (.location + .cl-subareas)</td><td>Click-driven (opens picker)</td><td>Default (text + pills)</td><td>Open/active picker state</td></tr>
+        <tr><td>SearchInput (input in #leftbar)</td><td>Click-driven</td><td>Default (resting)</td><td>Focus, active</td></tr>
+        <tr><td>HyperLink (all &lt;a&gt; in .cats)</td><td>Static</td><td>Default (#0000ee), Visited (#551a8b)</td><td>Hover (browser default only)</td></tr>
+      </table>
+      <h4>Active State Visual Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Active State Treatment</th><th>Source</th></tr>
+        <tr><td>All hyperlinks</td><td>Visited: #551a8b (browser default)</td><td>url_extracted</td></tr>
+        <tr><td colspan="3" style="color:#6B7280;font-style:italic;">No custom hover or active states present on current site</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §9 Brand Identity -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">9</div><div class="section-title">Brand Identity</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Element</th><th>Value</th><th>Treatment in redesign</th></tr>
+        <tr><td>Wordmark</td><td>"craigslist" — Times New Roman, 31.3px, weight 500, #551a8b</td><td>Preserved in all directions</td></tr>
+        <tr><td>Peace symbol</td><td>SVG icon prefix to wordmark</td><td>Preserved in all directions</td></tr>
+        <tr><td>Brand purple</td><td>#551a8b</td><td>Per direction: accent / primary / referenced (see §7)</td></tr>
+        <tr><td>Voice</td><td>Direct, functional, no marketing-speak</td><td>All copy follows existing site tone</td></tr>
+        <tr><td>Page tagline</td><td>"SF bay area jobs, apartments, for sale, services, community, and events"</td><td>Confirmed from live page</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §10 Visual Design Language -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">10</div><div class="section-title">Visual Design Language</div></div>
+    <div class="section-body">
+      <div class="callout-note">
+        <div class="callout-label">★ Client Deferred</div>
+        Three distinct visual languages — one per direction. Designer Agent to determine all token values per direction. Motion default for all directions: subtle hover transitions (100–200ms); no entrance animation unless direction-specific.
+      </div>
+      <div class="direction-grid">
+        <div class="direction-card">
+          <div class="direction-label">Direction A</div>
+          <p><strong>Clean / Utilitarian / Editorial</strong></p>
+          <p>Surface: white or off-white, no texture. Cards: subtle elevation (box-shadow). Palette: neutral-first, purple as single accent. Reference: Airbnb search entry.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction B</div>
+          <p><strong>Warm / Approachable / Community-First</strong></p>
+          <p>Surface: warm neutral bg. Cards: soft rounded corners (8–12px), soft shadows. Palette: extends brand purple + blue with warm supporting tones. Reference: Nextdoor.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction C</div>
+          <p><strong>Bold / Structured / Modern Marketplace</strong></p>
+          <p>Surface: clean white/light gray grid. Cards: color-zoned by category. Strong type scale, contemporary sans-serif. Fresh palette. Reference: eBay category grid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §11 Copy Guide -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">11</div><div class="section-title">Copy Guide</div></div>
+    <div class="section-body">
+      <h4>Tone</h4>
+      <table class="brief-table">
+        <tr><th>Adjective</th><th>Writing rule</th><th>Confirmed by</th></tr>
+        <tr><td>Direct</td><td>No filler words, no marketing superlatives</td><td>Existing site copy</td></tr>
+        <tr><td>Functional</td><td>Labels describe destination, not brand promise</td><td>Existing site copy</td></tr>
+        <tr><td>Local</td><td>Geographic and community context present in interface</td><td>"SF bay area" in header</td></tr>
+      </table>
+      <h4>Locked Strings (verbatim from live page)</h4>
+      <p>
+        <span class="pill pill-blue">craigslist</span>
+        <span class="pill pill-blue">SF bay area</span>
+        <span class="pill pill-blue">community</span>
+        <span class="pill pill-blue">housing</span>
+        <span class="pill pill-blue">jobs</span>
+        <span class="pill pill-blue">for sale</span>
+        <span class="pill pill-blue">services</span>
+        <span class="pill pill-blue">gigs</span>
+        <span class="pill pill-blue">discussion forums</span>
+        <span class="pill pill-blue">resumes</span>
+        <span class="pill pill-blue">post an ad</span>
+        <span class="pill pill-blue">search craigslist</span>
+      </p>
+      <h4 style="margin-top:12px;">Copy Gap Log</h4>
+      <div class="callout-note">
+        <div class="callout-label">Copy Gap</div>
+        Sub-area full labels not present on current page as text. Abbreviations only: sfc, sby, eby, pen, nby, scz. Designer to pair with full names in location selector: "San Francisco · South Bay · East Bay · Peninsula · North Bay · Santa Cruz" — confirm or adjust.
+      </div>
+    </div>
+  </div>
+
+  <!-- §12 User Tasks -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">12</div><div class="section-title">User Tasks</div></div>
+    <div class="section-body">
+      <div class="callout-note">
+        <div class="callout-label">★ Client Deferred</div>
+        "Unsure — test different options by letting the agent explore the best design variations." Primary task defined per direction.
+      </div>
+      <div class="direction-grid">
+        <div class="direction-card">
+          <div class="direction-label">Direction A</div>
+          <p>User needs to reach their target category and its subcategories within <strong>one interaction</strong> from the homepage.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction B</div>
+          <p>User needs to <strong>understand what Craigslist offers</strong> and identify where to begin without being overwhelmed.</p>
+        </div>
+        <div class="direction-card">
+          <div class="direction-label">Direction C</div>
+          <p>User needs <strong>equal-weight, fast access</strong> to any of the 6 primary categories without any one dominating the visual field.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §13 Current Page State -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">13</div><div class="section-title">Current Page State</div></div>
+    <div class="section-body">
+      <p>The sfbay.craigslist.org homepage at 1440px uses a fixed 4-column layout with no border-radius or box-shadow anywhere on the page.</p>
+      <h4>Column 1 — Left Sidebar (#leftbar, 196px, #f4f4f4)</h4>
+      <p>Logo "craigslist" wordmark (H1, Times New Roman, 31.3px, #551a8b) with peace symbol SVG → "post an ad" link (#009900 — WCAG FAIL) → basic search input (3px padding, no label) → "event calendar" H4 + weekly calendar grid → utility links (help, safety, scam avoidance) → about links → charity section with emoji icons.</p>
+      <h4>Column 2 — Main Content (#center, 607.6px, margin 19.6px)</h4>
+      <p>3 sub-columns of 8 category sections. Each section: h3.ban header (#eeeeee bg, #dddddd 1px border-top, Open Sans 16px bold) + .cats two-column list of blue block links (16px, #0000ee, 0px 5px padding). Sections in layout order: community · services · discussion forums (50+ links, 3 cols) · housing · for sale · jobs · gigs · resumes.</p>
+      <h4>Column 3 — Right Rail (~210px)</h4>
+      <p>"nearby cl" regional city list (bakersfield, chico, fresno, etc.) + "us cities / us states / canada / cl worldwide" sections.</p>
+      <h4>Top Banner (.cl-homepage-top-banner)</h4>
+      <p>Location button (Times New Roman 22px, #0000ee, no border/caret/icon) + sub-area pills: sfc, sby, eby, pen, nby, scz (bare abbreviations, no labels) + user action icons (faves, post, acct) + language selector dropdown (top right).</p>
+      <h4>Footer</h4>
+      <p>#eeeeee background, Open Sans 12.8px, 1px solid #cccccc border-top. Links: help, safety, privacy, terms, about, app, sitemap. Copyright: "© 2026 craigslist".</p>
+
+      <div class="screenshot-wrap" style="margin-top:16px;">
+        <div class="screenshot-caption">sfbay.craigslist.org — desktop 1440px (full page)</div>
+        <div class="annotated-img">
+          <img src="../design-references/sfbay-craigslist-org-desktop-1440.png" alt="Full page Craigslist homepage at 1440px" />
+        </div>
+      </div>
+
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">sfbay.craigslist.org — mobile 390px (for reference; not a deliverable)</div>
+        <div class="annotated-img">
+          <img src="../design-references/sfbay-craigslist-org-mobile-390.png" alt="Craigslist homepage at 390px mobile — sidebar tab nav + drill-down" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §14 Existing Interaction States -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">14</div><div class="section-title">Existing Interaction States</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Component</th><th>Observed States</th><th>Visual Treatment</th><th>Source</th></tr>
+        <tr><td>All &lt;a&gt; hyperlinks</td><td>Default</td><td>#0000ee, no underline, block or inline</td><td>url_extracted</td></tr>
+        <tr><td>All &lt;a&gt; hyperlinks</td><td>Visited</td><td>#551a8b (browser default visited color)</td><td>url_extracted</td></tr>
+        <tr><td>h3.ban category headers</td><td>Default (static, no interactive state)</td><td>#222222 on #eeeeee, 1px #dddddd border-top, 2px 5px padding</td><td>url_extracted</td></tr>
+        <tr><td>Location button (.location)</td><td>Default</td><td>Times New Roman 22px, #0000ee, no border/caret/icon</td><td>url_extracted</td></tr>
+        <tr><td>Search input</td><td>Default</td><td>3px padding, no visible border, no focus ring</td><td>url_extracted</td></tr>
+        <tr><td>"post an ad" (#post)</td><td>Default</td><td>#009900 on #ffffff, 5px padding, inline — WCAG AA FAIL</td><td>url_extracted</td></tr>
+      </table>
+      <h4>Active State Visual Treatments (existing only)</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Active Treatment</th><th>Source</th></tr>
+        <tr><td colspan="3" style="color:#6B7280;font-style:italic;">No custom hover, active, or focus states found on current site. Browser defaults only.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §15 Delivery & Handoff -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">15</div><div class="section-title">Delivery &amp; Handoff</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th><th>Source</th></tr>
+        <tr><td><strong>Output format</strong></td><td>HTML prototype</td><td>Pipeline default</td></tr>
+        <tr><td><strong>Device targets</strong></td><td>Desktop-first (1440px primary)</td><td>Client-confirmed</td></tr>
+        <tr><td><strong>Accessibility</strong></td><td>WCAG AA minimum</td><td>Auto-elevated from existing failure</td></tr>
+        <tr><td><strong>Mobile</strong></td><td>Secondary — not a primary deliverable</td><td>Client-confirmed</td></tr>
+        <tr><td><strong>Engagement ID</strong></td><td>craigslist_homepage-redesign_2026_04_25</td><td>—</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

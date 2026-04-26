@@ -1,1387 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direction C — Obsidian Protocol — Mockup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Direction C — Contextual Drawer | Airbnb Safety Overlay</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif; background: #F0F4F8; color: #222222; -webkit-font-smoothing: antialiased; }
 
-    html, body {
-      background: #EEEEEE;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Inter, sans-serif;
-      min-height: 100vh;
-    }
+  /* ── DOC HEADER ── */
+  .doc-header { background: #1E2A40; padding: 28px 32px 24px; }
+  .doc-kicker { font-size: 10px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 6px; }
+  .doc-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+  .doc-title span { color: #FF385C; }
+  .doc-subtitle { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .doc-quality { display: flex; gap: 14px; flex-wrap: wrap; }
+  .doc-q { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55); }
+  .doc-q span { color: #FF385C; }
+  .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 12px; }
+  .callout-strategy { background: rgba(255,56,92,.12); border-color: #FF385C; }
+  .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 4px; }
+  .callout-body { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.6; }
 
-    /* ─── Design tokens (for reference, also used as CSS vars) ─── */
-    :root {
-      --page-bg:       #0a0a0a;
-      --surface:       #1c1c1c;
-      --search-bg:     #1e1e1e;
-      --accent:        #8f7bfa;
-      --status-green:  #42ba5f;
-      --text-heading:  #ffffff;
-      --text-body:     #b0b0b0;
-      --text-muted:    #6b6b6b;
-      --border:        #232323;
-      --card-radius:   14px;
-    }
+  /* ── TWO-COLUMN BODY ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .col { padding: 24px 28px; min-width: 0; }
+  .col-left { background: #F0F4F8; border-right: 1px solid #E2E8F0; }
+  .col-right { background: #FFFFFF; }
+  .col-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; color: #6A6A6A; margin-bottom: 12px; }
+  .col-title { font-size: 18px; font-weight: 800; color: #222222; margin-bottom: 18px; line-height: 1.3; }
 
-    /* ────────────────────────────────────────────
-       PAGE HEADER — dark blue bar
-    ──────────────────────────────────────────── */
-    .page-header {
-      background: #083386;
-      padding: 20px 40px 18px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    .page-header-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: rgba(143,123,250,0.22);
-      border: 1.5px solid rgba(143,123,250,0.5);
-      border-radius: 6px;
-      font-size: 15px;
-      font-weight: 900;
-      color: #a89ffb;
-      letter-spacing: -0.02em;
-      flex-shrink: 0;
-    }
-    .page-header-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .page-header-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-    }
-    .page-header-sub {
-      font-size: 12px;
-      color: rgba(255,255,255,0.45);
-      font-weight: 400;
-    }
-    .page-header-anchor-tag {
-      margin-left: auto;
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.04em;
-      border: 1px solid rgba(255,255,255,0.15);
-      padding: 4px 10px;
-      border-radius: 4px;
-    }
+  /* ── PART A: WIREFRAME DIAGRAM ── */
+  .wireframe { background: #FFFFFF; border: 1px solid #DDDDDD; border-radius: 8px; overflow: hidden; }
+  .wf-header { background: #F8F8F8; border-bottom: 1px solid #DDDDDD; padding: 12px 16px; }
+  .wf-zone-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6A6A6A; }
+  .wf-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .wf-pill { height: 28px; padding: 0 10px; border: 1px solid #DDDDDD; border-radius: 24px; background: #fff; display: inline-flex; align-items: center; font-size: 10px; color: #6A6A6A; }
+  .wf-pill.brand { background: #FF385C; color: #fff; border-color: #FF385C; }
+  .wf-pill.active { background: #222222; color: #fff; border-color: #222222; }
+  .wf-pill.icon { width: 28px; padding: 0; justify-content: center; border-radius: 50%; background: #F2F2F2; border: none; }
+  /* DIRECTION C SIGNATURE — Filters button shows a small badge dot when safety filter is engaged */
+  .wf-pill.filters-with-dot { border: 1px solid #222; position: relative; }
+  .wf-pill.filters-with-dot::after { content: ""; position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #1A7A4A; border-radius: 50%; border: 2px solid #fff; }
 
-    /* ────────────────────────────────────────────
-       PHONE STAGE AREA
-    ──────────────────────────────────────────── */
-    .stage {
-      position: relative;
-      padding: 56px 40px 40px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 40px;
-      overflow: hidden;
-    }
+  .wf-body { display: grid; grid-template-columns: 1.12fr 1fr; gap: 0; min-height: 480px; }
+  .wf-listings { padding: 14px; border-right: 1px solid #DDDDDD; background: #FFFFFF; }
+  .wf-map { background: linear-gradient(135deg, #DCEEF5, #E8F1ED); padding: 14px; position: relative; }
+  .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    /* ── Ambient "SafeChat" text behind phones ── */
-    .ambient-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 160px;
-      font-weight: 900;
-      color: #2a2a2a;
-      opacity: 0.35;
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 0;
-      letter-spacing: -0.04em;
-      user-select: none;
-    }
+  /* DIRECTION C SIGNATURE — Color-coded card LEFT BORDER */
+  .wf-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #EFEFEF; border-left-width: 4px; border-left-style: solid; }
+  .wf-card.grade-A { border-left-color: #1A7A4A; }
+  .wf-card.grade-B { border-left-color: #B58B00; }
+  .wf-card.grade-C { border-left-color: #D4600A; }
+  .wf-card.grade-D { border-left-color: #C0292B; }
 
-    /* ── Phone wrapper ── */
-    .phone-wrap {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
+  .wf-card-photo { aspect-ratio: 1.05/1; background: linear-gradient(135deg, #C8D5DD, #B8C7D1); position: relative; }
+  .wf-card-photo .heart { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; }
+  .wf-card-photo .heart::before { content: "♡"; color: #fff; font-size: 16px; line-height: 1; }
+  .wf-card-photo .gf-badge { position: absolute; top: 8px; left: 8px; height: 16px; padding: 0 6px; border-radius: 24px; background: linear-gradient(357.5deg, rgb(62,86,124), rgb(128,157,192)); color: #fff; font-size: 7px; font-weight: 700; display: inline-flex; align-items: center; }
 
-    .phone-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: #888888;
-    }
+  .wf-card-body { padding: 8px 10px; }
+  .wf-card-title-row { height: 8px; background: #E2E8F0; border-radius: 4px; margin-bottom: 5px; width: 70%; }
+  /* DIRECTION C — subtle "Safety: A" text inline with metadata */
+  .wf-card-meta-row-C { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 8px; }
+  .wf-card-meta-bar { height: 6px; background: #EEF2F6; border-radius: 4px; flex: 1; }
+  .wf-safety-text { font-size: 8px; font-weight: 600; color: #6A6A6A; flex-shrink: 0; }
+  .wf-safety-text strong { font-weight: 700; }
+  .wf-safety-text strong.A { color: #1A7A4A; }
+  .wf-safety-text strong.B { color: #B58B00; }
+  .wf-safety-text strong.C { color: #D4600A; }
+  .wf-safety-text strong.D { color: #C0292B; }
 
-    /* iPhone 14 proportions — roughly 390×844 scaled to ~248×540 */
-    .phone-frame {
-      width: 248px;
-      height: 536px;
-      background: #181818;
-      border-radius: 44px;
-      padding: 9px;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.06),
-        0 32px 80px rgba(0,0,0,0.55),
-        0 8px 24px rgba(0,0,0,0.4),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
-      flex-shrink: 0;
-    }
+  .wf-card-price-row { height: 8px; background: #DCE3EA; border-radius: 4px; width: 50%; margin-top: 6px; }
 
-    .phone-screen {
-      width: 100%;
-      height: 100%;
-      border-radius: 37px;
-      overflow: hidden;
-      background: #0a0a0a;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
+  .wf-map-marker { position: absolute; height: 22px; padding: 0 8px; background: rgba(255,255,255,.95); border-radius: 4px; font-size: 9px; font-weight: 600; color: #222; display: inline-flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .wf-heatzone { position: absolute; border-radius: 50%; filter: blur(20px); }
 
-    /* Dynamic island */
-    .dynamic-island {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 72px;
-      height: 22px;
-      background: #000000;
-      border-radius: 14px;
-      z-index: 100;
-      pointer-events: none;
-      flex-shrink: 0;
-    }
+  /* DIRECTION C SIGNATURE — Filters modal preview overlay */
+  .wf-modal-preview { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,.25); padding: 18px; z-index: 10; border: 1px solid #DDDDDD; }
+  .wf-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #EBEBEB; }
+  .wf-modal-title { font-size: 14px; font-weight: 700; color: #222; }
+  .wf-modal-close { font-size: 14px; color: #6A6A6A; }
+  .wf-modal-section-title { font-size: 11px; font-weight: 700; color: #222; margin-bottom: 8px; }
+  .wf-modal-section-sub { font-size: 9px; color: #6A6A6A; margin-bottom: 10px; line-height: 1.4; }
+  .wf-modal-checks { display: flex; flex-direction: column; gap: 8px; }
+  .wf-modal-check { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid #DDDDDD; border-radius: 8px; cursor: pointer; }
+  .wf-modal-check.checked { border-color: #222; background: #F8F8F8; }
+  .wf-modal-checkbox { width: 16px; height: 16px; border: 1.5px solid #6A6A6A; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .wf-modal-check.checked .wf-modal-checkbox { background: #222; border-color: #222; color: #fff; font-size: 9px; }
+  .wf-modal-check.checked .wf-modal-checkbox::before { content: "✓"; color: #fff; font-size: 10px; }
+  .wf-modal-label { font-size: 11px; color: #222; flex: 1; display: flex; align-items: center; gap: 6px; }
+  .wf-modal-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .wf-modal-dot.A { background: #1A7A4A; }
+  .wf-modal-dot.B { background: #B58B00; }
+  .wf-modal-dot.C { background: #D4600A; }
 
-    /* Status bar row */
-    .status-bar {
-      height: 44px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding: 0 20px 6px;
-      position: relative;
-      z-index: 10;
-    }
-    .status-time {
-      font-size: 11px;
-      font-weight: 600;
-      color: #ffffff;
-    }
-    .status-icons {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .status-icon {
-      font-size: 10px;
-      color: #ffffff;
-    }
+  /* Callout numbers */
+  .num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #FF385C; color: #fff; font-size: 10px; font-weight: 700; flex-shrink: 0; vertical-align: middle; margin-left: 4px; }
 
-    /* ════════════════════════════════════════════
-       PHONE 1 — PARENT DASHBOARD (Hero Screen)
-    ════════════════════════════════════════════ */
-    .p1-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 0;
-      overflow: hidden;
-      background: #0a0a0a;
-    }
+  /* ── PART B: SPEC TABLE ── */
+  .spec-section { margin-bottom: 22px; }
+  .spec-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #E2E8F0; }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .spec-table td { padding: 6px 8px; vertical-align: top; line-height: 1.5; border-bottom: 1px solid #F1F5F9; }
+  .spec-table td:first-child { width: 38%; font-weight: 600; color: #6A6A6A; }
+  .spec-table td:last-child { color: #222222; font-family: "SF Mono", Menlo, monospace; font-size: 11px; }
+  .spec-bullet { font-size: 12px; color: #222222; line-height: 1.6; padding-left: 14px; position: relative; margin-bottom: 6px; }
+  .spec-bullet::before { content: "•"; position: absolute; left: 0; color: #FF385C; font-weight: 700; }
+  .spec-bullet strong { color: #222222; font-weight: 700; }
 
-    /* App header bar */
-    .p1-app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 18px 4px;
-      flex-shrink: 0;
-    }
-    .p1-app-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-    .p1-menu-icon {
-      font-size: 16px;
-      color: #b0b0b0;
-      letter-spacing: 1.5px;
-    }
+  .state-block { background: #F8F8F8; border-left: 3px solid #FF385C; border-radius: 0 6px 6px 0; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; line-height: 1.55; }
+  .state-name { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #FF385C; margin-bottom: 4px; }
 
-    /* Component 1 — HERO HEADING */
-    .p1-hero {
-      padding: 10px 18px 12px;
-      flex-shrink: 0;
-    }
-    .p1-hero-line {
-      font-size: 30px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      display: block;
-    }
+  /* ── DESIGNER NOTES ── */
+  .notes-section { background: #1E2A40; padding: 28px 32px; }
+  .notes-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.5); margin-bottom: 16px; }
+  .note-group { margin-bottom: 18px; }
+  .note-group-label { font-size: 11px; font-weight: 700; color: #FF385C; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+  .note-item { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.65; padding-left: 12px; border-left: 2px solid rgba(255,56,92,.4); margin-bottom: 6px; }
+  .note-item code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 3px; font-size: 11px; color: #fff; }
 
-    /* Component 2 — SEARCH BAR */
-    .p1-search {
-      margin: 0 18px 12px;
-      height: 44px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .p1-search-icon {
-      font-size: 13px;
-      color: #b0b0b0;
-      flex-shrink: 0;
-    }
-    .p1-search-placeholder {
-      font-size: 12px;
-      color: #6b6b6b;
-      flex: 1;
-    }
-    .p1-search-right-icon {
-      font-size: 13px;
-      color: #6b6b6b;
-      flex-shrink: 0;
-    }
+  .debate-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .debate-cell { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px 12px; font-size: 11px; color: rgba(255,255,255,.78); line-height: 1.5; }
+  .debate-cell strong { color: #FF385C; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
 
-    /* Component 3 — FEATURE CARD (AutoFill translation) */
-    .p1-feature-card {
-      margin: 0 18px 14px;
-      background: #1c1c1c;
-      border-radius: 14px;
-      padding: 14px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    .p1-card-icon-wrap {
-      width: 36px;
-      height: 36px;
-      background: rgba(143,123,250,0.15);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      flex-shrink: 0;
-    }
-    .p1-card-text {
-      flex: 1;
-      min-width: 0;
-    }
-    .p1-card-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.3;
-    }
-    .p1-card-sub {
-      font-size: 10px;
-      color: #b0b0b0;
-      margin-top: 2px;
-      line-height: 1.35;
-    }
-    .p1-card-chevron {
-      font-size: 16px;
-      color: #6b6b6b;
-      flex-shrink: 0;
-      font-weight: 400;
-    }
-
-    /* Component 4 — SECTION HEADER "Recent Alerts" + "See All" */
-    .p1-section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 18px 8px;
-      flex-shrink: 0;
-    }
-    .p1-section-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #b0b0b0;
-      letter-spacing: 0.01em;
-    }
-    .p1-section-see-all {
-      font-size: 11px;
-      font-weight: 500;
-      color: #6b6b6b;
-    }
-
-    /* Component 5 — CREDENTIAL-STYLE ROWS */
-    .p1-rows {
-      padding: 0 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      flex-shrink: 0;
-    }
-    .p1-cred-row {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 9px 0;
-      border-bottom: 1px solid #191919;
-      background: transparent;
-    }
-    .p1-cred-row:last-child {
-      border-bottom: none;
-    }
-    .p1-cred-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: #ffffff;
-      flex-shrink: 0;
-      letter-spacing: 0;
-    }
-    .p1-cred-text {
-      flex: 1;
-      min-width: 0;
-    }
-    .p1-cred-primary {
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .p1-cred-secondary {
-      font-size: 10px;
-      color: #b0b0b0;
-      margin-top: 1px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .p1-eye-icon {
-      font-size: 13px;
-      color: #6b6b6b;
-      flex-shrink: 0;
-    }
-
-    /* ════════════════════════════════════════════
-       PHONE 2 — SAFETY CONFIGURATION
-    ════════════════════════════════════════════ */
-    .p2-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #0a0a0a;
-    }
-
-    .p2-back-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 18px 4px;
-      flex-shrink: 0;
-    }
-    .p2-back-arrow {
-      font-size: 16px;
-      color: #ffffff;
-    }
-    .p2-back-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    .p2-heading {
-      padding: 8px 18px 10px;
-      flex-shrink: 0;
-    }
-    .p2-heading-text {
-      font-size: 22px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-
-    .p2-section-label {
-      padding: 6px 18px 6px;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #6b6b6b;
-      flex-shrink: 0;
-    }
-
-    /* Credential-style rows repurposed for settings */
-    .p2-rows {
-      padding: 0 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      flex-shrink: 0;
-    }
-    .p2-cred-row {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 9px 0;
-      border-bottom: 1px solid #191919;
-      background: transparent;
-    }
-    .p2-cred-row:last-child {
-      border-bottom: none;
-    }
-    .p2-cred-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: #ffffff;
-      flex-shrink: 0;
-    }
-    .p2-cred-text {
-      flex: 1;
-      min-width: 0;
-    }
-    .p2-cred-primary {
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    /* Badge pill */
-    .p2-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      flex-shrink: 0;
-    }
-    .p2-badge-violet {
-      background: #8f7bfa;
-      color: #ffffff;
-    }
-    .p2-badge-muted {
-      background: #232323;
-      color: #6b6b6b;
-    }
-    .p2-badge-off {
-      background: #1a1a1a;
-      color: #6b6b6b;
-      border: 1px solid #232323;
-    }
-    .p2-toggle-icon {
-      font-size: 12px;
-      color: #6b6b6b;
-      flex-shrink: 0;
-    }
-
-    /* Save button */
-    .p2-save-wrap {
-      padding: 10px 18px 14px;
-      flex-shrink: 0;
-      margin-top: auto;
-    }
-    .p2-save-btn {
-      width: 100%;
-      height: 44px;
-      background: #8f7bfa;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-
-    /* ════════════════════════════════════════════
-       PHONE 3 — CHILD CHATBOT
-    ════════════════════════════════════════════ */
-    .p3-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #0a0a0a;
-    }
-
-    .p3-app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 18px 4px;
-      flex-shrink: 0;
-    }
-    .p3-app-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-    .p3-settings-icon {
-      font-size: 15px;
-      color: #b0b0b0;
-    }
-
-    /* Component 2 repurposed — "Ask anything..." search bar at top */
-    .p3-search-bar {
-      margin: 0 16px 10px;
-      height: 44px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .p3-search-icon {
-      font-size: 13px;
-      color: #b0b0b0;
-      flex-shrink: 0;
-    }
-    .p3-search-placeholder {
-      font-size: 12px;
-      color: #6b6b6b;
-      flex: 1;
-    }
-
-    /* Component 4 — "Today" + "See All" section header */
-    .p3-day-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px 6px;
-      flex-shrink: 0;
-    }
-    .p3-day-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #b0b0b0;
-    }
-    .p3-see-all {
-      font-size: 11px;
-      color: #6b6b6b;
-    }
-
-    /* Chat area */
-    .p3-chat {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 4px 14px 6px;
-      overflow: hidden;
-    }
-
-    /* User bubble — right aligned, dark card */
-    .p3-msg-user {
-      display: flex;
-      justify-content: flex-end;
-    }
-    .p3-bubble-user {
-      background: #1c1c1c;
-      border-radius: 14px 14px 4px 14px;
-      padding: 9px 12px;
-      font-size: 11px;
-      font-weight: 500;
-      color: #ffffff;
-      max-width: 76%;
-      line-height: 1.45;
-    }
-
-    /* AI bubble — dark card with violet left border */
-    .p3-msg-ai {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-    .p3-ai-avatar {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(143,123,250,0.2);
-      border: 1px solid rgba(143,123,250,0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .p3-bubble-ai {
-      background: #1c1c1c;
-      border-radius: 4px 14px 14px 14px;
-      border-left: 3px solid #8f7bfa;
-      padding: 9px 11px;
-      font-size: 10px;
-      color: #b0b0b0;
-      max-width: 76%;
-      line-height: 1.5;
-    }
-    .p3-bubble-ai-strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    /* Component 3 repurposed — AI fact card */
-    .p3-fact-card {
-      margin: 0;
-      background: #1c1c1c;
-      border-radius: 14px;
-      padding: 11px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-    .p3-fact-icon-wrap {
-      width: 30px;
-      height: 30px;
-      background: rgba(143,123,250,0.15);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-    .p3-fact-text {
-      flex: 1;
-      min-width: 0;
-    }
-    .p3-fact-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.3;
-    }
-    .p3-fact-body {
-      font-size: 9px;
-      color: #b0b0b0;
-      margin-top: 2px;
-      line-height: 1.4;
-    }
-
-    /* Bottom input bar */
-    .p3-input-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px 14px;
-      flex-shrink: 0;
-    }
-    .p3-input-field {
-      flex: 1;
-      height: 38px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      font-size: 11px;
-      color: #6b6b6b;
-      border: 1px solid #232323;
-    }
-    .p3-send-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #8f7bfa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      color: #ffffff;
-      flex-shrink: 0;
-    }
-
-    /* ────────────────────────────────────────────
-       TOKEN TABLE + COMPONENT TRANSLATION MAP
-    ──────────────────────────────────────────── */
-    .docs-section {
-      background: #ffffff;
-      border-top: 1px solid #d8d8d8;
-      padding: 48px 40px 64px;
-    }
-
-    .docs-section-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: #111111;
-      letter-spacing: -0.02em;
-      margin-bottom: 32px;
-    }
-
-    .docs-two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: flex-start;
-    }
-
-    /* Token table */
-    .token-table-title {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: #8f7bfa;
-      margin-bottom: 14px;
-    }
-    .token-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-    .token-table th {
-      text-align: left;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #888888;
-      border-bottom: 1px solid #e5e5e5;
-      padding: 6px 12px 8px 0;
-    }
-    .token-table td {
-      padding: 8px 12px 8px 0;
-      border-bottom: 1px solid #f0f0f0;
-      vertical-align: middle;
-      color: #333333;
-    }
-    .token-table tr:last-child td {
-      border-bottom: none;
-    }
-    .token-swatch {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      border: 1px solid rgba(0,0,0,0.1);
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-    .token-name {
-      font-weight: 700;
-      color: #111111;
-    }
-    .token-value {
-      font-family: "SF Mono", "Fira Mono", monospace;
-      font-size: 11px;
-      color: #444444;
-    }
-    .token-usage {
-      color: #888888;
-      font-size: 11px;
-    }
-
-    /* Component translation map */
-    .ctm-title {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: #8f7bfa;
-      margin-bottom: 14px;
-    }
-    .ctm-item {
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    .ctm-item:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-    }
-    .ctm-item-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-    .ctm-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #8f7bfa;
-      color: #ffffff;
-      font-size: 10px;
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .ctm-item-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #111111;
-      line-height: 1.35;
-    }
-    .ctm-item-body {
-      font-size: 12px;
-      color: #555555;
-      line-height: 1.6;
-      padding-left: 30px;
-    }
-    .ctm-anchor {
-      color: #8f7bfa;
-      font-weight: 600;
-    }
-    .ctm-arrow {
-      color: #aaaaaa;
-      margin: 0 4px;
-    }
-  </style>
+  .quality-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 8px; }
+  .quality-card { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px; text-align: center; }
+  .quality-num { font-size: 20px; font-weight: 800; color: #FF385C; }
+  .quality-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: rgba(255,255,255,.55); margin-top: 4px; }
+</style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════
-       PAGE HEADER
-  ═══════════════════════════════════════ -->
-  <div class="page-header">
-    <div class="page-header-badge">C</div>
-    <div class="page-header-text">
-      <div class="page-header-title">Direction C — Obsidian Protocol</div>
-      <div class="page-header-sub">TreeHouse / SafeChat &nbsp;·&nbsp; Serious Shield &nbsp;·&nbsp; Parental Control + AI Chatbot for Teens</div>
-    </div>
-    <div class="page-header-anchor-tag">Anchor: Proton Pass Dribbble</div>
+<!-- ============= DOC HEADER ============= -->
+<div class="doc-header">
+  <div class="doc-kicker">Airbnb Safety Overlay · Designer Agent · v1-pipeline 2026-04-25</div>
+  <div class="doc-title">Direction C — <span>Contextual Drawer</span></div>
+  <div class="doc-subtitle">Most discreet: safety lives inside the existing Filters modal. Cards carry an ambient color rail. Information is offered, never imposed.</div>
+  <div class="doc-quality">
+    <span class="doc-q">Clean <span>5/5</span></span>
+    <span class="doc-q">Effective <span>3/5</span></span>
+    <span class="doc-q">Intuitive <span>3/5</span></span>
+    <span class="doc-q">Pleasing <span>5/5</span></span>
+    <span class="doc-q">Total <span>16/20</span></span>
   </div>
+  <div class="callout callout-strategy">
+    <div class="callout-label">Why this direction exists</div>
+    <div class="callout-body">Safety is not the only thing Airbnb users care about — many are looking at price, beds, dates, instant book. The brief's §3 problems are real, but adding more first-class chrome to a page that's already dense risks degrading every other task. C respects the existing information hierarchy: cards gain a quiet color rail (peripheral signal), the Filters modal absorbs the safety tier control (where users already go to refine searches), and the inline drawer remains the single moment of "tell me more". Lowest visual cost. Highest sophistication. Best fit for users who want safety as one signal among many — not the dominant one.</div>
+  </div>
+</div>
 
-  <!-- ═══════════════════════════════════════
-       PHONE STAGE — ambient text + 3 phones
-  ═══════════════════════════════════════ -->
-  <div class="stage">
+<!-- ============= TWO-COLUMN BODY ============= -->
+<div class="two-col">
 
-    <!-- Ambient "SafeChat" text behind all phones -->
-    <div class="ambient-text">SafeChat</div>
+  <!-- ── PART A: LAYOUT WIREFRAME ── -->
+  <div class="col col-left">
+    <div class="col-label">Part A · Layout Diagram</div>
+    <div class="col-title">Page wireframe — safety inside Filters modal · color rail on cards</div>
 
-    <!-- ─────────────────────────────────────
-         PHONE 1 — Parent Dashboard (Hero)
-    ───────────────────────────────────── -->
-    <div class="phone-wrap">
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <div class="dynamic-island"></div>
-
-          <!-- Status bar -->
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <span class="status-icon">●●●</span>
-              <span class="status-icon">WiFi</span>
-              <span class="status-icon">▮</span>
-            </div>
-          </div>
-
-          <div class="p1-content">
-
-            <!-- App header: SafeChat + menu -->
-            <div class="p1-app-header">
-              <div class="p1-app-name">SafeChat</div>
-              <div class="p1-menu-icon">≡</div>
-            </div>
-
-            <!-- COMPONENT 1 — Oversized hero heading -->
-            <div class="p1-hero">
-              <span class="p1-hero-line">Protect 🔒</span>
-              <span class="p1-hero-line">Your Teen</span>
-              <span class="p1-hero-line">Stay Safe 🛡</span>
-            </div>
-
-            <!-- COMPONENT 2 — Full-width dark search bar -->
-            <div class="p1-search">
-              <div class="p1-search-icon">🔍</div>
-              <div class="p1-search-placeholder">Search conversations...</div>
-              <div class="p1-search-right-icon">⏎</div>
-            </div>
-
-            <!-- COMPONENT 3 — Feature card (AutoFill translation) -->
-            <div class="p1-feature-card">
-              <div class="p1-card-icon-wrap">🛡</div>
-              <div class="p1-card-text">
-                <div class="p1-card-title">Review flagged content</div>
-                <div class="p1-card-sub">2 new alerts need attention</div>
-              </div>
-              <div class="p1-card-chevron">›</div>
-            </div>
-
-            <!-- COMPONENT 4 — Section header "Recent Alerts" + "See All" -->
-            <div class="p1-section-header">
-              <div class="p1-section-label">Recent Alerts</div>
-              <div class="p1-section-see-all">See All</div>
-            </div>
-
-            <!-- COMPONENT 5 — Credential-style alert rows -->
-            <div class="p1-rows">
-
-              <!-- Row 1: Self-harm -->
-              <div class="p1-cred-row">
-                <div class="p1-cred-icon" style="background: #c0392b;">SH</div>
-                <div class="p1-cred-text">
-                  <div class="p1-cred-primary">Self-harm mention</div>
-                  <div class="p1-cred-secondary">Emma · 3 flagged messages</div>
-                </div>
-                <div class="p1-eye-icon">👁</div>
-              </div>
-
-              <!-- Row 2: Loneliness -->
-              <div class="p1-cred-row">
-                <div class="p1-cred-icon" style="background: #6c5ce7;">L</div>
-                <div class="p1-cred-text">
-                  <div class="p1-cred-primary">Loneliness pattern</div>
-                  <div class="p1-cred-secondary">Emma · 7 mentions this week</div>
-                </div>
-                <div class="p1-eye-icon">👁</div>
-              </div>
-
-              <!-- Row 3: Drug reference -->
-              <div class="p1-cred-row">
-                <div class="p1-cred-icon" style="background: #d35400;">D</div>
-                <div class="p1-cred-text">
-                  <div class="p1-cred-primary">Drug reference</div>
-                  <div class="p1-cred-secondary">James · 2 mentions</div>
-                </div>
-                <div class="p1-eye-icon">👁</div>
-              </div>
-
-            </div><!-- /p1-rows -->
-
-          </div><!-- /p1-content -->
-        </div><!-- /phone-screen -->
-      </div><!-- /phone-frame -->
-      <div class="phone-label">Parent Dashboard</div>
-    </div><!-- /phone-wrap -->
-
-
-    <!-- ─────────────────────────────────────
-         PHONE 2 — Safety Configuration
-    ───────────────────────────────────── -->
-    <div class="phone-wrap">
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <div class="dynamic-island"></div>
-
-          <!-- Status bar -->
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <span class="status-icon">●●●</span>
-              <span class="status-icon">WiFi</span>
-              <span class="status-icon">▮</span>
-            </div>
-          </div>
-
-          <div class="p2-content">
-
-            <!-- Back header -->
-            <div class="p2-back-header">
-              <div class="p2-back-arrow">←</div>
-              <div class="p2-back-title">Safety Config</div>
-            </div>
-
-            <!-- H2 heading -->
-            <div class="p2-heading">
-              <div class="p2-heading-text">Configure<br>Protection</div>
-            </div>
-
-            <!-- Section: Content Controls -->
-            <div class="p2-section-label">Content Controls</div>
-
-            <!-- Credential-style rows for settings -->
-            <div class="p2-rows">
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #c0392b;">!</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Self-harm &amp; Suicide</div>
-                </div>
-                <div class="p2-badge p2-badge-violet">Strict</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #d35400;">💊</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Drugs &amp; Substance Use</div>
-                </div>
-                <div class="p2-badge p2-badge-muted">Balanced</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #b7950b; font-size:13px;">🌿</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Eating Disorders</div>
-                </div>
-                <div class="p2-badge p2-badge-muted">Balanced</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #3d3d3d;">✖</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Illegal Activities</div>
-                </div>
-                <div class="p2-badge p2-badge-off">Off</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-            </div><!-- /p2-rows -->
-
-            <!-- Section: Pattern Monitoring -->
-            <div class="p2-section-label" style="margin-top: 6px;">Pattern Monitoring</div>
-
-            <div class="p2-rows">
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #6c5ce7;">L</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Loneliness</div>
-                </div>
-                <div class="p2-badge p2-badge-muted">Balanced</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #922b21;">R</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Radicalization</div>
-                </div>
-                <div class="p2-badge p2-badge-violet">Strict</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-              <div class="p2-cred-row">
-                <div class="p2-cred-icon" style="background: #1e6fa8;">i</div>
-                <div class="p2-cred-text">
-                  <div class="p2-cred-primary">Personal Info Sharing</div>
-                </div>
-                <div class="p2-badge p2-badge-muted">Balanced</div>
-                <div class="p2-toggle-icon" style="margin-left:6px;">⌃</div>
-              </div>
-
-            </div><!-- /p2-rows (pattern) -->
-
-            <!-- Save button -->
-            <div class="p2-save-wrap">
-              <div class="p2-save-btn">Save Configuration</div>
-            </div>
-
-          </div><!-- /p2-content -->
-        </div><!-- /phone-screen -->
-      </div><!-- /phone-frame -->
-      <div class="phone-label">Safety Config</div>
-    </div><!-- /phone-wrap -->
-
-
-    <!-- ─────────────────────────────────────
-         PHONE 3 — Child Chatbot
-    ───────────────────────────────────── -->
-    <div class="phone-wrap">
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <div class="dynamic-island"></div>
-
-          <!-- Status bar -->
-          <div class="status-bar">
-            <span class="status-time">9:41</span>
-            <div class="status-icons">
-              <span class="status-icon">●●●</span>
-              <span class="status-icon">WiFi</span>
-              <span class="status-icon">▮</span>
-            </div>
-          </div>
-
-          <div class="p3-content">
-
-            <!-- App header -->
-            <div class="p3-app-header">
-              <div class="p3-app-name">SafeChat AI</div>
-              <div class="p3-settings-icon">⚙</div>
-            </div>
-
-            <!-- COMPONENT 2 repurposed — "Ask anything..." search bar at TOP -->
-            <div class="p3-search-bar">
-              <div class="p3-search-icon">🔍</div>
-              <div class="p3-search-placeholder">Ask anything...</div>
-            </div>
-
-            <!-- COMPONENT 4 — "Today" + "See All" -->
-            <div class="p3-day-header">
-              <div class="p3-day-label">Today</div>
-              <div class="p3-see-all">See All</div>
-            </div>
-
-            <!-- Chat area -->
-            <div class="p3-chat">
-
-              <!-- User message 1 -->
-              <div class="p3-msg-user">
-                <div class="p3-bubble-user">What causes anxiety?</div>
-              </div>
-
-              <!-- AI message 1 — violet left border card -->
-              <div class="p3-msg-ai">
-                <div class="p3-ai-avatar">✦</div>
-                <div class="p3-bubble-ai">
-                  <span class="p3-bubble-ai-strong">Anxiety</span> is your brain's response to perceived threats. It triggers the fight-or-flight response...
-                </div>
-              </div>
-
-              <!-- COMPONENT 3 repurposed — AI fact card (no arrow) -->
-              <div class="p3-fact-card">
-                <div class="p3-fact-icon-wrap">🔒</div>
-                <div class="p3-fact-text">
-                  <div class="p3-fact-title">Fun Fact</div>
-                  <div class="p3-fact-body">Regular exercise reduces anxiety by 48%</div>
-                </div>
-              </div>
-
-              <!-- User message 2 -->
-              <div class="p3-msg-user">
-                <div class="p3-bubble-user">What should I do if I'm feeling anxious?</div>
-              </div>
-
-              <!-- AI message 2 — violet left border -->
-              <div class="p3-msg-ai">
-                <div class="p3-ai-avatar">✦</div>
-                <div class="p3-bubble-ai">
-                  Try <span class="p3-bubble-ai-strong">box breathing</span> — inhale 4s, hold 4s, exhale 4s. It calms your nervous system fast.
-                </div>
-              </div>
-
-            </div><!-- /p3-chat -->
-
-            <!-- Bottom input bar -->
-            <div class="p3-input-bar">
-              <div class="p3-input-field">Ask anything...</div>
-              <div class="p3-send-btn">↑</div>
-            </div>
-
-          </div><!-- /p3-content -->
-        </div><!-- /phone-screen -->
-      </div><!-- /phone-frame -->
-      <div class="phone-label">Child Chatbot</div>
-    </div><!-- /phone-wrap -->
-
-  </div><!-- /stage -->
-
-
-  <!-- ═══════════════════════════════════════
-       TOKEN TABLE + COMPONENT TRANSLATION MAP
-  ═══════════════════════════════════════ -->
-  <div class="docs-section">
-    <div class="docs-section-title">Direction C — Reference Specs</div>
-
-    <div class="docs-two-col">
-
-      <!-- LEFT: Token table -->
-      <div>
-        <div class="token-table-title">Design Token Reference</div>
-        <table class="token-table">
-          <thead>
-            <tr>
-              <th>Token</th>
-              <th>Value</th>
-              <th>Usage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="token-swatch" style="background:#0a0a0a;"></span><span class="token-name">Page BG</span></td>
-              <td><span class="token-value">#0a0a0a</span></td>
-              <td><span class="token-usage">All phone screen backgrounds</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#1c1c1c;"></span><span class="token-name">Card Surface</span></td>
-              <td><span class="token-value">#1c1c1c</span></td>
-              <td><span class="token-usage">Feature cards, chat bubbles</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#1e1e1e;"></span><span class="token-name">Search Bar BG</span></td>
-              <td><span class="token-value">#1e1e1e</span></td>
-              <td><span class="token-usage">Search inputs, text fields</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#8f7bfa;"></span><span class="token-name">Accent Violet</span></td>
-              <td><span class="token-value">#8f7bfa</span></td>
-              <td><span class="token-usage">AI border, badges, CTA, send btn</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#42ba5f;"></span><span class="token-name">Status Green</span></td>
-              <td><span class="token-value">#42ba5f</span></td>
-              <td><span class="token-usage">Active / safe indicators</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#ffffff; border:1px solid #ccc;"></span><span class="token-name">Heading Text</span></td>
-              <td><span class="token-value">#ffffff</span></td>
-              <td><span class="token-usage">All headings, primary labels</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#b0b0b0;"></span><span class="token-name">Body Text</span></td>
-              <td><span class="token-value">#b0b0b0</span></td>
-              <td><span class="token-usage">Secondary text, AI responses</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#6b6b6b;"></span><span class="token-name">Muted Text</span></td>
-              <td><span class="token-value">#6b6b6b</span></td>
-              <td><span class="token-usage">Placeholders, section labels</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-swatch" style="background:#232323;"></span><span class="token-name">Border</span></td>
-              <td><span class="token-value">#232323</span></td>
-              <td><span class="token-usage">Row dividers, card borders</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-name">Card Radius</span></td>
-              <td><span class="token-value">14px</span></td>
-              <td><span class="token-usage">Feature cards, fact card</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-name">Display Weight</span></td>
-              <td><span class="token-value">800</span></td>
-              <td><span class="token-usage">Hero heading, section titles</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-name">Letter Spacing</span></td>
-              <td><span class="token-value">-0.02em</span></td>
-              <td><span class="token-usage">Display headings only</span></td>
-            </tr>
-            <tr>
-              <td><span class="token-name">Font Stack</span></td>
-              <td><span class="token-value" style="font-size:10px;">-apple-system, SF Pro Display, Inter</span></td>
-              <td><span class="token-usage">All UI text</span></td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="wireframe" style="position: relative;">
+      <!-- Sticky header zone -->
+      <div class="wf-header">
+        <div class="wf-zone-label">Sticky header — 151px (unchanged)</div>
+        <div class="wf-row" style="margin-top: 8px;">
+          <div class="wf-pill" style="font-weight: 700; color: #FF385C;">airbnb</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="height: 48px; padding: 0 24px;">San Francisco · Anywhere · Add guests</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill" style="font-size: 10px;">Become a host</div>
+          <div class="wf-pill icon">⊕</div>
+          <div class="wf-pill icon">≡</div>
+        </div>
+        <!-- Sub-nav row UNCHANGED — but Filters button shows a green dot when safety filter is engaged -->
+        <div class="wf-row" style="margin-top: 10px;">
+          <div class="wf-pill active">Any</div>
+          <div class="wf-pill">Home</div>
+          <div class="wf-pill">Hotel</div>
+          <div style="flex: 1;"></div>
+          <div class="wf-pill filters-with-dot">≡ Filters<span class="num">1</span></div>
+        </div>
       </div>
 
-      <!-- RIGHT: Component Translation Map -->
-      <div>
-        <div class="ctm-title">Anchor Component Translation Map</div>
-        <p style="font-size:12px; color:#666; margin-bottom:18px; line-height:1.6;">Each Proton Pass UI pattern translated 1:1 into SafeChat. The anchor component in the left column maps directly to the implementation in the right column.</p>
-
-        <div class="ctm-item">
-          <div class="ctm-item-header">
-            <div class="ctm-num">1</div>
-            <div class="ctm-item-title">Oversized Bold Hero Heading with Inline Emojis</div>
+      <!-- Body: listings + map -->
+      <div class="wf-body">
+        <div class="wf-listings">
+          <div class="wf-zone-label" style="margin-bottom: 8px;">Listings panel — 734px · 2-col grid</div>
+          <div class="wf-grid">
+            <div class="wf-card grade-A">
+              <div class="wf-card-photo">
+                <div class="gf-badge">Guest favorite</div>
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-C">
+                  <div class="wf-card-meta-bar"></div>
+                  <span class="wf-safety-text">Safety: <strong class="A">A</strong></span>
+                  <span class="num">2</span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card grade-A">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-C">
+                  <div class="wf-card-meta-bar"></div>
+                  <span class="wf-safety-text">Safety: <strong class="A">A</strong></span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card grade-B">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-C">
+                  <div class="wf-card-meta-bar"></div>
+                  <span class="wf-safety-text">Safety: <strong class="B">B</strong></span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card grade-B">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-C">
+                  <div class="wf-card-meta-bar"></div>
+                  <span class="wf-safety-text">Safety: <strong class="B">B</strong></span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card grade-C">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-C">
+                  <div class="wf-card-meta-bar"></div>
+                  <span class="wf-safety-text">Safety: <strong class="C">C</strong></span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
+            <div class="wf-card grade-A">
+              <div class="wf-card-photo">
+                <div class="heart"></div>
+              </div>
+              <div class="wf-card-body">
+                <div class="wf-card-title-row"></div>
+                <div class="wf-card-meta-row-C">
+                  <div class="wf-card-meta-bar"></div>
+                  <span class="wf-safety-text">Safety: <strong class="A">A</strong></span>
+                </div>
+                <div class="wf-card-price-row"></div>
+              </div>
+            </div>
           </div>
-          <div class="ctm-item-body">
-            <span class="ctm-anchor">Anchor:</span> "Keep 🔒 Your Life Safe 🛡" — 32px, 800 weight, -0.02em, white on #0a0a0a, full width
-            <span class="ctm-arrow">→</span>
-            <strong>Translation:</strong> "Protect 🔒 / Your Teen / Stay Safe 🛡" — same 30px, 800 weight, -0.02em, flush left, three-line stacked layout. Takes up the top third of Phone 1.
-          </div>
+          <div class="wf-zone-label" style="margin-top: 14px; text-align: center;">Drawer expands inline below tapped card row →<span class="num">3</span></div>
         </div>
 
-        <div class="ctm-item">
-          <div class="ctm-item-header">
-            <div class="ctm-num">2</div>
-            <div class="ctm-item-title">Full-Width Dark Search Bar</div>
-          </div>
-          <div class="ctm-item-body">
-            <span class="ctm-anchor">Anchor:</span> 46px tall, #1e1e1e bg, 12px radius, search icon left, mic/filter icon right, "Search" placeholder in #6b6b6b
-            <span class="ctm-arrow">→</span>
-            <strong>Phone 1:</strong> "Search conversations..." parent search. <strong>Phone 3:</strong> "Ask anything..." prominently at top before chat begins — same dark treatment, same dimensions, same icon placement.
+        <div class="wf-map">
+          <div class="wf-zone-label">Map panel — 657px sticky</div>
+          <!-- Heatmap zones -->
+          <div class="wf-heatzone" style="background: rgba(26,122,74,0.45); width: 100px; height: 90px; top: 50px; left: 30px;"></div>
+          <div class="wf-heatzone" style="background: rgba(181,139,0,0.45); width: 90px; height: 80px; top: 180px; left: 90px;"></div>
+          <div class="wf-heatzone" style="background: rgba(212,96,10,0.45); width: 80px; height: 70px; top: 100px; right: 60px;"></div>
+          <div class="wf-heatzone" style="background: rgba(192,41,43,0.45); width: 70px; height: 60px; bottom: 90px; left: 60px;"></div>
+
+          <div class="wf-map-marker" style="top: 70px; left: 60px;">$248</div>
+          <div class="wf-map-marker" style="top: 130px; left: 110px;">$312</div>
+          <div class="wf-map-marker" style="top: 220px; left: 80px;">$186</div>
+          <div class="wf-map-marker" style="top: 180px; right: 80px;">$198</div>
+
+          <div style="position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; background: #fff; border: 1px solid #DDDDDD; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #222; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.15);">≋<span class="num" style="position: absolute; top: -8px; right: -8px;">4</span></div>
+          <div style="position: absolute; bottom: 14px; left: 14px; background: rgba(255,255,255,.95); padding: 8px 10px; border-radius: 6px; font-size: 9px; box-shadow: 0 2px 6px rgba(0,0,0,.12);">
+            <div style="font-weight: 700; margin-bottom: 4px; color: #222;">Safety</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#1A7A4A; border-radius:2px;"></span>A</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#B58B00; border-radius:2px;"></span>B</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#D4600A; border-radius:2px;"></span>C</div>
+            <div style="display:flex; align-items:center; gap:5px;"><span style="width:8px; height:8px; background:#C0292B; border-radius:2px;"></span>D</div>
           </div>
         </div>
+      </div>
 
-        <div class="ctm-item">
-          <div class="ctm-item-header">
-            <div class="ctm-num">3</div>
-            <div class="ctm-item-title">Feature Card with Icon + Title + Subtitle + Chevron</div>
+      <!-- DIRECTION C SIGNATURE — Filters modal floating preview -->
+      <div class="wf-modal-preview">
+        <div class="wf-modal-header">
+          <div class="wf-modal-title">Filters</div>
+          <div class="wf-modal-close">×</div>
+        </div>
+        <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6A6A6A; margin-bottom: 4px;">… Type · Price · Bedrooms ↑↓</div>
+        <div style="height: 1px; background: #EBEBEB; margin: 12px -18px;"></div>
+        <div class="wf-modal-section-title">Neighborhood Safety<span style="font-weight: 400; color: #6A6A6A; font-size: 9px; margin-left: 6px;">NEW</span></div>
+        <div class="wf-modal-section-sub">Filter by safety grade. A is highest.</div>
+        <div class="wf-modal-checks">
+          <div class="wf-modal-check checked">
+            <div class="wf-modal-checkbox"></div>
+            <div class="wf-modal-label"><span class="wf-modal-dot A"></span>Very Safe (A)</div>
           </div>
-          <div class="ctm-item-body">
-            <span class="ctm-anchor">Anchor:</span> "Enjoy the magic of AutoFill" — #1c1c1c card, 16px radius, lock icon left, bold white title, muted subtitle, › right
-            <span class="ctm-arrow">→</span>
-            <strong>Phone 1:</strong> Shield icon | "Review flagged content" | "2 new alerts need attention" | › — identical dark card, identical layout. <strong>Phone 3:</strong> Fact card — lock icon | "Fun Fact" | "Regular exercise reduces anxiety by 48%" — same card, no arrow (AI context variant).
+          <div class="wf-modal-check checked">
+            <div class="wf-modal-checkbox"></div>
+            <div class="wf-modal-label"><span class="wf-modal-dot B"></span>Safe (B)</div>
+          </div>
+          <div class="wf-modal-check">
+            <div class="wf-modal-checkbox"></div>
+            <div class="wf-modal-label"><span class="wf-modal-dot C"></span>Average (C)</div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="ctm-item">
-          <div class="ctm-item-header">
-            <div class="ctm-num">4</div>
-            <div class="ctm-item-title">"Today" + "See All" Minimal Section Header</div>
-          </div>
-          <div class="ctm-item-body">
-            <span class="ctm-anchor">Anchor:</span> "Today" left, "See All" right — 11px, 600 weight, #b0b0b0, no border
-            <span class="ctm-arrow">→</span>
-            <strong>Phone 1:</strong> "Recent Alerts" + "See All" — same muted paired label layout. <strong>Phone 3:</strong> "Today" + "See All" — exact anchor translation for the chat date separator.
-          </div>
-        </div>
+    <!-- Spatial summary -->
+    <div style="background: #fff; border: 1px solid #DDDDDD; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 11px; line-height: 1.7; color: #222;">
+      <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 6px;">Spatial Summary</div>
+      <div><strong>Direction:</strong> Contextual Drawer</div>
+      <div><strong>Layout:</strong> Standard Airbnb 2-pane (734px listings · 657px map). Header stays 151px. NO new pills, NO new bars. Modal preview shown floating for illustrative purposes only — in reality the modal opens on Filters click.</div>
+      <div><strong>Distinctive layout move:</strong> Each card gains a 4px-wide left border in the grade color — passive, ambient signal. The page footprint of new chrome is zero.</div>
+      <div><strong>New/changed zones:</strong> Filters modal (new "Neighborhood Safety" section) · Filters button (notification dot when filter engaged) · Card left border (4px color rail) · Map (heatmap + toggle).</div>
+      <div><strong>Proportional note:</strong> Card width remains 307px — left-border addition is internal (via box-sizing: border-box). Modal preview position is illustrative.</div>
+    </div>
+  </div>
 
-        <div class="ctm-item">
-          <div class="ctm-item-header">
-            <div class="ctm-num">5</div>
-            <div class="ctm-item-title">Credential-Style List Rows</div>
-          </div>
-          <div class="ctm-item-body">
-            <span class="ctm-anchor">Anchor:</span> Netflix N icon 32px circle | "Netflix" bold white | "netflix.zri3O@aleisos.com" muted | 👁 right — transparent bg rows
-            <span class="ctm-arrow">→</span>
-            <strong>Phone 1 alerts:</strong> Red "SH" circle | "Self-harm mention" bold | "Emma · 3 flagged messages" muted | 👁. Purple "L" | "Loneliness pattern" | "Emma · 7 mentions". Orange "D" | "Drug reference" | "James · 2 mentions".
-            <strong>Phone 2 settings:</strong> Same row structure — colored icon circle | setting name | badge pill | toggle chevron.
-          </div>
-        </div>
+  <!-- ── PART B: DESIGN SPECIFICATION ── -->
+  <div class="col col-right">
+    <div class="col-label">Part B · Design Specification</div>
+    <div class="col-title">Tokens, components, states, edge cases — for Prototyper handoff</div>
 
-        <div class="ctm-item">
-          <div class="ctm-item-header">
-            <div class="ctm-num">6</div>
-            <div class="ctm-item-title">"SafeChat" Ambient Background Text</div>
-          </div>
-          <div class="ctm-item-body">
-            <span class="ctm-anchor">Anchor:</span> "ProtoPass" ~120px display font at ~35% opacity, dark color, behind phone UI
-            <span class="ctm-arrow">→</span>
-            <strong>Page level:</strong> "SafeChat" at 160px, font-weight 900, color #2a2a2a, opacity 0.35, absolute positioned and centered behind all three phone frames. The outer page bg is #EEEEEE light gray, so the dark text reads as a subtle ghost layer.
-          </div>
-        </div>
+    <div class="spec-section">
+      <div class="spec-section-title">Living Token Reference</div>
+      <table class="spec-table">
+        <tr><td>color-primary-brand</td><td>#FF385C</td></tr>
+        <tr><td>color-text-primary</td><td>#222222</td></tr>
+        <tr><td>color-text-secondary</td><td>#6A6A6A</td></tr>
+        <tr><td>color-bg-page</td><td>#FFFFFF</td></tr>
+        <tr><td>color-bg-header-light</td><td>#F8F8F8</td></tr>
+        <tr><td>color-border-default</td><td>#DDDDDD</td></tr>
+        <tr><td>color-border-active-pill</td><td>#222222</td></tr>
+        <tr><td>color-bg-icon-button</td><td>#F2F2F2</td></tr>
+        <tr><td>font-family</td><td>"Circular", -apple-system, system-ui</td></tr>
+        <tr><td>font-pill-tab</td><td>12px / 400 / lh 16px</td></tr>
+        <tr><td>font-listing-title</td><td>14px / 500 / lh 18px</td></tr>
+        <tr><td>font-price</td><td>15px / 400 / lh 19px</td></tr>
+        <tr><td>spacing-header-height</td><td>151px</td></tr>
+        <tr><td>spacing-card</td><td>307×398px</td></tr>
+        <tr><td>radius-filter-pill</td><td>24px</td></tr>
+        <tr><td>radius-card-inner</td><td>20px</td></tr>
+        <tr><td colspan="2" style="padding-top: 10px; font-weight: 700; color: #FF385C;">Direction C — Drawer / Rail tokens</td></tr>
+        <tr><td>color-safety-A</td><td>#1A7A4A</td></tr>
+        <tr><td>color-safety-B</td><td>#B58B00</td></tr>
+        <tr><td>color-safety-C</td><td>#D4600A</td></tr>
+        <tr><td>color-safety-D</td><td>#C0292B</td></tr>
+        <tr><td>card-rail-width</td><td>4px (left border, color-safety-{grade})</td></tr>
+        <tr><td>card-rail-radius</td><td>20px (matches card; rail follows top-left + bottom-left curves)</td></tr>
+        <tr><td>card-meta-text</td><td>"Safety: {grade}" · 11px / 400 / #6A6A6A</td></tr>
+        <tr><td>card-meta-grade-letter</td><td>11px / 700 / color-safety-{grade}</td></tr>
+        <tr><td>filters-button-dot</td><td>10px circle · color-safety-A · top-right offset</td></tr>
+        <tr><td>modal-section-title</td><td>16px / 600 / #222222</td></tr>
+        <tr><td>modal-section-sub</td><td>13px / 400 / #6A6A6A</td></tr>
+        <tr><td>modal-tier-row-h</td><td>52px</td></tr>
+        <tr><td>modal-tier-row-radius</td><td>12px</td></tr>
+        <tr><td>color-heatmap-A/B/C/D</td><td>same as A but at 0.25 alpha</td></tr>
+        <tr><td>heatmap-toggle</td><td>40px · r 50%</td></tr>
+        <tr><td>safety-transition</td><td>all 200ms ease</td></tr>
+      </table>
+    </div>
 
-      </div><!-- /right col -->
-    </div><!-- /docs-two-col -->
-  </div><!-- /docs-section -->
+    <div class="spec-section">
+      <div class="spec-section-title">Component 1 · Filters Button (P0 — modified)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>EXISTING + new dot indicator</td></tr>
+        <tr><td>Existing styles</td><td>Unchanged · 1px solid #222 · 24px radius · 12px font</td></tr>
+        <tr><td>NEW · Dot position</td><td>top: -2px · right: -2px (absolute, on button)</td></tr>
+        <tr><td>NEW · Dot size</td><td>10px circle</td></tr>
+        <tr><td>NEW · Dot bg</td><td>color-safety-A (#1A7A4A) when any safety filter is engaged</td></tr>
+        <tr><td>NEW · Dot ring</td><td>2px solid #FFFFFF (visual separation from button border)</td></tr>
+        <tr><td>NEW · Dot visibility</td><td>Hidden when filter is "All" or none · visible otherwise</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component 2 · Filters Modal — Safety Section (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW section added to existing Filters modal</td></tr>
+        <tr><td>Position</td><td>After "Type", "Price", "Bedrooms" — before "Booking options"</td></tr>
+        <tr><td>Section divider</td><td>1px solid #EBEBEB above + below</td></tr>
+        <tr><td>Section title</td><td>"Neighborhood safety" · 16px / 600 / #222</td></tr>
+        <tr><td>NEW pill</td><td>"NEW" 9px / 700 / #1A7A4A · uppercase · ml 8px</td></tr>
+        <tr><td>Section subtitle</td><td>"Filter by safety grade. A is highest." · 13px / 400 / #6A6A6A</td></tr>
+        <tr><td>Tier rows</td><td>4 stacked checkbox rows · gap 8px</td></tr>
+        <tr><td>Tier row height</td><td>52px</td></tr>
+        <tr><td>Tier row border</td><td>1px solid #DDDDDD · radius 12px</td></tr>
+        <tr><td>Tier row checked border</td><td>1px solid #222 · bg #F8F8F8</td></tr>
+        <tr><td>Checkbox</td><td>20px · 1.5px solid #6A6A6A · radius 4px</td></tr>
+        <tr><td>Checkbox checked</td><td>bg #222 · ✓ #fff</td></tr>
+        <tr><td>Tier label</td><td>"Very Safe (A)" / "Safe (B)" / "Average (C)" / "Caution (D)"</td></tr>
+        <tr><td>Tier dot</td><td>10px circle · color-safety-{grade} · before label</td></tr>
+        <tr><td>Multi-select</td><td>Yes — user can check multiple tiers</td></tr>
+      </table>
+
+      <div class="state-block">
+        <div class="state-name">State · Default (no tiers checked = "All")</div>
+        All four rows in default state: white bg, #DDDDDD border, gray checkbox. Treated as "show all".
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Multi-checked (e.g. A + B)</div>
+        Two rows in checked state: bg #F8F8F8, border #222, checkbox dark with checkmark. The Filters button dot becomes visible immediately on save.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Hover</div>
+        Row bg #F8F8F8 · border-color #6A6A6A.
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component 3 · Card Color Rail (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · 4px left border on card</td></tr>
+        <tr><td>Implementation</td><td>border-left: 4px solid color-safety-{grade}</td></tr>
+        <tr><td>Box-sizing</td><td>border-box (preserves 307px outer width)</td></tr>
+        <tr><td>Radius</td><td>Inherits 20px card radius (rail follows top-left + bottom-left curves)</td></tr>
+        <tr><td>NEW meta text</td><td>"Safety: {A}" inline in card metadata row</td></tr>
+        <tr><td>Meta text font</td><td>11px / 400 / #6A6A6A</td></tr>
+        <tr><td>Grade letter</td><td>11px / 700 / color-safety-{grade}</td></tr>
+        <tr><td>Position in meta row</td><td>After star rating · before price</td></tr>
+        <tr><td>Click behavior</td><td>The "Safety: A" text is clickable · expands inline drawer · color rail also clickable (whole left edge is hit area)</td></tr>
+      </table>
+
+      <div class="state-block">
+        <div class="state-name">State · Default</div>
+        Rail in solid grade color · meta text quiet but readable. Whole card is link to listing detail except the safety affordances which open the drawer.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Hover</div>
+        Rail brightens +12% (subtle) · meta text underlines on hover · cursor pointer over safety hotspots only.
+      </div>
+      <div class="state-block">
+        <div class="state-name">State · Drawer-open</div>
+        Rail width grows from 4px → 6px (200ms) · meta text gains underline. Subtle but unmistakable that this card is the active one.
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component 4 · Inline Safety Drawer (P0)</div>
+      <table class="spec-table">
+        <tr><td>Source</td><td>NEW · same drawer pattern as A and B</td></tr>
+        <tr><td>Background</td><td>#F8F8F8</td></tr>
+        <tr><td>Border-top</td><td>4px solid color-safety-{grade}</td></tr>
+        <tr><td>Padding</td><td>20px 24px</td></tr>
+        <tr><td>Width</td><td>734px (full listings panel)</td></tr>
+        <tr><td>Layout</td><td>4-col grid · gap 24px</td></tr>
+        <tr><td>Content</td><td>Walkability · Crime · Hospitals · Transit</td></tr>
+        <tr><td>Animation</td><td>height 0→auto · 250ms ease</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component 5 · Heatmap Toggle (P0)</div>
+      <table class="spec-table">
+        <tr><td>Position</td><td>Map panel · top 14px right 14px</td></tr>
+        <tr><td>Size</td><td>40 × 40px · radius 50%</td></tr>
+        <tr><td>Bg off / on</td><td>#FFFFFF / #222222</td></tr>
+        <tr><td>Icon</td><td>≋ waves</td></tr>
+        <tr><td>Tooltip</td><td>"Safety heatmap"</td></tr>
+        <tr><td>Discoverability boost</td><td>On first visit only — subtle pulsing white ring (2 cycles, 1s) to signal newness</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Active States — All Interactive Components</div>
+      <div class="spec-bullet"><strong>Filters button</strong> — dot hidden default · visible whenever any safety tier is engaged</div>
+      <div class="spec-bullet"><strong>Modal section</strong> — closed in modal default · scroll into view by section anchor</div>
+      <div class="spec-bullet"><strong>Tier rows</strong> — default · hover bg-gray · checked dark border + bg</div>
+      <div class="spec-bullet"><strong>Card rail</strong> — 4px default · 6px when corresponding drawer is open</div>
+      <div class="spec-bullet"><strong>Drawer</strong> — collapsed h0 · expanded auto · switching fade150ms</div>
+      <div class="spec-bullet"><strong>Heatmap toggle</strong> — pulsing ring on first visit · normal toggle thereafter</div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Edge Cases</div>
+      <div class="state-block">
+        <div class="state-name">Edge · Modal selection "Very Safe only" → 0 results</div>
+        Listings panel renders empty-state card: "No Very Safe stays match your filters" · body "Try adding Safe to see {N} more options." · CTA "Add Safe (B)" — opens modal pre-scrolled to safety section with "Safe" tier highlighted. Filters button dot pulses once for 300ms.
+      </div>
+      <div class="state-block">
+        <div class="state-name">Edge · Drawer open + filter applied via modal</div>
+        Modal save triggers drawer auto-collapse with 150ms fade. If listing remains in filtered set: rail returns to 4px default. If filtered out: scroll resets to top of panel (smooth).
+      </div>
+      <div class="state-block">
+        <div class="state-name">Edge · Heatmap on + no safety filter applied</div>
+        All four heatmap colors render at 0.25 alpha. Map legend visible. Cards continue to show their grade rails — direct visual mapping between rail color and map zone color.
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Component Assembly Order</div>
+      <div class="spec-bullet">1. <strong>Map heatmap zones</strong> — base layer</div>
+      <div class="spec-bullet">2. <strong>Heatmap toggle + legend</strong> — floating</div>
+      <div class="spec-bullet">3. <strong>Filters modal — Neighborhood Safety section</strong> — added between existing sections</div>
+      <div class="spec-bullet">4. <strong>Filters button dot</strong> — conditional render based on filter state</div>
+      <div class="spec-bullet">5. <strong>Card color rail</strong> — left-border on every card</div>
+      <div class="spec-bullet">6. <strong>Card meta safety text</strong> — added to existing metadata row</div>
+      <div class="spec-bullet">7. <strong>Inline drawer</strong> — conditional render below tapped card row</div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Backward-from-Failure — P0 Components</div>
+      <div class="spec-bullet"><strong>Filters modal section:</strong> If users don't think to open Filters, they will fail Task 2 (filtering). Mitigation — the rails on cards create a chromatic problem (red/orange visible) which prompts the user to seek a control; the dot on the Filters button confirms it's the right place to look once safety has been engaged once.</div>
+      <div class="spec-bullet"><strong>Color rail:</strong> If users don't connect rail color to safety, they will fail Task 1. Mitigation — inline "Safety: A" text in metadata row provides explicit semantic label; rail + label + grade-color triple-encode the same signal.</div>
+      <div class="spec-bullet"><strong>Inline drawer:</strong> If users don't realize the meta text or rail is tappable, they will fail Task 3. Mitigation — cursor pointer + hover underline on meta text + tooltip "View safety details" on first hover per session.</div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-section-title">Distinctiveness Log — what makes C unique</div>
+      <div class="spec-bullet">Safety filter has <strong>zero new chrome</strong> on the page itself — lives entirely inside the existing Filters modal. A adds a pill, B adds a bar, C adds nothing.</div>
+      <div class="spec-bullet">Card signal is a <strong>color rail (left border)</strong>, not an overlay or chip — visible at the periphery, doesn't compete with photo or title.</div>
+      <div class="spec-bullet">Filters modal supports <strong>multi-select</strong> tiers (e.g. A + B). A and B are single-select.</div>
+      <div class="spec-bullet">Active-filter cue is a <strong>small dot on the Filters button</strong> — Airbnb's existing pattern for "filters engaged" is the same. Most native of the three.</div>
+      <div class="spec-bullet">Best fit when safety is one of many concerns — does not bias the user toward over-weighting it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= DESIGNER NOTES ============= -->
+<div class="notes-section">
+  <div class="notes-title">Designer Notes for Prototyper · Direction C</div>
+
+  <div class="note-group">
+    <div class="note-group-label">Internal Design Debate Summary</div>
+    <div class="debate-row">
+      <div class="debate-cell">
+        <strong>Q3 Filter Placement</strong>
+        Three candidates: (a) sub-nav pill, (b) dedicated bar, (c) Filters modal. (c) wins for Direction C because the Filters modal already contains all the secondary refinement controls (price, beds, instant book) — placing safety there matches the user's existing mental model: "if I want to refine, I open Filters."
+      </div>
+      <div class="debate-cell">
+        <strong>Q5 Badge Style</strong>
+        Three candidates: (a) photo overlay, (b) metadata chip, (c) card border. (c) wins because C's whole stance is "ambient, not imposing" — a 4px color rail signals at the periphery without ever competing with the listing's primary content. A reviewer who isn't looking for safety can ignore the cards entirely; a reviewer who IS looking for safety can scan rail colors at high speed.
+      </div>
+      <div class="debate-cell">
+        <strong>Trade-off Acknowledged</strong>
+        Lowest discoverability of the three (Effective + Intuitive both 3/5). A first-time user who didn't know the feature exists may not find it — the only signal on the page (color rails) is non-obvious unless the user already knows safety grades exist. Mitigation: Filters modal "NEW" pill + first-visit pulsing toggle + map legend.
+      </div>
+    </div>
+    <div class="quality-grid">
+      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Clean</div></div>
+      <div class="quality-card"><div class="quality-num">3</div><div class="quality-label">Effective</div></div>
+      <div class="quality-card"><div class="quality-num">3</div><div class="quality-label">Intuitive</div></div>
+      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Pleasing</div></div>
+      <div class="quality-card"><div class="quality-num">16</div><div class="quality-label">Total / 20</div></div>
+    </div>
+  </div>
+
+  <div class="note-group">
+    <div class="note-group-label">Final Falsification Pass</div>
+    <div class="note-item"><strong>Failure mode:</strong> A user who came to the page specifically because they care about safety doesn't find the filter. They scan the page, see no safety control, conclude the feature doesn't exist, and either bounce or accept the default listing set without any filtering. The card rails read as decorative, not informational.</div>
+    <div class="note-item"><strong>Mitigation:</strong> (1) Map legend in bottom-left of map is always visible — explains the color system unprompted. (2) On first visit per session, trigger a one-time tooltip on the Filters button: "New: filter by neighborhood safety" — dismissible, never repeats. (3) Inline meta text "Safety: A" provides a semantic label so the rail color is never the only encoding.</div>
+  </div>
+
+  <div class="note-group">
+    <div class="note-group-label">Exact Build Instructions for Prototyper</div>
+    <div class="note-item">Filters modal: add a new section with id <code>safety-filters</code> after the Bedrooms section. Use existing Airbnb modal section pattern — 1px <code>#EBEBEB</code> dividers above and below, section title in <code>16px/600</code>, four checkbox rows.</div>
+    <div class="note-item">Card rail: use <code>border-left: 4px solid var(--safety-color)</code> with <code>box-sizing: border-box</code> on each card. The card's overall outer width remains 307px — the rail eats 4px of inner photo space (negligible visually).</div>
+    <div class="note-item">Card meta safety text: add a span <code>&lt;span class="card-safety"&gt;Safety: &lt;strong&gt;A&lt;/strong&gt;&lt;/span&gt;</code> as the LAST flex child in the existing metadata row. The grade letter takes the safety-color via inline style. Whole span is clickable.</div>
+    <div class="note-item">Filters button dot: absolute-positioned span on the existing button element. <code>top: -2px; right: -2px; width: 10px; height: 10px; background: #1A7A4A; border-radius: 50%; box-shadow: 0 0 0 2px #FFFFFF;</code>. Render conditionally based on <code>safetyFilterCount &gt; 0</code>.</div>
+    <div class="note-item">First-visit signal: read sessionStorage flag <code>safety_intro_seen</code>. If absent, show the Filters tooltip + heatmap-toggle pulse for 1 visit, then set the flag to true.</div>
+    <div class="note-item">Multi-select: maintain <code>activeSafetyTiers: Set&lt;'A' | 'B' | 'C' | 'D'&gt;</code>. Filtering logic: card visible if <code>activeSafetyTiers.size === 0 || activeSafetyTiers.has(card.grade)</code>.</div>
+    <div class="note-item">Mock SF data — same 8 neighborhoods: Pacific Heights A · Noe Valley A · Mission B · Castro B · SoMa C · Outer Sunset C · Tenderloin D · Civic Center D.</div>
+    <div class="note-item">Font fallback chain: <code>"Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif</code>.</div>
+  </div>
+</div>
 
 </body>
 </html>

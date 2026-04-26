@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wayshare — Direction A: Journey Minimalism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; }
+img, svg { display: block; }
+button { border: none; background: none; cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+input { outline: none; border: none; background: none; }
+.itinerary-card:hover { border-color: #1A1A1A; }
+.strip-card:hover { border-color: #1A1A1A; }
+.nav-btn:hover { background-color: #374151; }
+.search-btn:hover { background-color: #374151; }
+.collapsed-days:hover { border-color: #1A1A1A; }
+.footer-link:hover { color: #1A1A1A; }
+.nav-scrolled { box-shadow: 0 1px 8px 0 rgba(0,0,0,0.08); }
+.scroll-strip { scrollbar-width: none; }
+.scroll-strip::-webkit-scrollbar { display: none; }
+:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<!-- PROTOTYPE ROOT -->
+<div id="prototype-root">
+
+  <!-- SCREEN: BROWSE -->
+  <div id="screen-browse" data-screen="browse" style="display:none;">
+
+    <!-- Nav -->
+    <nav id="nav-browse" class="site-nav" style="position:sticky;top:0;z-index:100;background-color:#FFFFFF;border-bottom:1px solid #E5E7EB;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;">
+      <span onclick="showScreen('browse')" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;letter-spacing:-0.01em;color:#1A1A1A;cursor:pointer;">Wayshare</span>
+      <div style="display:flex;align-items:center;gap:28px;">
+        <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#1A1A1A;cursor:pointer;">Explore trips</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;text-decoration:underline;text-underline-offset:3px;cursor:pointer;">Share your trip</span>
+        <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;border:1px solid #D1D5DB;"></div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div id="hero-section" style="background-color:#FFFFFF;padding:96px 48px 80px;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:72px;font-weight:300;line-height:1.0;letter-spacing:-0.02em;color:#1A1A1A;margin-bottom:4px;">Real trips.</div>
+      <div style="font-family:'Playfair Display',serif;font-size:72px;font-weight:300;line-height:1.0;letter-spacing:-0.02em;color:#9CA3AF;margin-bottom:28px;">Taken by real people.</div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:400;line-height:1.6;color:#374151;max-width:520px;margin:0 auto 40px;">Browse itineraries built from actual camera rolls, booking confirmations, and travel memories.</p>
+      <!-- Search pill -->
+      <div style="max-width:640px;margin:0 auto 24px;display:flex;align-items:stretch;border:1px solid #E5E7EB;border-radius:9999px;overflow:hidden;background-color:#FFFFFF;">
+        <input type="text" placeholder="Where?" style="flex:1;padding:16px 20px;border-right:1px solid #E5E7EB;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#9CA3AF;background:transparent;">
+        <input type="text" placeholder="When?" style="flex:1;padding:16px 20px;border-right:1px solid #E5E7EB;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#9CA3AF;background:transparent;">
+        <input type="text" placeholder="Who?" style="flex:1;padding:16px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#9CA3AF;background:transparent;">
+        <button class="search-btn" style="padding:16px 28px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;border:none;cursor:pointer;border-radius:0 9999px 9999px 0;white-space:nowrap;">Search →</button>
+      </div>
+      <!-- Filter chips -->
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;">
+        <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#374151;cursor:pointer;">Japan</span>
+        <span style="color:#D1D5DB;margin:0 10px;font-size:10px;">·</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#374151;cursor:pointer;">Portugal</span>
+        <span style="color:#D1D5DB;margin:0 10px;font-size:10px;">·</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#374151;cursor:pointer;">10+ days</span>
+        <span style="color:#D1D5DB;margin:0 10px;font-size:10px;">·</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#374151;cursor:pointer;">Solo</span>
+        <span style="color:#D1D5DB;margin:0 10px;font-size:10px;">·</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#374151;cursor:pointer;">Couples</span>
+      </div>
+    </div>
+
+    <!-- Card Grid Section -->
+    <div style="background-color:#FFFFFF;padding:0 48px 64px;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;padding:40px 0 24px;">01 — Recently Published</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+
+        <!-- Card 1 -->
+        <div class="itinerary-card" onclick="showScreen('detail')" style="background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:200px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0F2B5B 0%,#1A5276 40%,#0E7490 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.9</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:6px;">01</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:6px;">10 Days in Japan: Tokyo, Kyoto &amp; Osaka</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;margin-bottom:12px;">by Sarah M. · September 2025</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;display:flex;align-items:center;">
+              14 bookings<span style="margin:0 6px;color:#D1D5DB;">·</span>10 days<span style="margin:0 6px;color:#D1D5DB;">·</span>¥¥¥
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="itinerary-card" style="background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:200px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#92400E 0%,#C2772A 45%,#F59E0B 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.8</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:6px;">02</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:6px;">8 Days in Portugal: Lisbon, Porto &amp; Douro</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;margin-bottom:12px;">by Miguel R. · October 2025</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;display:flex;align-items:center;">
+              9 bookings<span style="margin:0 6px;color:#D1D5DB;">·</span>8 days<span style="margin:0 6px;color:#D1D5DB;">·</span>€€
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="itinerary-card" style="background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:200px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#064E3B 0%,#059669 50%,#34D399 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.7</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:6px;">03</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:6px;">2 Weeks Across Southeast Asia</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;margin-bottom:12px;">by Priya K. · August 2025</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;display:flex;align-items:center;">
+              21 bookings<span style="margin:0 6px;color:#D1D5DB;">·</span>14 days<span style="margin:0 6px;color:#D1D5DB;">·</span>$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="itinerary-card" style="background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:200px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#7C2D12 0%,#C2410C 50%,#F97316 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.9</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:6px;">04</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:6px;">A Week in Morocco: Marrakech &amp; Sahara</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;margin-bottom:12px;">by Tom &amp; Anna B. · November 2025</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;display:flex;align-items:center;">
+              7 bookings<span style="margin:0 6px;color:#D1D5DB;">·</span>7 days<span style="margin:0 6px;color:#D1D5DB;">·</span>$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="itinerary-card" style="background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:200px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1E3A5F 0%,#3B6EA5 45%,#7EC8E3 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 5.0</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:6px;">05</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:6px;">Iceland Ring Road, 10 Days</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;margin-bottom:12px;">by Chris L. · July 2025</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;display:flex;align-items:center;">
+              18 bookings<span style="margin:0 6px;color:#D1D5DB;">·</span>10 days<span style="margin:0 6px;color:#D1D5DB;">·</span>$$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="itinerary-card" style="background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:200px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1B4332 0%,#2D6A4F 45%,#52B788 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.8</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:6px;">06</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:6px;">3 Weeks in Colombia: Bogotá to Cartagena</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;margin-bottom:12px;">by Luisa V. · October 2025</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;display:flex;align-items:center;">
+              12 bookings<span style="margin:0 6px;color:#D1D5DB;">·</span>21 days<span style="margin:0 6px;color:#D1D5DB;">·</span>$$
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+
+      <!-- Section 2: Top Rated -->
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;padding:56px 0 24px;">02 — Top Rated This Month</div>
+
+      <!-- Horizontal scroll strip -->
+      <div class="scroll-strip" style="display:flex;gap:24px;overflow-x:auto;padding-bottom:8px;">
+
+        <!-- Strip Card 1 -->
+        <div class="strip-card" style="flex:0 0 320px;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="height:160px;position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#312E81 0%,#4C1D95 45%,#6D28D9 100%);"></div>
+          </div>
+          <div style="padding:14px 16px;">
+            <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:4px;">Hidden Kyoto: 5 Days Off the Tourist Trail</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;">by Yuki T. · March 2025 · ★ 5.0</div>
+          </div>
+        </div>
+
+        <!-- Strip Card 2 -->
+        <div class="strip-card" style="flex:0 0 320px;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="height:160px;position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#7F1D1D 0%,#B91C1C 50%,#F87171 100%);"></div>
+          </div>
+          <div style="padding:14px 16px;">
+            <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:4px;">Thailand North to South: 12 Days</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;">by Dana W. · February 2025 · ★ 4.9</div>
+          </div>
+        </div>
+
+        <!-- Strip Card 3 -->
+        <div class="strip-card" style="flex:0 0 320px;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="height:160px;position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#451A03 0%,#92400E 50%,#D97706 100%);"></div>
+          </div>
+          <div style="padding:14px 16px;">
+            <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:4px;">Peru in 9 Days: Cusco, Machu Picchu &amp; the Sacred Valley</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;">by Marco F. · January 2025 · ★ 4.9</div>
+          </div>
+        </div>
+
+        <!-- Strip Card 4 -->
+        <div class="strip-card" style="flex:0 0 320px;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="height:160px;position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0F2B5B 0%,#1A5276 40%,#0E7490 100%);"></div>
+          </div>
+          <div style="padding:14px 16px;">
+            <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;line-height:1.4;letter-spacing:0em;color:#1A1A1A;margin-bottom:4px;">New Zealand South Island Road Trip, 2 Weeks</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;line-height:1.5;letter-spacing:0em;color:#9CA3AF;">by Sam &amp; Jo K. · April 2025 · ★ 4.8</div>
+          </div>
+        </div>
+
+      </div><!-- /scroll-strip -->
+    </div><!-- /card grid section -->
+
+    <!-- Footer -->
+    <footer style="background-color:#FFFFFF;border-top:1px solid #E5E7EB;padding:40px 48px;">
+      <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:400;font-style:italic;letter-spacing:-0.01em;line-height:1.5;color:#1A1A1A;margin-bottom:8px;">Wayshare</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#9CA3AF;">Real itineraries from real travelers. Share what you discovered. Book what they built.</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#9CA3AF;margin-bottom:12px;">For Travelers</div>
+          <a href="#" class="footer-link" style="display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;margin-bottom:6px;text-decoration:none;">Browse itineraries</a>
+          <a href="#" class="footer-link" style="display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;margin-bottom:6px;text-decoration:none;">How it works</a>
+          <a href="#" class="footer-link" style="display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;margin-bottom:6px;text-decoration:none;">Top rated trips</a>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#9CA3AF;margin-bottom:12px;">For Contributors</div>
+          <a href="#" class="footer-link" style="display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;margin-bottom:6px;text-decoration:none;">Share your trip</a>
+          <a href="#" class="footer-link" style="display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;margin-bottom:6px;text-decoration:none;">Earn commission</a>
+          <a href="#" class="footer-link" style="display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;margin-bottom:6px;text-decoration:none;">Creator FAQ</a>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /screen-browse -->
+
+  <!-- SCREEN: DETAIL -->
+  <div id="screen-detail" data-screen="detail" style="display:none;">
+
+    <!-- Nav -->
+    <nav id="nav-detail" class="site-nav" style="position:sticky;top:0;z-index:100;background-color:#FFFFFF;border-bottom:1px solid #E5E7EB;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;">
+      <span onclick="showScreen('browse')" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;letter-spacing:-0.01em;color:#1A1A1A;cursor:pointer;">Wayshare</span>
+      <div style="display:flex;align-items:center;gap:28px;">
+        <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#1A1A1A;cursor:pointer;">Explore trips</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;text-decoration:underline;text-underline-offset:3px;cursor:pointer;">Share your trip</span>
+        <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;border:1px solid #D1D5DB;"></div>
+      </div>
+    </nav>
+
+    <!-- Detail Hero -->
+    <div style="position:relative;height:380px;display:flex;align-items:flex-end;">
+      <div style="position:absolute;inset:0;background:linear-gradient(160deg,#0F1B35 0%,#1B3A6B 55%,#243B5A 100%);z-index:0;"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.1) 60%,transparent 100%);z-index:1;"></div>
+      <div style="position:relative;z-index:2;padding:0 56px 40px;">
+        <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:10px;">Japan · September 2025</div>
+        <div style="font-family:'Playfair Display',serif;font-size:42px;font-weight:300;line-height:1.1;letter-spacing:-0.01em;color:#FFFFFF;margin-bottom:12px;max-width:640px;">10 Days in Japan: Tokyo, Kyoto &amp; Osaka</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.5;letter-spacing:0em;color:rgba(255,255,255,0.8);">★ 4.9 · 14 bookings · by Sarah M.</div>
+      </div>
+    </div>
+
+    <!-- Detail Body -->
+    <div style="background-color:#FFFFFF;padding:56px;display:grid;grid-template-columns:65fr 35fr;gap:64px;max-width:1200px;margin:0 auto;">
+
+      <!-- LEFT: Timeline -->
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-bottom:32px;">The Itinerary</div>
+
+        <div style="position:relative;padding-left:56px;">
+          <!-- Vertical line -->
+          <div style="position:absolute;left:20px;top:0;bottom:0;width:1px;background-color:#E5E7EB;"></div>
+
+          <!-- DAY 1 expanded -->
+          <div id="days-expanded">
+
+            <!-- Day 1 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">1</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 01</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Tokyo</span>
+            </div>
+
+            <!-- Stop 1.1 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Tsukiji Outer Market breakfast</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Get there by 7am for fresh tuna — the crowds arrive by 9. The egg tamago is non-negotiable."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Free admission</div>
+              </div>
+            </div>
+
+            <!-- Stop 1.2 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Shibuya Crossing &amp; Harajuku</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Best viewed from the Mag's Park rooftop café. Walk down Takeshita Street after."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">3 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Free</div>
+              </div>
+            </div>
+
+            <!-- Stop 1.3 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Dinner at Ichiran Ramen, Shibuya</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Solo ramen booths — the signature way to experience it."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1 hr<span style="margin:0 6px;color:#D1D5DB;">·</span>¥1,500–2,000</div>
+                <a href="#" style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#1A1A1A;text-decoration:underline;text-underline-offset:2px;cursor:pointer;display:inline-block;margin-top:4px;">Book via Wayshare →</a>
+              </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">2</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 02</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Tokyo</span>
+            </div>
+
+            <!-- Stop 2.1 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Senso-ji Temple, Asakusa</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"6:30am entry before the tourist buses arrive."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Free</div>
+              </div>
+            </div>
+
+            <!-- Stop 2.2 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">teamLab Planets</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Book 2 weeks ahead minimum — sold out constantly."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>¥3,200</div>
+                <a href="#" style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#1A1A1A;text-decoration:underline;text-underline-offset:2px;cursor:pointer;display:inline-block;margin-top:4px;">Book via Wayshare →</a>
+              </div>
+            </div>
+
+            <!-- Stop 2.3 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Akihabara electronics district</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Optional if you're into tech — otherwise skip."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2 hrs</div>
+              </div>
+            </div>
+
+            <!-- Day 3 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">3</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 03</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Kyoto</span>
+            </div>
+
+            <!-- Stop 3.1 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Shinkansen to Kyoto</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"7:13am train from Tokyo Station. Book JR Pass before you leave."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Included in JR Pass</div>
+              </div>
+            </div>
+
+            <!-- Stop 3.2 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Fushimi Inari Shrine</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"The full hike to the top is 2–3 hrs. Worth it."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">3 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Free</div>
+              </div>
+            </div>
+
+            <!-- Stop 3.3 -->
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Nishiki Market food tour</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Small plates at every stall — don't eat a big lunch first."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>¥2,000–4,000</div>
+              </div>
+            </div>
+
+          </div><!-- /days-expanded -->
+
+          <!-- Collapsed row -->
+          <div id="days-collapsed-row" class="collapsed-days" onclick="expandDays()" style="position:relative;margin-left:-56px;display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid #E5E7EB;cursor:pointer;background-color:#FAFAFA;">
+            <div style="width:28px;height:28px;border-radius:9999px;background-color:#F3F4F6;border:1px solid #E5E7EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#9CA3AF;letter-spacing:0em;line-height:1;">+7</span>
+            </div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#374151;letter-spacing:0em;line-height:1.5;">7 more days — Osaka, Hiroshima, Nara &amp; the final night in Tokyo</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;letter-spacing:0em;line-height:1.5;margin-left:auto;">Expand →</span>
+          </div>
+
+          <!-- Extra days (hidden) -->
+          <div id="days-extra" style="display:none;">
+
+            <!-- Day 4 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;margin-top:24px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">4</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 04</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Osaka</span>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Osaka Castle Park</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Early morning before the tour groups arrive."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Free</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Dotonbori food district</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"The neon signs are best at night — come back after dinner too."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">3 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>varies</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Takoyaki at Wanaka</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"The original. 8 pieces for ¥600."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">30 mins<span style="margin:0 6px;color:#D1D5DB;">·</span>¥600</div>
+                <a href="#" style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#1A1A1A;text-decoration:underline;text-underline-offset:2px;cursor:pointer;display:inline-block;margin-top:4px;">Book via Wayshare →</a>
+              </div>
+            </div>
+
+            <!-- Day 5 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">5</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 05</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Hiroshima</span>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Shinkansen to Hiroshima</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Morning train, about 1hr 20min."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>JR Pass</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Peace Memorial Museum</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Deeply moving. Allow 2–3 hours. No photos inside."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>¥200</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Miyajima Island &amp; Itsukushima</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Take the ferry — the floating torii gate at high tide is unforgettable."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">3 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>¥180 ferry</div>
+              </div>
+            </div>
+
+            <!-- Day 6 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">6</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 06</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Nara</span>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Nara Deer Park</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"The deer are bold. Keep your food hidden until you're ready."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>Free</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Tōdai-ji Temple</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"The world's largest bronze Buddha statue."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>¥600</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Naramachi historic district</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Wander the preserved merchant houses."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">1 hr<span style="margin:0 6px;color:#D1D5DB;">·</span>Free</div>
+              </div>
+            </div>
+
+            <!-- Days 7-9 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">7</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Days 07–09</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Osaka</span>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Days 7–9</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Osaka base: day trips to Kobe + free exploration, ryokan stay one night"</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">3 days</div>
+              </div>
+            </div>
+
+            <!-- Day 10 -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;position:relative;margin-left:-56px;">
+              <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0em;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;margin-left:7px;">10</div>
+              <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-right:8px;">Day 10</span>
+              <span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.5;">Tokyo</span>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Shinkansen back to Tokyo</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Evening train from Shin-Osaka."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">2.5 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>JR Pass</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;padding-bottom:28px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Last walk around Shinjuku</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Final dinner at an izakaya on Omoide Yokocho."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">3 hrs<span style="margin:0 6px;color:#D1D5DB;">·</span>¥3,000–5,000</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:20px;">
+              <div style="position:relative;flex-shrink:0;width:16px;display:flex;align-items:flex-start;padding-top:2px;margin-left:-36px;">
+                <div style="width:16px;height:16px;border-radius:9999px;background-color:#FFFFFF;border:1px solid #E5E7EB;position:relative;z-index:2;"></div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:5px;line-height:1.5;letter-spacing:0em;">Airport transfer from Shinjuku</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0em;color:#374151;margin-bottom:8px;">"Narita Express from Shinjuku Station. Allow 90 mins."</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;display:flex;align-items:center;flex-wrap:wrap;letter-spacing:0em;line-height:1.5;">90 mins<span style="margin:0 6px;color:#D1D5DB;">·</span>¥3,070</div>
+              </div>
+            </div>
+
+          </div><!-- /days-extra -->
+
+        </div><!-- /timeline container -->
+      </div><!-- /LEFT column -->
+
+      <!-- RIGHT: Booking Sidebar -->
+      <div style="position:sticky;top:24px;align-self:start;">
+        <div style="border:1px solid #E5E7EB;border-radius:0;background-color:#FFFFFF;padding:28px;">
+
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-bottom:16px;">Book This Trip</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:300;letter-spacing:-0.02em;line-height:1.2;color:#1A1A1A;margin-bottom:4px;">¥ 487,000</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;letter-spacing:0em;line-height:1.5;color:#9CA3AF;margin-bottom:20px;">estimated total · 2 travelers</div>
+          <div style="height:1px;background-color:#E5E7EB;margin:20px 0;"></div>
+
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:#9CA3AF;margin-bottom:8px;">Travel Dates</div>
+          <div style="display:flex;gap:8px;margin-bottom:20px;">
+            <div style="flex:1;border:1px solid #E5E7EB;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;background-color:#FFFFFF;">Depart</div>
+            <div style="flex:1;border:1px solid #E5E7EB;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;background-color:#FFFFFF;">Return</div>
+          </div>
+          <div style="height:1px;background-color:#E5E7EB;margin:0 0 20px;"></div>
+
+          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#1A1A1A;letter-spacing:0em;line-height:1.5;margin-bottom:12px;">What's included:</div>
+
+          <!-- Included items -->
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#1A1A1A;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#374151;">8 hotels (via Booking.com)</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#1A1A1A;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#374151;">3 guided tours (via Viator)</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#1A1A1A;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#374151;">Shinkansen booking</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#1A1A1A;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#374151;">teamLab Planets</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#1A1A1A;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#374151;">4 restaurant reservations (via OpenTable)</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#D1D5DB;flex-shrink:0;margin-top:1px;">○</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;">Flights</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#D1D5DB;flex-shrink:0;margin-top:1px;">○</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;color:#9CA3AF;">Travel insurance</span>
+          </div>
+
+          <div style="height:1px;background-color:#E5E7EB;margin:20px 0;"></div>
+
+          <button id="book-btn" class="nav-btn" onclick="bookTrip()" style="width:100%;height:52px;background-color:#1A1A1A;color:#FFFFFF;border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;letter-spacing:0em;cursor:pointer;border:none;">Book this trip</button>
+          <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;text-align:center;margin-top:12px;letter-spacing:0em;line-height:1.5;">Confirmations sent within 2 minutes</div>
+
+          <div style="height:1px;background-color:#E5E7EB;margin:20px 0;"></div>
+
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-bottom:12px;">Taken By</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;flex-shrink:0;"></div>
+            <div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;margin-bottom:2px;letter-spacing:0em;line-height:1.5;">Sarah M.</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;letter-spacing:0em;line-height:1.5;">★ 4.9 · 3 itineraries</div>
+            </div>
+          </div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;margin-top:8px;letter-spacing:0em;line-height:1.5;">September 2025</div>
+
+        </div><!-- /booking card -->
+      </div><!-- /RIGHT -->
+
+    </div><!-- /detail body -->
+  </div><!-- /screen-detail -->
+
+</div><!-- /prototype-root -->
+
+<!-- FIGMA GALLERY -->
+<div id="figma-gallery" style="display:none;flex-direction:column;gap:64px;padding:64px;background-color:#F0F0F0;min-height:100vh;">
+
+  <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#999;">Component State Gallery — Direction A: Journey Minimalism</div>
+
+  <!-- Section: ItineraryCard -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#333;padding-bottom:8px;border-bottom:1px solid #E0E0E0;margin-bottom:16px;">ItineraryCard</div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
+      <!-- Default state -->
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Default</div>
+        <div class="itinerary-card" style="width:280px;background-color:#FFFFFF;border:1px solid #E5E7EB;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:160px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0F2B5B 0%,#1A5276 40%,#0E7490 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.9</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;color:#9CA3AF;margin-bottom:6px;">01</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;color:#1A1A1A;margin-bottom:6px;">10 Days in Japan</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:#9CA3AF;">by Sarah M. · September 2025</div>
+          </div>
+        </div>
+      </div>
+      <!-- Hover state -->
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Hover</div>
+        <div style="width:280px;background-color:#FFFFFF;border:1px solid #1A1A1A;border-radius:0;overflow:hidden;cursor:pointer;">
+          <div style="position:relative;height:160px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,#92400E 0%,#C2772A 45%,#F59E0B 100%);"></div>
+            <div style="position:absolute;top:12px;right:12px;background-color:#FFFFFF;border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#1A1A1A;">★ 4.8</div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-family:'Playfair Display',serif;font-size:13px;color:#9CA3AF;margin-bottom:6px;">02</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;color:#1A1A1A;margin-bottom:6px;">8 Days in Portugal</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:#9CA3AF;">by Miguel R. · October 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: NavBar -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#333;padding-bottom:8px;border-bottom:1px solid #E0E0E0;margin-bottom:16px;">NavBar</div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <!-- Default -->
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Default (no shadow)</div>
+        <div style="background-color:#FFFFFF;border-bottom:1px solid #E5E7EB;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;max-width:800px;">
+          <span style="font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;letter-spacing:-0.01em;color:#1A1A1A;">Wayshare</span>
+          <div style="display:flex;align-items:center;gap:28px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#1A1A1A;">Explore trips</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;text-decoration:underline;text-underline-offset:3px;">Share your trip</span>
+            <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;border:1px solid #D1D5DB;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Scrolled -->
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Scrolled (with shadow)</div>
+        <div style="background-color:#FFFFFF;border-bottom:1px solid #E5E7EB;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;max-width:800px;box-shadow:0 1px 8px 0 rgba(0,0,0,0.08);">
+          <span style="font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;letter-spacing:-0.01em;color:#1A1A1A;">Wayshare</span>
+          <div style="display:flex;align-items:center;gap:28px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#1A1A1A;">Explore trips</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#1A1A1A;text-decoration:underline;text-underline-offset:3px;">Share your trip</span>
+            <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;border:1px solid #D1D5DB;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: BookButton -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#333;padding-bottom:8px;border-bottom:1px solid #E0E0E0;margin-bottom:16px;">BookButton</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Default</div>
+        <button style="width:220px;height:52px;background-color:#1A1A1A;color:#FFFFFF;border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border:none;cursor:pointer;">Book this trip</button>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Hover</div>
+        <button style="width:220px;height:52px;background-color:#374151;color:#FFFFFF;border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border:none;cursor:pointer;">Book this trip</button>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Confirmed</div>
+        <button style="width:220px;height:52px;background-color:#059669;color:#FFFFFF;border-radius:9999px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;border:none;cursor:pointer;">Booking confirmed ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: DayCircle -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#333;padding-bottom:8px;border-bottom:1px solid #E0E0E0;margin-bottom:16px;">DayCircle</div>
+    <div style="display:flex;gap:24px;align-items:center;">
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Filled (Day 1)</div>
+        <div style="width:28px;height:28px;border-radius:9999px;background-color:#1A1A1A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;">1</div>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Collapsed (+7)</div>
+        <div style="width:28px;height:28px;border-radius:9999px;background-color:#F3F4F6;border:1px solid #E5E7EB;display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#9CA3AF;">+7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: CollapsedDaysRow -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#333;padding-bottom:8px;border-bottom:1px solid #E0E0E0;margin-bottom:16px;">CollapsedDaysRow</div>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:600px;">
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Default</div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid #E5E7EB;cursor:pointer;background-color:#FAFAFA;">
+          <div style="width:28px;height:28px;border-radius:9999px;background-color:#F3F4F6;border:1px solid #E5E7EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#9CA3AF;">+7</span>
+          </div>
+          <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#374151;">7 more days — Osaka, Hiroshima, Nara &amp; the final night in Tokyo</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;margin-left:auto;">Expand →</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Hover</div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid #1A1A1A;cursor:pointer;background-color:#FAFAFA;">
+          <div style="width:28px;height:28px;border-radius:9999px;background-color:#F3F4F6;border:1px solid #E5E7EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:#9CA3AF;">+7</span>
+          </div>
+          <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;color:#374151;">7 more days — Osaka, Hiroshima, Nara &amp; the final night in Tokyo</span>
+          <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#9CA3AF;margin-left:auto;">Expand →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Page Layout Snapshots -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#333;padding-bottom:8px;border-bottom:1px solid #E0E0E0;margin-bottom:24px;">Full Page Layout Snapshots</div>
+    <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+
+      <!-- Browse snapshot -->
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:12px;letter-spacing:0.04em;text-transform:uppercase;">Full Page — Browse</div>
+        <div style="width:232px;height:280px;overflow:hidden;border:1px solid #D0D0D0;">
+          <div style="transform:scale(0.4);transform-origin:top left;width:580px;">
+            <!-- Mini Browse Nav -->
+            <div style="background-color:#FFFFFF;border-bottom:1px solid #E5E7EB;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;letter-spacing:-0.01em;color:#1A1A1A;">Wayshare</span>
+              <div style="display:flex;align-items:center;gap:20px;">
+                <span style="font-family:'DM Sans',sans-serif;font-size:14px;color:#1A1A1A;">Explore trips</span>
+                <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;"></div>
+              </div>
+            </div>
+            <!-- Mini Hero -->
+            <div style="background-color:#FFFFFF;padding:60px 48px 48px;text-align:center;">
+              <div style="font-family:'Playfair Display',serif;font-size:56px;font-weight:300;line-height:1.0;letter-spacing:-0.02em;color:#1A1A1A;margin-bottom:4px;">Real trips.</div>
+              <div style="font-family:'Playfair Display',serif;font-size:56px;font-weight:300;line-height:1.0;letter-spacing:-0.02em;color:#9CA3AF;margin-bottom:20px;">Taken by real people.</div>
+              <p style="font-family:'DM Sans',sans-serif;font-size:16px;color:#374151;max-width:400px;margin:0 auto 28px;line-height:1.6;">Browse itineraries built from actual camera rolls and travel memories.</p>
+              <div style="max-width:480px;margin:0 auto;display:flex;align-items:stretch;border:1px solid #E5E7EB;border-radius:9999px;overflow:hidden;background-color:#FFFFFF;height:48px;">
+                <div style="flex:1;border-right:1px solid #E5E7EB;"></div>
+                <div style="flex:1;border-right:1px solid #E5E7EB;"></div>
+                <div style="flex:1;"></div>
+                <div style="padding:0 20px;background-color:#1A1A1A;display:flex;align-items:center;">
+                  <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:#FFFFFF;">Search →</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail snapshot -->
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:#999;margin-bottom:12px;letter-spacing:0.04em;text-transform:uppercase;">Full Page — Detail</div>
+        <div style="width:232px;height:280px;overflow:hidden;border:1px solid #D0D0D0;">
+          <div style="transform:scale(0.4);transform-origin:top left;width:580px;">
+            <!-- Mini Detail Nav -->
+            <div style="background-color:#FFFFFF;border-bottom:1px solid #E5E7EB;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;letter-spacing:-0.01em;color:#1A1A1A;">Wayshare</span>
+              <div style="display:flex;align-items:center;gap:20px;">
+                <span style="font-family:'DM Sans',sans-serif;font-size:14px;color:#1A1A1A;">Explore trips</span>
+                <div style="width:32px;height:32px;border-radius:9999px;background-color:#E5E7EB;"></div>
+              </div>
+            </div>
+            <!-- Mini Detail Hero -->
+            <div style="position:relative;height:320px;display:flex;align-items:flex-end;">
+              <div style="position:absolute;inset:0;background:linear-gradient(160deg,#0F1B35 0%,#1B3A6B 55%,#243B5A 100%);"></div>
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.1) 60%,transparent 100%);"></div>
+              <div style="position:relative;z-index:2;padding:0 48px 32px;">
+                <div style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:8px;">Japan · September 2025</div>
+                <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:300;color:#FFFFFF;margin-bottom:10px;line-height:1.1;">10 Days in Japan: Tokyo, Kyoto &amp; Osaka</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.8);">★ 4.9 · 14 bookings · by Sarah M.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /figma-gallery -->
+
+<script>
+const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
+
+if (FIGMA_MODE) {
+  document.getElementById('prototype-root').style.display = 'none';
+  document.getElementById('figma-gallery').style.display = 'flex';
+} else {
+  document.getElementById('figma-gallery').style.display = 'none';
+  initPrototype();
+}
+
+function initPrototype() {
+  showScreen('browse');
+
+  const hero = document.getElementById('hero-section');
+  const navBrowse = document.getElementById('nav-browse');
+  if (hero && navBrowse) {
+    const obs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) {
+        navBrowse.classList.add('nav-scrolled');
+      } else {
+        navBrowse.classList.remove('nav-scrolled');
+      }
+    }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+    obs.observe(hero);
+  }
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('[data-screen]').forEach(s => {
+    s.style.display = 'none';
+  });
+  const target = document.getElementById('screen-' + screenId);
+  if (target) {
+    target.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+}
+
+function expandDays() {
+  const collapsed = document.getElementById('days-collapsed-row');
+  const extra = document.getElementById('days-extra');
+  if (collapsed) collapsed.style.display = 'none';
+  if (extra) extra.style.display = 'block';
+}
+
+function bookTrip() {
+  const btn = document.getElementById('book-btn');
+  if (btn) {
+    btn.style.backgroundColor = '#059669';
+    btn.textContent = 'Booking confirmed ✓';
+    btn.onclick = null;
+  }
+}
+</script>
+
+</body>
+</html>

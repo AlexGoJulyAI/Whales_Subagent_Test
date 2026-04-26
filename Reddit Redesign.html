@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reddit – r/ClaudeAI Redesign</title>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #DAE0E6;
+      color: #1c1c1c;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c5c5c5; border-radius: 3px; }
+    input[type="radio"], input[type="checkbox"] { accent-color: #FF4500; cursor: pointer; }
+    button { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .nav-item:hover { background: #DAE0E6 !important; }
+    .action-btn:hover { background: #DAE0E6 !important; }
+    .post-action:hover { background: #DAE0E6 !important; }
+    .link-text:hover { text-decoration: underline; cursor: pointer; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const C = {
+  orange: '#FF4500',
+  orangeHover: '#E03D00',
+  orangeLight: '#FFF4F0',
+  blue: '#0079D3',
+  blueLight: '#E8F0FE',
+  navyJoin: '#0045AC',
+  bg: '#DAE0E6',
+  card: '#FFFFFF',
+  border: '#EDEFF1',
+  textPrimary: '#1c1c1c',
+  textSecondary: '#878A8C',
+  green: '#46d160',
+};
+
+// ── Icons ────────────────────────────────────────────────────────────────────
+
+const SnooIcon = () => (
+  <svg viewBox="0 0 20 20" width="32" height="32">
+    <circle cx="10" cy="10" r="10" fill="#FF4500"/>
+    <path d="M16.67 10a1.46 1.46 0 00-2.47-1 7.12 7.12 0 00-3.85-1.23l.65-3.08 2.13.45a1 1 0 101-1 1 1 0 00-.96.68l-2.38-.5a.27.27 0 00-.32.2l-.73 3.44a7.14 7.14 0 00-3.82 1.23 1.46 1.46 0 10-1.61 2.39 2.87 2.87 0 000 .44c0 2.24 2.61 4.06 5.83 4.06s5.83-1.82 5.83-4.06a2.87 2.87 0 000-.44 1.46 1.46 0 00.61-1.58zM7.27 11a1 1 0 111 1 1 1 0 01-1-1zm5.6 2.71a3.58 3.58 0 01-2.85.79 3.58 3.58 0 01-2.85-.79.27.27 0 01.38-.38 3.27 3.27 0 002.47.68 3.27 3.27 0 002.47-.68.27.27 0 01.38.38zm-.22-1.71a1 1 0 111-1 1 1 0 01-1 1z" fill="white"/>
+  </svg>
+);
+
+const GithubIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#1c1c1c">
+    <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+  </svg>
+);
+
+// ── TopBar ───────────────────────────────────────────────────────────────────
+
+function TopBar() {
+  return (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+      background: '#fff', borderBottom: `1px solid ${C.border}`,
+      height: 48, display: 'flex', alignItems: 'center',
+      padding: '0 20px', gap: 16,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+        <SnooIcon />
+        <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: -0.5 }}>reddit</span>
+      </div>
+
+      <div style={{
+        flex: 1, maxWidth: 680, background: C.bg, border: `1px solid ${C.border}`,
+        borderRadius: 20, height: 36, display: 'flex', alignItems: 'center',
+        gap: 8, padding: '0 14px',
+      }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.textSecondary} strokeWidth="2.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <div style={{
+          background: '#FFF0EB', border: `1px solid #FFCEBE`,
+          borderRadius: 10, padding: '2px 8px', fontSize: 12,
+          display: 'flex', alignItems: 'center', gap: 5,
+        }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF4500' }} />
+          <span style={{ fontWeight: 700, color: '#CC3700' }}>r/ClaudeAI</span>
+          <span style={{ color: C.textSecondary, cursor: 'pointer' }}>×</span>
+        </div>
+        <span style={{ color: C.textSecondary, fontSize: 13 }}>Search in r/ClaudeAI</span>
+      </div>
+
+      <div style={{ flex: 1 }} />
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        {[
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.textSecondary} strokeWidth="2"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M8 2v4M16 2v4M2 10h20"/><path d="M6 14h4M14 14h4M6 18h4M14 18h4"/></svg>,
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.textSecondary} strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+        ].map((icon, i) => (
+          <div key={i} className="action-btn" style={{
+            width: 32, height: 32, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', cursor: 'pointer', borderRadius: 4,
+          }}>{icon}</div>
+        ))}
+        <button style={{
+          display: 'flex', alignItems: 'center', gap: 6, padding: '6px 16px',
+          border: `1px solid ${C.border}`, borderRadius: 20, background: 'transparent',
+          fontWeight: 700, fontSize: 14, cursor: 'pointer', color: C.textPrimary,
+        }}>
+          <span style={{ fontSize: 18, lineHeight: 1 }}>+</span> Create
+        </button>
+        <div className="action-btn" style={{
+          width: 32, height: 32, display: 'flex', alignItems: 'center',
+          justifyContent: 'center', cursor: 'pointer', borderRadius: 4,
+        }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.textSecondary} strokeWidth="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+        <div style={{
+          width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
+          background: 'linear-gradient(135deg, #FF6314 0%, #FF0000 100%)',
+        }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Left Sidebar ─────────────────────────────────────────────────────────────
+
+function NavItem({ icon, label, active, sub = false }) {
+  return (
+    <div className="nav-item" style={{
+      display: 'flex', alignItems: 'center', gap: 10,
+      padding: `7px ${sub ? '24px' : '12px'}`,
+      cursor: 'pointer', borderRadius: 4,
+      background: active ? C.orangeLight : 'transparent',
+      color: active ? C.orange : C.textPrimary,
+      fontWeight: active ? 700 : 400,
+      fontSize: 14, transition: 'background 0.1s',
+    }}>
+      <span style={{ fontSize: 15, width: 18, textAlign: 'center', flexShrink: 0 }}>{icon}</span>
+      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
+    </div>
+  );
+}
+
+function Divider() {
+  return <div style={{ height: 1, background: C.border, margin: '6px 0' }} />;
+}
+
+function SectionLabel({ text }) {
+  return (
+    <div style={{
+      padding: '10px 12px 4px', fontSize: 10, fontWeight: 700,
+      letterSpacing: 1, color: C.textSecondary, textTransform: 'uppercase',
+    }}>{text}</div>
+  );
+}
+
+function LeftSidebar({ showGames }) {
+  return (
+    <div style={{
+      width: 270, flexShrink: 0, position: 'fixed',
+      top: 48, left: 0, bottom: 0,
+      overflowY: 'auto', padding: '8px',
+      background: '#fff', borderRight: `1px solid ${C.border}`,
+    }}>
+      <NavItem icon="🏠" label="Home" />
+      <NavItem icon="🔥" label="Popular" />
+      <NavItem icon="📰" label="News" />
+      <NavItem icon="🔍" label="Explore" />
+      <NavItem icon="＋" label="Start a community" />
+
+      {showGames && (
+        <>
+          <Divider />
+          <SectionLabel text="Games on Reddit" />
+          <NavItem icon="👆" label="Tap Me +1" sub />
+          <NavItem icon="🃏" label="Elevens – Card Game" sub />
+          <NavItem icon="🎂" label="Piece of Cake: Merge..." sub />
+          <NavItem icon="⚔️" label="Sword & Supper" sub />
+          <NavItem icon="🎮" label="Discover More" sub />
+        </>
+      )}
+
+      <Divider />
+      <SectionLabel text="Custom Feeds" />
+      <NavItem icon="＋" label="Create Custom Feed" sub />
+
+      <Divider />
+      <SectionLabel text="Communities" />
+      <NavItem icon="🛠️" label="Manage Communities" sub />
+      <NavItem icon="✳️" label="r/alphaandbetau..." active sub />
+
+      <Divider />
+      <SectionLabel text="Resources" />
+      <NavItem icon="📋" label="About Reddit" sub />
+      <NavItem icon="📢" label="Advertise" sub />
+      {showGames && <NavItem icon="🔧" label="Developer Platform" sub />}
+      <NavItem icon="❓" label="Help" sub />
+      <NavItem icon="📝" label="Blog" sub />
+      {showGames && <NavItem icon="💼" label="Careers" sub />}
+      {showGames && <NavItem icon="📰" label="Press" sub />}
+      <NavItem icon="⭐" label="Best of Reddit" sub />
+
+      <Divider />
+      <div style={{ padding: '8px 12px 4px', fontSize: 11, color: C.textSecondary, lineHeight: 1.8 }}>
+        Reddit Rules · Privacy Policy · User Agreement · Your Privacy Choices · Accessibility
+      </div>
+      <div style={{ padding: '2px 12px 16px', fontSize: 11, color: C.textSecondary }}>
+        Reddit, Inc. © 2026. All rights reserved.
+      </div>
+    </div>
+  );
+}
+
+// ── Post Content ─────────────────────────────────────────────────────────────
+
+function GitHubPreview() {
+  return (
+    <div style={{
+      border: `1px solid ${C.border}`, borderRadius: 4,
+      overflow: 'hidden', margin: '12px 0',
+    }}>
+      <div style={{ padding: '16px 16px 12px', background: '#fff' }}>
+        <div style={{ fontSize: 13, color: C.textSecondary, marginBottom: 2 }}>yusufkaraaslan /</div>
+        <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 10, lineHeight: 1.2 }}>lazy-bird</div>
+        <div style={{ fontSize: 13, color: C.textSecondary, marginBottom: 14, lineHeight: 1.5 }}>
+          Universal development automation for ANY project. Claude Code implements features, runs tests,
+          creates PRs autonomously. 15+ framework presets or custom...
+        </div>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+          {[['👥','2','Contributors'],['⭕','2','Issues'],['💬','2','Discussions'],['⭐','2','Stars'],['🍴','0','Forks']].map(([icon,n,label]) => (
+            <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+              <span style={{ fontSize: 12 }}>{icon} {n}</span>
+              <span style={{ fontSize: 10, color: C.textSecondary }}>{label}</span>
+            </div>
+          ))}
+          <div style={{ marginLeft: 'auto' }}><GithubIcon /></div>
+        </div>
+      </div>
+      <div style={{
+        padding: '8px 16px', background: C.bg, borderTop: `1px solid ${C.border}`,
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      }}>
+        <span style={{ fontSize: 12, color: C.textSecondary }}>github.com</span>
+        <button style={{
+          padding: '4px 16px', border: `1px solid ${C.border}`,
+          borderRadius: 20, background: '#fff', cursor: 'pointer',
+          fontSize: 12, fontWeight: 600,
+        }}>Open</button>
+      </div>
+    </div>
+  );
+}
+
+function PostContent() {
+  const [upvoted, setUpvoted] = useState(false);
+  const [downvoted, setDownvoted] = useState(false);
+  const score = 847 + (upvoted ? 1 : 0) - (downvoted ? 1 : 0);
+
+  return (
+    <div style={{
+      background: '#fff', borderRadius: 4,
+      border: `1px solid ${C.border}`, overflow: 'hidden',
+    }}>
+      <div style={{ display: 'flex' }}>
+        {/* Vote rail */}
+        <div style={{
+          width: 40, flexShrink: 0, background: '#F8F9FA',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          padding: '10px 0', gap: 4,
+        }}>
+          <div onClick={() => { setUpvoted(!upvoted); setDownvoted(false); }} style={{
+            cursor: 'pointer', fontSize: 18, lineHeight: 1,
+            color: upvoted ? C.orange : C.textSecondary,
+          }}>▲</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: upvoted ? C.orange : downvoted ? '#7193FF' : C.textPrimary }}>
+            {score}
+          </div>
+          <div onClick={() => { setDownvoted(!downvoted); setUpvoted(false); }} style={{
+            cursor: 'pointer', fontSize: 18, lineHeight: 1,
+            color: downvoted ? '#7193FF' : C.textSecondary,
+          }}>▼</div>
+        </div>
+
+        {/* Content */}
+        <div style={{ flex: 1, padding: '10px 16px 10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: C.textSecondary, marginBottom: 8 }}>
+            <div style={{ width: 20, height: 20, borderRadius: '50%', background: 'linear-gradient(135deg, #FF4500, #FF8717)', flexShrink: 0 }} />
+            <span style={{ fontWeight: 700, color: C.textPrimary }}>r/ClaudeAI</span>
+            <span>•</span>
+            <span>5mo ago</span>
+            <span>•</span>
+            <span>Critical-Pea-8782</span>
+            <div style={{
+              background: '#FADADD', color: '#5f2130',
+              padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 600, marginLeft: 4,
+            }}>Coding</div>
+          </div>
+
+          <div style={{ fontSize: 18, fontWeight: 700, lineHeight: 1.3, marginBottom: 12 }}>
+            Built an automation system that lets Claude Code work on my projects while I'm at my day job - Lazy Bird v1.0
+          </div>
+
+          <GitHubPreview />
+
+          <div style={{ fontSize: 14, lineHeight: 1.7, color: C.textPrimary }}>
+            <p style={{ marginBottom: 10 }}>
+              Like many of you, I'm a developer with a day job who dreams of working on personal projects (game dev with Godot).
+              The problem? By the time I get home, I'm exhausted and have maybe 2-3 hours of productive coding left in me.
+            </p>
+            <p style={{ marginBottom: 6 }}>I tried several approaches:</p>
+            <ul style={{ paddingLeft: 20, marginBottom: 10 }}>
+              <li style={{ marginBottom: 4 }}><strong>Task queues</strong> – Still required me to be at the computer</li>
+              <li><strong>Claude Code web version</strong> – This was frustrating. It gives results somewhere between Claude.ai chat and actual Claude Code CLI, often deletes my tests, and doesn't understand proper implementation patterns</li>
+            </ul>
+            <p style={{ marginBottom: 10 }}>
+              So I built <strong>Lazy Bird</strong> – a progressive automation system that lets Claude Code CLI work autonomously on development tasks while I'm at work.
+            </p>
+            <p>
+              <strong>How it works:</strong> I create GitHub issues in the morning with detailed steps, the system picks them up,
+              runs Claude Code in isolated git worktrees, executes tests, and creates PRs if everything passes.
+              I review PRs during lunch on my phone, merge in the evening.
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', gap: 2, marginTop: 12, marginLeft: -8 }}>
+            {[['💬','47 Comments'],['🔗','Share'],['🔖','Save'],['•••','More']].map(([icon, label]) => (
+              <button key={label} className="post-action" style={{
+                display: 'flex', alignItems: 'center', gap: 5,
+                padding: '6px 8px', border: 'none', background: 'transparent',
+                borderRadius: 2, cursor: 'pointer', fontSize: 12,
+                fontWeight: 700, color: C.textSecondary, transition: 'background 0.1s',
+              }}>
+                <span>{icon}</span> {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Right Sidebar — Redesigned ────────────────────────────────────────────────
+
+const RELATED_POSTS = [
+  { title: "Claude Code just solved my hardest bug in 3 minutes", votes: '1.2k', time: '2h' },
+  { title: "Using Claude Code for game dev — my workflow after 3 months", votes: '847', time: '6h' },
+  { title: "Anyone else's Claude Code getting better at writing tests?", votes: '634', time: '12h' },
+];
+
+function CommunityPanelNew({ contextModule }) {
+  const [descExpanded, setDescExpanded] = useState(false);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [joined, setJoined] = useState(false);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      <div style={{
+        background: '#fff', border: `1px solid ${C.border}`,
+        borderRadius: 4, overflow: 'hidden',
+      }}>
+        {/* Banner */}
+        <div style={{ height: 60, background: 'linear-gradient(135deg, #FF6314 0%, #FF0000 100%)' }} />
+
+        <div style={{ padding: '0 16px 16px', position: 'relative' }}>
+          {/* Community avatar */}
+          <div style={{
+            width: 50, height: 50, borderRadius: '50%',
+            background: '#FF4500', border: '4px solid #fff',
+            position: 'absolute', top: -25, left: 16,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 20,
+          }}>✳️</div>
+
+          <div style={{ paddingTop: 34 }}>
+            {/* Name row */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 2 }}>r/ClaudeAI</div>
+                <div style={{ fontSize: 12, color: C.textSecondary }}>
+                  <span style={{ fontWeight: 700, color: C.textPrimary }}>2.5M</span> members
+                  <span style={{ margin: '0 5px', color: C.green }}>●</span>
+                  <span style={{ fontWeight: 700, color: C.textPrimary }}>847</span> online
+                </div>
+              </div>
+              <button
+                onClick={() => setJoined(!joined)}
+                style={{
+                  padding: '6px 18px', borderRadius: 20, cursor: 'pointer',
+                  background: joined ? '#fff' : C.navyJoin,
+                  color: joined ? C.textPrimary : '#fff',
+                  border: joined ? `1px solid ${C.border}` : 'none',
+                  fontWeight: 700, fontSize: 14, flexShrink: 0,
+                  transition: 'all 0.15s',
+                }}
+              >{joined ? 'Joined ✓' : 'Join'}</button>
+            </div>
+
+            {/* Description with progressive disclosure */}
+            <div style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.5, marginBottom: 2 }}>
+              {descExpanded
+                ? 'This is a Claude and Claude Code discussion subreddit to help you make a fully informed decision about using Claude — and to share tips, workflows, and automation patterns with the community.'
+                : 'This is a Claude and Claude Code discussion subreddit to help you make a fully informed decision about using Claud'}
+              {!descExpanded && <span>...</span>}
+              <span
+                onClick={() => setDescExpanded(!descExpanded)}
+                style={{ color: C.blue, cursor: 'pointer', fontWeight: 600, marginLeft: 4 }}
+              >
+                {descExpanded ? 'Show less' : 'Show more'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Contextual module */}
+        <div style={{ borderTop: `1px solid ${C.border}`, padding: 16 }}>
+          {contextModule === 'related' ? (
+            <>
+              <div style={{
+                fontSize: 10, fontWeight: 700, letterSpacing: 1,
+                color: C.textSecondary, textTransform: 'uppercase', marginBottom: 12,
+              }}>Related posts in r/ClaudeAI</div>
+              {RELATED_POSTS.map((post, i) => (
+                <div key={i} style={{
+                  marginBottom: i < RELATED_POSTS.length - 1 ? 12 : 0,
+                  paddingBottom: i < RELATED_POSTS.length - 1 ? 12 : 0,
+                  borderBottom: i < RELATED_POSTS.length - 1 ? `1px solid ${C.border}` : 'none',
+                }}>
+                  <div className="link-text" style={{ fontSize: 13, color: C.blue, lineHeight: 1.4, marginBottom: 3 }}>
+                    {post.title}
+                  </div>
+                  <div style={{ fontSize: 11, color: C.textSecondary }}>
+                    ▲ {post.votes} · {post.time} ago
+                  </div>
+                </div>
+              ))}
+              <div className="link-text" style={{ fontSize: 13, color: C.blue, fontWeight: 700, marginTop: 12 }}>
+                View all →
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{
+                fontSize: 10, fontWeight: 700, letterSpacing: 1,
+                color: C.textSecondary, textTransform: 'uppercase', marginBottom: 12,
+              }}>Top Community Rule</div>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <div style={{
+                  width: 22, height: 22, borderRadius: '50%',
+                  background: C.orange, color: '#fff',
+                  fontSize: 11, fontWeight: 800,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>1</div>
+                <div style={{ fontSize: 13, lineHeight: 1.5 }}>
+                  Be respectful — no personal attacks or hate speech toward other users or groups.
+                </div>
+              </div>
+              <div className="link-text" style={{ fontSize: 13, color: C.blue, fontWeight: 700, marginTop: 12 }}>
+                View all rules →
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Progressive disclosure: expand to full details */}
+        <div
+          onClick={() => setDetailsExpanded(!detailsExpanded)}
+          style={{
+            borderTop: `1px solid ${C.border}`, padding: '10px 16px',
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            cursor: 'pointer', fontSize: 13, color: C.textSecondary,
+            background: '#FAFAFA',
+          }}
+        >
+          <span>Community details</span>
+          <span style={{ transition: 'transform 0.2s', display: 'inline-block', transform: detailsExpanded ? 'rotate(180deg)' : 'none' }}>▾</span>
+        </div>
+
+        {detailsExpanded && (
+          <div style={{ borderTop: `1px solid ${C.border}`, padding: '12px 16px' }}>
+            <div style={{ display: 'flex', gap: 0, marginBottom: 12 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>Jan 23, 2023</div>
+                <div style={{ fontSize: 11, color: C.textSecondary }}>Created</div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>Public</div>
+                <div style={{ fontSize: 11, color: C.textSecondary }}>Community type</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 0, marginBottom: 16 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>2.5M</div>
+                <div style={{ fontSize: 11, color: C.textSecondary }}>Weekly visitors</div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>32K</div>
+                <div style={{ fontSize: 11, color: C.textSecondary }}>Weekly contributions</div>
+              </div>
+            </div>
+
+            <button style={{
+              width: '100%', padding: '8px', borderRadius: 20,
+              background: C.blue, color: '#fff', border: 'none',
+              fontWeight: 700, cursor: 'pointer', fontSize: 14, marginBottom: 16,
+            }}>Create Post</button>
+
+            <div style={{ fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.8, color: C.textSecondary, marginBottom: 8 }}>Community Resources</div>
+            {['Community Guide', 'ClaudeLog.com (Has ads)', 'Weekly Survival Guide'].map(r => (
+              <div key={r} className="link-text" style={{ padding: '5px 0', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.blue }}>{r}</div>
+            ))}
+
+            <div style={{ fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.8, color: C.textSecondary, margin: '14px 0 8px' }}>Official Claude Resources</div>
+            {['How to Get Support', 'Official Claude Discord', 'Official Claude Meetups', 'Anthropic Newsletter'].map(r => (
+              <div key={r} className="link-text" style={{ padding: '5px 0', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.blue }}>{r}</div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Right Sidebar — Original ──────────────────────────────────────────────────
+
+function RightSidebarOriginal() {
+  const [joined, setJoined] = useState(false);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ background: '#fff', border: `1px solid ${C.border}`, borderRadius: 4, overflow: 'hidden' }}>
+        <div style={{ height: 60, background: 'linear-gradient(135deg, #FF6314, #FF0000)' }} />
+        <div style={{ padding: 12 }}>
+          <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>r/ClaudeAI ❤️</div>
+          <div style={{ fontSize: 12, color: C.textSecondary, marginBottom: 10, lineHeight: 1.5 }}>
+            This is a Claude and Claude Code discussion subreddit to help you make a fully informed decision about using Claud...
+          </div>
+          <div style={{ display: 'flex', marginBottom: 12 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700 }}>Jan 23, 2023</div>
+              <div style={{ fontSize: 11, color: C.textSecondary }}>Created</div>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700 }}>Public</div>
+              <div style={{ fontSize: 11, color: C.textSecondary }}>Community type</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', marginBottom: 12 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700 }}>2.5M</div>
+              <div style={{ fontSize: 11, color: C.textSecondary }}>Weekly visitors</div>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700 }}>32K</div>
+              <div style={{ fontSize: 11, color: C.textSecondary }}>Weekly contributions</div>
+            </div>
+          </div>
+          <button
+            onClick={() => setJoined(!joined)}
+            style={{
+              width: '100%', padding: '8px', borderRadius: 20,
+              background: joined ? '#fff' : C.navyJoin, color: joined ? C.textPrimary : '#fff',
+              border: joined ? `1px solid ${C.border}` : 'none',
+              fontWeight: 700, cursor: 'pointer', fontSize: 14,
+            }}
+          >{joined ? 'Joined ✓' : 'Join'}</button>
+        </div>
+      </div>
+
+      <div style={{ background: '#fff', border: `1px solid ${C.border}`, borderRadius: 4, padding: 12 }}>
+        <div style={{ fontWeight: 700, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8, color: C.textSecondary }}>USER FLAIR</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 24, height: 24, borderRadius: '50%', background: C.bg }} />
+          <span style={{ fontSize: 13 }}>Background_Dot611</span>
+        </div>
+      </div>
+
+      <div style={{ background: '#fff', border: `1px solid ${C.border}`, borderRadius: 4, padding: 12 }}>
+        <div style={{ fontWeight: 700, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8, color: C.textSecondary }}>COMMUNITY RESOURCES</div>
+        {['Community Guide', 'ClaudeLog.com (Has ads)', 'Weekly Survival Guide'].map(r => (
+          <div key={r} style={{ padding: '7px 0', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.blue, cursor: 'pointer' }}>{r}</div>
+        ))}
+      </div>
+
+      <div style={{ background: '#fff', border: `1px solid ${C.border}`, borderRadius: 4, padding: 12 }}>
+        <div style={{ fontWeight: 700, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8, color: C.textSecondary }}>OFFICIAL CLAUDE RESOURCES</div>
+        {['How to Get Support', 'Official Claude Discord', 'Official Claude Meetups', 'Anthropic Newsletter'].map(r => (
+          <div key={r} style={{ padding: '7px 0', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.blue, cursor: 'pointer' }}>{r}</div>
+        ))}
+      </div>
+
+      <div style={{ background: '#fff', border: `1px solid ${C.border}`, borderRadius: 4, padding: 12 }}>
+        <div style={{ fontWeight: 700, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8, color: C.textSecondary }}>r/CLAUDEAI RULES</div>
+        <div style={{ fontSize: 13 }}>1 — Be respectful</div>
+      </div>
+    </div>
+  );
+}
+
+// ── Tweaks Panel ──────────────────────────────────────────────────────────────
+
+function TweaksPanel({ tweaks, onChange }) {
+  return (
+    <div style={{
+      position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
+      background: '#fff', border: `1px solid ${C.border}`,
+      borderRadius: 12, padding: 20, width: 268,
+      boxShadow: '0 8px 32px rgba(0,0,0,0.14)',
+    }}>
+      <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 18 }}>Tweaks</div>
+
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.8, color: C.textSecondary, marginBottom: 8 }}>
+          Right Sidebar
+        </div>
+        {[['redesigned', 'Redesigned — progressive disclosure'], ['original', 'Original — always-visible stack']].map(([val, label]) => (
+          <label key={val} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, cursor: 'pointer', fontSize: 13 }}>
+            <input type="radio" name="sidebar" checked={tweaks.sidebar === val} onChange={() => onChange({ ...tweaks, sidebar: val })} />
+            {label}
+          </label>
+        ))}
+      </div>
+
+      {tweaks.sidebar === 'redesigned' && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.8, color: C.textSecondary, marginBottom: 8 }}>
+            Contextual Module
+          </div>
+          {[['related', 'Related posts'], ['rule', 'Top community rule']].map(([val, label]) => (
+            <label key={val} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, cursor: 'pointer', fontSize: 13 }}>
+              <input type="radio" name="ctx" checked={tweaks.contextModule === val} onChange={() => onChange({ ...tweaks, contextModule: val })} />
+              {label}
+            </label>
+          ))}
+        </div>
+      )}
+
+      <div>
+        <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.8, color: C.textSecondary, marginBottom: 8 }}>
+          Left Sidebar
+        </div>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13 }}>
+          <input type="checkbox" checked={tweaks.showGames} onChange={e => onChange({ ...tweaks, showGames: e.target.checked })} />
+          Show "Games on Reddit" promo
+        </label>
+      </div>
+    </div>
+  );
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+
+const TWEAK_DEFAULS = /*EDITMODE-BEGIN*/{
+  "sidebar": "redesigned",
+  "contextModule": "related",
+  "showGames": false
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULS);
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener('message', e => {
+      if (e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  }, []);
+
+  const handleTweakChange = (next) => {
+    setTweaks(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
+  };
+
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <TopBar />
+      <div style={{ marginTop: 48, display: 'flex', maxWidth: 1280, margin: '48px auto 0' }}>
+        <LeftSidebar showGames={tweaks.showGames} />
+        <div style={{ marginLeft: 270, flex: 1, display: 'flex', gap: 24, padding: 24, minWidth: 0 }}>
+          <div style={{ flex: 1, minWidth: 0, maxWidth: 740 }}>
+            <PostContent />
+          </div>
+          <div style={{ width: 312, flexShrink: 0 }}>
+            {tweaks.sidebar === 'redesigned'
+              ? <CommunityPanelNew contextModule={tweaks.contextModule} />
+              : <RightSidebarOriginal />
+            }
+          </div>
+        </div>
+      </div>
+      {tweaksVisible && <TweaksPanel tweaks={tweaks} onChange={handleTweakChange} />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

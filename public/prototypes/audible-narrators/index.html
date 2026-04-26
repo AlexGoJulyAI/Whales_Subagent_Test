@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audible Narrators — Direction A Prototype</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background-color: #FFFFFF; color: #010E19; }
+  button { cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; }
+  input { font-family: Arial, sans-serif; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Sticky nav */
+  .site-nav { position: sticky; top: 0; z-index: 100; background-color: #FFFFFF; border-bottom: 1px solid rgba(1,14,25,0.15); }
+  .nav-row-1 { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 16px; }
+  .nav-row-2 { display: flex; align-items: center; padding: 0 24px; border-top: 1px solid rgba(1,14,25,0.08); }
+  .nav-tab { position: relative; padding: 12px 16px; font-size: 16px; font-weight: 600; color: #010E19; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; white-space: nowrap; }
+  .nav-tab:hover { color: #1479CF; }
+  .nav-tab.active { color: #1479CF; }
+  .nav-tab.active::after { content: ''; position: absolute; bottom: 0; left: 4px; right: 4px; height: 4px; background-color: #1479CF; border-radius: 4px 4px 0 0; }
+
+  /* Browse dropdown */
+  .nav-container { position: relative; }
+  .browse-dropdown { display: none; position: absolute; top: 100%; left: 0; background-color: #FFFFFF; box-shadow: 0 4px 8px rgba(1,14,25,0.15), 0 8px 24px rgba(1,14,25,0.1), 0 16px 48px rgba(1,14,25,0.05); border-radius: 0 0 8px 8px; z-index: 200; min-width: 640px; padding: 24px; }
+  .browse-dropdown.open { display: flex; gap: 40px; }
+  .browse-col-heading { font-size: 12px; font-weight: 700; color: #4A6687; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .browse-dropdown-link { display: block; font-size: 16px; color: #010E19; padding: 6px 0; cursor: pointer; }
+  .browse-dropdown-link:hover { color: #1479CF; }
+  .browse-dropdown-link.narrators-link { font-weight: 400; }
+
+  /* Search bar */
+  .search-input { width: 100%; height: 48px; border: 2px solid #93ACCD; border-radius: 8px; padding: 0 48px 0 16px; font-size: 16px; color: #010E19; background-color: #FFFFFF; outline: none; }
+  .search-input:focus { outline: 2px solid #1479CF; outline-offset: -1px; border-color: #1479CF; }
+  .search-wrapper { position: relative; max-width: 900px; margin: 0 auto; }
+  .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+
+  /* Filter chips */
+  .chip { display: inline-flex; align-items: center; height: 42px; padding: 8px 16px; border: 2px solid #93ACCD; border-radius: 8px; font-size: 16px; font-weight: 400; color: #010E19; background-color: transparent; cursor: pointer; white-space: nowrap; font-family: Arial, sans-serif; }
+  .chip:hover { border-color: #1479CF; color: #1479CF; }
+  .chip.chip-active { background-color: #1479CF; color: #FFFFFF; border-color: #1479CF; }
+
+  /* Narrator cards */
+  .narrator-card { background-color: #FFFFFF; border: 1px solid #93ACCD; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(1,14,25,0.08); cursor: pointer; }
+  .narrator-card:hover { box-shadow: 0 4px 12px rgba(1,14,25,0.15); border-color: #1479CF; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background-color: rgba(1,14,25,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 24px; }
+  .modal-overlay.open { display: flex; }
+  .modal-panel { background-color: #FFFFFF; border-radius: 8px; padding: 32px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; z-index: 1001; }
+
+  /* CTAs */
+  .cta-primary { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; background-color: #FFA000; border-radius: 32px; font-size: 14px; font-weight: 700; color: #010E19; border: none; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
+  .cta-primary:hover { background-color: #E6900A; }
+  .cta-secondary { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; background-color: transparent; border-radius: 32px; font-size: 14px; font-weight: 600; color: #010E19; border: 2px solid #93ACCD; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
+  .cta-secondary:hover { border-color: #1479CF; color: #1479CF; }
+
+  /* Nav icon links */
+  .nav-link { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #010E19; cursor: pointer; white-space: nowrap; }
+  .nav-link:hover { color: #1479CF; }
+
+  /* Pagination */
+  .page-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #93ACCD; border-radius: 4px; font-size: 14px; color: #010E19; cursor: pointer; background-color: #FFFFFF; font-family: Arial, sans-serif; }
+  .page-btn:hover { border-color: #1479CF; color: #1479CF; }
+  .page-btn.page-active { background-color: #1479CF; color: #FFFFFF; border-color: #1479CF; }
+  .page-btn-text { display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; height: 36px; border: 1px solid #93ACCD; border-radius: 4px; font-size: 14px; color: #010E19; cursor: pointer; background-color: #FFFFFF; font-family: Arial, sans-serif; }
+  .page-btn-text:hover { border-color: #1479CF; color: #1479CF; }
+
+  /* Modal close button */
+  .modal-close-btn { cursor: pointer; }
+
+  /* Figma gallery */
+  #figma-gallery { display: none; flex-direction: column; gap: 48px; padding: 48px; background-color: #F0F4F8; }
+  .figma-section-title { font-size: 20px; font-weight: 700; color: #010E19; margin-bottom: 16px; }
+  .figma-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .figma-label { font-size: 11px; color: #4A6687; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Utility */
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+</style>
+</head>
+<body>
+
+<div id="prototype-root">
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 1: HOME + BROWSE NAV
+  ═══════════════════════════════════════════ -->
+  <section data-screen="home" class="screen active">
+
+    <!-- Sticky Nav -->
+    <nav class="site-nav" id="home-nav">
+      <div class="nav-container" id="home-nav-container">
+        <!-- Row 1 -->
+        <div class="nav-row-1">
+          <!-- Logo -->
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <svg width="108" height="28" viewBox="0 0 108 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Audible">
+              <text x="0" y="22" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#010E19">audible</text>
+              <text x="74" y="22" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#4A6687" letter-spacing="0.5">an amazon company</text>
+            </svg>
+          </div>
+
+          <!-- Search input -->
+          <div style="flex:1;max-width:600px;position:relative;">
+            <input type="text" placeholder="Search titles, authors, narrators" style="width:100%;height:44px;border:2px solid #93ACCD;border-radius:8px;padding:0 44px 0 16px;font-size:16px;color:#010E19;background-color:#FFFFFF;outline:none;" />
+            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8.5" cy="8.5" r="5.5" stroke="#4A6687" stroke-width="2"/>
+                <path d="M13 13L17 17" stroke="#4A6687" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </div>
+
+          <!-- Right nav icons -->
+          <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
+            <span class="nav-link">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="7" r="4" stroke="#010E19" stroke-width="1.5"/><path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#010E19" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Sign In
+            </span>
+            <span class="nav-link">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 4h12" stroke="#010E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="18.5" r="1.5" fill="#010E19"/><circle cx="17" cy="18.5" r="1.5" fill="#010E19"/></svg>
+              Cart
+            </span>
+          </div>
+        </div>
+
+        <!-- Row 2: Nav tabs + Browse dropdown -->
+        <div class="nav-row-2" style="position:relative;">
+          <button class="nav-tab active" id="home-browse-btn" onclick="toggleBrowseHome()">Browse</button>
+          <button class="nav-tab">Library</button>
+          <button class="nav-tab">Wish List</button>
+          <button class="nav-tab">Plans &amp; Pricing</button>
+
+          <!-- Browse mega menu -->
+          <div class="browse-dropdown open" id="home-browse-menu">
+            <div>
+              <div class="browse-col-heading">Get Started</div>
+              <a class="browse-dropdown-link">Audiobooks</a>
+              <a class="browse-dropdown-link">Podcasts</a>
+              <a class="browse-dropdown-link">Audible Originals</a>
+              <a class="browse-dropdown-link">Sleep</a>
+              <a class="browse-dropdown-link">Latino and Hispanic voices</a>
+              <a class="browse-dropdown-link">All categories</a>
+            </div>
+            <div>
+              <div class="browse-col-heading">Popular Lists</div>
+              <a class="browse-dropdown-link">Bestsellers</a>
+              <a class="browse-dropdown-link">Coming Soon</a>
+              <a class="browse-dropdown-link">New Releases</a>
+              <a class="browse-dropdown-link narrators-link" onclick="navigateToNarrators()" style="font-weight:600;color:#1479CF;">Narrators</a>
+              <a class="browse-dropdown-link">Best of #BookTok</a>
+            </div>
+            <div>
+              <div class="browse-col-heading">Explore Audible</div>
+              <a class="browse-dropdown-link">Plus Catalog</a>
+              <a class="browse-dropdown-link">Gifts</a>
+              <a class="browse-dropdown-link">Membership FAQs</a>
+              <a class="browse-dropdown-link">Help Center</a>
+              <a class="browse-dropdown-link">About Audible</a>
+              <a class="browse-dropdown-link">Blog</a>
+              <a class="browse-dropdown-link">Sales &amp; Deals</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Home hero (simplified — focus is Browse dropdown) -->
+    <div style="padding:64px 24px;text-align:center;background-color:#F0F4F8;min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div style="font-size:40px;font-weight:700;color:#010E19;line-height:48px;margin-bottom:16px;">Listen to a great story today.</div>
+      <div style="font-size:18px;color:#061624;margin-bottom:32px;">Get started with a free trial. Cancel anytime.</div>
+      <button class="cta-primary" style="font-size:16px;height:48px;padding:0 32px;">Try Audible free</button>
+      <div style="margin-top:16px;font-size:14px;color:#4A6687;">↑ Click <strong>Browse</strong> above to open the nav menu and see <strong>Narrators</strong></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN 2: NARRATORS PAGE
+  ═══════════════════════════════════════════ -->
+  <section data-screen="narrators" class="screen">
+
+    <!-- Sticky Nav -->
+    <nav class="site-nav" id="narrators-nav">
+      <div class="nav-container" id="narrators-nav-container">
+        <!-- Row 1 -->
+        <div class="nav-row-1">
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <svg width="108" height="28" viewBox="0 0 108 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Audible">
+              <text x="0" y="22" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#010E19">audible</text>
+              <text x="74" y="22" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#4A6687" letter-spacing="0.5">an amazon company</text>
+            </svg>
+          </div>
+          <div style="flex:1;max-width:600px;position:relative;">
+            <input type="text" placeholder="Search titles, authors, narrators" style="width:100%;height:44px;border:2px solid #93ACCD;border-radius:8px;padding:0 44px 0 16px;font-size:16px;color:#010E19;background-color:#FFFFFF;outline:none;" />
+            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="#4A6687" stroke-width="2"/><path d="M13 13L17 17" stroke="#4A6687" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
+            <span class="nav-link">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="#010E19" stroke-width="1.5"/><path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#010E19" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Sign In
+            </span>
+            <span class="nav-link">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 4h12" stroke="#010E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="18.5" r="1.5" fill="#010E19"/><circle cx="17" cy="18.5" r="1.5" fill="#010E19"/></svg>
+              Cart
+            </span>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="nav-row-2" style="position:relative;">
+          <button class="nav-tab" id="narrators-browse-btn" onclick="toggleBrowseNarrators()">Browse</button>
+          <button class="nav-tab">Library</button>
+          <button class="nav-tab">Wish List</button>
+          <button class="nav-tab">Plans &amp; Pricing</button>
+
+          <!-- Browse mega menu on narrators page -->
+          <div class="browse-dropdown" id="narrators-browse-menu">
+            <div>
+              <div class="browse-col-heading">Get Started</div>
+              <a class="browse-dropdown-link">Audiobooks</a>
+              <a class="browse-dropdown-link">Podcasts</a>
+              <a class="browse-dropdown-link">Audible Originals</a>
+              <a class="browse-dropdown-link">Sleep</a>
+              <a class="browse-dropdown-link">Latino and Hispanic voices</a>
+              <a class="browse-dropdown-link">All categories</a>
+            </div>
+            <div>
+              <div class="browse-col-heading">Popular Lists</div>
+              <a class="browse-dropdown-link">Bestsellers</a>
+              <a class="browse-dropdown-link">Coming Soon</a>
+              <a class="browse-dropdown-link">New Releases</a>
+              <a class="browse-dropdown-link narrators-link" style="font-weight:600;color:#1479CF;">Narrators</a>
+              <a class="browse-dropdown-link">Best of #BookTok</a>
+            </div>
+            <div>
+              <div class="browse-col-heading">Explore Audible</div>
+              <a class="browse-dropdown-link">Plus Catalog</a>
+              <a class="browse-dropdown-link">Gifts</a>
+              <a class="browse-dropdown-link">Membership FAQs</a>
+              <a class="browse-dropdown-link">Help Center</a>
+              <a class="browse-dropdown-link">About Audible</a>
+              <a class="browse-dropdown-link">Blog</a>
+              <a class="browse-dropdown-link">Sales &amp; Deals</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page content -->
+    <div style="max-width:1200px;margin:0 auto;padding:40px 24px;">
+
+      <!-- H1 -->
+      <h1 style="text-align:center;font-size:48px;font-weight:700;color:#010E19;line-height:52px;margin-bottom:24px;">Narrators</h1>
+
+      <!-- Search bar -->
+      <div class="search-wrapper" style="margin-bottom:24px;">
+        <input type="text" class="search-input" id="narrator-search" placeholder="Search by narrator name" oninput="filterNarrators(this.value)" />
+        <span class="search-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="#4A6687" stroke-width="2"/>
+            <path d="M13 13L17 17" stroke="#4A6687" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Filter band -->
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:20px;margin-bottom:20px;">
+
+        <!-- Genre -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Genre</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="chip" onclick="toggleChip(this)">Thriller</button>
+            <button class="chip" onclick="toggleChip(this)">Romance</button>
+            <button class="chip" onclick="toggleChip(this)">Self-Help</button>
+            <button class="chip" onclick="toggleChip(this)">Sci-Fi</button>
+            <button class="chip" onclick="toggleChip(this)">Mystery</button>
+            <button class="chip" onclick="toggleChip(this)">Literary Fiction</button>
+            <button class="chip" onclick="toggleChip(this)">Historical Fiction</button>
+          </div>
+        </div>
+
+        <!-- Voice Style -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Voice Style</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="chip" onclick="toggleChip(this)">Dramatic</button>
+            <button class="chip" onclick="toggleChip(this)">Warm</button>
+            <button class="chip" onclick="toggleChip(this)">Character-Rich</button>
+            <button class="chip" onclick="toggleChip(this)">Calm</button>
+            <button class="chip" onclick="toggleChip(this)">Energetic</button>
+          </div>
+        </div>
+
+        <!-- Language -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Language</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="chip" onclick="toggleChip(this)">English</button>
+            <button class="chip" onclick="toggleChip(this)">Spanish</button>
+            <button class="chip" onclick="toggleChip(this)">French</button>
+            <button class="chip" onclick="toggleChip(this)">German</button>
+            <button class="chip" onclick="toggleChip(this)">Japanese</button>
+          </div>
+        </div>
+
+        <!-- Most Listened -->
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Most Listened</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="chip" onclick="toggleChip(this)">Top 100</button>
+            <button class="chip" onclick="toggleChip(this)">This Month</button>
+            <button class="chip" onclick="toggleChip(this)">All Time</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results count -->
+      <div id="results-count" style="font-size:16px;font-weight:400;color:#010E19;padding:12px 0;">1 – 20 of 500 narrators</div>
+
+      <!-- Narrator card grid -->
+      <div id="narrator-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;">
+        <!-- Cards injected by JS -->
+      </div>
+
+      <!-- No results message -->
+      <div id="no-results" style="display:none;text-align:center;padding:48px 0;font-size:16px;color:#4A6687;">No narrators match your search.</div>
+
+      <!-- Pagination -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:24px 0;">
+        <button class="page-btn-text" id="prev-btn" onclick="changePage(currentPage - 1)" style="opacity:0.4;pointer-events:none;">← Prev</button>
+        <button class="page-btn page-active" id="page-1-btn" onclick="changePage(1)">1</button>
+        <button class="page-btn" id="page-2-btn" onclick="changePage(2)">2</button>
+        <span style="font-size:14px;color:#4A6687;padding:0 4px;">…</span>
+        <button class="page-btn" onclick="changePage(25)">25</button>
+        <button class="page-btn-text" id="next-btn" onclick="changePage(currentPage + 1)">Next →</button>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /#prototype-root -->
+
+<!-- ═══════════════════════════════════════════
+     NARRATOR BOOKS MODAL
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="narrator-modal" onclick="handleModalOverlayClick(event)">
+  <div class="modal-panel" id="modal-panel" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
+      <h2 id="modal-narrator-name" style="font-size:24px;font-weight:700;color:#010E19;line-height:32px;"></h2>
+      <button onclick="closeModal()" class="modal-close-btn" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid #93ACCD;background-color:#FFFFFF;flex-shrink:0;margin-left:16px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2L14 14M14 2L2 14" stroke="#010E19" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div id="modal-book-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FIGMA GALLERY (figma=true mode)
+═══════════════════════════════════════════ -->
+<div id="figma-gallery">
+
+  <div>
+    <div class="figma-section-title">Design Tokens (33 total — all url_extracted)</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-text-primary</div>
+        <div style="width:100%;height:32px;background-color:#010E19;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#010E19</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-text-secondary</div>
+        <div style="width:100%;height:32px;background-color:#061624;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#061624</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-text-link</div>
+        <div style="width:100%;height:32px;background-color:#1479CF;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#1479CF</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-background</div>
+        <div style="width:100%;height:32px;background-color:#FFFFFF;border:1px solid #93ACCD;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#FFFFFF</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-cta-primary-bg</div>
+        <div style="width:100%;height:32px;background-color:#FFA000;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#FFA000</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-chip-border</div>
+        <div style="width:100%;height:32px;background-color:#93ACCD;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#93ACCD</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-chip-active-bg</div>
+        <div style="width:100%;height:32px;background-color:#1479CF;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#1479CF</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-chip-active-text</div>
+        <div style="width:100%;height:32px;background-color:#FFFFFF;border:1px solid #1479CF;border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#FFFFFF;background-color:#1479CF;">Aa</div>
+        <div style="font-size:12px;color:#4A6687;">#FFFFFF</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-nav-col-heading</div>
+        <div style="width:100%;height:32px;background-color:#4A6687;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#4A6687</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-separator</div>
+        <div style="width:100%;height:32px;background-color:rgba(1,14,25,0.15);border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">rgba(1,14,25,0.15)</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-secondary-btn-border</div>
+        <div style="width:100%;height:32px;background-color:#93ACCD;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#93ACCD</div>
+      </div>
+
+      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
+        <div class="figma-label">color-nav-active-indicator</div>
+        <div style="width:100%;height:32px;background-color:#1479CF;border-radius:4px;margin-bottom:6px;"></div>
+        <div style="font-size:12px;color:#4A6687;">#1479CF</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="figma-section-title">Typography Tokens</div>
+    <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <div style="font-family:Arial,sans-serif;font-size:48px;font-weight:700;line-height:52px;color:#010E19;">Narrators — font-size-h1 48px/700 lh52</div>
+      <div style="font-family:Arial,sans-serif;font-size:20px;font-weight:700;line-height:26px;color:#010E19;">Book Title — font-size-book-title 20px/700 lh26</div>
+      <div style="font-family:Arial,sans-serif;font-size:16px;font-weight:400;color:#010E19;">Body text — font-size-body 16px/400</div>
+      <div style="font-family:Arial,sans-serif;font-size:16px;font-weight:600;color:#010E19;">Nav button — font-weight-nav-btn 16px/600</div>
+      <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:400;color:#061624;">Metadata — font-size-metadata 13px/400</div>
+      <div style="font-family:Arial,sans-serif;font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;">FILTER LABEL — 12px/700 uppercase ls0.08em</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="figma-section-title">Component States</div>
+    <div class="figma-row">
+
+      <!-- Filter chip states -->
+      <div>
+        <div class="figma-label">Chip — Default</div>
+        <button class="chip">Literary Fiction</button>
+      </div>
+      <div>
+        <div class="figma-label">Chip — Active</div>
+        <button class="chip chip-active">Literary Fiction</button>
+      </div>
+
+      <!-- CTA states -->
+      <div>
+        <div class="figma-label">CTA Primary</div>
+        <button class="cta-primary">Try Standard free</button>
+      </div>
+      <div>
+        <div class="figma-label">CTA Secondary</div>
+        <button class="cta-secondary">Add to cart</button>
+      </div>
+
+      <!-- Nav tab states -->
+      <div>
+        <div class="figma-label">Nav Tab — Default</div>
+        <div style="background-color:#FFFFFF;border-bottom:3px solid transparent;display:inline-block;">
+          <button class="nav-tab" style="position:relative;">Browse</button>
+        </div>
+      </div>
+      <div>
+        <div class="figma-label">Nav Tab — Active</div>
+        <div style="background-color:#FFFFFF;display:inline-block;position:relative;padding-bottom:4px;">
+          <button class="nav-tab active" style="position:relative;">Browse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="figma-section-title">Narrator Card — All States</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;">
+      <!-- Default card -->
+      <div>
+        <div class="figma-label">Default</div>
+        <div class="narrator-card">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="width:64px;height:64px;border-radius:50%;background-color:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4A6687;flex-shrink:0;">SB</div>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:#010E19;margin-bottom:2px;">Scott Brick</div>
+              <div style="font-size:12px;color:#4A6687;">Thriller</div>
+              <div style="font-size:13px;color:#061624;">127 audiobooks</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
+            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
+            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hover simulation -->
+      <div>
+        <div class="figma-label">Hover State</div>
+        <div class="narrator-card" style="box-shadow:0 4px 12px rgba(1,14,25,0.15);border-color:#1479CF;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="width:64px;height:64px;border-radius:50%;background-color:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4A6687;flex-shrink:0;">SB</div>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:#010E19;margin-bottom:2px;">Scott Brick</div>
+              <div style="font-size:12px;color:#4A6687;">Thriller</div>
+              <div style="font-size:13px;color:#061624;">127 audiobooks</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
+            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
+            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Browse dropdown -->
+      <div>
+        <div class="figma-label">Browse Mega Menu</div>
+        <div style="background-color:#FFFFFF;box-shadow:0 4px 8px rgba(1,14,25,0.15),0 8px 24px rgba(1,14,25,0.1),0 16px 48px rgba(1,14,25,0.05);border-radius:8px;padding:20px;display:flex;gap:24px;">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Popular Lists</div>
+            <div style="font-size:14px;color:#010E19;padding:4px 0;">Bestsellers</div>
+            <div style="font-size:14px;color:#010E19;padding:4px 0;">Coming Soon</div>
+            <div style="font-size:14px;font-weight:600;color:#1479CF;padding:4px 0;">Narrators ← new</div>
+            <div style="font-size:14px;color:#010E19;padding:4px 0;">Best of #BookTok</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="figma-section-title">Spacing + Dimension Tokens</div>
+    <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:24px;">
+      <table style="font-size:13px;color:#010E19;border-collapse:collapse;width:100%;">
+        <thead><tr style="border-bottom:1px solid rgba(1,14,25,0.15);">
+          <th style="text-align:left;padding:8px 16px 8px 0;font-weight:700;">Token</th>
+          <th style="text-align:left;padding:8px 16px 8px 0;font-weight:700;">Value</th>
+          <th style="text-align:left;padding:8px 0;font-weight:700;">CSS Property</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-height</td><td style="padding:8px 16px 8px 0;">42px</td><td style="padding:8px 0;">height</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-radius</td><td style="padding:8px 16px 8px 0;">8px</td><td style="padding:8px 0;">border-radius</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-padding</td><td style="padding:8px 16px 8px 0;">8px 16px</td><td style="padding:8px 0;">padding</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-border-width</td><td style="padding:8px 16px 8px 0;">2px</td><td style="padding:8px 0;">border-width</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">cta-primary-radius</td><td style="padding:8px 16px 8px 0;">32px</td><td style="padding:8px 0;">border-radius</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">cta-primary-height</td><td style="padding:8px 16px 8px 0;">42px</td><td style="padding:8px 0;">height</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">cta-secondary-radius</td><td style="padding:8px 16px 8px 0;">32px</td><td style="padding:8px 0;">border-radius</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-card-radius</td><td style="padding:8px 16px 8px 0;">8px</td><td style="padding:8px 0;">border-radius</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-card-border</td><td style="padding:8px 16px 8px 0;">1px solid #93ACCD</td><td style="padding:8px 0;">border</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-card-padding</td><td style="padding:8px 16px 8px 0;">16px</td><td style="padding:8px 0;">padding</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-avatar-size</td><td style="padding:8px 16px 8px 0;">64px</td><td style="padding:8px 0;">width, height</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-avatar-bg</td><td style="padding:8px 16px 8px 0;">#F0F4F8</td><td style="padding:8px 0;">background-color</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-avatar-text</td><td style="padding:8px 16px 8px 0;">#4A6687</td><td style="padding:8px 0;">color</td></tr>
+          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">mini-thumb-size</td><td style="padding:8px 16px 8px 0;">48px</td><td style="padding:8px 0;">width, height</td></tr>
+          <tr><td style="padding:8px 16px 8px 0;">mini-thumb-radius</td><td style="padding:8px 16px 8px 0;">4px</td><td style="padding:8px 0;">border-radius</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /#figma-gallery -->
+
+<script>
+// ═══════════════════════════════════════════
+// NARRATOR DATA
+// ═══════════════════════════════════════════
+const narrators = [
+  {
+    id: "scott-brick",
+    name: "Scott Brick",
+    initials: "SB",
+    genre: "Thriller",
+    bookCount: 127,
+    books: [
+      { title: "The Bourne Identity", author: "Robert Ludlum", length: "15 hrs 25 mins", rating: "4.5", price: "$24.95" },
+      { title: "The Girl with the Dragon Tattoo", author: "Stieg Larsson", length: "24 hrs 32 mins", rating: "4.7", price: "$19.95" },
+      { title: "Presumed Innocent", author: "Scott Turow", length: "14 hrs 55 mins", rating: "4.4", price: "$16.95" }
+    ]
+  },
+  {
+    id: "january-lavoy",
+    name: "January LaVoy",
+    initials: "JL",
+    genre: "Literary Fiction",
+    bookCount: 89,
+    books: [
+      { title: "All the Light We Cannot See", author: "Anthony Doerr", length: "16 hrs 2 mins", rating: "4.9", price: "$21.95" },
+      { title: "The Kite Runner", author: "Khaled Hosseini", length: "12 hrs 25 mins", rating: "4.8", price: "$17.95" },
+      { title: "Homegoing", author: "Yaa Gyasi", length: "10 hrs 40 mins", rating: "4.8", price: "$18.95" }
+    ]
+  },
+  {
+    id: "ray-porter",
+    name: "Ray Porter",
+    initials: "RP",
+    genre: "Sci-Fi",
+    bookCount: 74,
+    books: [
+      { title: "Project Hail Mary", author: "Andy Weir", length: "16 hrs 10 mins", rating: "4.9", price: "$24.95" },
+      { title: "The Martian", author: "Andy Weir", length: "10 hrs 53 mins", rating: "4.8", price: "$19.95" },
+      { title: "Recursion", author: "Blake Crouch", length: "11 hrs 56 mins", rating: "4.7", price: "$19.95" }
+    ]
+  },
+  {
+    id: "simon-vance",
+    name: "Simon Vance",
+    initials: "SV",
+    genre: "Historical Fiction",
+    bookCount: 203,
+    books: [
+      { title: "Wolf Hall", author: "Hilary Mantel", length: "24 hrs 16 mins", rating: "4.6", price: "$26.95" },
+      { title: "The Name of the Rose", author: "Umberto Eco", length: "19 hrs 44 mins", rating: "4.5", price: "$22.95" },
+      { title: "Pillars of the Earth", author: "Ken Follett", length: "41 hrs 24 mins", rating: "4.8", price: "$29.95" }
+    ]
+  },
+  {
+    id: "kate-reading",
+    name: "Kate Reading",
+    initials: "KR",
+    genre: "Fantasy",
+    bookCount: 61,
+    books: [
+      { title: "The Way of Kings", author: "Brandon Sanderson", length: "45 hrs 34 mins", rating: "4.9", price: "$34.95" },
+      { title: "Words of Radiance", author: "Brandon Sanderson", length: "48 hrs 13 mins", rating: "4.9", price: "$34.95" },
+      { title: "Rhythm of War", author: "Brandon Sanderson", length: "57 hrs 39 mins", rating: "4.8", price: "$34.95" }
+    ]
+  },
+  {
+    id: "michael-kramer",
+    name: "Michael Kramer",
+    initials: "MK",
+    genre: "Fantasy",
+    bookCount: 198,
+    books: [
+      { title: "The Eye of the World", author: "Robert Jordan", length: "29 hrs 4 mins", rating: "4.8", price: "$29.95" },
+      { title: "The Name of the Wind", author: "Patrick Rothfuss", length: "27 hrs 55 mins", rating: "4.9", price: "$27.95" },
+      { title: "The Final Empire", author: "Brandon Sanderson", length: "24 hrs 41 mins", rating: "4.8", price: "$24.95" }
+    ]
+  },
+  {
+    id: "bahni-turpin",
+    name: "Bahni Turpin",
+    initials: "BT",
+    genre: "Literary Fiction",
+    bookCount: 112,
+    books: [
+      { title: "The Underground Railroad", author: "Colson Whitehead", length: "10 hrs 10 mins", rating: "4.6", price: "$19.95" },
+      { title: "Beloved", author: "Toni Morrison", length: "8 hrs 47 mins", rating: "4.9", price: "$17.95" },
+      { title: "Their Eyes Were Watching God", author: "Zora Neale Hurston", length: "6 hrs 21 mins", rating: "4.8", price: "$15.95" }
+    ]
+  },
+  {
+    id: "cassandra-campbell",
+    name: "Cassandra Campbell",
+    initials: "CC",
+    genre: "Self-Help",
+    bookCount: 94,
+    books: [
+      { title: "Daring Greatly", author: "Brené Brown", length: "6 hrs 30 mins", rating: "4.8", price: "$17.95" },
+      { title: "Rising Strong", author: "Brené Brown", length: "8 hrs 51 mins", rating: "4.7", price: "$19.95" },
+      { title: "The Gifts of Imperfection", author: "Brené Brown", length: "4 hrs 20 mins", rating: "4.7", price: "$14.95" }
+    ]
+  },
+  {
+    id: "will-patton",
+    name: "Will Patton",
+    initials: "WP",
+    genre: "Thriller",
+    bookCount: 58,
+    books: [
+      { title: "The Stand", author: "Stephen King", length: "47 hrs 47 mins", rating: "4.9", price: "$34.95" },
+      { title: "11/22/63", author: "Stephen King", length: "30 hrs 37 mins", rating: "4.9", price: "$29.95" },
+      { title: "No Country for Old Men", author: "Cormac McCarthy", length: "6 hrs 40 mins", rating: "4.7", price: "$16.95" }
+    ]
+  },
+  {
+    id: "robin-miles",
+    name: "Robin Miles",
+    initials: "RM",
+    genre: "Literary Fiction",
+    bookCount: 67,
+    books: [
+      { title: "Americanah", author: "Chimamanda Ngozi Adichie", length: "16 hrs 43 mins", rating: "4.8", price: "$22.95" },
+      { title: "An Untamed State", author: "Roxane Gay", length: "9 hrs 23 mins", rating: "4.6", price: "$18.95" },
+      { title: "Parable of the Sower", author: "Octavia Butler", length: "10 hrs 7 mins", rating: "4.9", price: "$19.95" }
+    ]
+  }
+];
+
+// Page 2 representative narrators [representative content]
+const narratorsPage2 = [
+  { id: "jim-dale", name: "Jim Dale", initials: "JD", genre: "Fantasy", bookCount: 45 },
+  { id: "stephen-fry", name: "Stephen Fry", initials: "SF", genre: "Literary Fiction", bookCount: 38 },
+  { id: "grover-gardner", name: "Grover Gardner", initials: "GG", genre: "Historical Fiction", bookCount: 156 },
+  { id: "julia-whelan", name: "Julia Whelan", initials: "JW", genre: "Romance", bookCount: 82 },
+  { id: "david-colacci", name: "David Colacci", initials: "DC", genre: "Mystery", bookCount: 71 },
+  { id: "macleod-andrews", name: "MacLeod Andrews", initials: "MA", genre: "Thriller", bookCount: 93 },
+  { id: "emily-woo-zeller", name: "Emily Woo Zeller", initials: "EZ", genre: "Literary Fiction", bookCount: 54 },
+  { id: "george-guidall", name: "George Guidall", initials: "GG2", genre: "Mystery", bookCount: 178 },
+  { id: "lorelei-king", name: "Lorelei King", initials: "LK", genre: "Thriller", bookCount: 49 },
+  { id: "robertson-dean", name: "Robertson Dean", initials: "RD", genre: "Sci-Fi", bookCount: 63 }
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let currentPage = 1;
+let currentSearch = '';
+let homeBrowseOpen = true; // starts open on home screen
+let narratorsBrowseOpen = false;
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+function initPrototype() {
+  renderNarratorCards(narrators);
+  setupClickOutside();
+}
+
+// ═══════════════════════════════════════════
+// SCREEN NAVIGATION
+// ═══════════════════════════════════════════
+function navigateToNarrators() {
+  document.querySelector('[data-screen="home"]').classList.remove('active');
+  document.querySelector('[data-screen="narrators"]').classList.add('active');
+  // Close browse menu on home
+  homeBrowseOpen = false;
+  document.getElementById('home-browse-menu').classList.remove('open');
+  document.getElementById('home-browse-btn').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+// ═══════════════════════════════════════════
+// BROWSE MENU TOGGLE
+// ═══════════════════════════════════════════
+function toggleBrowseHome() {
+  homeBrowseOpen = !homeBrowseOpen;
+  const menu = document.getElementById('home-browse-menu');
+  const btn = document.getElementById('home-browse-btn');
+  if (homeBrowseOpen) {
+    menu.classList.add('open');
+    btn.classList.add('active');
+  } else {
+    menu.classList.remove('open');
+    btn.classList.remove('active');
+  }
+}
+
+function toggleBrowseNarrators() {
+  narratorsBrowseOpen = !narratorsBrowseOpen;
+  const menu = document.getElementById('narrators-browse-menu');
+  const btn = document.getElementById('narrators-browse-btn');
+  if (narratorsBrowseOpen) {
+    menu.classList.add('open');
+    btn.classList.add('active');
+  } else {
+    menu.classList.remove('open');
+    btn.classList.remove('active');
+  }
+}
+
+function setupClickOutside() {
+  document.addEventListener('click', function(e) {
+    // Home browse menu
+    const homeContainer = document.getElementById('home-nav-container');
+    if (homeContainer && !homeContainer.contains(e.target) && homeBrowseOpen) {
+      homeBrowseOpen = false;
+      document.getElementById('home-browse-menu').classList.remove('open');
+      document.getElementById('home-browse-btn').classList.remove('active');
+    }
+    // Narrators browse menu
+    const narratorsContainer = document.getElementById('narrators-nav-container');
+    if (narratorsContainer && !narratorsContainer.contains(e.target) && narratorsBrowseOpen) {
+      narratorsBrowseOpen = false;
+      document.getElementById('narrators-browse-menu').classList.remove('open');
+      document.getElementById('narrators-browse-btn').classList.remove('active');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════
+// FILTER CHIPS
+// ═══════════════════════════════════════════
+function toggleChip(el) {
+  const isActive = el.classList.contains('chip-active');
+  if (isActive) {
+    el.classList.remove('chip-active');
+    el.style.backgroundColor = 'transparent';
+    el.style.color = '#010E19';
+    el.style.borderColor = '#93ACCD';
+  } else {
+    el.classList.add('chip-active');
+    el.style.backgroundColor = '#1479CF';
+    el.style.color = '#FFFFFF';
+    el.style.borderColor = '#1479CF';
+  }
+}
+
+// ═══════════════════════════════════════════
+// NARRATOR CARD RENDERING
+// ═══════════════════════════════════════════
+function renderNarratorCards(list) {
+  const grid = document.getElementById('narrator-grid');
+  const noResults = document.getElementById('no-results');
+  const countEl = document.getElementById('results-count');
+
+  if (!list || list.length === 0) {
+    grid.innerHTML = '';
+    noResults.style.display = 'block';
+    countEl.textContent = '0 narrators found';
+    return;
+  }
+
+  noResults.style.display = 'none';
+  const total = currentSearch ? list.length : 500;
+  const showing = list.length;
+  countEl.textContent = currentSearch
+    ? showing + ' narrator' + (showing !== 1 ? 's' : '') + ' found'
+    : '1 – 20 of 500 narrators';
+
+  grid.innerHTML = list.map(function(n) {
+    return buildCardHTML(n);
+  }).join('');
+}
+
+function buildCardHTML(n) {
+  return '<div class="narrator-card" data-name="' + n.name + '" onclick="openModal(\'' + n.id + '\')">' +
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">' +
+      '<div style="width:64px;height:64px;border-radius:50%;background-color:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4A6687;flex-shrink:0;">' + n.initials + '</div>' +
+      '<div style="min-width:0;">' +
+        '<div style="font-size:16px;font-weight:700;color:#010E19;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.name + '</div>' +
+        '<div style="font-size:12px;color:#4A6687;margin-bottom:2px;">' + n.genre + '</div>' +
+        '<div style="font-size:13px;color:#061624;">' + n.bookCount + ' audiobooks</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="display:flex;gap:6px;">' +
+      '<div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;flex-shrink:0;"></div>' +
+      '<div style="width:48px;height:48px;border-radius:4px;background-color:#D8DDE6;flex-shrink:0;"></div>' +
+      '<div style="width:48px;height:48px;border-radius:4px;background-color:#C8D0DC;flex-shrink:0;"></div>' +
+    '</div>' +
+  '</div>';
+}
+
+// ═══════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════
+function filterNarrators(query) {
+  currentSearch = query.trim().toLowerCase();
+  if (!currentSearch) {
+    if (currentPage === 1) {
+      renderNarratorCards(narrators);
+    } else {
+      renderNarratorCards(narratorsPage2.map(function(n) { return Object.assign({}, n, { books: [] }); }));
+    }
+    return;
+  }
+  const pool = narrators.concat(narratorsPage2.map(function(n) { return Object.assign({}, n, { books: [] }); }));
+  const filtered = pool.filter(function(n) {
+    return n.name.toLowerCase().indexOf(currentSearch) !== -1;
+  });
+  renderNarratorCards(filtered);
+}
+
+// ═══════════════════════════════════════════
+// PAGINATION
+// ═══════════════════════════════════════════
+function changePage(page) {
+  if (page < 1 || page > 25) return;
+  currentPage = page;
+
+  // Update button states
+  document.getElementById('page-1-btn').classList.toggle('page-active', page === 1);
+  document.getElementById('page-2-btn').classList.toggle('page-active', page === 2);
+
+  // Prev button
+  const prevBtn = document.getElementById('prev-btn');
+  if (page === 1) {
+    prevBtn.style.opacity = '0.4';
+    prevBtn.style.pointerEvents = 'none';
+  } else {
+    prevBtn.style.opacity = '1';
+    prevBtn.style.pointerEvents = 'auto';
+  }
+
+  // Show appropriate data
+  if (page === 1) {
+    renderNarratorCards(narrators);
+  } else if (page === 2) {
+    const page2WithBooks = narratorsPage2.map(function(n) {
+      return Object.assign({}, n, { books: [] });
+    });
+    renderNarratorCards(page2WithBooks);
+  } else {
+    // For pages 3+, show a placeholder message
+    document.getElementById('narrator-grid').innerHTML =
+      '<div style="grid-column:1/-1;text-align:center;padding:48px;font-size:16px;color:#4A6687;">Page ' + page + ' — content would load here</div>';
+    document.getElementById('no-results').style.display = 'none';
+    document.getElementById('results-count').textContent = 'Page ' + page + ' of 25';
+  }
+
+  window.scrollTo(0, 0);
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function openModal(narratorId) {
+  const narrator = narrators.find(function(n) { return n.id === narratorId; });
+  if (!narrator) return;
+
+  document.getElementById('modal-narrator-name').textContent = narrator.name + ' — Audiobooks';
+
+  const bookListHTML = narrator.books && narrator.books.length > 0
+    ? narrator.books.map(function(book, idx) {
+        const isLast = idx === narrator.books.length - 1;
+        return '<div style="display:flex;gap:20px;padding:20px 0;' + (isLast ? '' : 'border-bottom:1px solid rgba(1,14,25,0.15);') + '">' +
+          '<div style="width:120px;height:120px;background-color:#E8EBF0;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#4A6687;text-align:center;padding:8px;font-weight:600;">' + book.title + '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-size:20px;font-weight:700;color:#010E19;line-height:26px;margin-bottom:4px;">' + book.title + '</div>' +
+            '<div style="font-size:13px;color:#061624;margin-bottom:2px;">By: ' + book.author + '</div>' +
+            '<div style="font-size:13px;color:#061624;margin-bottom:2px;">Narrated by: ' + narrator.name + '</div>' +
+            '<div style="font-size:13px;color:#061624;margin-bottom:6px;">' + book.length + ' &nbsp;|&nbsp; ' +
+              '<span style="color:#FFA000;">' + '★'.repeat(Math.floor(parseFloat(book.rating))) + '</span> ' + book.rating +
+            '</div>' +
+            '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+              '<button class="cta-primary">Try Standard free</button>' +
+              '<button class="cta-secondary">' + book.price + ' — Add to cart</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('')
+    : '<div style="padding:24px;text-align:center;color:#4A6687;">No book details available for this narrator.</div>';
+
+  document.getElementById('modal-book-list').innerHTML = bookListHTML;
+  document.getElementById('narrator-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('narrator-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleModalOverlayClick(e) {
+  if (e.target === document.getElementById('narrator-modal')) {
+    closeModal();
+  }
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ═══════════════════════════════════════════
+// DUAL-MODE ARCHITECTURE — boot after all declarations
+// ═══════════════════════════════════════════
+const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
+if (FIGMA_MODE) {
+  document.getElementById('prototype-root').style.display = 'none';
+  document.getElementById('figma-gallery').style.display = 'flex';
+} else {
+  document.getElementById('figma-gallery').style.display = 'none';
+  initPrototype();
+}
+</script>
+</body>
+</html>

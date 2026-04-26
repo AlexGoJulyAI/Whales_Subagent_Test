@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Brief — Wayshare wayshare_marketplace_2026_04_23</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
+    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
+
+    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
+    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
+    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
+    .brief-meta-item strong { color: #fff; }
+
+    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
+    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
+    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
+    .section-body { padding: 22px; }
+
+    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
+    .section-body p:last-child { margin-bottom: 0; }
+    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
+    .section-body h4:first-child { margin-top: 0; }
+    .section-body ul { font-size: 14px; color: #374151; padding-left: 18px; margin-bottom: 12px; }
+    .section-body li { margin-bottom: 4px; }
+
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
+    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
+    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
+
+    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
+    .callout-sol { background: #F0FDF4; border-left: 3px solid #16A34A; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #14532D; line-height: 1.6; }
+    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
+    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
+
+    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
+    .pill-blue { background: #DBEAFE; color: #1E40AF; }
+    .pill-green { background: #DCFCE7; color: #166534; }
+    .pill-red { background: #FEE2E2; color: #991B1B; }
+    .pill-gray { background: #F3F4F6; color: #374151; }
+
+    .screenshot-wrap { margin: 16px 0; }
+    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
+    .anchor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+    .anchor-item { border: 2px solid #E2E8F0; border-radius: 10px; overflow: hidden; }
+    .anchor-item img { display: block; width: 100%; height: auto; }
+    .anchor-label { padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #374151; background: #F8FAFC; }
+
+    .direction-card { border: 1px solid #E2E8F0; border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+    .direction-card.dir-a { border-left: 4px solid #1A1A1A; }
+    .direction-card.dir-b { border-left: 4px solid #D4622A; }
+    .direction-card.dir-c { border-left: 4px solid #4A7C2F; }
+    .direction-name { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .direction-desc { font-size: 13px; color: #374151; line-height: 1.6; }
+    .swatch-row { display: flex; gap: 6px; margin-top: 10px; }
+    .swatch { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #E2E8F0; }
+    .swatch-label { font-size: 10px; color: #6B7280; text-align: center; margin-top: 2px; }
+    .swatch-wrap { display: flex; flex-direction: column; align-items: center; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="brief-header">
+    <div class="brief-kicker">Project Brief</div>
+    <div class="brief-title">Wayshare — Travel Marketplace</div>
+    <div class="brief-meta">
+      <div class="brief-meta-item"><strong>Engagement</strong> wayshare_marketplace_2026_04_23</div>
+      <div class="brief-meta-item"><strong>Date</strong> 2026-04-23</div>
+      <div class="brief-meta-item"><strong>Status</strong> All values client-confirmed or PRD-extracted</div>
+    </div>
+  </div>
+
+  <!-- §1 Product Vision -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><div class="section-title">Product Vision</div></div>
+    <div class="section-body">
+      <p>Wayshare is a two-sided travel marketplace where everyday travelers turn their real trips into bookable itineraries and earn commission when others book through them. AI ingests trip artifacts (camera roll, Google Maps timeline, booking confirmations) and reconstructs them into structured day-by-day itineraries in under 20 minutes.</p>
+      <p><strong>One-line pitch:</strong> "The marketplace where your last trip becomes someone else's next trip."</p>
+      <h4>Year 1 Targets</h4>
+      <table class="brief-table">
+        <tr><th>Metric</th><th>Target</th></tr>
+        <tr><td>Published itineraries</td><td>2,000 across top 50 destinations</td></tr>
+        <tr><td>Monthly active travelers</td><td>50,000 by month 12</td></tr>
+        <tr><td>GBV cumulative</td><td>$2M by end of year 1</td></tr>
+        <tr><td>Avg traveler rating</td><td>≥ 4.3 / 5</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §2 Problem Statements -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><div class="section-title">Problem Statements</div></div>
+    <div class="section-body">
+      <div class="callout-prob">
+        <div class="callout-label">Demand Problem</div>
+        A typical international trip requires 15–40 hours of research across blogs, Reddit, Instagram, and TripAdvisor. Generic "Top 10" content is optimized for search engines, not real travelers. The output is a scattered Google Doc that falls apart on day two.
+      </div>
+      <div class="callout-prob">
+        <div class="callout-label">Supply Problem</div>
+        Billions of travelers finish trips with hard-won knowledge locked in camera rolls and group chats. Existing creator tools (Thatch, Troupe, Rexby) demand hours of manual itinerary building, limiting supply to professional creators only.
+      </div>
+      <div class="callout-note">
+        <div class="callout-label">Framing Note</div>
+        Client confirmed this is a real product build (not a pitch/demo). Design should prioritize production fidelity, component correctness, and real user task completion.
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 Target Users -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><div class="section-title">Target Users</div></div>
+    <div class="section-body">
+      <h4>Contributors — "The Traveler Who Just Got Back"</h4>
+      <p>Age 25–45, travels 2–4x/year. Camera roll full of geotagged photos. Has already recommended the same places to five friends. Motivated by recognition, passive commission, and helping others. Will NOT spend 6+ hours manually building an itinerary. Needs the AI to do the heavy lifting.</p>
+      <h4>Travelers — "The Overwhelmed Planner"</h4>
+      <p>Age 22–45, planning a trip 1–6 months out, hit research fatigue. Distrusts generic content, over-values recommendations from people "like them." Has saved 30+ Instagram posts but has no idea how to sequence them. Will pay for execution (bookings) but not for information (itineraries are free to browse).</p>
+      <div class="callout-sol">
+        <div class="callout-label">Design Focus</div>
+        Traveler-facing surfaces are the primary design target for this sprint: marketplace browse, itinerary detail, booking flow. Contributor surfaces are secondary.
+      </div>
+    </div>
+  </div>
+
+  <!-- §4 Success Metrics -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><div class="section-title">Success Metrics</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Primary metric</td><td>GBV per monthly active traveler — captures whether marketplace is driving real commerce</td></tr>
+        <tr><td>Secondary metrics</td><td>Itinerary view-to-booking conversion rate; repeat booking rate within 12 months</td></tr>
+        <tr><td>Proxy signals</td><td>Time on itinerary detail page; CTA click-through from browse to detail; scroll depth on browse page</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §5 Scope -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div class="section-title">Key Features &amp; Scope</div></div>
+    <div class="section-body">
+      <h4>In Scope (this sprint)</h4>
+      <table class="brief-table">
+        <tr><th>Screen / Feature</th><th>Description</th></tr>
+        <tr><td>Marketplace browse page <span class="pill pill-green">PRIMARY</span></td><td>Grid of itinerary cards with filters (destination, duration, style, budget)</td></tr>
+        <tr><td>Itinerary detail page <span class="pill pill-green">PRIMARY</span></td><td>Day-by-day view, contributor profile, booking integration, date personalization</td></tr>
+        <tr><td>Booking review screen</td><td>Bundled items checklist, opt-in/out per item, total cost, confirm CTA</td></tr>
+        <tr><td>Contributor upload flow</td><td>Multi-step: upload artifacts → AI processes → review draft → publish</td></tr>
+        <tr><td>Contributor dashboard</td><td>Earnings, per-itinerary stats, payout management</td></tr>
+        <tr><td>Global nav + auth</td><td>Header, search, login/signup, mode switching</td></tr>
+      </table>
+      <h4>Out of Scope</h4>
+      <table class="brief-table">
+        <tr><th>Item</th><th>Reason</th></tr>
+        <tr><td>Admin/moderation panel</td><td>Internal tool, separate build</td></tr>
+        <tr><td>Mobile native app</td><td>Web-first; native follows after web validated</td></tr>
+        <tr><td>Real booking API integration</td><td>Design only — booking flow is mocked</td></tr>
+        <tr><td>Social/friends layer</td><td>v2 feature per PRD</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §6 Constraints -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><div class="section-title">Constraints</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Constraint</th><th>Value</th></tr>
+        <tr><td>Framework</td><td>Next.js 16 (App Router), React 19, TypeScript strict</td></tr>
+        <tr><td>UI primitives</td><td>shadcn/ui + Tailwind CSS v4 + Radix</td></tr>
+        <tr><td>Platform</td><td>Responsive web, desktop-first (1440px → 390px mobile)</td></tr>
+        <tr><td>Mode</td><td>Light mode only</td></tr>
+        <tr><td>Accessibility</td><td>WCAG AA minimum</td></tr>
+        <tr><td>Build gate</td><td><code>npm run check</code> must pass before sign-off</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §7 References & Aesthetic Direction -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">7</div><div class="section-title">References &amp; Aesthetic Direction</div></div>
+    <div class="section-body">
+      <h4>Client-Selected Anchor Images</h4>
+      <div class="anchor-grid">
+        <div class="anchor-item">
+          <img src="../../docs/design-references/pattern-travel-mobbin-1.png" alt="Anchor A — Viator iOS Itinerary" />
+          <div class="anchor-label">Anchor A — Direction A<br>Viator iOS Itinerary</div>
+        </div>
+        <div class="anchor-item">
+          <img src="../../docs/design-references/pattern-travel-mobbin-2.png" alt="Anchor B — Qantas Trips" />
+          <div class="anchor-label">Anchor B — Direction B<br>Qantas Airways Trips</div>
+        </div>
+        <div class="anchor-item">
+          <img src="../../docs/design-references/pattern-travel-mobbin-3.png" alt="Anchor C — Komoot Route Builder" />
+          <div class="anchor-label">Anchor C — Direction C<br>Komoot Route Builder</div>
+        </div>
+      </div>
+      <h4>Aesthetic Keywords Translated</h4>
+      <table class="brief-table">
+        <tr><th>Keyword</th><th>Pixel Decision</th><th>Confirmed By</th></tr>
+        <tr><td>Soft</td><td>16–24px card radius, diffuse multi-layer shadows, warm whites — no hard edges</td><td>Client Q3</td></tr>
+        <tr><td>Organic</td><td>Warm natural palette (sage, sand, terracotta), imagery-forward layouts, curved elements</td><td>Client Q3</td></tr>
+        <tr><td>Modern</td><td>Contemporary humanist sans-serif, generous whitespace, clean type hierarchy</td><td>Client Q3</td></tr>
+        <tr><td>Geometric</td><td>Grid-disciplined structure, subtle geometric patterns in backgrounds, precise alignment</td><td>Client Q3</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §8 Design System -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">8</div><div class="section-title">Design System</div></div>
+    <div class="section-body">
+      <h4>Per-Direction Color Palettes</h4>
+
+      <div class="direction-card dir-a">
+        <div class="direction-name">Direction A — Journey Minimalism</div>
+        <div class="swatch-row">
+          <div class="swatch-wrap"><div class="swatch" style="background:#FFFFFF; border: 1px solid #ddd;"></div><div class="swatch-label">#FFF bg</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#1A1A1A;"></div><div class="swatch-label">#1A1A1A</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#E5E5E5;"></div><div class="swatch-label">#E5E5E5</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#888888;"></div><div class="swatch-label">#888 muted</div></div>
+        </div>
+        <div class="direction-desc" style="margin-top:10px;">Ultra-clean white canvas. Black numbered circles connected by thin vertical line form the visual backbone. No card borders, no shadows, no color distraction. Pure typographic hierarchy.</div>
+      </div>
+
+      <div class="direction-card dir-b">
+        <div class="direction-name">Direction B — Structured Warmth</div>
+        <div class="swatch-row">
+          <div class="swatch-wrap"><div class="swatch" style="background:#F5F5F7;"></div><div class="swatch-label">#F5F5F7 bg</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#FFFFFF; border:1px solid #ddd;"></div><div class="swatch-label">#FFF card</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#D4622A;"></div><div class="swatch-label">#D4622A</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#8E8E93;"></div><div class="swatch-label">#8E8E93</div></div>
+        </div>
+        <div class="direction-desc" style="margin-top:10px;">Warm off-white background with white card surfaces. Date-grouped cards with destination thumbnail photos. Warm terracotta accent. Feels trustworthy — like a well-kept travel diary.</div>
+      </div>
+
+      <div class="direction-card dir-c">
+        <div class="direction-name">Direction C — Earthy Structure</div>
+        <div class="swatch-row">
+          <div class="swatch-wrap"><div class="swatch" style="background:#F8F6F0;"></div><div class="swatch-label">#F8F6F0 bg</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#FFFFFF; border:1px solid #ddd;"></div><div class="swatch-label">#FFF card</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#4A7C2F;"></div><div class="swatch-label">#4A7C2F</div></div>
+          <div class="swatch-wrap"><div class="swatch" style="background:#C8BB96;"></div><div class="swatch-label">#C8BB96 sand</div></div>
+        </div>
+        <div class="direction-desc" style="margin-top:10px;">Warm cream background with sage-green section header bars. Dense structured lists. Geometric grid discipline. Earthy palette adapted from Komoot's olive to a light-mode sage. Feels grounded and nature-adjacent.</div>
+      </div>
+
+      <h4>Component Variant Record</h4>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Source</th><th>Variants</th><th>Confirmed States</th></tr>
+        <tr><td>Itinerary card</td><td>Anchor B</td><td>Default, hover, booked</td><td>Default</td></tr>
+        <tr><td>Journey stop row</td><td>Anchor A</td><td>Default, active, completed</td><td>Default</td></tr>
+        <tr><td>Day group header</td><td>Anchor B, C</td><td>Collapsed, expanded</td><td>Expanded</td></tr>
+        <tr><td>Pill CTA button</td><td>Anchor C</td><td>Primary filled, secondary outlined</td><td>Both</td></tr>
+        <tr><td>Tab bar</td><td>Anchor B</td><td>Active (underline), inactive</td><td>Both</td></tr>
+        <tr><td>Booking item row</td><td>Anchor B, C</td><td>Checked, unchecked, unavailable</td><td>Default</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §9 Brand Identity -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">9</div><div class="section-title">Brand Identity</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Element</th><th>Value</th><th>Status</th></tr>
+        <tr><td>Product name</td><td>Wayshare</td><td><span class="pill pill-green">Locked</span></td></tr>
+        <tr><td>Tagline</td><td>"The marketplace where your last trip becomes someone else's next trip"</td><td><span class="pill pill-green">Locked</span></td></tr>
+        <tr><td>Email</td><td>trips@wayshare.com</td><td><span class="pill pill-green">Locked</span></td></tr>
+        <tr><td>Logo/wordmark</td><td>Not yet designed — Designer Agent to propose</td><td><span class="pill pill-gray">Pending</span></td></tr>
+        <tr><td>Brand color</td><td>No locked color — one per direction, Designer selects</td><td><span class="pill pill-gray">Pending</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §10 Visual Design Language -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">10</div><div class="section-title">Visual Design Language</div></div>
+    <div class="section-body">
+      <p>Three directions, each rooted in its anchor image. All share: light mode only, desktop-first responsive web, imagery-forward (real trip photos are the content), trust signals prominent.</p>
+
+      <h4>Direction A — Journey Minimalism</h4>
+      <p>Ultra-clean white canvas. Numbered black filled circles connected by a thin 1px vertical line form the visual backbone of every itinerary view. No colored backgrounds, no shadows, no decorative elements. Pure typographic hierarchy. The product's authenticity radiates from the raw clarity of structure. Governing principle: <em>editorial severity</em>.</p>
+
+      <h4>Direction B — Structured Warmth</h4>
+      <p>Warm off-white (#F5F5F7) background with white card surfaces creating depth through background contrast alone. Date-and-destination labels ("Apr 12 — Tokyo") act as muted section headers grouping itinerary cards. Warm terracotta accent (#D4622A). Right-aligned destination thumbnails in every card. 12px card radius, subtle diffuse shadow. Governing principle: <em>organized intimacy</em>.</p>
+
+      <h4>Direction C — Earthy Structure</h4>
+      <p>Warm cream (#F8F6F0) background. Sage-green (#4A7C2F) full-width section bars with white text act as day/group dividers within the itinerary view — the entire organizational language comes from the surface color rather than type weight. Dense structured lists, sidebar filter panel, pill CTAs. 8px card radius. Governing principle: <em>grounded naturalism</em>.</p>
+
+      <h4>Shared Design Principles</h4>
+      <ul>
+        <li>Light mode only — no dark surfaces</li>
+        <li>Imagery-forward — real trip photos drive visual weight on every surface</li>
+        <li>Trust signals prominent — verified badge, contributor rating, trip recency everywhere</li>
+        <li>Two-sided distinction — contributor mode and traveler mode must feel visually cohesive but distinct</li>
+        <li>No generic AI aesthetics — no Inter/purple gradient defaults, no cookie-cutter card grids</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- §11 Copy Guide -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">11</div><div class="section-title">Copy Guide</div></div>
+    <div class="section-body">
+      <h4>Tone Descriptors</h4>
+      <table class="brief-table">
+        <tr><th>Adjective</th><th>Writing Rule</th><th>Confirmed By</th></tr>
+        <tr><td>Authentic</td><td>Write like a friend's recommendation, not a brochure</td><td>PRD</td></tr>
+        <tr><td>Conversational</td><td>Use "you/your trip" not "the user/traveler"</td><td>PRD</td></tr>
+        <tr><td>Specific</td><td>Name real places, real durations, real costs — no vague claims</td><td>PRD</td></tr>
+      </table>
+      <h4>Locked Strings</h4>
+      <table class="brief-table">
+        <tr><th>String</th><th>Value</th></tr>
+        <tr><td>Product name</td><td>Wayshare</td></tr>
+        <tr><td>Contributor CTA</td><td>"Turn my trip into an itinerary"</td></tr>
+        <tr><td>Search placeholder</td><td>"Where did they go?"</td></tr>
+        <tr><td>Trust badge</td><td>"Verified recent trip"</td></tr>
+        <tr><td>Commission line</td><td>"Earn commission when others book"</td></tr>
+      </table>
+      <h4>Terminology Rules</h4>
+      <p>"Itinerary" not "trip plan" · "Contributor" not "creator" or "host" · "Traveler" not "user" or "customer" · "Booking" not "purchase" · "Commission" not "earnings split"</p>
+    </div>
+  </div>
+
+  <!-- §12 User Tasks -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">12</div><div class="section-title">User Tasks</div></div>
+    <div class="section-body">
+      <h4>Priority 1 — Traveler: Discover &amp; Evaluate</h4>
+      <p>A traveler must be able to land on the marketplace, find an itinerary matching their destination and duration, and determine within 60 seconds whether it was taken by someone trustworthy and fits their style — without clicking into the detail page.</p>
+      <h4>Priority 2 — Traveler: Book an Entire Itinerary</h4>
+      <p>After entering travel dates, a traveler must see real availability for all bookable items, opt out of anything unwanted, and confirm the full bundle in a single checkout screen.</p>
+      <h4>Priority 3 — Contributor: Publish a First Itinerary</h4>
+      <p>A contributor must upload trip artifacts, review the AI-generated draft, make edits, and hit publish — with median time under 20 minutes and without requiring writing skills.</p>
+    </div>
+  </div>
+
+  <!-- §13 Current Page State -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">13</div><div class="section-title">Current Page State</div></div>
+    <div class="section-body">
+      <p>Greenfield build. No existing pages, routes, or components. The Next.js 16 + shadcn/ui + Tailwind v4 scaffold is the starting state with no visual identity and no content routes.</p>
+      <h4>Route Map (priority order)</h4>
+      <table class="brief-table">
+        <tr><th>Route</th><th>Surface</th><th>Priority</th></tr>
+        <tr><td><code>src/app/page.tsx</code></td><td>Marketplace browse (homepage, traveler-facing)</td><td><span class="pill pill-green">Primary</span></td></tr>
+        <tr><td><code>src/app/itinerary/[id]/page.tsx</code></td><td>Itinerary detail page</td><td><span class="pill pill-green">Primary</span></td></tr>
+        <tr><td><code>src/app/book/[id]/page.tsx</code></td><td>Booking review screen</td><td><span class="pill pill-blue">Secondary</span></td></tr>
+        <tr><td><code>src/app/contribute/page.tsx</code></td><td>Contributor upload flow</td><td><span class="pill pill-blue">Secondary</span></td></tr>
+        <tr><td><code>src/app/dashboard/page.tsx</code></td><td>Contributor dashboard</td><td><span class="pill pill-blue">Secondary</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §14 Interaction States -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">14</div><div class="section-title">Interaction &amp; States</div></div>
+    <div class="section-body">
+      <p>No existing pages — all states are Designer Agent decisions. Required states per component:</p>
+      <table class="brief-table">
+        <tr><th>Component</th><th>Required States</th></tr>
+        <tr><td>Itinerary card</td><td>Default, hover (elevation change), saved/bookmarked</td></tr>
+        <tr><td>Filter chip</td><td>Active, inactive, hover</td></tr>
+        <tr><td>Search bar</td><td>Default, focused, populated</td></tr>
+        <tr><td>Tab</td><td>Active (underline + color), inactive</td></tr>
+        <tr><td>Booking item row</td><td>Checked, unchecked, unavailable</td></tr>
+        <tr><td>CTA button (primary)</td><td>Default, hover, loading, disabled</td></tr>
+        <tr><td>Day section header</td><td>Expanded, collapsed</td></tr>
+        <tr><td>Journey stop</td><td>Default, active (current), completed</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- §15 Delivery & Handoff -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">15</div><div class="section-title">Delivery &amp; Handoff</div></div>
+    <div class="section-body">
+      <table class="brief-table">
+        <tr><th>Field</th><th>Value</th><th>Source</th></tr>
+        <tr><td>Output format</td><td>Three interactive HTML prototypes → client selects one → port to Next.js 16</td><td>Client confirmed</td></tr>
+        <tr><td>Device targets</td><td>Desktop (1440px) primary; mobile (390px) responsive</td><td>Client Q2</td></tr>
+        <tr><td>Accessibility</td><td>WCAG AA minimum</td><td>Default</td></tr>
+        <tr><td>Build target</td><td>Next.js 16 + shadcn/ui + Tailwind v4</td><td>Repo scaffold</td></tr>
+        <tr><td>Check gate</td><td><code>npm run check</code> must pass before sign-off</td><td>AGENTS.md</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
