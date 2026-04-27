@@ -156,6 +156,8 @@ Before writing any element's `style=""` attribute, every CSS property used must 
 - `z-index`
 - `overflow` (hidden, scroll, auto — on containers)
 - `overflow-x`, `overflow-y`
+
+**`overflow: hidden` + `border-radius` are always a pair.** Any element with `overflow: hidden` must also have its `border-radius` extracted and applied — on layout containers (map panels, sidebars, sticky asides) just as much as on UI components (cards, images, badges). A container with `overflow: hidden` but no `border-radius` produces square corners even when the live page shows rounded ones. Never set `overflow: hidden` on a container without checking whether the live element also has a `border-radius`.
 - `isolation` (isolate — for stacking context control in z-index conflict resolution)
 
 **Spacing**
@@ -442,6 +444,28 @@ When an SVG illustration is extracted from Figma, extract the full SVG markup in
 
 When an icon changes fill or stroke color in an active or hover state, both states appear in the Component State Gallery as separate `<svg>` elements with the correct fill/stroke attribute values.
 
+### Rule 6: SVG path data must be extracted — never hand-written or approximated
+
+**This is the most commonly violated SVG rule.** Rules 1–5 govern structure. This rule governs origin.
+
+Every `d` attribute on every `<path>`, every `<circle>`, every `<polygon>` — all vector geometry must come from one of two authoritative sources:
+
+1. **Live DOM extraction** — `mcp__playwright__browser_evaluate` querying `svg.outerHTML` or `path.getAttribute('d')` on the live page.
+2. **Figma export** — full SVG markup exported directly from the Figma file.
+
+**Never do any of the following:**
+- Write path data from memory or training data (e.g. "I know what the Airbnb Bélo looks like")
+- Reconstruct a logo or icon from geometric primitives as an approximation
+- Simplify or re-derive a complex path into fewer curves
+- Copy path data from a prior test file or another prototype
+- **Substitute a Lucide, Heroicons, FontAwesome, or any other icon library component in place of a custom SVG.** If the target site uses a custom icon (e.g. a trophy badge, a branded star, a proprietary glyph), extract the actual `<svg>` from the live DOM. An icon library substitute may look similar but is never the same shape and always produces a mismatch. If extraction fails, leave `<!-- SVG PENDING EXTRACTION: [icon name / location] -->` and complete extraction before continuing — do not ship a substitute.
+
+A hand-written approximation satisfies Rules 1–5 perfectly and still produces the wrong logo. The visual test is not "does it look similar at a glance" — it is "does it match the live page exactly."
+
+**Brand logos are the highest-risk case.** The Airbnb Bélo, the Airbnb wordmark, and any other brand mark must always be extracted from the live DOM. They are never reconstructed from scratch regardless of how recognizable the shape appears to be.
+
+**If extraction is not yet complete:** this is a blocker. Do not write a `<svg>` tag with approximate geometry as a placeholder. Leave a `<!-- SVG PENDING EXTRACTION -->` comment and complete extraction before continuing.
+
 ---
 
 ## PHASE 0: SILENT PRE-BUILD
@@ -516,6 +540,21 @@ For every section of every prototype, classify its content:
 7. Distinctiveness Log — Distinctive Element name and CSS technique
 8. Internal Debate Summary — quality scores
 
+**COMPONENT SPEC FILES — read before building each component:**
+For every section in PAGE_TOPOLOGY.md, check for `docs/research/components/[section-slug].spec.md`. Read every present spec file now via the `Read` tool. These files contain exact `getComputedStyle()` output per DOM node for the live source page — they are the primary per-element CSS source and take precedence over the Token Resolution Table for individual element values when the two conflict.
+
+If a spec file's Overview section contains a `Sub-components:` field, it is a wrapper spec — read every listed sub-component spec file immediately and add each to the inventory. The sub-component specs contain the per-element CSS detail; the wrapper describes only the outer container.
+
+```
+SPEC FILE INVENTORY
+  [section-slug]: [present — path confirmed read via Read tool | absent]
+    Sub-component specs: [list each path — confirmed read via Read tool | none]
+  [section-slug]: [present — path confirmed read via Read tool | absent]
+  ...
+  Sections with spec files:    [N]
+  Sections without spec files: [list — will build from Token Resolution Table only]
+```
+
 ---
 
 ### Step 4: Asset Extraction and Preparation
@@ -536,6 +575,7 @@ For every section of every prototype, classify its content:
 - For images over 100KB: use absolute URL `http://localhost:3000/prototypes/images/[file]`
 - Record every image in the Image Asset Catalog below
 - No relative paths. No expiring CDN URLs.
+- **BLOCKER — Incomplete or truncated asset URLs:** If any image URL from extraction data is incomplete, truncated, or missing, do NOT write a single `<img>` tag until the complete URL is resolved. Use `mcp__playwright__browser_evaluate` on the live page to query `img[src*="[cdn-domain]"]` and extract the full URLs. This applies to CDN paths, SVG srcs, font URLs, and any externally-hosted asset. Never substitute placeholder image sources (Unsplash, picsum.photos, lorempixel, or any synthetic image service) as a workaround — this is a Rule 2 violation regardless of the reason the URL was incomplete.
 
 **SVG Asset Catalog:**
 ```
@@ -607,6 +647,7 @@ Build rule: Copy rows directly from the Living Token Reference table in the MOCK
 - Missing values get a named benchmark fallback and a flag in the Build Decision Log
 - No CSS value in any HTML file is absent from this table
 - No CSS property in any inline `style=""` uses a value not in this table
+- Every CSS value in any inline `style=""` must match the Token Resolution Table value verbatim — `24px` is not `20px`, `1.6` is not `1.5`. Never approximate. If a value looks wrong in context, the table entry may be wrong — update the table first, then update the HTML.
 
 After completing the table, record:
 
@@ -676,6 +717,70 @@ COMPONENT REGISTRY
   Gallery states needed:  [list all states that appear in Component State Gallery]
   CSS allowlist check:    [every property in this component confirmed against Column A | B]
 ```
+
+---
+
+### Step 7.5: Registry Validation Gate
+
+Before proceeding to the Build Plan, verify every P0 and P1 registry entry is complete. An entry with any empty or `[TBD]` field is not a spec — it is a guess. The spec and the build must be separated: do not begin writing HTML until this gate passes.
+
+```
+REGISTRY VALIDATION
+  All P0 entries complete (no empty or [TBD] fields): [PASS | FAIL — list incomplete entries]
+  All P1 entries complete:                            [PASS | FAIL — list incomplete entries]
+  All interaction models identified (none defaulted): [PASS | FAIL — list scroll-untested sections]
+  All States: rows populated (not left empty):        [PASS | FAIL — list]
+```
+
+If any P0 entry fails: complete the registry entry before writing a single line of HTML for that component. Do not proceed to Step 8 with unresolved P0 registry gaps.
+
+---
+
+### Step 7.6: Complexity Budget Check
+
+Before writing any HTML, count P0 and P1 entries in the Component Registry and check for Complex-rated components.
+
+```
+COMPLEXITY BUDGET
+  P0 component count:      [N]
+  P1 component count:      [N]
+  Total P0+P1:             [N]
+  Complex-rated entries:   [list registry entries where Complexity: Complex — or none]
+  Verdict:                 [Standard Build | Focused Component Mode]
+  Triggered by:            [total P0+P1 > 7 | 2+ Complex-rated entries | P0 entry is Complex-rated | none]
+```
+
+**Standard Build** (total P0+P1 ≤ 7, no Complex P0 entries): proceed to Step 8 as normal.
+
+**Focused Component Mode** (threshold exceeded): build execution changes for every P0 and P1 component:
+
+1. Build one component at a time in Component Assembly Order.
+2. For each component: run PRE-BUILD RETRIEVAL (including reading the spec file if present) → write the component's HTML → immediately run a Focused Component Reflection → fix any failures → only then proceed to the next component. Do not start the next component until the current one passes.
+3. After all P0 components pass, assemble into the screen structure. Then proceed to P1 components following the same pattern.
+
+```
+FOCUSED COMPONENT REFLECTION — [ComponentName]
+  Screenshot viewed immediately before writing markup:    [yes]
+  Spec file read immediately before writing markup:       [yes | not present]
+
+  CSS spot-check (3 most critical properties for this component):
+    [property]: expected [value from spec file or token table] — implemented [value in HTML] — [MATCH | FIX]
+    [property]: expected [value] — implemented [value] — [MATCH | FIX]
+    [property]: expected [value] — implemented [value] — [MATCH | FIX]
+
+  Interaction model: expected [from registry] — implemented [in HTML] — [MATCH | FIX]
+  All component states present in HTML:  [yes | no — list missing]
+  All assets rendered:                   [yes | no — list missing]
+
+  Root-cause for any FIX:
+    token value wrong      → update Token Resolution Table first, then fix all HTML using that token
+    implementation wrong   → fix this element's HTML directly
+
+  Fix applied:    [description | n/a]
+  Final result:   [PASS | DEFERRED — reason]
+```
+
+Maximum 1 fix cycle per component in Focused Component Mode. A component still failing after 1 fix cycle is marked `[DEFERRED]` in the HTML and added to the Partial Prototype Protocol list.
 
 ---
 
@@ -1168,10 +1273,14 @@ class="[component-class]"       ← for :hover pseudo-state in <style> block
 
 ### Component Pre-Build Retrieval
 
-Before writing HTML for any P0 component:
+Before writing HTML for any P0 component, locate its corresponding section screenshot in `docs/design-references/` and view it via the `Read` tool. Never build from memory of a previously viewed screenshot — view it immediately before writing markup.
 
 ```
 PRE-BUILD RETRIEVAL — [ComponentName]
+  Section screenshot:       [view via Read tool NOW — path: docs/design-references/[name].png — confirmed viewed: yes]
+  Spec file:                [read docs/research/components/[section-slug].spec.md via Read tool NOW — confirmed viewed: yes | not present — building from Token Resolution Table only]
+  Sub-component specs:      [if spec file Overview contains Sub-components: field — read each listed path via Read tool NOW and list here | none]
+  CSS value cross-check:    [for every token table row used by this component: confirm value matches spec file getComputedStyle() output — if discrepancy found, log TOKEN CORRECTION: [name] token=[X] spec=[Y], applied [Y] and update Token Resolution Table before writing HTML]
   Token table rows:         [every row used — name + final value]
   SVG assets:               [list from SVG Asset Catalog — or none]
   Image assets:             [list from Image Asset Catalog — or none]
@@ -1338,9 +1447,15 @@ REFLECTION LOG — [Screen Name]
     [Section slug]  | Background     | MATCH | DIFFERS — [actual vs. mockup]
     [Section slug]  | Typography     | MATCH | DIFFERS — [actual vs. mockup]
     [Section slug]  | Spacing/layout | MATCH | DIFFERS — [actual vs. mockup]
-    [Section slug]  | Components     | MATCH | DIFFERS — [missing/wrong — name]
+    [Section slug]  | Components     | MATCH | DIFFERS — [type: expected N, built M — list missing/wrong]
     [Section slug]  | Interaction    | MATCH | DIFFERS — [model mismatch — detail]
     [Repeat for every section. Never collapse to "all sections match" — each section needs its own row.]
+
+  Root-cause diagnostic for every DIFFERS row:
+    Before cycling: determine whether the root cause is a wrong token value (cascading — affects all elements using that token) or a wrong implementation (local — affects only this element).
+    Token value wrong → update Token Resolution Table first, then fix all HTML elements using that token
+    Implementation wrong → fix the HTML element directly
+    Record for each: "Root cause: [token | implementation] — fix: [description]"
 
   DOM-Only Surface Rule check:
     No background-image in inline styles: [yes | no — element]
@@ -1366,6 +1481,67 @@ REFLECTION LOG — [Screen Name]
 ```
 
 Maximum 2 cycles. Unresolvable after 2 → Partial Prototype Protocol.
+
+---
+
+### Visual QA Diff
+
+*Runs only when the Project Brief §15 lists a live URL as the product source. Skip if the source was Figma-only or screenshot-only.*
+
+Navigate to the source URL via browser MCP. Take full-page screenshots at 1440px and 390px. Save to `docs/design-references/[slug]-qa-ref-1440.png` and `docs/design-references/[slug]-qa-ref-390.png`.
+
+This phase runs two independent checks. Both must pass before the Evaluation Report.
+
+**Part 1 — Fidelity Check:** Did the prototype correctly implement what the live page specified? For each section, re-run the CSS extraction script on the live URL and compare the returned values against the section's spec file (if present) and the Token Resolution Table rows used for that component. Any divergence between live-extracted and prototype-implemented that was not an intentional change specified in the MOCKUP is a fidelity failure.
+
+**Part 2 — Edit Scope Check:** Are the intended changes present and correct, and are there no unsolicited changes to sections that should be unchanged?
+
+```
+VISUAL QA DIFF — [engagement_id]
+
+  Source URL:               [from PROJECT_BRIEF.md §15]
+  Reference screenshots:    [1440px path] | [390px path]
+
+  ── PART 1: FIDELITY CHECK (per section, in PAGE_TOPOLOGY.md order) ──────────────
+
+  [Section slug]
+    Spec file used:         [path | not present — token table only]
+    CSS spot-check (re-run extraction script on live URL for this section's container):
+      [property]: live=[value] | spec=[value] | implemented=[value in HTML] | [MATCH | FIDELITY FAIL]
+      [property]: live=[value] | spec=[value] | implemented=[value in HTML] | [MATCH | FIDELITY FAIL]
+    Screenshot comparison:  [key visual differences from live page — or MATCH]
+    Intentional changes:    [list properties intentionally different per MOCKUP — exempt from fidelity check]
+    Fidelity failures:      [list non-intentional divergences | none]
+    Root-cause:             [token value wrong → update table, re-check all users | implementation wrong → fix HTML directly]
+    Fix applied:            [description | n/a]
+
+  [Repeat for every section in PAGE_TOPOLOGY.md]
+
+  Part 1 summary:
+    Total sections checked:   [N]
+    Fidelity PASS:            [N]
+    Fidelity FAIL (fixed):    [N — list]
+    Fidelity FAIL (deferred): [N — list with reason]
+
+  ── PART 2: EDIT SCOPE CHECK ─────────────────────────────────────────────────────
+
+  Changed sections (intended change must be present and correct):
+    [Section slug] | Expected change: [from MOCKUP] | Present: [PASS | FAIL — detail]
+
+  Unchanged sections (no unsolicited diff allowed):
+    [Section slug] | Unsolicited diff found: [none | FAIL — describe what changed]
+
+  Mobile 390px:
+    [Section slug] | Fidelity: [PASS | FAIL] | Scope: [PASS | FAIL — detail]
+
+  Scope violations found: [none | list]
+  Action:                 [none | revert listed violations before Evaluation Report]
+```
+
+**Failure rules:**
+- Any Part 1 fidelity failure that is not an intentional change must be fixed before proceeding. If the root cause is a wrong token value, update the Token Resolution Table and re-check every component using that token.
+- Any Part 2 scope violation must be reverted before proceeding.
+- A prototype with unfixed fidelity failures or unreverted scope violations does not proceed to the Evaluation Report.
 
 ---
 
@@ -1505,6 +1681,8 @@ FIGMA MODE FIDELITY:  [PASS | CONDITIONAL_PASS | FAIL]
   Zero <img src="*.svg"> in file:                     [PASS | FAIL — count]
   All text elements have complete inline typography:  [PASS | PARTIAL — list]
   tokens.json complete:                               [PASS | FAIL]
+  All Image Asset Catalog entries rendered in output: [PASS | FAIL — list any dropped images]
+  All SVG Asset Catalog entries rendered in output:   [PASS | FAIL — list any dropped SVGs]
 
 OVERALL:              [PASS | CONDITIONAL_PASS | FAIL]
   Blockers:           [must be empty to ship]
@@ -1531,7 +1709,9 @@ If a P0 component fails reflection after 2 cycles:
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Token value unresolvable from all sources      | Named benchmark fallback. Document in Token Resolution Table. Flag in Evaluation Report.                                                    |
 | Font unavailable on Google Fonts CDN           | `@font-face` block with font files in `public/prototypes/fonts/`. If unavailable, escalate to Designer Agent — do not substitute silently.  |
-| Image unavailable after download               | Correctly-sized `<div>` with background-color matching the image region, `aria-label` describing the image. Document in Build Decision Log. |
+| Asset URL incomplete or truncated in extraction data | **Blocker.** Do not write any markup. Use `mcp__playwright__browser_evaluate` on the live page to extract the complete URL before proceeding. Never substitute placeholder image sources (Unsplash, picsum, etc.) — that is a Rule 2 violation. |
+| Image unavailable after download               | (1) Retry download. (2) Check if `docs/design-references/` screenshots show this image — crop and encode as base64. (3) Request the asset from Designer Agent. Only after all three fail: use a correctly-sized `<div>` with `background-color` matching the image region, `aria-label` describing the image. Flag as `VISUAL FIDELITY FAIL` in the Evaluation Report — this is not a routine contingency, it is a fidelity failure that blocks ship. |
+| SVG path data not yet extracted from live DOM  | **Blocker.** Do not write approximate geometry. Leave `<!-- SVG PENDING EXTRACTION -->` and run `mcp__playwright__browser_evaluate` to get `svg.outerHTML` from the live page before continuing. Never hand-write or reconstruct `d` attributes. |
 | SVG unavailable from Figma                     | Request re-export from Designer Agent. Do not substitute `<img src=".svg">` or a placeholder icon.                                          |
 | SVG IDs conflict within file                   | Apply prefix scheme `proto-[asset-slug]-[instance]`. |
 | `file://` open shows broken layout             | Identify cause (relative path, CSS needing server). Fix before proceeding.                                                                  |
@@ -1554,6 +1734,9 @@ If a P0 component fails reflection after 2 cycles:
 - [ ] Token Resolution Table complete — no var(), no aliases
 - [ ] CSS Conflict Pre-Analysis complete
 - [ ] Component Registry complete — CSS allowlist check per component
+- [ ] Registry Validation Gate (Step 7.5) passed — no P0 entries with empty or [TBD] fields
+- [ ] Complexity Budget Check (Step 7.6) complete — Standard Build or Focused Component Mode confirmed
+- [ ] Component spec files read via Read tool for all sections present in docs/research/components/
 - [ ] Prototype Concept Card complete
 - [ ] Build Commitment recorded
 
@@ -1669,3 +1852,4 @@ If a P0 component fails reflection after 2 cycles:
 - Never skip Gate 1 or Gate 2
 - Never mark a screen PASS without verifying at both `file://` and `file://?figma=true`
 - Never ship a file where `tokens.json` is missing any token from the Token Resolution Table
+- Never make unsolicited changes to elements not explicitly modified in the MOCKUP — every element not in scope must match the brief's §13 current-page description exactly; tightening spacing, swapping component variants, or changing colors in non-targeted areas are edit-scope violations regardless of aesthetic intent

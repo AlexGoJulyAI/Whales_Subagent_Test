@@ -1,45 +1,42 @@
-# Behaviors — gojuly-ux-v17
-*Extracted from live Playwright MCP session, 2026-04-13*
+# BEHAVIORS — Audible Authors Page
+# Source: https://www.audible.com/tag/genre/Authors-Audiobooks/adbl_rec_tag_4-21-1746
+# Extracted: 2026-04-27 via live Playwright extraction
 
----
+## Scroll-triggered behaviors
 
-## Scroll Behaviors
-- **Navbar:** sticky top-0 — stays fixed on scroll on both pages
-- **Sidebar:** fixed position, overflow-y: auto — scrolls independently from main content
-- **Home page:** standard document scroll, no snap points
-- **Learning page:** main content area may scroll independently of sidebar
+- **Nav header (adbl-nav-header)** → trigger: scroll at any position → state A: `position: static; top: auto; zIndex: auto` → state B: no change — nav is NOT sticky; it scrolls away with the page at all viewport sizes tested (1440px, 768px, 390px). No scroll-triggered appearance change observed.
+- **Promo banner (adbl-enhanced-upsell-banner)** → trigger: scroll → state A: visible at top → state B: scrolls away; no sticky behavior. No parallax, no fade.
+- **Smooth scroll library:** Detected: none → evidence: native browser scroll behavior observed; no `.lenis`, `.locomotive-scroll`, or custom scroll class found on any element.
+- **Auto-cycling content:** None detected. No carousels, rotating headlines, or auto-advancing slides.
+- **Dark-to-light transitions:** None. Single white background throughout.
+- **IntersectionObserver-driven tabs:** None detected. Category chips are link-based navigation, not scroll-driven tabs.
 
-## Click Behaviors
-- **Module card header:** toggles expanded/collapsed state (cursor-pointer)
-- **Sidebar section items:** toggle sub-section expand/collapse (cursor-pointer)
-- **Challenge items:** navigate to that challenge (cursor-pointer)
-- **Back arrow in sidebar:** navigates to previous page
-- **Home nav item:** navigates to /home
-- **"Go to Job Application" (NEW):** navigates to Red Team Sample Submission module
+## Click-driven behaviors
 
-## Hover States
-- **Module card header:** no visible hover state (cursor-pointer only)
-- **Sidebar items:** `hover:bg-gray-50` (#f9fafb) background on hover
-- **Sidebar collapse button:** `hover:bg-gray-100` background
-- **Nav items:** `hover:text-gray-800` for inactive nav items
-- **Buttons:** brightness change on hover (standard btn behavior)
+- **Browse nav (adbl-nav-mega-menu)** → trigger: click "Browse" button → state A: panel collapsed (height: 0, hidden) → state B: panel expanded, `display: grid`, background `rgb(255,255,255)`, showing three columns (Get Started, Popular Lists, Explore Audible). The panel container `.panel` has `role="group"`.
+  - Get Started links: Audiobooks, Podcasts, Audible Originals, Latino and Hispanic voices, All categories, Plans & Pricing
+  - Popular Lists links: Bestsellers, Coming Soon, New Releases, Best of the Year, Best of #BookTok
+  - Explore Audible links: Plus Catalog, Gifts, Help Center, About Audible, Blog, Sales & Deals, Accessibility
+  - **KEY OBSERVATION:** Popular Lists does NOT contain Series, Authors, or Narrators in the live Browse nav panel. Client described a version with those entries — likely an A/B test or login-state difference.
+- **Browse button indicator** → trigger: click → a `div#indicator` bar appears below the button text. Color: `rgb(20, 121, 207)` (blue), height: 4px.
+- **Category chips (adbl-chip)** → trigger: click → navigates to a sub-tag page. No client-side state toggle observed; all chips have `class="outline"` (unselected). No currently-active chip on the Authors page itself.
+- **Pagination** → trigger: click page number → loads new result set. Pagination includes: items-per-page selector (20/30/40/50), prev/next arrows, page numbers. Current page (1) is not linked; other page numbers are `<a>` links.
+- **Preview button (audiobook cover)** → trigger: click "▶ Preview" text below cover image → triggers audio playback via `<audio id="webPlayer">`.
 
-## Active/Selected States
-- **Nav Home item:** after: underline pseudo-element (2px, blue-600, full width)
-- **Active challenge:** bg-pink-50 (#fdf2f8) + border-l-4 border-pink-500 (#ec4899) + font-medium text-gray-900
+## Hover behaviors
 
-## Transitions
-- Sidebar: `transition-all` for collapse animation
-- Chevron rotation: `transition-transform` with `rotate-90`
-- Nav items: `transition-colors`
+- **adbl-nav-link (Browse panel links)** → changed properties: `color` change on hover; cursor: pointer → transition: none detected (instantaneous).
+- **Book title link (h3 a.bc-link)** → changed properties: `text-decoration: underline` on hover → transition: none (CSS class toggle).
+- **adbl-chip (category chips)** → changed properties: background and border color change expected → transition: appears instantaneous.
+- **"Try Standard free" / "Sign in" button (adbl-button.primary)** → changed properties: background darkens slightly on hover → transition: native.
+- **"Get this deal" button (adbl-button.primary sm in banner)** → bg: `rgb(255, 179, 51)` at rest → transition: all (computed).
 
-## v17 Prototype Interaction Model
-- Both screens: STATIC (no real navigation between them)
-- Home page: AI Red Team module shown COLLAPSED (static — no toggle needed)
-- Learning page: sidebar shown with "Go to Job Application" button (static)
-- The button and collapsed state are the VISUAL PROOF of the UX fix
-- No real tab-switching or accordion animation required in prototype
+## Responsive behaviors
 
-## Responsive
-- Desktop only (1440px viewport) for this prototype
-- Mobile out of scope
+- **Desktop (1440px):** Full three-column list item layout: cover image (bc-col-4, ~232px) + metadata (bc-col-7, ~448px) + price/CTA (bc-col-3, ~232px). Utility nav (Help, English–USD, Sign In) visible top-right. Category chips in single scroll row.
+- **Tablet (768px):** Same list-item structure maintained. Cover ~135px wide. Metadata takes ~480px. Price/CTA may wrap below or show condensed. Browse nav panel retains three columns.
+- **Mobile (390px):** Utility nav items (Help, Sign In) hidden; only Audible logo + Browse button visible in header. Browse nav shows Get Started + Popular Lists truncated (Explore Audible off-screen). List items: cover left ~135px, metadata right. Price/CTA column not visible in viewport without horizontal scroll.
+- **Breakpoint:** ~768px layout shift observed; below ~480px utility nav collapses fully.
+
+## Smooth scroll library
+Detected: none → evidence: no `.lenis`, `.locomotive-scroll`, or custom scroll-controller class found on any element. Native browser scroll behavior.
