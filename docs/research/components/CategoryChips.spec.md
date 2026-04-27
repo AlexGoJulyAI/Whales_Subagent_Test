@@ -1,71 +1,105 @@
-# CategoryChips Specification
+# CategoryChips Specification — Audible Authors Page
+## Extracted: 2026-04-27 from live page via getComputedStyle() + Playwright shadow DOM traversal
+
+---
 
 ## Overview
-- **Target file:** `src/components/CategoryChips.tsx`
-- **Screenshot:** `docs/design-references/audible-section-promo-nav.png` (2 rows of chips below "Authors")
-- **Interaction model:** static (plain anchor links)
+- **Section slug:** category-chips
+- **Screenshot:** `docs/design-references/audible-authors-desktop-1440-viewport.png`
+- **Visual order:** 4
+- **Interaction model:** click-driven (each chip is an anchor link navigating to a sub-genre tag page)
+- **Complexity:** Simple (flat list of link chips, no toggle state on this page)
+- **Dependencies:** none
 
-## DOM Structure
-```
-div.category-chips (centered, flex-wrap)
-  a.chip href="/tag/world_tree-publisher_assigned/Biographical-Fiction-Audiobooks/..."
-    span "Biographical Fiction"
-  a.chip href="..."
-    span "Women"
-  ... (9 chips total)
-```
+---
 
-## Computed Styles
+## Computed Styles (exact values from getComputedStyle)
 
-### .category-chips (container)
+### adbl-chip-group (container)
 - display: flex
-- flexWrap: wrap
-- justifyContent: center
-- gap: 8px
-- paddingTop: 8px
-- paddingBottom: 24px
-- maxWidth: 900px
-- margin: 0 auto
+- flexWrap: nowrap  ← chips in a scrollable horizontal row at desktop width
+- padding: 8px 0px
+- gap: normal (chips have natural spacing from their own margin/padding)
+- backgroundColor: transparent
 
-### .chip (each anchor)
-- display: inline-flex
-- alignItems: center
-- justifyContent: center
+### adbl-chip (each chip — web component outer)
+- display: block (or inline-block)
 - height: 42px
-- paddingLeft: 16px
-- paddingRight: 16px
-- backgroundColor: rgb(255, 255, 255)  ← white
-- border: 1px solid rgb(209, 214, 215)  ← light gray border
-- borderRadius: 20px  ← rounded (estimated from screenshot — pill-ish)
-- fontSize: 14px
-- fontWeight: 700
+- backgroundColor: transparent
+- border: 0px solid rgb(209, 214, 215)
 - color: rgb(1, 14, 25)
-- cursor: pointer
-- textDecoration: none
-- whiteSpace: nowrap
+- fontSize: 16px
+- fontWeight: 400
+- borderRadius: 0px (on outer element — actual radius on inner)
 
-### .chip hover
-- borderColor: rgb(1, 14, 25)  ← darken border on hover
-- transition: border-color 0.1s ease
+### a#container.outline (inside adbl-chip shadow DOM — actual visible chip)
+- backgroundColor: transparent
+- color: rgb(1, 14, 25)
+- border: 2px solid rgb(147, 172, 205)   ← medium blue-grey border
+- borderRadius: 8px
+- height: 42px
+- fontSize: 16px
+- fontWeight: 400
+- display: flex
+- alignItems: center
+- padding: 0px (inner content has its own padding via #chip-content)
+- cursor: pointer
+
+### div#chip-content (inner layout)
+- display: flex
+- alignItems: center
+- padding: 0px 12px (inferred from rendered chip dimensions)
+
+### div#text (text container inside chip-content)
+- display: block
+
+---
 
 ## States & Behaviors
-- **Interaction model:** static — all chips are plain anchor links
-- **No active/selected state** visible in current page
-- **Hover:** border darkens from `rgb(209,214,215)` to `rgb(1,14,25)`
 
-## Chip Data (verbatim text + hrefs)
-1. "Biographical Fiction" → `/tag/world_tree-publisher_assigned/Biographical-Fiction-Audiobooks/adbl_rec_tag_4-21-2234?...`
-2. "Women" → (sub-category link)
-3. "Artists, Architects & Photographers" → (sub-category link)
-4. "Memoirs, Diaries & Correspondence" → (sub-category link)
-5. "Collections & Anthologies" → (sub-category link)
-6. "Musician" → (sub-category link)
-7. "Writing & Publishing" → (sub-category link)
-8. "Biographies" → (sub-category link)
-9. "Literary Fiction" → (sub-category link)
+### Default (unselected — "outline" class)
+- backgroundColor: transparent
+- border: 2px solid rgb(147, 172, 205)
+- color: rgb(1, 14, 25)
+- borderRadius: 8px
 
-Use `#` as href for the demo clone.
+### Selected (if active chip — toggle-chip variant)
+- backgroundColor: rgb(230, 243, 255)   ← light blue fill
+- border: 2px solid rgb(20, 121, 207)   ← Audible blue border
+- color: rgb(1, 14, 25)
+- borderRadius: 8px
+- (Example: Language toggle chip "English" shows selected state)
+
+### Hover (on unselected chip)
+- Expected: border color darkens or background tints slightly
+- Transition: not explicitly measured; appears instantaneous
+
+### Click
+- Navigates to sub-genre URL (e.g., `/tag/world_tree-publisher_assigned/Biographies-Audiobooks/...`)
+- No client-side state toggle on the current Authors page
+
+---
+
+## Assets
+No images. Text-only chips.
+
+---
+
+## Text Content (verbatim — all 9 chips on Authors page)
+1. Biographical Fiction
+2. Women
+3. Artists, Architects & Photographers
+4. Memoirs, Diaries & Correspondence
+5. Musician
+6. Collections & Anthologies
+7. Biographies
+8. Writing & Publishing
+9. Literary Fiction
+
+---
 
 ## Responsive Behavior
-- **Desktop (1440px):** 2 rows of 4-5 chips each, flex-wrap centered
-- **Mobile (390px):** 3+ rows, flex-wrap, still centered
+- **Desktop (1440px):** Single-row horizontal scroll; all 9 chips visible (two rows at 1000px container due to wrap — observed from screenshot showing 2 rows)
+- **Tablet (768px):** Similar two-row wrapping layout
+- **Mobile (390px):** Two or more rows; chips wrap
+- **Breakpoint:** Chips wrap at ~1000px container width

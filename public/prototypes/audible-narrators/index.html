@@ -3,995 +3,1479 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audible Narrators — Direction A Prototype</title>
+<title>Narrators — Audible</title>
+<!--
+═══════════════════════════════════════════════════════════════════════
+WHALES PROTOTYPE
+Engagement: audible_narrators_2026_04_27
+Direction: B — Faceted Browse
+Built from: MOCKUP.html (MOCKUP_B) + USER_JOURNEY_B.html + PROJECT_BRIEF.md
+───────────────────────────────────────────────────────────────────────
+DESIGNER QUALITY SCORES
+  Clean: 4/5 | Effective: 5/5 | Intuitive: 4/5 | Visually Pleasing: 4/5
+───────────────────────────────────────────────────────────────────────
+FIGMA IMPORT INSTRUCTIONS
+  1. Open this file in a browser at: file://[path]/index.html?figma=true
+  2. Install "HTML to Figma" plugin by Builder.io in Figma
+  3. Open plugin → Paste URL → import
+  4. Every element becomes an editable Figma layer
+  5. Load tokens.json via Tokens Studio plugin for design token mapping
+  NOTE: Use the ?figma=true URL — it shows the Component State Gallery
+        with every component state visible simultaneously for import.
+        The default URL (no parameter) shows the interactive prototype.
+───────────────────────────────────────────────────────────────────────
+TOKEN RESOLUTION TABLE
+  body-bg            #ffffff        background-color       Page background
+  text-primary       #010e19        color                  Body text, headings
+  text-secondary     #061624        color                  Metadata labels
+  link-blue          #0e5b9b        color                  Title/author links
+  brand-blue         #1479cf        background-color,color Active states, chips, indicator
+  cta-amber          #ffa000        background-color       CTA buttons, Sign In
+  banner-cta-amber   #ffb333        background-color       Promo banner CTA
+  promo-navy         #131369        background-color       Promo banner bg
+  chip-border        #93accd        border-color           Default chip border
+  chip-selected-bg   #e6f3ff        background-color       Selected chip fill
+  chip-selected-border #1479cf      border-color           Selected chip border
+  divider            rgba(1,14,25,0.15) border-color       Item dividers
+  search-border      #7690b2        border-color           Search input border
+  browse-text        #4a6687        color                  Browse button text
+  sidebar-bg         #f8f8f8        background-color       Filter sidebar
+  sidebar-border     #e0e0e0        border-color           Sidebar right border
+───────────────────────────────────────────────────────────────────────
+COMPONENT REGISTRY
+  PromoBanner     P1  Simple   Static bar, navy bg, CTA button
+  NavHeader       P1  Moderate Click-driven Browse mega-menu toggle
+  PageH1          P1  Simple   Static heading "Narrators"
+  FilterSidebar   P0  Moderate Click-driven chips, additive AND filter
+  ActiveFilterTags P0 Simple   Shown when >=1 filter active, × removes
+  AudiobookList   P0  Complex  List items with cover+meta+CTA
+  Pagination      P2  Simple   Static show/page controls
+  Footer          P2  Simple   Static copyright row
+───────────────────────────────────────────────────────────────────────
+IMAGE ASSET CATALOG
+  cover-1  https://m.media-amazon.com/images/I/51Ga5GuElyL._SL250_.jpg  250x250
+  cover-2  https://m.media-amazon.com/images/I/41XnJfF2tZL._SL250_.jpg  250x250
+  cover-3  https://m.media-amazon.com/images/I/41TJ4koIMLL._SL250_.jpg  250x250
+  cover-4  https://m.media-amazon.com/images/I/518TJ0l76ZL._SL250_.jpg  250x250
+  cover-5  https://m.media-amazon.com/images/I/41yJ75gpTGL._SL250_.jpg  250x250
+  cover-6  https://m.media-amazon.com/images/I/51KKbSsJBLL._SL250_.jpg  250x250
+═══════════════════════════════════════════════════════════════════════
+-->
+
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background-color: #FFFFFF; color: #010E19; }
-  button { cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; }
-  input { font-family: Arial, sans-serif; }
-  a { text-decoration: none; color: inherit; }
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; }
+img, svg { display: block; }
+button { border: none; background: none; }
+a { text-decoration: none; }
 
-  /* Sticky nav */
-  .site-nav { position: sticky; top: 0; z-index: 100; background-color: #FFFFFF; border-bottom: 1px solid rgba(1,14,25,0.15); }
-  .nav-row-1 { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 16px; }
-  .nav-row-2 { display: flex; align-items: center; padding: 0 24px; border-top: 1px solid rgba(1,14,25,0.08); }
-  .nav-tab { position: relative; padding: 12px 16px; font-size: 16px; font-weight: 600; color: #010E19; cursor: pointer; background: none; border: none; font-family: Arial, sans-serif; white-space: nowrap; }
-  .nav-tab:hover { color: #1479CF; }
-  .nav-tab.active { color: #1479CF; }
-  .nav-tab.active::after { content: ''; position: absolute; bottom: 0; left: 4px; right: 4px; height: 4px; background-color: #1479CF; border-radius: 4px 4px 0 0; }
+/* ── CURSOR ── */
+button, a, .chip-btn, .sort-btn, .filter-tag-x, .list-item-title-link,
+.browse-link, .pagination-btn { cursor: pointer; }
 
-  /* Browse dropdown */
-  .nav-container { position: relative; }
-  .browse-dropdown { display: none; position: absolute; top: 100%; left: 0; background-color: #FFFFFF; box-shadow: 0 4px 8px rgba(1,14,25,0.15), 0 8px 24px rgba(1,14,25,0.1), 0 16px 48px rgba(1,14,25,0.05); border-radius: 0 0 8px 8px; z-index: 200; min-width: 640px; padding: 24px; }
-  .browse-dropdown.open { display: flex; gap: 40px; }
-  .browse-col-heading { font-size: 12px; font-weight: 700; color: #4A6687; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
-  .browse-dropdown-link { display: block; font-size: 16px; color: #010E19; padding: 6px 0; cursor: pointer; }
-  .browse-dropdown-link:hover { color: #1479CF; }
-  .browse-dropdown-link.narrators-link { font-weight: 400; }
+/* ── FOCUS RING ── */
+:focus-visible { outline: 2px solid #1479cf; outline-offset: 2px; border-radius: 2px; }
 
-  /* Search bar */
-  .search-input { width: 100%; height: 48px; border: 2px solid #93ACCD; border-radius: 8px; padding: 0 48px 0 16px; font-size: 16px; color: #010E19; background-color: #FFFFFF; outline: none; }
-  .search-input:focus { outline: 2px solid #1479CF; outline-offset: -1px; border-color: #1479CF; }
-  .search-wrapper { position: relative; max-width: 900px; margin: 0 auto; }
-  .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+/* ── CHIP HOVER ── */
+.chip-btn:hover {
+  border-color: #1479cf;
+  background-color: #f0f7ff;
+}
+.chip-btn.chip-selected:hover {
+  background-color: #d4eaff;
+  border-color: #0e5b9b;
+}
 
-  /* Filter chips */
-  .chip { display: inline-flex; align-items: center; height: 42px; padding: 8px 16px; border: 2px solid #93ACCD; border-radius: 8px; font-size: 16px; font-weight: 400; color: #010E19; background-color: transparent; cursor: pointer; white-space: nowrap; font-family: Arial, sans-serif; }
-  .chip:hover { border-color: #1479CF; color: #1479CF; }
-  .chip.chip-active { background-color: #1479CF; color: #FFFFFF; border-color: #1479CF; }
+/* ── SORT BTN HOVER ── */
+.sort-btn:hover { background-color: #f0f0f0; }
+.sort-btn.sort-active:hover { background-color: #0e5b9b; }
 
-  /* Narrator cards */
-  .narrator-card { background-color: #FFFFFF; border: 1px solid #93ACCD; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(1,14,25,0.08); cursor: pointer; }
-  .narrator-card:hover { box-shadow: 0 4px 12px rgba(1,14,25,0.15); border-color: #1479CF; }
+/* ── BROWSE LINK HOVER ── */
+.browse-link:hover { text-decoration: underline; }
+.browse-nav-btn:hover { color: #010e19; }
 
-  /* Modal */
-  .modal-overlay { display: none; position: fixed; inset: 0; background-color: rgba(1,14,25,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 24px; }
-  .modal-overlay.open { display: flex; }
-  .modal-panel { background-color: #FFFFFF; border-radius: 8px; padding: 32px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; z-index: 1001; }
+/* ── LIST ITEM TITLE HOVER ── */
+.list-item-title-link:hover { text-decoration: underline; }
+.list-item-meta-link:hover { text-decoration: underline; }
 
-  /* CTAs */
-  .cta-primary { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; background-color: #FFA000; border-radius: 32px; font-size: 14px; font-weight: 700; color: #010E19; border: none; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
-  .cta-primary:hover { background-color: #E6900A; }
-  .cta-secondary { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; background-color: transparent; border-radius: 32px; font-size: 14px; font-weight: 600; color: #010E19; border: 2px solid #93ACCD; cursor: pointer; font-family: Arial, sans-serif; white-space: nowrap; }
-  .cta-secondary:hover { border-color: #1479CF; color: #1479CF; }
+/* ── CTA BUTTON HOVER ── */
+.btn-amber:hover { background-color: #e59000; }
+.btn-amber-sm:hover { background-color: #e09a00; }
 
-  /* Nav icon links */
-  .nav-link { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #010E19; cursor: pointer; white-space: nowrap; }
-  .nav-link:hover { color: #1479CF; }
+/* ── FILTER TAG X HOVER ── */
+.filter-tag-x:hover { opacity: 0.7; }
 
-  /* Pagination */
-  .page-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #93ACCD; border-radius: 4px; font-size: 14px; color: #010E19; cursor: pointer; background-color: #FFFFFF; font-family: Arial, sans-serif; }
-  .page-btn:hover { border-color: #1479CF; color: #1479CF; }
-  .page-btn.page-active { background-color: #1479CF; color: #FFFFFF; border-color: #1479CF; }
-  .page-btn-text { display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; height: 36px; border: 1px solid #93ACCD; border-radius: 4px; font-size: 14px; color: #010E19; cursor: pointer; background-color: #FFFFFF; font-family: Arial, sans-serif; }
-  .page-btn-text:hover { border-color: #1479CF; color: #1479CF; }
+/* ── NAV BROWSE BTN ACTIVE ── */
+.browse-nav-btn.browse-open { color: #010e19; }
 
-  /* Modal close button */
-  .modal-close-btn { cursor: pointer; }
+/* ── PAGINATION HOVER ── */
+.pagination-btn:hover { background-color: #f0f7ff; color: #0e5b9b; }
+.pagination-btn.pg-active { background-color: #1479cf; color: #ffffff; }
+.pagination-btn.pg-active:hover { background-color: #0e5b9b; }
 
-  /* Figma gallery */
-  #figma-gallery { display: none; flex-direction: column; gap: 48px; padding: 48px; background-color: #F0F4F8; }
-  .figma-section-title { font-size: 20px; font-weight: 700; color: #010E19; margin-bottom: 16px; }
-  .figma-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
-  .figma-label { font-size: 11px; color: #4A6687; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+/* ── BROWSE PANEL ── */
+#browse-panel { display: none; }
+#browse-panel.browse-panel-open { display: block; }
 
-  /* Utility */
-  .screen { display: none; }
-  .screen.active { display: block; }
-  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+/* ── BROWSE INDICATOR ── */
+.browse-indicator { display: none; }
+.browse-indicator.indicator-visible { display: block; }
+
+/* ── MOBILE FILTER DRAWER ── */
+@media (max-width: 767px) {
+  .filter-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 500;
+    transition: left 0.2s ease;
+    border-right: 1px solid #e0e0e0;
+  }
+  .filter-sidebar.drawer-open { left: 0; }
+  .mobile-filter-btn { display: flex; }
+  .mobile-overlay { display: none; position: fixed; inset: 0; background-color: rgba(1,14,25,0.45); z-index: 499; }
+  .mobile-overlay.overlay-visible { display: block; }
+  .page-two-col { flex-direction: column; }
+  .results-col { padding: 12px 16px; }
+  .list-item-row { flex-direction: column; gap: 10px; }
+  .cover-col { width: 100%; }
+  .cover-img { width: 120px; height: 120px; }
+  .price-col { padding-top: 0; }
+}
+@media (min-width: 768px) {
+  .mobile-filter-btn { display: none; }
+  .mobile-overlay { display: none !important; }
+}
+
+/* ── SCROLL BEHAVIOR ── */
+.results-col { overflow-y: auto; }
 </style>
 </head>
-<body>
 
+<body style="background-color: #ffffff; font-family: Arial, sans-serif; color: #010e19; min-width: 320px; overflow-x: hidden;">
+
+<!-- ═══════════════════════════════════════════════════════
+     PROTOTYPE ROOT — shown by default, hidden at ?figma=true
+     ═══════════════════════════════════════════════════════ -->
 <div id="prototype-root">
 
-  <!-- ═══════════════════════════════════════════
-       SCREEN 1: HOME + BROWSE NAV
-  ═══════════════════════════════════════════ -->
-  <section data-screen="home" class="screen active">
+  <!-- ── 1. PROMO BANNER ── -->
+  <div style="
+    position: relative;
+    width: 100%;
+    height: 54px;
+    background-color: #131369;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px;
+    z-index: 10;
+  ">
+    <span style="font-size: 14px; font-weight: 700; color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Special Prime Offer</span>
+    <span style="font-size: 14px; color: rgba(255,255,255,0.85); padding: 0 8px; display: block; position: relative;">|</span>
+    <span style="font-size: 14px; font-weight: 400; color: #ffffff; font-family: Arial, sans-serif;">2 months free with your first Audible trial</span>
+    <a href="https://www.audible.com/subscription/confirmation?membershipAsin=B0DBMB6PZN&promoCode=E2UU5X8XQI"
+       style="
+         background-color: #ffb333;
+         color: #010e19;
+         font-size: 14px;
+         font-weight: 600;
+         padding: 8px 16px;
+         border-radius: 9999px;
+         white-space: nowrap;
+         font-family: Arial, sans-serif;
+         display: inline-block;
+         margin-left: 8px;
+       "
+       class="btn-amber-sm">Get this deal</a>
+  </div>
 
-    <!-- Sticky Nav -->
-    <nav class="site-nav" id="home-nav">
-      <div class="nav-container" id="home-nav-container">
-        <!-- Row 1 -->
-        <div class="nav-row-1">
-          <!-- Logo -->
-          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-            <svg width="108" height="28" viewBox="0 0 108 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Audible">
-              <text x="0" y="22" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#010E19">audible</text>
-              <text x="74" y="22" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#4A6687" letter-spacing="0.5">an amazon company</text>
-            </svg>
-          </div>
+  <!-- ── 2. NAV HEADER ── -->
+  <div style="
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(1,14,25,0.15);
+    z-index: 200;
+  ">
+    <!-- Top row: logo + utility nav -->
+    <div style="
+      display: flex;
+      align-items: center;
+      height: 80px;
+      padding: 0 24px;
+      gap: 16px;
+    ">
+      <!-- Audible Logo SVG -->
+      <!-- SVG extracted from live page via spec: 140x55px, role=img, aria-label="audible, an amazon company" -->
+      <a href="#" style="display: flex; align-items: center; flex-shrink: 0;" aria-label="audible, an amazon company">
+        <svg width="140" height="55" viewBox="0 0 140 55" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="audible, an amazon company" focusable="false">
+          <!-- Audible wordmark -->
+          <text x="2" y="34" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#010e19" letter-spacing="-0.5">audible</text>
+          <!-- Wave/headphone logomark — extracted approximation; SVG PENDING FULL EXTRACTION from live DOM -->
+          <g transform="translate(108, 8)">
+            <ellipse cx="12" cy="18" rx="11" ry="14" fill="none" stroke="#ffa000" stroke-width="2.5"/>
+            <path d="M4 18 Q4 10 12 10 Q20 10 20 18" fill="none" stroke="#ffa000" stroke-width="2.5"/>
+            <rect x="2" y="15" width="4" height="8" rx="2" fill="#ffa000"/>
+            <rect x="18" y="15" width="4" height="8" rx="2" fill="#ffa000"/>
+          </g>
+          <!-- "an amazon company" sub-text -->
+          <text x="2" y="50" font-family="Arial, sans-serif" font-size="9" font-weight="400" fill="#4a6687" letter-spacing="0.02em">an amazon company</text>
+        </svg>
+      </a>
 
-          <!-- Search input -->
-          <div style="flex:1;max-width:600px;position:relative;">
-            <input type="text" placeholder="Search titles, authors, narrators" style="width:100%;height:44px;border:2px solid #93ACCD;border-radius:8px;padding:0 44px 0 16px;font-size:16px;color:#010E19;background-color:#FFFFFF;outline:none;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="8.5" cy="8.5" r="5.5" stroke="#4A6687" stroke-width="2"/>
-                <path d="M13 13L17 17" stroke="#4A6687" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </span>
-          </div>
+      <div style="flex: 1;"></div>
 
-          <!-- Right nav icons -->
-          <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
-            <span class="nav-link">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="7" r="4" stroke="#010E19" stroke-width="1.5"/><path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#010E19" stroke-width="1.5" stroke-linecap="round"/></svg>
-              Sign In
-            </span>
-            <span class="nav-link">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 4h12" stroke="#010E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="18.5" r="1.5" fill="#010E19"/><circle cx="17" cy="18.5" r="1.5" fill="#010E19"/></svg>
-              Cart
-            </span>
-          </div>
-        </div>
-
-        <!-- Row 2: Nav tabs + Browse dropdown -->
-        <div class="nav-row-2" style="position:relative;">
-          <button class="nav-tab active" id="home-browse-btn" onclick="toggleBrowseHome()">Browse</button>
-          <button class="nav-tab">Library</button>
-          <button class="nav-tab">Wish List</button>
-          <button class="nav-tab">Plans &amp; Pricing</button>
-
-          <!-- Browse mega menu -->
-          <div class="browse-dropdown open" id="home-browse-menu">
-            <div>
-              <div class="browse-col-heading">Get Started</div>
-              <a class="browse-dropdown-link">Audiobooks</a>
-              <a class="browse-dropdown-link">Podcasts</a>
-              <a class="browse-dropdown-link">Audible Originals</a>
-              <a class="browse-dropdown-link">Sleep</a>
-              <a class="browse-dropdown-link">Latino and Hispanic voices</a>
-              <a class="browse-dropdown-link">All categories</a>
-            </div>
-            <div>
-              <div class="browse-col-heading">Popular Lists</div>
-              <a class="browse-dropdown-link">Bestsellers</a>
-              <a class="browse-dropdown-link">Coming Soon</a>
-              <a class="browse-dropdown-link">New Releases</a>
-              <a class="browse-dropdown-link narrators-link" onclick="navigateToNarrators()" style="font-weight:600;color:#1479CF;">Narrators</a>
-              <a class="browse-dropdown-link">Best of #BookTok</a>
-            </div>
-            <div>
-              <div class="browse-col-heading">Explore Audible</div>
-              <a class="browse-dropdown-link">Plus Catalog</a>
-              <a class="browse-dropdown-link">Gifts</a>
-              <a class="browse-dropdown-link">Membership FAQs</a>
-              <a class="browse-dropdown-link">Help Center</a>
-              <a class="browse-dropdown-link">About Audible</a>
-              <a class="browse-dropdown-link">Blog</a>
-              <a class="browse-dropdown-link">Sales &amp; Deals</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Home hero (simplified — focus is Browse dropdown) -->
-    <div style="padding:64px 24px;text-align:center;background-color:#F0F4F8;min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-      <div style="font-size:40px;font-weight:700;color:#010E19;line-height:48px;margin-bottom:16px;">Listen to a great story today.</div>
-      <div style="font-size:18px;color:#061624;margin-bottom:32px;">Get started with a free trial. Cancel anytime.</div>
-      <button class="cta-primary" style="font-size:16px;height:48px;padding:0 32px;">Try Audible free</button>
-      <div style="margin-top:16px;font-size:14px;color:#4A6687;">↑ Click <strong>Browse</strong> above to open the nav menu and see <strong>Narrators</strong></div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       SCREEN 2: NARRATORS PAGE
-  ═══════════════════════════════════════════ -->
-  <section data-screen="narrators" class="screen">
-
-    <!-- Sticky Nav -->
-    <nav class="site-nav" id="narrators-nav">
-      <div class="nav-container" id="narrators-nav-container">
-        <!-- Row 1 -->
-        <div class="nav-row-1">
-          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-            <svg width="108" height="28" viewBox="0 0 108 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Audible">
-              <text x="0" y="22" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#010E19">audible</text>
-              <text x="74" y="22" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="#4A6687" letter-spacing="0.5">an amazon company</text>
-            </svg>
-          </div>
-          <div style="flex:1;max-width:600px;position:relative;">
-            <input type="text" placeholder="Search titles, authors, narrators" style="width:100%;height:44px;border:2px solid #93ACCD;border-radius:8px;padding:0 44px 0 16px;font-size:16px;color:#010E19;background-color:#FFFFFF;outline:none;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="#4A6687" stroke-width="2"/><path d="M13 13L17 17" stroke="#4A6687" stroke-width="2" stroke-linecap="round"/></svg>
-            </span>
-          </div>
-          <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
-            <span class="nav-link">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="#010E19" stroke-width="1.5"/><path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#010E19" stroke-width="1.5" stroke-linecap="round"/></svg>
-              Sign In
-            </span>
-            <span class="nav-link">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 4h12" stroke="#010E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="18.5" r="1.5" fill="#010E19"/><circle cx="17" cy="18.5" r="1.5" fill="#010E19"/></svg>
-              Cart
-            </span>
-          </div>
-        </div>
-
-        <!-- Row 2 -->
-        <div class="nav-row-2" style="position:relative;">
-          <button class="nav-tab" id="narrators-browse-btn" onclick="toggleBrowseNarrators()">Browse</button>
-          <button class="nav-tab">Library</button>
-          <button class="nav-tab">Wish List</button>
-          <button class="nav-tab">Plans &amp; Pricing</button>
-
-          <!-- Browse mega menu on narrators page -->
-          <div class="browse-dropdown" id="narrators-browse-menu">
-            <div>
-              <div class="browse-col-heading">Get Started</div>
-              <a class="browse-dropdown-link">Audiobooks</a>
-              <a class="browse-dropdown-link">Podcasts</a>
-              <a class="browse-dropdown-link">Audible Originals</a>
-              <a class="browse-dropdown-link">Sleep</a>
-              <a class="browse-dropdown-link">Latino and Hispanic voices</a>
-              <a class="browse-dropdown-link">All categories</a>
-            </div>
-            <div>
-              <div class="browse-col-heading">Popular Lists</div>
-              <a class="browse-dropdown-link">Bestsellers</a>
-              <a class="browse-dropdown-link">Coming Soon</a>
-              <a class="browse-dropdown-link">New Releases</a>
-              <a class="browse-dropdown-link narrators-link" style="font-weight:600;color:#1479CF;">Narrators</a>
-              <a class="browse-dropdown-link">Best of #BookTok</a>
-            </div>
-            <div>
-              <div class="browse-col-heading">Explore Audible</div>
-              <a class="browse-dropdown-link">Plus Catalog</a>
-              <a class="browse-dropdown-link">Gifts</a>
-              <a class="browse-dropdown-link">Membership FAQs</a>
-              <a class="browse-dropdown-link">Help Center</a>
-              <a class="browse-dropdown-link">About Audible</a>
-              <a class="browse-dropdown-link">Blog</a>
-              <a class="browse-dropdown-link">Sales &amp; Deals</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Page content -->
-    <div style="max-width:1200px;margin:0 auto;padding:40px 24px;">
-
-      <!-- H1 -->
-      <h1 style="text-align:center;font-size:48px;font-weight:700;color:#010E19;line-height:52px;margin-bottom:24px;">Narrators</h1>
-
-      <!-- Search bar -->
-      <div class="search-wrapper" style="margin-bottom:24px;">
-        <input type="text" class="search-input" id="narrator-search" placeholder="Search by narrator name" oninput="filterNarrators(this.value)" />
-        <span class="search-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="8.5" cy="8.5" r="5.5" stroke="#4A6687" stroke-width="2"/>
-            <path d="M13 13L17 17" stroke="#4A6687" stroke-width="2" stroke-linecap="round"/>
+      <!-- Utility nav: Help | English–USD | Sign In -->
+      <nav style="display: flex; align-items: center; gap: 16px;" aria-label="Utility navigation">
+        <a href="#" style="font-size: 16px; color: #010e19; font-family: Arial, sans-serif;">Help</a>
+        <a href="#" style="font-size: 16px; color: #010e19; font-family: Arial, sans-serif; display: flex; align-items: center; gap: 4px;">
+          English – USD
+          <svg width="10" height="6" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M1 1l4 4 4-4" stroke="#010e19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           </svg>
-        </span>
+        </a>
+        <a href="#"
+           style="
+             display: inline-flex;
+             align-items: center;
+             background-color: #ffa000;
+             color: #010e19;
+             font-size: 16px;
+             font-weight: 600;
+             padding: 8px 12px;
+             border-radius: 9999px;
+             height: 42px;
+             white-space: nowrap;
+             font-family: Arial, sans-serif;
+           "
+           class="btn-amber">Sign in</a>
+      </nav>
+    </div>
+
+    <!-- Bottom row: Browse + search -->
+    <div style="
+      display: flex;
+      align-items: center;
+      height: 56px;
+      padding: 0 24px;
+      border-top: 1px solid rgba(1,14,25,0.15);
+      position: relative;
+    ">
+      <!-- Browse button -->
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column;">
+        <button
+          id="browse-btn"
+          class="browse-nav-btn"
+          onclick="toggleBrowse()"
+          aria-expanded="false"
+          aria-controls="browse-panel"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 52px;
+            padding: 0 12px 0 0;
+            background-color: transparent;
+            color: #4a6687;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            font-weight: 400;
+          "
+        >
+          <!-- Discover icon: compass/grid approximation -->
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M3 9h7V3H3v6zm0 9h7v-6H3v6zm9 0h7v-6h-7v6zm0-15v6h7V3h-7z" fill="#4a6687"/>
+          </svg>
+          Browse
+          <svg width="10" height="6" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M1 1l4 4 4-4" stroke="#4a6687" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </button>
+        <!-- Active indicator bar -->
+        <div id="browse-indicator" class="browse-indicator" style="
+          height: 4px;
+          background-color: #1479cf;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        "></div>
       </div>
 
-      <!-- Filter band -->
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:20px;margin-bottom:20px;">
-
-        <!-- Genre -->
-        <div style="margin-bottom:16px;">
-          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Genre</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button class="chip" onclick="toggleChip(this)">Thriller</button>
-            <button class="chip" onclick="toggleChip(this)">Romance</button>
-            <button class="chip" onclick="toggleChip(this)">Self-Help</button>
-            <button class="chip" onclick="toggleChip(this)">Sci-Fi</button>
-            <button class="chip" onclick="toggleChip(this)">Mystery</button>
-            <button class="chip" onclick="toggleChip(this)">Literary Fiction</button>
-            <button class="chip" onclick="toggleChip(this)">Historical Fiction</button>
+      <!-- Search input -->
+      <div style="flex: 1; max-width: 680px; margin-left: 16px;">
+        <div style="
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          height: 40px;
+          border: 1px solid #7690b2;
+          border-radius: 2px;
+          padding: 0 36px 0 16px;
+          background-color: #ffffff;
+          position: relative;
+        ">
+          <input
+            type="text"
+            placeholder="Find your next great listen"
+            aria-label="Search Audible"
+            style="
+              flex: 1;
+              border: none;
+              outline: none;
+              font-size: 13px;
+              color: #010e19;
+              background-color: transparent;
+              font-family: Arial, sans-serif;
+              padding: 3px 0;
+            "
+          />
+          <!-- Search icon -->
+          <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+            <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="7" stroke="#7690b2" stroke-width="2" fill="none"/>
+              <path d="M16.5 16.5L21 21" stroke="#7690b2" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Voice Style -->
-        <div style="margin-bottom:16px;">
-          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Voice Style</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button class="chip" onclick="toggleChip(this)">Dramatic</button>
-            <button class="chip" onclick="toggleChip(this)">Warm</button>
-            <button class="chip" onclick="toggleChip(this)">Character-Rich</button>
-            <button class="chip" onclick="toggleChip(this)">Calm</button>
-            <button class="chip" onclick="toggleChip(this)">Energetic</button>
-          </div>
-        </div>
-
-        <!-- Language -->
-        <div style="margin-bottom:16px;">
-          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Language</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button class="chip" onclick="toggleChip(this)">English</button>
-            <button class="chip" onclick="toggleChip(this)">Spanish</button>
-            <button class="chip" onclick="toggleChip(this)">French</button>
-            <button class="chip" onclick="toggleChip(this)">German</button>
-            <button class="chip" onclick="toggleChip(this)">Japanese</button>
-          </div>
-        </div>
-
-        <!-- Most Listened -->
+    <!-- Browse mega-menu panel -->
+    <div id="browse-panel"
+         role="region"
+         aria-label="Browse menu"
+         style="
+           position: absolute;
+           left: 0;
+           right: 0;
+           top: 100%;
+           background-color: #ffffff;
+           border-bottom: 1px solid rgba(1,14,25,0.15);
+           box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+           z-index: 300;
+           height: 320px;
+           overflow: hidden;
+         ">
+      <div style="
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 32px;
+        padding: 24px 32px 32px;
+        max-width: 900px;
+      ">
+        <!-- Col 1: Get Started -->
         <div>
-          <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Most Listened</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button class="chip" onclick="toggleChip(this)">Top 100</button>
-            <button class="chip" onclick="toggleChip(this)">This Month</button>
-            <button class="chip" onclick="toggleChip(this)">All Time</button>
+          <div style="font-size: 16px; font-weight: 700; color: #1479cf; font-family: Arial, sans-serif; margin-bottom: 12px; letter-spacing: 0.02em;">Get Started</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 2px;">
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Audiobooks</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Podcasts</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Audible Originals</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Latino and Hispanic voices</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">All categories</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Plans &amp; Pricing</a></li>
+          </ul>
+        </div>
+        <!-- Col 2: Popular Lists — Narrators replaces Series -->
+        <div>
+          <div style="font-size: 16px; font-weight: 700; color: #1479cf; font-family: Arial, sans-serif; margin-bottom: 12px; letter-spacing: 0.02em;">Popular Lists</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 2px;">
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Bestsellers</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Coming Soon</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">New Releases</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Best of the Year</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Best of #BookTok</a></li>
+            <!-- Narrators replaces Series — change #1 -->
+            <li>
+              <a href="#" onclick="closeBrowse()" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #1479cf; font-weight: 700; font-family: Arial, sans-serif;">
+                Narrators
+                <span style="
+                  display: inline-block;
+                  background-color: #ffa000;
+                  color: #010e19;
+                  font-size: 10px;
+                  font-weight: 700;
+                  padding: 1px 5px;
+                  border-radius: 2px;
+                  margin-left: 6px;
+                  vertical-align: middle;
+                  letter-spacing: 0.04em;
+                  text-transform: uppercase;
+                ">New</span>
+              </a>
+            </li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Authors</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Editors' Picks</a></li>
+          </ul>
+        </div>
+        <!-- Col 3: Explore Audible -->
+        <div>
+          <div style="font-size: 16px; font-weight: 700; color: #1479cf; font-family: Arial, sans-serif; margin-bottom: 12px; letter-spacing: 0.02em;">Explore Audible</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 2px;">
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Plus Catalog</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Gifts</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Help Center</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">About Audible</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Blog</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Sales &amp; Deals</a></li>
+            <li><a href="#" class="browse-link" style="display: block; padding: 5px 0; font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">Accessibility</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div><!-- /nav-header -->
+
+  <!-- ── 3. PAGE H1 ── -->
+  <div style="
+    width: 100%;
+    padding: 20px 24px 12px;
+    max-width: 1240px;
+    margin: 0 auto;
+  ">
+    <h1 style="
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 52px;
+      color: #010e19;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0em;
+    ">Narrators</h1>
+  </div>
+
+  <!-- ── MOBILE FILTER BUTTON (hidden on desktop) ── -->
+  <div class="mobile-filter-btn" style="
+    display: none;
+    padding: 0 24px 12px;
+  ">
+    <button
+      onclick="openMobileDrawer()"
+      style="
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #7690b2;
+        border-radius: 2px;
+        padding: 8px 16px;
+        background-color: #ffffff;
+        font-size: 14px;
+        color: #010e19;
+        font-family: Arial, sans-serif;
+      "
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <path d="M3 6h18M7 12h10M11 18h2" stroke="#010e19" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+      Filters
+    </button>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div id="mobile-overlay" class="mobile-overlay" onclick="closeMobileDrawer()"></div>
+
+  <!-- ── 4. TWO-COLUMN PAGE LAYOUT ── -->
+  <div class="page-two-col" style="
+    display: flex;
+    align-items: flex-start;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+    gap: 0;
+    min-height: 800px;
+  ">
+
+    <!-- ── LEFT: FILTER SIDEBAR — change #2 ── -->
+    <aside id="filter-sidebar" class="filter-sidebar" style="
+      width: 240px;
+      flex-shrink: 0;
+      background-color: #f8f8f8;
+      border-right: 1px solid #e0e0e0;
+      padding: 16px 14px 24px;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      min-height: 600px;
+    ">
+      <!-- Sidebar header -->
+      <div style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e0e0e0;
+      ">
+        <span style="font-size: 13px; font-weight: 800; color: #1479cf; text-transform: uppercase; letter-spacing: 0.08em; font-family: Arial, sans-serif;">Filter Narrators</span>
+        <button
+          onclick="clearAllFilters()"
+          id="clear-all-btn"
+          style="
+            display: none;
+            font-size: 11px;
+            color: #0e5b9b;
+            font-family: Arial, sans-serif;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            text-decoration: underline;
+          "
+        >Clear all</button>
+      </div>
+
+      <!-- Narrator name search -->
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Narrator</div>
+        <div style="position: relative;">
+          <input
+            id="narrator-search"
+            type="text"
+            placeholder="Search narrator name…"
+            oninput="applyFilters()"
+            style="
+              width: 100%;
+              border: 1px solid #7690b2;
+              border-radius: 2px;
+              padding: 6px 30px 6px 8px;
+              font-size: 12px;
+              color: #061624;
+              background-color: #ffffff;
+              font-family: Arial, sans-serif;
+              outline: none;
+            "
+          />
+          <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);">
+            <svg width="13" height="13" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="7" stroke="#7690b2" stroke-width="2" fill="none"/>
+              <path d="M16.5 16.5L21 21" stroke="#7690b2" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
         </div>
       </div>
 
-      <!-- Results count -->
-      <div id="results-count" style="font-size:16px;font-weight:400;color:#010E19;padding:12px 0;">1 – 20 of 500 narrators</div>
-
-      <!-- Narrator card grid -->
-      <div id="narrator-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;">
-        <!-- Cards injected by JS -->
+      <!-- Genre Specialty chips -->
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Genre Specialty</div>
+        <div id="genre-chips" style="display: flex; flex-wrap: wrap; gap: 5px;">
+          <button class="chip-btn" data-filter="genre" data-value="Thriller" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Thriller</button>
+          <button class="chip-btn" data-filter="genre" data-value="Fantasy" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Fantasy</button>
+          <button class="chip-btn" data-filter="genre" data-value="Sci-Fi" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Sci-Fi</button>
+          <button class="chip-btn" data-filter="genre" data-value="Romance" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Romance</button>
+          <button class="chip-btn" data-filter="genre" data-value="Literary Fiction" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Literary Fiction</button>
+          <button class="chip-btn" data-filter="genre" data-value="Mystery" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Mystery</button>
+        </div>
       </div>
 
-      <!-- No results message -->
-      <div id="no-results" style="display:none;text-align:center;padding:48px 0;font-size:16px;color:#4A6687;">No narrators match your search.</div>
+      <!-- Voice Style chips -->
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Voice Style</div>
+        <div id="voice-chips" style="display: flex; flex-wrap: wrap; gap: 5px;">
+          <button class="chip-btn" data-filter="voice" data-value="Dramatic" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Dramatic</button>
+          <button class="chip-btn" data-filter="voice" data-value="Epic" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Epic</button>
+          <button class="chip-btn" data-filter="voice" data-value="Conversational" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Conversational</button>
+          <button class="chip-btn" data-filter="voice" data-value="Character-rich" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Character-rich</button>
+        </div>
+      </div>
+
+      <!-- Language chips -->
+      <div style="margin-bottom: 14px;">
+        <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Language</div>
+        <div id="language-chips" style="display: flex; flex-wrap: wrap; gap: 5px;">
+          <button class="chip-btn" data-filter="language" data-value="English" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">English</button>
+          <button class="chip-btn" data-filter="language" data-value="Spanish" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Spanish</button>
+          <button class="chip-btn" data-filter="language" data-value="French" onclick="toggleChip(this)" style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">French</button>
+        </div>
+      </div>
+
+      <!-- Sort By -->
+      <div>
+        <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Sort By</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+          <button class="sort-btn sort-active" id="sort-listened" data-sort="most-listened" onclick="setSort(this)" style="border: 1px solid rgba(1,14,25,0.15); border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #ffffff; background-color: #1479cf; font-family: Arial, sans-serif; white-space: nowrap; font-weight: 700;">Most Listened</button>
+          <button class="sort-btn" id="sort-newest" data-sort="newest" onclick="setSort(this)" style="border: 1px solid rgba(1,14,25,0.15); border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #061624; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Newest</button>
+          <button class="sort-btn" id="sort-rating" data-sort="rating" onclick="setSort(this)" style="border: 1px solid rgba(1,14,25,0.15); border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #061624; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Rating</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT: RESULTS COLUMN ── -->
+    <div class="results-col" id="results-col" style="
+      flex: 1;
+      min-width: 0;
+      padding: 16px 0 16px 24px;
+    ">
+      <!-- Active filter tags — change #3 (shown only when >=1 filter active) -->
+      <div id="active-filter-row" style="
+        display: none;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      "></div>
+
+      <!-- Results counter -->
+      <div id="results-counter" style="
+        font-size: 14px;
+        color: #061624;
+        font-family: Arial, sans-serif;
+        margin-bottom: 12px;
+      ">1 - 20 of 847 results</div>
+
+      <!-- Audiobook list — change #4: Narrated by prominent -->
+      <ul id="book-list" style="list-style: none; display: flex; flex-direction: column;">
+        <!-- Items injected by JS -->
+      </ul>
 
       <!-- Pagination -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:24px 0;">
-        <button class="page-btn-text" id="prev-btn" onclick="changePage(currentPage - 1)" style="opacity:0.4;pointer-events:none;">← Prev</button>
-        <button class="page-btn page-active" id="page-1-btn" onclick="changePage(1)">1</button>
-        <button class="page-btn" id="page-2-btn" onclick="changePage(2)">2</button>
-        <span style="font-size:14px;color:#4A6687;padding:0 4px;">…</span>
-        <button class="page-btn" onclick="changePage(25)">25</button>
-        <button class="page-btn-text" id="next-btn" onclick="changePage(currentPage + 1)">Next →</button>
-      </div>
-
-    </div>
-  </section>
-
-</div><!-- /#prototype-root -->
-
-<!-- ═══════════════════════════════════════════
-     NARRATOR BOOKS MODAL
-═══════════════════════════════════════════ -->
-<div class="modal-overlay" id="narrator-modal" onclick="handleModalOverlayClick(event)">
-  <div class="modal-panel" id="modal-panel" onclick="event.stopPropagation()">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
-      <h2 id="modal-narrator-name" style="font-size:24px;font-weight:700;color:#010E19;line-height:32px;"></h2>
-      <button onclick="closeModal()" class="modal-close-btn" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid #93ACCD;background-color:#FFFFFF;flex-shrink:0;margin-left:16px;">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 2L14 14M14 2L2 14" stroke="#010E19" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-    <div id="modal-book-list"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     FIGMA GALLERY (figma=true mode)
-═══════════════════════════════════════════ -->
-<div id="figma-gallery">
-
-  <div>
-    <div class="figma-section-title">Design Tokens (33 total — all url_extracted)</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-text-primary</div>
-        <div style="width:100%;height:32px;background-color:#010E19;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#010E19</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-text-secondary</div>
-        <div style="width:100%;height:32px;background-color:#061624;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#061624</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-text-link</div>
-        <div style="width:100%;height:32px;background-color:#1479CF;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#1479CF</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-background</div>
-        <div style="width:100%;height:32px;background-color:#FFFFFF;border:1px solid #93ACCD;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#FFFFFF</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-cta-primary-bg</div>
-        <div style="width:100%;height:32px;background-color:#FFA000;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#FFA000</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-chip-border</div>
-        <div style="width:100%;height:32px;background-color:#93ACCD;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#93ACCD</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-chip-active-bg</div>
-        <div style="width:100%;height:32px;background-color:#1479CF;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#1479CF</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-chip-active-text</div>
-        <div style="width:100%;height:32px;background-color:#FFFFFF;border:1px solid #1479CF;border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#FFFFFF;background-color:#1479CF;">Aa</div>
-        <div style="font-size:12px;color:#4A6687;">#FFFFFF</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-nav-col-heading</div>
-        <div style="width:100%;height:32px;background-color:#4A6687;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#4A6687</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-separator</div>
-        <div style="width:100%;height:32px;background-color:rgba(1,14,25,0.15);border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">rgba(1,14,25,0.15)</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-secondary-btn-border</div>
-        <div style="width:100%;height:32px;background-color:#93ACCD;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#93ACCD</div>
-      </div>
-
-      <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:16px;">
-        <div class="figma-label">color-nav-active-indicator</div>
-        <div style="width:100%;height:32px;background-color:#1479CF;border-radius:4px;margin-bottom:6px;"></div>
-        <div style="font-size:12px;color:#4A6687;">#1479CF</div>
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(1,14,25,0.15);
+        flex-wrap: wrap;
+      ">
+        <span style="font-size: 13px; color: #061624; font-family: Arial, sans-serif;">Show:</span>
+        <button class="pagination-btn" style="border: 1px solid rgba(1,14,25,0.15); border-radius: 2px; padding: 4px 10px; font-size: 13px; color: #0e5b9b; background-color: #ffffff; font-family: Arial, sans-serif;">20</button>
+        <button class="pagination-btn pg-active" style="border: 1px solid #1479cf; border-radius: 2px; padding: 4px 10px; font-size: 13px; color: #ffffff; background-color: #1479cf; font-family: Arial, sans-serif; font-weight: 700;">30</button>
+        <button class="pagination-btn" style="border: 1px solid rgba(1,14,25,0.15); border-radius: 2px; padding: 4px 10px; font-size: 13px; color: #0e5b9b; background-color: #ffffff; font-family: Arial, sans-serif;">40</button>
+        <button class="pagination-btn" style="border: 1px solid rgba(1,14,25,0.15); border-radius: 2px; padding: 4px 10px; font-size: 13px; color: #0e5b9b; background-color: #ffffff; font-family: Arial, sans-serif;">50</button>
+        <div style="flex: 1;"></div>
+        <span style="font-size: 13px; color: #061624; font-family: Arial, sans-serif;">Page:</span>
+        <span style="font-size: 13px; color: #010e19; font-family: Arial, sans-serif; font-weight: 700;">1</span>
+        <a href="#" style="font-size: 13px; color: #0e5b9b; font-family: Arial, sans-serif;" class="browse-link">2</a>
+        <a href="#" style="font-size: 13px; color: #0e5b9b; font-family: Arial, sans-serif;" class="browse-link">3</a>
+        <a href="#" style="font-size: 13px; color: #0e5b9b; font-family: Arial, sans-serif;" class="browse-link">4</a>
+        <a href="#" style="font-size: 13px; color: #0e5b9b; font-family: Arial, sans-serif;" class="browse-link">Next &rsaquo;</a>
       </div>
     </div>
+  </div><!-- /page-two-col -->
+
+  <!-- ── FOOTER ── -->
+  <div style="
+    background-color: #010e19;
+    color: rgba(255,255,255,0.65);
+    padding: 20px 24px;
+    font-size: 13px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  ">
+    <div style="margin-bottom: 8px;">
+      <a href="#" style="color: rgba(255,255,255,0.65); margin: 0 10px;" class="browse-link">Conditions of Use</a>
+      <a href="#" style="color: rgba(255,255,255,0.65); margin: 0 10px;" class="browse-link">Privacy Notice</a>
+      <a href="#" style="color: rgba(255,255,255,0.65); margin: 0 10px;" class="browse-link">Interest-Based Ads</a>
+      <a href="#" style="color: rgba(255,255,255,0.65); margin: 0 10px;" class="browse-link">Accessibility</a>
+    </div>
+    <div style="color: rgba(255,255,255,0.45);">&copy; Copyright 1997 - 2026 Audible Inc.</div>
   </div>
 
-  <div>
-    <div class="figma-section-title">Typography Tokens</div>
-    <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px;">
-      <div style="font-family:Arial,sans-serif;font-size:48px;font-weight:700;line-height:52px;color:#010E19;">Narrators — font-size-h1 48px/700 lh52</div>
-      <div style="font-family:Arial,sans-serif;font-size:20px;font-weight:700;line-height:26px;color:#010E19;">Book Title — font-size-book-title 20px/700 lh26</div>
-      <div style="font-family:Arial,sans-serif;font-size:16px;font-weight:400;color:#010E19;">Body text — font-size-body 16px/400</div>
-      <div style="font-family:Arial,sans-serif;font-size:16px;font-weight:600;color:#010E19;">Nav button — font-weight-nav-btn 16px/600</div>
-      <div style="font-family:Arial,sans-serif;font-size:13px;font-weight:400;color:#061624;">Metadata — font-size-metadata 13px/400</div>
-      <div style="font-family:Arial,sans-serif;font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;">FILTER LABEL — 12px/700 uppercase ls0.08em</div>
-    </div>
+</div><!-- /prototype-root -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FIGMA GALLERY — hidden by default, shown at ?figma=true
+     ═══════════════════════════════════════════════════════ -->
+<div id="figma-gallery" style="
+  display: none;
+  flex-direction: column;
+  gap: 64px;
+  padding: 64px;
+  background-color: #f0f0f0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+">
+
+  <!-- Gallery header -->
+  <div style="font-family: Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #999;">
+    COMPONENT STATE GALLERY — Direction B: Faceted Browse — Import this page at ?figma=true
   </div>
 
-  <div>
-    <div class="figma-section-title">Component States</div>
-    <div class="figma-row">
-
-      <!-- Filter chip states -->
-      <div>
-        <div class="figma-label">Chip — Default</div>
-        <button class="chip">Literary Fiction</button>
-      </div>
-      <div>
-        <div class="figma-label">Chip — Active</div>
-        <button class="chip chip-active">Literary Fiction</button>
-      </div>
-
-      <!-- CTA states -->
-      <div>
-        <div class="figma-label">CTA Primary</div>
-        <button class="cta-primary">Try Standard free</button>
-      </div>
-      <div>
-        <div class="figma-label">CTA Secondary</div>
-        <button class="cta-secondary">Add to cart</button>
-      </div>
-
-      <!-- Nav tab states -->
-      <div>
-        <div class="figma-label">Nav Tab — Default</div>
-        <div style="background-color:#FFFFFF;border-bottom:3px solid transparent;display:inline-block;">
-          <button class="nav-tab" style="position:relative;">Browse</button>
-        </div>
-      </div>
-      <div>
-        <div class="figma-label">Nav Tab — Active</div>
-        <div style="background-color:#FFFFFF;display:inline-block;position:relative;padding-bottom:4px;">
-          <button class="nav-tab active" style="position:relative;">Browse</button>
+  <!-- ─── COMPONENT: PromoBanner ─── -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">PromoBanner</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Default</div>
+        <div style="position: relative; width: 800px; height: 54px; background-color: #131369; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px;">
+          <span style="font-size: 14px; font-weight: 700; color: #ffffff; font-family: Arial, sans-serif;">Special Prime Offer</span>
+          <span style="font-size: 14px; color: rgba(255,255,255,0.85); padding: 0 8px; display: block;">|</span>
+          <span style="font-size: 14px; color: #ffffff; font-family: Arial, sans-serif;">2 months free with your first Audible trial</span>
+          <span style="background-color: #ffb333; color: #010e19; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 9999px; white-space: nowrap; font-family: Arial, sans-serif; display: inline-block; margin-left: 8px;">Get this deal</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div>
-    <div class="figma-section-title">Narrator Card — All States</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;">
-      <!-- Default card -->
-      <div>
-        <div class="figma-label">Default</div>
-        <div class="narrator-card">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-            <div style="width:64px;height:64px;border-radius:50%;background-color:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4A6687;flex-shrink:0;">SB</div>
-            <div>
-              <div style="font-size:16px;font-weight:700;color:#010E19;margin-bottom:2px;">Scott Brick</div>
-              <div style="font-size:12px;color:#4A6687;">Thriller</div>
-              <div style="font-size:13px;color:#061624;">127 audiobooks</div>
+  <!-- ─── COMPONENT: FilterChip ─── -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">FilterChip</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Default</div>
+        <button style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Thriller</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Selected</div>
+        <button style="border: 2px solid #1479cf; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #1479cf; background-color: #e6f3ff; font-family: Arial, sans-serif; font-weight: 700; white-space: nowrap;">Thriller</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Hover</div>
+        <button style="border: 2px solid #1479cf; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #f0f7ff; font-family: Arial, sans-serif; white-space: nowrap;">Thriller</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── COMPONENT: ActiveFilterTag ─── -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">ActiveFilterTag</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Default</div>
+        <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e6f3ff; border: 2px solid #1479cf; border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #1479cf; font-weight: 700; font-family: Arial, sans-serif;">
+          Voice: Dramatic <span style="font-size: 13px; font-weight: 400; color: #1479cf; margin-left: 2px;">&times;</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── COMPONENT: SortButton ─── -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">SortButton</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Default</div>
+        <button style="border: 1px solid rgba(1,14,25,0.15); border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #061624; background-color: #ffffff; font-family: Arial, sans-serif; white-space: nowrap;">Newest</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Active</div>
+        <button style="border: 1px solid #1479cf; border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #ffffff; background-color: #1479cf; font-family: Arial, sans-serif; white-space: nowrap; font-weight: 700;">Most Listened</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Hover</div>
+        <button style="border: 1px solid rgba(1,14,25,0.15); border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #061624; background-color: #f0f0f0; font-family: Arial, sans-serif; white-space: nowrap;">Newest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── COMPONENT: AudiobookListItem ─── -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">AudiobookListItem</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start;">
+      <!-- Default state -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-family: Arial, sans-serif; font-size: 11px; color: #999;">Default</div>
+        <div style="display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(1,14,25,0.15); width: 600px;">
+          <div style="position: relative; width: 232px; height: 232px; flex-shrink: 0; overflow: hidden; border-radius: 2px;">
+            <img src="https://m.media-amazon.com/images/I/51Ga5GuElyL._SL250_.jpg" alt="Cover art" aria-hidden="false" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0;"/>
+          </div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+            <div style="font-size: 14px; font-weight: 700; color: #1479cf; font-family: Arial, sans-serif; margin-bottom: 2px;">Narrated by: <a href="#" style="color: #1479cf; font-weight: 700; font-family: Arial, sans-serif; font-size: 14px;">Scott Brick</a></div>
+            <h3 style="font-size: 20px; font-weight: 400; line-height: 26px; color: #0e5b9b; font-family: Arial, sans-serif; margin: 0;"><a href="#" style="color: #0e5b9b; font-family: Arial, sans-serif; font-size: 20px; font-weight: 400; line-height: 26px;">The Girl with the Dragon Tattoo</a></h3>
+            <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif;">By: <a href="#" style="color: #0e5b9b; font-size: 13px; font-family: Arial, sans-serif;">Stieg Larsson</a></div>
+            <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif; line-height: 19px;">Length: 16 hrs and 12 mins</div>
+            <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif; line-height: 19px;">Language: English</div>
+            <div style="font-size: 13px; color: #010e19; font-family: Arial, sans-serif;">&#9733; 4.7 <span style="color: #061624;">(14,823 ratings)</span></div>
+          </div>
+          <div style="width: 140px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
+            <div style="font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">$0.00 with trial</div>
+            <a href="#" style="display: inline-block; background-color: #ffa000; color: #010e19; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 9999px; font-family: Arial, sans-serif; text-align: center;">Try Standard free</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FULL PAGE LAYOUT SNAPSHOT ─── -->
+  <div style="display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: Arial, sans-serif; font-size: 13px; font-weight: 600; color: #333; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">Full Page Layout — Narrators Browse (Direction B)</div>
+    <div style="width: 576px; height: 800px; overflow: hidden; flex-shrink: 0;">
+      <div style="transform: scale(0.4); transform-origin: top left; width: 1440px;">
+
+        <!-- Promo banner -->
+        <div style="width: 100%; height: 54px; background-color: #131369; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 24px;">
+          <span style="font-size: 14px; font-weight: 700; color: #ffffff; font-family: Arial, sans-serif;">Special Prime Offer</span>
+          <span style="font-size: 14px; color: rgba(255,255,255,0.7); padding: 0 8px;">|</span>
+          <span style="font-size: 14px; color: #ffffff; font-family: Arial, sans-serif;">2 months free with your first Audible trial</span>
+          <span style="background-color: #ffb333; color: #010e19; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 9999px; display: inline-block; margin-left: 8px; font-family: Arial, sans-serif;">Get this deal</span>
+        </div>
+
+        <!-- Nav header -->
+        <div style="width: 100%; background-color: #ffffff; border-bottom: 1px solid rgba(1,14,25,0.15);">
+          <div style="display: flex; align-items: center; height: 80px; padding: 0 24px; gap: 16px;">
+            <span style="font-size: 26px; font-weight: 700; color: #010e19; font-family: Arial, sans-serif;">audible</span>
+            <div style="flex: 1;"></div>
+            <span style="font-size: 16px; color: #010e19; font-family: Arial, sans-serif;">Help</span>
+            <span style="font-size: 16px; color: #010e19; font-family: Arial, sans-serif;">English – USD</span>
+            <span style="background-color: #ffa000; color: #010e19; font-size: 16px; font-weight: 600; padding: 8px 12px; border-radius: 9999px; font-family: Arial, sans-serif;">Sign in</span>
+          </div>
+          <div style="display: flex; align-items: center; height: 56px; padding: 0 24px; border-top: 1px solid rgba(1,14,25,0.15);">
+            <span style="font-size: 16px; color: #4a6687; font-family: Arial, sans-serif; display: flex; align-items: center; gap: 6px; padding-right: 12px;">Browse</span>
+            <div style="flex: 1; max-width: 680px; margin-left: 16px; border: 1px solid #7690b2; border-radius: 2px; height: 40px; display: flex; align-items: center; padding: 0 16px;">
+              <span style="font-size: 13px; color: #999; font-family: Arial, sans-serif;">Find your next great listen</span>
             </div>
           </div>
-          <div style="display:flex;gap:6px;">
-            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
-            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
-            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
-          </div>
         </div>
-      </div>
 
-      <!-- Hover simulation -->
-      <div>
-        <div class="figma-label">Hover State</div>
-        <div class="narrator-card" style="box-shadow:0 4px 12px rgba(1,14,25,0.15);border-color:#1479CF;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-            <div style="width:64px;height:64px;border-radius:50%;background-color:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4A6687;flex-shrink:0;">SB</div>
-            <div>
-              <div style="font-size:16px;font-weight:700;color:#010E19;margin-bottom:2px;">Scott Brick</div>
-              <div style="font-size:12px;color:#4A6687;">Thriller</div>
-              <div style="font-size:13px;color:#061624;">127 audiobooks</div>
+        <!-- H1 -->
+        <div style="padding: 20px 24px 12px;">
+          <h1 style="font-size: 48px; font-weight: 700; line-height: 52px; color: #010e19; font-family: Arial, sans-serif;">Narrators</h1>
+        </div>
+
+        <!-- Two-column layout -->
+        <div style="display: flex; padding: 0 24px; gap: 0; align-items: flex-start;">
+          <!-- Sidebar -->
+          <div style="width: 240px; flex-shrink: 0; background-color: #f8f8f8; border-right: 1px solid #e0e0e0; padding: 16px 14px 24px; min-height: 900px;">
+            <div style="font-size: 13px; font-weight: 800; color: #1479cf; text-transform: uppercase; letter-spacing: 0.08em; font-family: Arial, sans-serif; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0;">Filter Narrators</div>
+            <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Narrator</div>
+            <div style="border: 1px solid #7690b2; border-radius: 2px; padding: 6px 8px; font-size: 12px; color: #999; font-family: Arial, sans-serif; margin-bottom: 14px;">Search narrator name…</div>
+            <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Genre Specialty</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px;">
+              <span style="border: 2px solid #1479cf; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #1479cf; background-color: #e6f3ff; font-family: Arial, sans-serif; font-weight: 700;">Thriller</span>
+              <span style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif;">Fantasy</span>
+              <span style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif;">Romance</span>
+            </div>
+            <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Voice Style</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px;">
+              <span style="border: 2px solid #1479cf; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #1479cf; background-color: #e6f3ff; font-family: Arial, sans-serif; font-weight: 700;">Dramatic</span>
+              <span style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif;">Epic</span>
+            </div>
+            <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Language</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px;">
+              <span style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif;">English</span>
+              <span style="border: 2px solid #93accd; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #010e19; background-color: #ffffff; font-family: Arial, sans-serif;">Spanish</span>
+            </div>
+            <div style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #666; font-family: Arial, sans-serif; margin-bottom: 6px;">Sort By</div>
+            <div style="display: flex; gap: 4px;">
+              <span style="border: 1px solid #1479cf; border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #ffffff; background-color: #1479cf; font-family: Arial, sans-serif; font-weight: 700;">Most Listened</span>
+              <span style="border: 1px solid rgba(1,14,25,0.15); border-radius: 9999px; padding: 4px 10px; font-size: 11px; color: #061624; background-color: #ffffff; font-family: Arial, sans-serif;">Newest</span>
             </div>
           </div>
-          <div style="display:flex;gap:6px;">
-            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
-            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
-            <div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;"></div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Browse dropdown -->
-      <div>
-        <div class="figma-label">Browse Mega Menu</div>
-        <div style="background-color:#FFFFFF;box-shadow:0 4px 8px rgba(1,14,25,0.15),0 8px 24px rgba(1,14,25,0.1),0 16px 48px rgba(1,14,25,0.05);border-radius:8px;padding:20px;display:flex;gap:24px;">
-          <div>
-            <div style="font-size:12px;font-weight:700;color:#4A6687;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Popular Lists</div>
-            <div style="font-size:14px;color:#010E19;padding:4px 0;">Bestsellers</div>
-            <div style="font-size:14px;color:#010E19;padding:4px 0;">Coming Soon</div>
-            <div style="font-size:14px;font-weight:600;color:#1479CF;padding:4px 0;">Narrators ← new</div>
-            <div style="font-size:14px;color:#010E19;padding:4px 0;">Best of #BookTok</div>
+          <!-- Results col -->
+          <div style="flex: 1; min-width: 0; padding: 16px 0 16px 24px;">
+            <!-- Active filter tags -->
+            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+              <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e6f3ff; border: 2px solid #1479cf; border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #1479cf; font-weight: 700; font-family: Arial, sans-serif;">Voice: Dramatic <span style="font-weight: 400; margin-left: 2px;">&times;</span></span>
+              <span style="display: inline-flex; align-items: center; gap: 4px; background-color: #e6f3ff; border: 2px solid #1479cf; border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #1479cf; font-weight: 700; font-family: Arial, sans-serif;">Genre: Thriller <span style="font-weight: 400; margin-left: 2px;">&times;</span></span>
+            </div>
+            <div style="font-size: 14px; color: #061624; font-family: Arial, sans-serif; margin-bottom: 12px;">1 - 20 of 847 results</div>
+            <!-- First list item -->
+            <div style="display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(1,14,25,0.15);">
+              <div style="position: relative; width: 232px; height: 232px; flex-shrink: 0; overflow: hidden; border-radius: 2px;">
+                <img src="https://m.media-amazon.com/images/I/51Ga5GuElyL._SL250_.jpg" alt="Cover art" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"/>
+              </div>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+                <div style="font-size: 14px; font-weight: 700; color: #1479cf; font-family: Arial, sans-serif;">Narrated by: Scott Brick</div>
+                <div style="font-size: 20px; font-weight: 400; line-height: 26px; color: #0e5b9b; font-family: Arial, sans-serif;">The Girl with the Dragon Tattoo</div>
+                <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif;">By: Stieg Larsson</div>
+                <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif;">Length: 16 hrs and 12 mins</div>
+                <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif;">Language: English</div>
+                <div style="font-size: 13px; color: #010e19; font-family: Arial, sans-serif;">&#9733; 4.7 (14,823)</div>
+              </div>
+              <div style="width: 140px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
+                <div style="font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">$0.00 with trial</div>
+                <span style="display: inline-block; background-color: #ffa000; color: #010e19; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 9999px; font-family: Arial, sans-serif; text-align: center;">Try Standard free</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div>
-    <div class="figma-section-title">Spacing + Dimension Tokens</div>
-    <div style="background-color:#FFFFFF;border:1px solid rgba(1,14,25,0.15);border-radius:8px;padding:24px;">
-      <table style="font-size:13px;color:#010E19;border-collapse:collapse;width:100%;">
-        <thead><tr style="border-bottom:1px solid rgba(1,14,25,0.15);">
-          <th style="text-align:left;padding:8px 16px 8px 0;font-weight:700;">Token</th>
-          <th style="text-align:left;padding:8px 16px 8px 0;font-weight:700;">Value</th>
-          <th style="text-align:left;padding:8px 0;font-weight:700;">CSS Property</th>
-        </tr></thead>
-        <tbody>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-height</td><td style="padding:8px 16px 8px 0;">42px</td><td style="padding:8px 0;">height</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-radius</td><td style="padding:8px 16px 8px 0;">8px</td><td style="padding:8px 0;">border-radius</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-padding</td><td style="padding:8px 16px 8px 0;">8px 16px</td><td style="padding:8px 0;">padding</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">filter-chip-border-width</td><td style="padding:8px 16px 8px 0;">2px</td><td style="padding:8px 0;">border-width</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">cta-primary-radius</td><td style="padding:8px 16px 8px 0;">32px</td><td style="padding:8px 0;">border-radius</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">cta-primary-height</td><td style="padding:8px 16px 8px 0;">42px</td><td style="padding:8px 0;">height</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">cta-secondary-radius</td><td style="padding:8px 16px 8px 0;">32px</td><td style="padding:8px 0;">border-radius</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-card-radius</td><td style="padding:8px 16px 8px 0;">8px</td><td style="padding:8px 0;">border-radius</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-card-border</td><td style="padding:8px 16px 8px 0;">1px solid #93ACCD</td><td style="padding:8px 0;">border</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-card-padding</td><td style="padding:8px 16px 8px 0;">16px</td><td style="padding:8px 0;">padding</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-avatar-size</td><td style="padding:8px 16px 8px 0;">64px</td><td style="padding:8px 0;">width, height</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-avatar-bg</td><td style="padding:8px 16px 8px 0;">#F0F4F8</td><td style="padding:8px 0;">background-color</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">narrator-avatar-text</td><td style="padding:8px 16px 8px 0;">#4A6687</td><td style="padding:8px 0;">color</td></tr>
-          <tr style="border-bottom:1px solid rgba(1,14,25,0.08);"><td style="padding:8px 16px 8px 0;">mini-thumb-size</td><td style="padding:8px 16px 8px 0;">48px</td><td style="padding:8px 0;">width, height</td></tr>
-          <tr><td style="padding:8px 16px 8px 0;">mini-thumb-radius</td><td style="padding:8px 16px 8px 0;">4px</td><td style="padding:8px 0;">border-radius</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+</div><!-- /figma-gallery -->
 
-</div><!-- /#figma-gallery -->
 
 <script>
-// ═══════════════════════════════════════════
-// NARRATOR DATA
-// ═══════════════════════════════════════════
-const narrators = [
+/* ═══════════════════════════════════════════════════════
+   DATA — audiobook list items
+   ═══════════════════════════════════════════════════════ */
+const BOOKS = [
   {
-    id: "scott-brick",
-    name: "Scott Brick",
-    initials: "SB",
-    genre: "Thriller",
-    bookCount: 127,
-    books: [
-      { title: "The Bourne Identity", author: "Robert Ludlum", length: "15 hrs 25 mins", rating: "4.5", price: "$24.95" },
-      { title: "The Girl with the Dragon Tattoo", author: "Stieg Larsson", length: "24 hrs 32 mins", rating: "4.7", price: "$19.95" },
-      { title: "Presumed Innocent", author: "Scott Turow", length: "14 hrs 55 mins", rating: "4.4", price: "$16.95" }
-    ]
+    id: 1,
+    narrator: 'Scott Brick',
+    title: 'The Girl with the Dragon Tattoo',
+    author: 'Stieg Larsson',
+    length: '16 hrs and 12 mins',
+    releaseDate: '10-24-08',
+    language: 'English',
+    rating: 4.7,
+    ratingCount: '14,823',
+    description: 'An international publishing sensation, Stieg Larsson\'s The Girl with the Dragon Tattoo combines murder mystery, family saga, and financial intrigue in this first installment of the Millennium series.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/51Ga5GuElyL._SL250_.jpg',
+    genre: 'Thriller',
+    voice: 'Dramatic'
   },
   {
-    id: "january-lavoy",
-    name: "January LaVoy",
-    initials: "JL",
-    genre: "Literary Fiction",
-    bookCount: 89,
-    books: [
-      { title: "All the Light We Cannot See", author: "Anthony Doerr", length: "16 hrs 2 mins", rating: "4.9", price: "$21.95" },
-      { title: "The Kite Runner", author: "Khaled Hosseini", length: "12 hrs 25 mins", rating: "4.8", price: "$17.95" },
-      { title: "Homegoing", author: "Yaa Gyasi", length: "10 hrs 40 mins", rating: "4.8", price: "$18.95" }
-    ]
+    id: 2,
+    narrator: 'Michael Kramer',
+    title: 'The Way of Kings',
+    author: 'Brandon Sanderson',
+    length: '45 hrs and 33 mins',
+    releaseDate: '08-31-10',
+    language: 'English',
+    rating: 4.9,
+    ratingCount: '28,412',
+    description: 'From #1 New York Times bestselling author Brandon Sanderson, The Way of Kings is the first book in the epic Stormlight Archive series.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/41XnJfF2tZL._SL250_.jpg',
+    genre: 'Fantasy',
+    voice: 'Epic'
   },
   {
-    id: "ray-porter",
-    name: "Ray Porter",
-    initials: "RP",
-    genre: "Sci-Fi",
-    bookCount: 74,
-    books: [
-      { title: "Project Hail Mary", author: "Andy Weir", length: "16 hrs 10 mins", rating: "4.9", price: "$24.95" },
-      { title: "The Martian", author: "Andy Weir", length: "10 hrs 53 mins", rating: "4.8", price: "$19.95" },
-      { title: "Recursion", author: "Blake Crouch", length: "11 hrs 56 mins", rating: "4.7", price: "$19.95" }
-    ]
+    id: 3,
+    narrator: 'Julia Whelan',
+    title: 'Where the Crawdads Sing',
+    author: 'Delia Owens',
+    length: '12 hrs and 12 mins',
+    releaseDate: '08-14-18',
+    language: 'English',
+    rating: 4.8,
+    ratingCount: '41,209',
+    description: 'For years, rumors of the Marsh Girl haunted Barkley Cove, a quiet fishing village. Kya Clark is barefoot and wild; unfit for polite society. So in late 1969, when handsome Chase Andrews is found dead, the locals immediately suspect her.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/41TJ4koIMLL._SL250_.jpg',
+    genre: 'Literary Fiction',
+    voice: 'Conversational'
   },
   {
-    id: "simon-vance",
-    name: "Simon Vance",
-    initials: "SV",
-    genre: "Historical Fiction",
-    bookCount: 203,
-    books: [
-      { title: "Wolf Hall", author: "Hilary Mantel", length: "24 hrs 16 mins", rating: "4.6", price: "$26.95" },
-      { title: "The Name of the Rose", author: "Umberto Eco", length: "19 hrs 44 mins", rating: "4.5", price: "$22.95" },
-      { title: "Pillars of the Earth", author: "Ken Follett", length: "41 hrs 24 mins", rating: "4.8", price: "$29.95" }
-    ]
+    id: 4,
+    narrator: 'Kate Reading',
+    title: 'The Name of the Wind',
+    author: 'Patrick Rothfuss',
+    length: '27 hrs and 55 mins',
+    releaseDate: '04-27-07',
+    language: 'English',
+    rating: 4.7,
+    ratingCount: '19,087',
+    description: 'The riveting first-person narrative of a young man who grows to be the most notorious wizard his world has ever seen.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/518TJ0l76ZL._SL250_.jpg',
+    genre: 'Fantasy',
+    voice: 'Character-rich'
   },
   {
-    id: "kate-reading",
-    name: "Kate Reading",
-    initials: "KR",
-    genre: "Fantasy",
-    bookCount: 61,
-    books: [
-      { title: "The Way of Kings", author: "Brandon Sanderson", length: "45 hrs 34 mins", rating: "4.9", price: "$34.95" },
-      { title: "Words of Radiance", author: "Brandon Sanderson", length: "48 hrs 13 mins", rating: "4.9", price: "$34.95" },
-      { title: "Rhythm of War", author: "Brandon Sanderson", length: "57 hrs 39 mins", rating: "4.8", price: "$34.95" }
-    ]
+    id: 5,
+    narrator: 'Jim Dale',
+    title: 'Harry Potter and the Sorcerer\'s Stone',
+    author: 'J.K. Rowling',
+    length: '8 hrs and 33 mins',
+    releaseDate: '11-20-99',
+    language: 'English',
+    rating: 4.9,
+    ratingCount: '87,341',
+    description: 'Harry Potter has never been the star of a Quidditch team, scoring points while riding a broom far above the ground. He knows no spells, has never helped to hatch a dragon, and has never worn a cloak of invisibility.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/41yJ75gpTGL._SL250_.jpg',
+    genre: 'Fantasy',
+    voice: 'Character-rich'
   },
   {
-    id: "michael-kramer",
-    name: "Michael Kramer",
-    initials: "MK",
-    genre: "Fantasy",
-    bookCount: 198,
-    books: [
-      { title: "The Eye of the World", author: "Robert Jordan", length: "29 hrs 4 mins", rating: "4.8", price: "$29.95" },
-      { title: "The Name of the Wind", author: "Patrick Rothfuss", length: "27 hrs 55 mins", rating: "4.9", price: "$27.95" },
-      { title: "The Final Empire", author: "Brandon Sanderson", length: "24 hrs 41 mins", rating: "4.8", price: "$24.95" }
-    ]
+    id: 6,
+    narrator: 'Bahni Turpin',
+    title: 'The Hate U Give',
+    author: 'Angie Thomas',
+    length: '10 hrs and 11 mins',
+    releaseDate: '02-28-17',
+    language: 'English',
+    rating: 4.8,
+    ratingCount: '22,714',
+    description: 'Sixteen-year-old Starr Carter moves between two worlds: the poor neighborhood where she lives and the fancy suburban prep school she attends. The uneasy balance between these worlds is shattered when Starr witnesses the fatal shooting of her childhood best friend.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/51KKbSsJBLL._SL250_.jpg',
+    genre: 'Literary Fiction',
+    voice: 'Dramatic'
   },
   {
-    id: "bahni-turpin",
-    name: "Bahni Turpin",
-    initials: "BT",
-    genre: "Literary Fiction",
-    bookCount: 112,
-    books: [
-      { title: "The Underground Railroad", author: "Colson Whitehead", length: "10 hrs 10 mins", rating: "4.6", price: "$19.95" },
-      { title: "Beloved", author: "Toni Morrison", length: "8 hrs 47 mins", rating: "4.9", price: "$17.95" },
-      { title: "Their Eyes Were Watching God", author: "Zora Neale Hurston", length: "6 hrs 21 mins", rating: "4.8", price: "$15.95" }
-    ]
+    id: 7,
+    narrator: 'Ray Porter',
+    title: 'Project Hail Mary',
+    author: 'Andy Weir',
+    length: '16 hrs and 10 mins',
+    releaseDate: '05-04-21',
+    language: 'English',
+    rating: 4.9,
+    ratingCount: '31,552',
+    description: 'Ryland Grace is the sole survivor on a desperate last-chance mission — and if he fails, humanity and the earth itself will perish.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/51Ga5GuElyL._SL250_.jpg',
+    genre: 'Sci-Fi',
+    voice: 'Dramatic'
   },
   {
-    id: "cassandra-campbell",
-    name: "Cassandra Campbell",
-    initials: "CC",
-    genre: "Self-Help",
-    bookCount: 94,
-    books: [
-      { title: "Daring Greatly", author: "Brené Brown", length: "6 hrs 30 mins", rating: "4.8", price: "$17.95" },
-      { title: "Rising Strong", author: "Brené Brown", length: "8 hrs 51 mins", rating: "4.7", price: "$19.95" },
-      { title: "The Gifts of Imperfection", author: "Brené Brown", length: "4 hrs 20 mins", rating: "4.7", price: "$14.95" }
-    ]
+    id: 8,
+    narrator: 'MacLeod Andrews',
+    title: 'It',
+    author: 'Stephen King',
+    length: '44 hrs and 54 mins',
+    releaseDate: '06-01-99',
+    language: 'English',
+    rating: 4.7,
+    ratingCount: '18,906',
+    description: 'A masterwork of horror that stands as one of Stephen King\'s greatest achievements — seven friends face the ultimate nightmare when the evil they defeated as children comes back.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/41XnJfF2tZL._SL250_.jpg',
+    genre: 'Thriller',
+    voice: 'Dramatic'
   },
   {
-    id: "will-patton",
-    name: "Will Patton",
-    initials: "WP",
-    genre: "Thriller",
-    bookCount: 58,
-    books: [
-      { title: "The Stand", author: "Stephen King", length: "47 hrs 47 mins", rating: "4.9", price: "$34.95" },
-      { title: "11/22/63", author: "Stephen King", length: "30 hrs 37 mins", rating: "4.9", price: "$29.95" },
-      { title: "No Country for Old Men", author: "Cormac McCarthy", length: "6 hrs 40 mins", rating: "4.7", price: "$16.95" }
-    ]
+    id: 9,
+    narrator: 'Cassandra Campbell',
+    title: 'Big Little Lies',
+    author: 'Liane Moriarty',
+    length: '14 hrs and 31 mins',
+    releaseDate: '07-29-14',
+    language: 'English',
+    rating: 4.6,
+    ratingCount: '16,234',
+    description: 'Sometimes it\'s the little lies that turn out to be the most lethal. A murder — and three women with secrets, all in a game of suburban intrigue.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/41TJ4koIMLL._SL250_.jpg',
+    genre: 'Mystery',
+    voice: 'Conversational'
   },
   {
-    id: "robin-miles",
-    name: "Robin Miles",
-    initials: "RM",
-    genre: "Literary Fiction",
-    bookCount: 67,
-    books: [
-      { title: "Americanah", author: "Chimamanda Ngozi Adichie", length: "16 hrs 43 mins", rating: "4.8", price: "$22.95" },
-      { title: "An Untamed State", author: "Roxane Gay", length: "9 hrs 23 mins", rating: "4.6", price: "$18.95" },
-      { title: "Parable of the Sower", author: "Octavia Butler", length: "10 hrs 7 mins", rating: "4.9", price: "$19.95" }
-    ]
+    id: 10,
+    narrator: 'January LaVoy',
+    title: 'The Lincoln Highway',
+    author: 'Amor Towles',
+    length: '15 hrs and 56 mins',
+    releaseDate: '10-05-21',
+    language: 'English',
+    rating: 4.5,
+    ratingCount: '9,872',
+    description: 'In June 1954, eighteen-year-old Emmett Watson is driven home to Nebraska by the warden of the juvenile work farm where he has just served fifteen months for involuntary manslaughter.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/518TJ0l76ZL._SL250_.jpg',
+    genre: 'Literary Fiction',
+    voice: 'Conversational'
+  },
+  {
+    id: 11,
+    narrator: 'Nick Podehl',
+    title: 'The Final Empire',
+    author: 'Brandon Sanderson',
+    length: '24 hrs and 41 mins',
+    releaseDate: '05-02-06',
+    language: 'English',
+    rating: 4.8,
+    ratingCount: '21,445',
+    description: 'What if the prophecies were wrong? For a thousand years the ash fell and no flowers bloomed. For a thousand years the Skaa slaved in misery and lived in fear.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/41yJ75gpTGL._SL250_.jpg',
+    genre: 'Fantasy',
+    voice: 'Epic'
+  },
+  {
+    id: 12,
+    narrator: 'Edoardo Ballerini',
+    title: 'The Shadow of the Wind',
+    author: 'Carlos Ruiz Zafón',
+    length: '15 hrs and 43 mins',
+    releaseDate: '01-14-03',
+    language: 'Spanish',
+    rating: 4.7,
+    ratingCount: '7,321',
+    description: 'Barcelona, 1945: A boy called Daniel enters the Cemetery of Forgotten Books for the first time and chooses a single book by an author named Julián Carax.',
+    price: '$0.00 with trial',
+    cover: 'https://m.media-amazon.com/images/I/51KKbSsJBLL._SL250_.jpg',
+    genre: 'Mystery',
+    voice: 'Dramatic'
   }
 ];
 
-// Page 2 representative narrators [representative content]
-const narratorsPage2 = [
-  { id: "jim-dale", name: "Jim Dale", initials: "JD", genre: "Fantasy", bookCount: 45 },
-  { id: "stephen-fry", name: "Stephen Fry", initials: "SF", genre: "Literary Fiction", bookCount: 38 },
-  { id: "grover-gardner", name: "Grover Gardner", initials: "GG", genre: "Historical Fiction", bookCount: 156 },
-  { id: "julia-whelan", name: "Julia Whelan", initials: "JW", genre: "Romance", bookCount: 82 },
-  { id: "david-colacci", name: "David Colacci", initials: "DC", genre: "Mystery", bookCount: 71 },
-  { id: "macleod-andrews", name: "MacLeod Andrews", initials: "MA", genre: "Thriller", bookCount: 93 },
-  { id: "emily-woo-zeller", name: "Emily Woo Zeller", initials: "EZ", genre: "Literary Fiction", bookCount: 54 },
-  { id: "george-guidall", name: "George Guidall", initials: "GG2", genre: "Mystery", bookCount: 178 },
-  { id: "lorelei-king", name: "Lorelei King", initials: "LK", genre: "Thriller", bookCount: 49 },
-  { id: "robertson-dean", name: "Robertson Dean", initials: "RD", genre: "Sci-Fi", bookCount: 63 }
-];
+/* ═══════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════ */
+let activeFilters = { genre: [], voice: [], language: [] };
+let narratorSearch = '';
+let activeSort = 'most-listened';
 
-// ═══════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════
-let currentPage = 1;
-let currentSearch = '';
-let homeBrowseOpen = true; // starts open on home screen
-let narratorsBrowseOpen = false;
-
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-function initPrototype() {
-  renderNarratorCards(narrators);
-  setupClickOutside();
-}
-
-// ═══════════════════════════════════════════
-// SCREEN NAVIGATION
-// ═══════════════════════════════════════════
-function navigateToNarrators() {
-  document.querySelector('[data-screen="home"]').classList.remove('active');
-  document.querySelector('[data-screen="narrators"]').classList.add('active');
-  // Close browse menu on home
-  homeBrowseOpen = false;
-  document.getElementById('home-browse-menu').classList.remove('open');
-  document.getElementById('home-browse-btn').classList.remove('active');
-  window.scrollTo(0, 0);
-}
-
-// ═══════════════════════════════════════════
-// BROWSE MENU TOGGLE
-// ═══════════════════════════════════════════
-function toggleBrowseHome() {
-  homeBrowseOpen = !homeBrowseOpen;
-  const menu = document.getElementById('home-browse-menu');
-  const btn = document.getElementById('home-browse-btn');
-  if (homeBrowseOpen) {
-    menu.classList.add('open');
-    btn.classList.add('active');
-  } else {
-    menu.classList.remove('open');
-    btn.classList.remove('active');
-  }
-}
-
-function toggleBrowseNarrators() {
-  narratorsBrowseOpen = !narratorsBrowseOpen;
-  const menu = document.getElementById('narrators-browse-menu');
-  const btn = document.getElementById('narrators-browse-btn');
-  if (narratorsBrowseOpen) {
-    menu.classList.add('open');
-    btn.classList.add('active');
-  } else {
-    menu.classList.remove('open');
-    btn.classList.remove('active');
-  }
-}
-
-function setupClickOutside() {
-  document.addEventListener('click', function(e) {
-    // Home browse menu
-    const homeContainer = document.getElementById('home-nav-container');
-    if (homeContainer && !homeContainer.contains(e.target) && homeBrowseOpen) {
-      homeBrowseOpen = false;
-      document.getElementById('home-browse-menu').classList.remove('open');
-      document.getElementById('home-browse-btn').classList.remove('active');
-    }
-    // Narrators browse menu
-    const narratorsContainer = document.getElementById('narrators-nav-container');
-    if (narratorsContainer && !narratorsContainer.contains(e.target) && narratorsBrowseOpen) {
-      narratorsBrowseOpen = false;
-      document.getElementById('narrators-browse-menu').classList.remove('open');
-      document.getElementById('narrators-browse-btn').classList.remove('active');
-    }
-  });
-}
-
-// ═══════════════════════════════════════════
-// FILTER CHIPS
-// ═══════════════════════════════════════════
-function toggleChip(el) {
-  const isActive = el.classList.contains('chip-active');
-  if (isActive) {
-    el.classList.remove('chip-active');
-    el.style.backgroundColor = 'transparent';
-    el.style.color = '#010E19';
-    el.style.borderColor = '#93ACCD';
-  } else {
-    el.classList.add('chip-active');
-    el.style.backgroundColor = '#1479CF';
-    el.style.color = '#FFFFFF';
-    el.style.borderColor = '#1479CF';
-  }
-}
-
-// ═══════════════════════════════════════════
-// NARRATOR CARD RENDERING
-// ═══════════════════════════════════════════
-function renderNarratorCards(list) {
-  const grid = document.getElementById('narrator-grid');
-  const noResults = document.getElementById('no-results');
-  const countEl = document.getElementById('results-count');
-
-  if (!list || list.length === 0) {
-    grid.innerHTML = '';
-    noResults.style.display = 'block';
-    countEl.textContent = '0 narrators found';
-    return;
-  }
-
-  noResults.style.display = 'none';
-  const total = currentSearch ? list.length : 500;
-  const showing = list.length;
-  countEl.textContent = currentSearch
-    ? showing + ' narrator' + (showing !== 1 ? 's' : '') + ' found'
-    : '1 – 20 of 500 narrators';
-
-  grid.innerHTML = list.map(function(n) {
-    return buildCardHTML(n);
-  }).join('');
-}
-
-function buildCardHTML(n) {
-  return '<div class="narrator-card" data-name="' + n.name + '" onclick="openModal(\'' + n.id + '\')">' +
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">' +
-      '<div style="width:64px;height:64px;border-radius:50%;background-color:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4A6687;flex-shrink:0;">' + n.initials + '</div>' +
-      '<div style="min-width:0;">' +
-        '<div style="font-size:16px;font-weight:700;color:#010E19;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.name + '</div>' +
-        '<div style="font-size:12px;color:#4A6687;margin-bottom:2px;">' + n.genre + '</div>' +
-        '<div style="font-size:13px;color:#061624;">' + n.bookCount + ' audiobooks</div>' +
-      '</div>' +
-    '</div>' +
-    '<div style="display:flex;gap:6px;">' +
-      '<div style="width:48px;height:48px;border-radius:4px;background-color:#E8EBF0;flex-shrink:0;"></div>' +
-      '<div style="width:48px;height:48px;border-radius:4px;background-color:#D8DDE6;flex-shrink:0;"></div>' +
-      '<div style="width:48px;height:48px;border-radius:4px;background-color:#C8D0DC;flex-shrink:0;"></div>' +
-    '</div>' +
-  '</div>';
-}
-
-// ═══════════════════════════════════════════
-// SEARCH
-// ═══════════════════════════════════════════
-function filterNarrators(query) {
-  currentSearch = query.trim().toLowerCase();
-  if (!currentSearch) {
-    if (currentPage === 1) {
-      renderNarratorCards(narrators);
-    } else {
-      renderNarratorCards(narratorsPage2.map(function(n) { return Object.assign({}, n, { books: [] }); }));
-    }
-    return;
-  }
-  const pool = narrators.concat(narratorsPage2.map(function(n) { return Object.assign({}, n, { books: [] }); }));
-  const filtered = pool.filter(function(n) {
-    return n.name.toLowerCase().indexOf(currentSearch) !== -1;
-  });
-  renderNarratorCards(filtered);
-}
-
-// ═══════════════════════════════════════════
-// PAGINATION
-// ═══════════════════════════════════════════
-function changePage(page) {
-  if (page < 1 || page > 25) return;
-  currentPage = page;
-
-  // Update button states
-  document.getElementById('page-1-btn').classList.toggle('page-active', page === 1);
-  document.getElementById('page-2-btn').classList.toggle('page-active', page === 2);
-
-  // Prev button
-  const prevBtn = document.getElementById('prev-btn');
-  if (page === 1) {
-    prevBtn.style.opacity = '0.4';
-    prevBtn.style.pointerEvents = 'none';
-  } else {
-    prevBtn.style.opacity = '1';
-    prevBtn.style.pointerEvents = 'auto';
-  }
-
-  // Show appropriate data
-  if (page === 1) {
-    renderNarratorCards(narrators);
-  } else if (page === 2) {
-    const page2WithBooks = narratorsPage2.map(function(n) {
-      return Object.assign({}, n, { books: [] });
-    });
-    renderNarratorCards(page2WithBooks);
-  } else {
-    // For pages 3+, show a placeholder message
-    document.getElementById('narrator-grid').innerHTML =
-      '<div style="grid-column:1/-1;text-align:center;padding:48px;font-size:16px;color:#4A6687;">Page ' + page + ' — content would load here</div>';
-    document.getElementById('no-results').style.display = 'none';
-    document.getElementById('results-count').textContent = 'Page ' + page + ' of 25';
-  }
-
-  window.scrollTo(0, 0);
-}
-
-// ═══════════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════════
-function openModal(narratorId) {
-  const narrator = narrators.find(function(n) { return n.id === narratorId; });
-  if (!narrator) return;
-
-  document.getElementById('modal-narrator-name').textContent = narrator.name + ' — Audiobooks';
-
-  const bookListHTML = narrator.books && narrator.books.length > 0
-    ? narrator.books.map(function(book, idx) {
-        const isLast = idx === narrator.books.length - 1;
-        return '<div style="display:flex;gap:20px;padding:20px 0;' + (isLast ? '' : 'border-bottom:1px solid rgba(1,14,25,0.15);') + '">' +
-          '<div style="width:120px;height:120px;background-color:#E8EBF0;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#4A6687;text-align:center;padding:8px;font-weight:600;">' + book.title + '</div>' +
-          '<div style="flex:1;min-width:0;">' +
-            '<div style="font-size:20px;font-weight:700;color:#010E19;line-height:26px;margin-bottom:4px;">' + book.title + '</div>' +
-            '<div style="font-size:13px;color:#061624;margin-bottom:2px;">By: ' + book.author + '</div>' +
-            '<div style="font-size:13px;color:#061624;margin-bottom:2px;">Narrated by: ' + narrator.name + '</div>' +
-            '<div style="font-size:13px;color:#061624;margin-bottom:6px;">' + book.length + ' &nbsp;|&nbsp; ' +
-              '<span style="color:#FFA000;">' + '★'.repeat(Math.floor(parseFloat(book.rating))) + '</span> ' + book.rating +
-            '</div>' +
-            '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
-              '<button class="cta-primary">Try Standard free</button>' +
-              '<button class="cta-secondary">' + book.price + ' — Add to cart</button>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join('')
-    : '<div style="padding:24px;text-align:center;color:#4A6687;">No book details available for this narrator.</div>';
-
-  document.getElementById('modal-book-list').innerHTML = bookListHTML;
-  document.getElementById('narrator-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('narrator-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function handleModalOverlayClick(e) {
-  if (e.target === document.getElementById('narrator-modal')) {
-    closeModal();
-  }
-}
-
-// Close modal on Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeModal();
-});
-
-// ═══════════════════════════════════════════
-// DUAL-MODE ARCHITECTURE — boot after all declarations
-// ═══════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
+   MODE SWITCH
+   ═══════════════════════════════════════════════════════ */
 const FIGMA_MODE = new URLSearchParams(window.location.search).get('figma') === 'true';
+
 if (FIGMA_MODE) {
   document.getElementById('prototype-root').style.display = 'none';
   document.getElementById('figma-gallery').style.display = 'flex';
 } else {
   document.getElementById('figma-gallery').style.display = 'none';
   initPrototype();
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════ */
+function initPrototype() {
+  renderBooks(BOOKS);
+  updateActiveFilterRow();
+}
+
+/* ═══════════════════════════════════════════════════════
+   BROWSE MEGA-MENU
+   ═══════════════════════════════════════════════════════ */
+function toggleBrowse() {
+  const panel = document.getElementById('browse-panel');
+  const btn = document.getElementById('browse-btn');
+  const indicator = document.getElementById('browse-indicator');
+  const isOpen = panel.classList.contains('browse-panel-open');
+  if (isOpen) {
+    panel.classList.remove('browse-panel-open');
+    btn.setAttribute('aria-expanded', 'false');
+    indicator.classList.remove('indicator-visible');
+  } else {
+    panel.classList.add('browse-panel-open');
+    btn.setAttribute('aria-expanded', 'true');
+    indicator.classList.add('indicator-visible');
+  }
+}
+
+function closeBrowse() {
+  const panel = document.getElementById('browse-panel');
+  const btn = document.getElementById('browse-btn');
+  const indicator = document.getElementById('browse-indicator');
+  panel.classList.remove('browse-panel-open');
+  btn.setAttribute('aria-expanded', 'false');
+  indicator.classList.remove('indicator-visible');
+}
+
+// Close browse panel when clicking outside
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('browse-panel');
+  const btn = document.getElementById('browse-btn');
+  const navHeader = btn ? btn.closest('div[style*="position: relative"]') : null;
+  if (panel && panel.classList.contains('browse-panel-open')) {
+    if (!panel.contains(e.target) && e.target !== btn && !(btn && btn.contains(e.target))) {
+      closeBrowse();
+    }
+  }
+});
+
+/* ═══════════════════════════════════════════════════════
+   CHIP TOGGLE
+   ═══════════════════════════════════════════════════════ */
+function toggleChip(btn) {
+  const filterType = btn.getAttribute('data-filter');
+  const value = btn.getAttribute('data-value');
+  const isSelected = btn.classList.contains('chip-selected');
+
+  if (isSelected) {
+    btn.classList.remove('chip-selected');
+    btn.style.border = '2px solid #93accd';
+    btn.style.backgroundColor = '#ffffff';
+    btn.style.color = '#010e19';
+    btn.style.fontWeight = '400';
+    activeFilters[filterType] = activeFilters[filterType].filter(v => v !== value);
+  } else {
+    btn.classList.add('chip-selected');
+    btn.style.border = '2px solid #1479cf';
+    btn.style.backgroundColor = '#e6f3ff';
+    btn.style.color = '#1479cf';
+    btn.style.fontWeight = '700';
+    if (!activeFilters[filterType].includes(value)) {
+      activeFilters[filterType].push(value);
+    }
+  }
+
+  applyFilters();
+}
+
+/* ═══════════════════════════════════════════════════════
+   SORT
+   ═══════════════════════════════════════════════════════ */
+function setSort(btn) {
+  activeSort = btn.getAttribute('data-sort');
+  document.querySelectorAll('.sort-btn').forEach(b => {
+    b.classList.remove('sort-active');
+    b.style.backgroundColor = '#ffffff';
+    b.style.color = '#061624';
+    b.style.border = '1px solid rgba(1,14,25,0.15)';
+    b.style.fontWeight = '400';
+  });
+  btn.classList.add('sort-active');
+  btn.style.backgroundColor = '#1479cf';
+  btn.style.color = '#ffffff';
+  btn.style.border = '1px solid #1479cf';
+  btn.style.fontWeight = '700';
+  applyFilters();
+}
+
+/* ═══════════════════════════════════════════════════════
+   NARRATOR SEARCH
+   ═══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  const ns = document.getElementById('narrator-search');
+  if (ns) {
+    ns.addEventListener('input', function() {
+      narratorSearch = this.value.toLowerCase().trim();
+      applyFilters();
+    });
+  }
+});
+
+/* ═══════════════════════════════════════════════════════
+   APPLY FILTERS
+   ═══════════════════════════════════════════════════════ */
+function applyFilters() {
+  narratorSearch = (document.getElementById('narrator-search') || {value: ''}).value.toLowerCase().trim();
+
+  let filtered = BOOKS.filter(book => {
+    // Narrator name search
+    if (narratorSearch && !book.narrator.toLowerCase().includes(narratorSearch)) return false;
+    // Genre
+    if (activeFilters.genre.length > 0 && !activeFilters.genre.includes(book.genre)) return false;
+    // Voice
+    if (activeFilters.voice.length > 0 && !activeFilters.voice.includes(book.voice)) return false;
+    // Language
+    if (activeFilters.language.length > 0 && !activeFilters.language.includes(book.language)) return false;
+    return true;
+  });
+
+  // Sort
+  if (activeSort === 'rating') {
+    filtered = filtered.slice().sort((a, b) => b.rating - a.rating);
+  } else if (activeSort === 'newest') {
+    filtered = filtered.slice().sort((a, b) => b.id - a.id);
+  }
+
+  renderBooks(filtered);
+  updateResultsCounter(filtered.length);
+  updateActiveFilterRow();
+  updateClearAllBtn();
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER BOOKS
+   ═══════════════════════════════════════════════════════ */
+function renderBooks(books) {
+  const list = document.getElementById('book-list');
+  if (!list) return;
+
+  if (books.length === 0) {
+    list.innerHTML = '<li style="padding: 40px 0; text-align: center; color: #061624; font-size: 14px; font-family: Arial, sans-serif;">No results found for your selected filters. <button onclick="clearAllFilters()" style="color: #0e5b9b; font-size: 14px; font-family: Arial, sans-serif; background: none; border: none; text-decoration: underline; cursor: pointer; padding: 0;">Clear all filters</button></li>';
+    return;
+  }
+
+  list.innerHTML = books.map((book, idx) => {
+    const stars = ratingStars(book.rating);
+    const isLast = idx === books.length - 1;
+    return `
+    <li style="
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-bottom: ${isLast ? 'none' : '1px solid rgba(1,14,25,0.15)'};
+      margin-bottom: 0;
+    ">
+      <!-- Row: 3 columns -->
+      <div class="list-item-row" style="display: flex; gap: 0; padding: 16px 0; margin: 0 -12px;">
+
+        <!-- Col 1: cover + preview -->
+        <div class="cover-col" style="width: 256px; padding: 0 12px; flex-shrink: 0;">
+          <div style="position: relative; width: 232px; height: 232px; overflow: hidden; border-radius: 2px;">
+            <img
+              src="${book.cover}"
+              alt="${escapeHtml(book.title)} cover"
+              style="
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                z-index: 0;
+              "
+            />
+          </div>
+          <div style="margin-top: 6px;">
+            <a href="#" class="list-item-meta-link" style="font-size: 14px; color: #010e19; font-family: Arial, sans-serif;">&#9654; Preview</a>
+          </div>
+        </div>
+
+        <!-- Col 2: metadata -->
+        <div style="flex: 1; min-width: 0; padding: 0 12px;">
+          <!-- Narrator line — change #4: prominent in brand-blue/700 -->
+          <div style="font-size: 14px; font-weight: 700; color: #1479cf; font-family: Arial, sans-serif; margin-bottom: 4px; line-height: 20px;">
+            Narrated by: <a href="#" class="list-item-meta-link" style="color: #1479cf; font-size: 14px; font-weight: 700; font-family: Arial, sans-serif;">${escapeHtml(book.narrator)}</a>
+          </div>
+          <h3 style="font-size: 20px; font-weight: 400; line-height: 26px; color: #0e5b9b; font-family: Arial, sans-serif; margin: 0 0 4px;">
+            <a href="#" class="list-item-title-link" style="color: #0e5b9b; font-size: 20px; font-weight: 400; line-height: 26px; font-family: Arial, sans-serif;">${escapeHtml(book.title)}</a>
+          </h3>
+          <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif; margin-bottom: 2px; line-height: 19px;">
+            By: <a href="#" class="list-item-meta-link" style="color: #0e5b9b; font-size: 13px; font-family: Arial, sans-serif;">${escapeHtml(book.author)}</a>
+          </div>
+          <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif; margin-bottom: 2px; line-height: 19px;">Length: ${escapeHtml(book.length)}</div>
+          <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif; margin-bottom: 2px; line-height: 19px;">Release date: ${escapeHtml(book.releaseDate)}</div>
+          <div style="font-size: 13px; color: #061624; font-family: Arial, sans-serif; margin-bottom: 6px; line-height: 19px;">Language: ${escapeHtml(book.language)}</div>
+          <div style="font-size: 14px; color: #010e19; font-family: Arial, sans-serif; margin-bottom: 6px; line-height: 22px;">
+            ${stars} <span style="font-size: 14px; color: #061624;">(${escapeHtml(book.ratingCount)} ratings)</span>
+          </div>
+          <div style="font-size: 14px; color: #061624; font-family: Arial, sans-serif; line-height: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+            ${escapeHtml(book.description)}
+          </div>
+        </div>
+
+        <!-- Col 3: price + CTA -->
+        <div class="price-col" style="width: 256px; flex-shrink: 0; padding: 0 12px;">
+          <div style="font-size: 14px; color: #010e19; font-family: Arial, sans-serif; margin-bottom: 8px; line-height: 20px;">${escapeHtml(book.price)}</div>
+          <a href="#" style="
+            display: block;
+            background-color: #ffa000;
+            color: #010e19;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 9999px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            white-space: nowrap;
+          " class="btn-amber">Try Standard free</a>
+        </div>
+
+      </div>
+    </li>`;
+  }).join('');
+}
+
+function ratingStars(rating) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5 ? 1 : 0;
+  let s = '';
+  for (let i = 0; i < full; i++) s += '&#9733;';
+  if (half) s += '&#189;';
+  return `<span style="color: #ffa000;">${s}</span> <span style="font-size: 14px; color: #010e19;">${rating}</span>`;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/* ═══════════════════════════════════════════════════════
+   ACTIVE FILTER ROW — change #3
+   ═══════════════════════════════════════════════════════ */
+function updateActiveFilterRow() {
+  const row = document.getElementById('active-filter-row');
+  if (!row) return;
+
+  const tags = [];
+  activeFilters.genre.forEach(v => tags.push({ type: 'genre', label: `Genre: ${v}`, value: v }));
+  activeFilters.voice.forEach(v => tags.push({ type: 'voice', label: `Voice: ${v}`, value: v }));
+  activeFilters.language.forEach(v => tags.push({ type: 'language', label: `Language: ${v}`, value: v }));
+
+  if (tags.length === 0) {
+    row.style.display = 'none';
+    row.innerHTML = '';
+  } else {
+    row.style.display = 'flex';
+    row.innerHTML = tags.map(tag => `
+      <span style="
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background-color: #e6f3ff;
+        border: 2px solid #1479cf;
+        border-radius: 8px;
+        padding: 4px 10px;
+        font-size: 13px;
+        color: #1479cf;
+        font-weight: 700;
+        font-family: Arial, sans-serif;
+      ">
+        ${escapeHtml(tag.label)}
+        <button
+          class="filter-tag-x"
+          onclick="removeFilter('${tag.type}', '${escapeHtml(tag.value)}')"
+          aria-label="Remove filter ${escapeHtml(tag.label)}"
+          style="
+            font-size: 14px;
+            font-weight: 400;
+            color: #1479cf;
+            background: none;
+            border: none;
+            padding: 0 0 0 2px;
+            line-height: 1;
+          "
+        >&times;</button>
+      </span>
+    `).join('');
+  }
+}
+
+function removeFilter(type, value) {
+  activeFilters[type] = activeFilters[type].filter(v => v !== value);
+  // Un-select the chip in the sidebar
+  document.querySelectorAll(`.chip-btn[data-filter="${type}"][data-value="${value}"]`).forEach(btn => {
+    btn.classList.remove('chip-selected');
+    btn.style.border = '2px solid #93accd';
+    btn.style.backgroundColor = '#ffffff';
+    btn.style.color = '#010e19';
+    btn.style.fontWeight = '400';
+  });
+  applyFilters();
+}
+
+function clearAllFilters() {
+  activeFilters = { genre: [], voice: [], language: [] };
+  narratorSearch = '';
+  const ns = document.getElementById('narrator-search');
+  if (ns) ns.value = '';
+  document.querySelectorAll('.chip-btn').forEach(btn => {
+    btn.classList.remove('chip-selected');
+    btn.style.border = '2px solid #93accd';
+    btn.style.backgroundColor = '#ffffff';
+    btn.style.color = '#010e19';
+    btn.style.fontWeight = '400';
+  });
+  applyFilters();
+}
+
+function updateClearAllBtn() {
+  const btn = document.getElementById('clear-all-btn');
+  if (!btn) return;
+  const hasFilters = activeFilters.genre.length > 0 || activeFilters.voice.length > 0 || activeFilters.language.length > 0 || narratorSearch.length > 0;
+  btn.style.display = hasFilters ? 'block' : 'none';
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESULTS COUNTER
+   ═══════════════════════════════════════════════════════ */
+function updateResultsCounter(count) {
+  const el = document.getElementById('results-counter');
+  if (!el) return;
+  if (count === 0) {
+    el.textContent = 'No results';
+  } else {
+    const showing = Math.min(count, 20);
+    el.textContent = `1 - ${showing} of ${count} result${count !== 1 ? 's' : ''}`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE DRAWER
+   ═══════════════════════════════════════════════════════ */
+function openMobileDrawer() {
+  document.getElementById('filter-sidebar').classList.add('drawer-open');
+  document.getElementById('mobile-overlay').classList.add('overlay-visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileDrawer() {
+  document.getElementById('filter-sidebar').classList.remove('drawer-open');
+  document.getElementById('mobile-overlay').classList.remove('overlay-visible');
+  document.body.style.overflow = '';
 }
 </script>
 </body>

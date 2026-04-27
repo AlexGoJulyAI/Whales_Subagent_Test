@@ -138,7 +138,11 @@ The brief is the authoritative upstream source. Extract and confirm:
 - All ★ CLIENT DEFERRED items requiring designer judgment (Designer Notes section)
 - The Goal Thread table (§4) — this governs all P0 decisions
 
-**Merge step:** After all three tracks, produce the Figma Extraction Summary, Screenshot Analysis, and Brief Confirmation Summary. Then run Asset Conflict Resolution.
+**Track D — Pipeline artifacts (read if present):**
+1. `docs/research/PAGE_TOPOLOGY.md` — extract the section list, interaction model per section, and complexity ratings. Cross-check the interaction model column against the brief's §14 Existing Interaction States — flag any discrepancy as an `INTERACTION MODEL CONFLICT` in Designer Notes before proceeding.
+2. `docs/research/BEHAVIORS.md` — extract all behavioral findings (scroll-triggered, click-driven, hover, responsive). Before designing any interactive section, verify its current interaction model against this file. For edit/iteration engagements: a section's tier assignment in EDIT SCOPE constrains which behaviors may change — Tier 1 sections lock the interaction model entirely, Tier 2 changes require explicit rationale in Designer Notes, Tier 3 is unconstrained.
+
+**Merge step:** After all four tracks, produce the Figma Extraction Summary, Screenshot Analysis, Brief Confirmation Summary, and Topology/Behavior Summary. Then run Asset Conflict Resolution.
 
 ---
 
@@ -323,6 +327,9 @@ JOURNEY SKIP CHECK
 ```
 
 - If **skip**: Record `JOURNEY SELECTION` as `Skipped — client confirmed`. Do not generate any User Journey files. **Still proceed to PRE-JOURNEY GATE below** — directional input is required before generating mockups. For net-new builds this means asking for inspiration; for edit/iteration engagements this means tier selection. Follow the PRE-JOURNEY GATE rules exactly — do not ask for tiers on a net-new build.
+
+  > ⚠️ **BYPASS PROHIBITION:** The PRE-JOURNEY GATE requires a real client response **at the gate moment**. Never infer the answer from the client's original brief message, even if it contains apparent directional input. The gate must be presented as a live question and the client must reply to it explicitly before any mockup generation begins. Treating an earlier message as the gate answer is a guardrail violation.
+
 - If **continue**: Proceed to PRE-JOURNEY GATE below.
 
 ---
@@ -784,10 +791,10 @@ The journey is not just a recolor of the same flow — each direction's interact
 ```
 NODE CLASS        SHAPE                    COLOR SYSTEM
 ─────────────────────────────────────────────────────────────────────
-.n-start          Dark rounded pill        bg #111827, white text
+.n-start          Dark navy rounded pill   bg #111827, white text
                   border-radius 999px      Marks entry point of a flow
 
-.n-click          Purple rounded rect      bg #F3EEFF
+.n-click          Purple rect (16px rad)   bg #F3EEFF
 (user clicks)     border-radius 16px       border: 2px solid #7C3AED
                   .nt label: "Click"       color: #3B0764 — looks like a button
                                            .nt color: #7C3AED
@@ -802,33 +809,33 @@ NODE CLASS        SHAPE                    COLOR SYSTEM
 reads)            .nt label: "View"        color: #3B0764 — soft/passive shape
                                            .nt color: #7C3AED
 
-.n-sys            Sky rounded rect         bg #E0F2FE
+.n-sys            Sky-blue rounded rect    bg #E0F2FE
 (system response) border-radius 8px        border: 2px solid #0284C7
                   .nt label: "System"      color: #0C4A6E
                                            .nt color: #0284C7
 
 .n-dec-wrap /     Blue diamond             bg #BFDBFE
 .n-dec /          CSS rotate(45deg) on     border: 2px solid #2563EB
-.n-dec-text       96×96px square           .n-dec-text: rotate(-45deg),
-                  border-radius 8px          color #1D4ED8, max-width 70px
+.n-dec-text       192×192px square         .n-dec-text: rotate(-45deg),
+                  border-radius 16px         color #1D4ED8, max-width 140px
 
-.n-end            Green rounded pill       bg #DCFCE7
+.n-end            Green outlined pill      bg #DCFCE7
 (outcome)         border-radius 999px      border: 2px solid #16A34A
                                            color: #14532D
 
-BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
-                  ⚠ icon                  bg: #FFF1F2
+BLOCKER / ERROR   card + 3px left border   border: #cc0000 red
+                  ⚠ icon                  bg: #fafafa
 
-.fc-conn          vertical line + arrow    line: 2px #CBD5E1, height 24px
-(straight)        ▼ arrow below line       arrow color: #94A3B8
+.fc-conn          vertical line + arrow    line: 2px #000, height 48px
+(straight)        ▼ arrow below line       arrow color: #000
 
-.fc-branches /    flex row, gap 20px       YES branch label: #16A34A
-.fc-branch        two branch columns       NO branch label: #DC2626
-(after decision)  each ends with .n-end    branch node max-width: 220px
+.fc-branches /    flex row, gap 20px       YES branch label: bold black
+.fc-branch        two branch columns       NO branch label: muted gray
+(after decision)  each ends with .n-end    branch node max-width: 440px
 ```
 
 **.nt mini-label** (node type, shown inside every `.n-click`, `.n-type`, `.n-view`, and `.n-sys`):
-`display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px`
+`display: block; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; opacity: .6; margin-bottom: 4px`
 
 ```html
 <!DOCTYPE html>
@@ -840,6 +847,9 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
   <style>
     /* Self-contained. Font stack: Inter → system-ui → sans-serif. No external deps. */
     /* Full visual language: step type badges, color-coded borders, diamond decisions, outcome pills */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Inter, system-ui, sans-serif; background: #f4f4f4; padding: 80px 48px; color: #000; }
+    .page-wrap { max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
   </style>
 </head>
 <body>
@@ -893,7 +903,10 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
         ✓ "A challenge filter and keyword search are also available for harder-to-find moments."
       Never start with "This flow shows how..." — describe the mechanism directly.
 
-    SHAPE LEGEND — show actual CSS shapes, not icons or text characters:
+    SHAPE LEGEND — show actual CSS shapes, not icons or text characters.
+    CRITICAL: legend shapes MUST use the exact same background and border colors as the
+    corresponding node classes. Do NOT substitute black, white, gray, or any other colors.
+    The legend is a color key — if the colors don't match the nodes, it is broken.
     <div class="hdr-shapes">
       <div class="hdr-shape-item"><div class="hs-start"></div><span>Start / End</span></div>
       <div class="hdr-shape-item"><div class="hs-click"></div><span>Click</span></div>
@@ -905,30 +918,30 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
     </div>
 
     CSS for header (add to <style> block):
-      .header { background: #1E2A40; border-radius: 14px; padding: 30px 32px 26px; margin-bottom: 32px; box-shadow: 0 4px 24px rgba(8,51,134,.18); }
-      .hdr-kicker { font-size: 11px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 6px; }
-      .hdr-direction { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 20px; line-height: 1.2; letter-spacing: -.01em; }
-      .hdr-direction span { color: #7C3AED; }
-      .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px; }
-      .callout-prob { background: rgba(239,68,68,.10); border-color: #EF4444; }
-      .callout-sol  { background: rgba(22,163,74,.10); border-color: #16A34A; }
-      .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
-      .callout-prob .callout-label { color: #FCA5A5; }
-      .callout-sol  .callout-label { color: #86EFAC; }
-      .callout-body { font-size: 12px; color: rgba(255,255,255,.82); line-height: 1.6; }
-      .hdr-divider { height: 1px; background: rgba(255,255,255,.10); margin: 20px 0 16px; }
-      .hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.32); margin-bottom: 12px; }
-      .hdr-shapes { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-      .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-      .hdr-shape-item span { font-size: 8px; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; white-space: nowrap; text-transform: uppercase; }
-      .hs-start { width: 56px; height: 24px; background: #111827; border-radius: 999px; }
-      .hs-click { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; }
-      .hs-type  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
-      .hs-view  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
-      .hs-sys   { width: 56px; height: 24px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; }
-      .hs-dec-wrap { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-      .hs-dec { width: 28px; height: 28px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 8px; }
-      .hs-end { width: 56px; height: 24px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
+      .header { background: #fff; border: 1px solid #000; border-top: 4px solid #000; padding: 72px 80px 56px; }
+      .hdr-kicker { font-size: 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #666; margin-bottom: 16px; }
+      .hdr-direction { font-size: 56px; font-weight: 700; color: #000; margin-bottom: 48px; line-height: 1.2; letter-spacing: -.01em; }
+      .hdr-direction span { color: #000; font-style: italic; }
+      .callout { border-left: 4px solid; padding: 24px 28px; margin-bottom: 18px; }
+      .callout-prob { background: #fafafa; border-color: #cc0000; }
+      .callout-sol  { background: #fafafa; border-color: #000; }
+      .callout-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 12px; }
+      .callout-prob .callout-label { color: #cc0000; }
+      .callout-sol  .callout-label { color: #000; }
+      .callout-body { font-size: 30px; color: #000; line-height: 1.6; }
+      .hdr-divider { height: 1px; background: #000; margin: 40px 0 32px; }
+      .hdr-legend-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 24px; }
+      .hdr-shapes { display: flex; align-items: flex-end; gap: 40px; flex-wrap: wrap; }
+      .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+      .hdr-shape-item span { font-size: 16px; color: #666; font-weight: 700; letter-spacing: .06em; white-space: nowrap; text-transform: uppercase; }
+      .hs-start { width: 112px; height: 44px; background: #111827; border-radius: 999px; }
+      .hs-click { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 32px; }
+      .hs-type  { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
+      .hs-view  { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
+      .hs-sys   { width: 112px; height: 44px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 16px; }
+      .hs-dec-wrap { width: 68px; height: 68px; display: flex; align-items: center; justify-content: center; }
+      .hs-dec { width: 44px; height: 44px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 8px; }
+      .hs-end { width: 112px; height: 44px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
   -->
 
   <!-- 2. SECTION SCREENSHOTS — below the header band -->
@@ -949,17 +962,17 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
 
     EMBED FORMAT:
       <img src="data:image/png;base64,[BASE64_DATA]"
-           style="width:100%; max-width:560px; border-radius:8px;
-                  border-top: 3px solid #D97706; display:block; margin-bottom:6px;"
+           style="width:100%; max-width:560px; border-radius:0;
+                  border-top: 3px solid #cc0000; display:block; margin-bottom:6px;"
            alt="Current UI — [section name]">
-      <div style="font-size:10px; font-weight:700; letter-spacing:.06em;
-                  text-transform:uppercase; color:#9CA3AF; margin-bottom:12px;">
+      <div style="font-size:9px; font-weight:700; letter-spacing:.1em;
+                  text-transform:uppercase; color:#666; margin-bottom:12px;">
         Current UI — [section name]
       </div>
 
     Rules:
-      - Amber top border (3px solid #D97706) if being changed.
-      - Gray top border (3px solid #E5E7EB) if section is unchanged/existing.
+      - Red top border (3px solid #cc0000) if being changed.
+      - Black top border (3px solid #000) if section is unchanged/existing.
       - If the URL is inaccessible or behind auth and the screenshot fails, note the
         failure explicitly ("Screenshot unavailable — auth required") and do NOT
         substitute a coded mockup. Leave the section empty with the failure note.
@@ -968,14 +981,14 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
 
   <!-- 3. FLOW SECTION HEADER -->
   <!--
-    Each flow is wrapped in a card with a dark navy title bar.
+    Each flow is wrapped in a card with a black title bar.
 
     CSS (add to <style> block):
-      .flow-section { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,42,64,.07); }
-      .flow-title-bar { background: #1E2A40; padding: 16px 24px; }
-      .flow-title-bar-kicker { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.42); margin-bottom: 3px; }
-      .flow-title-bar-label { font-size: 14px; font-weight: 800; color: #fff; }
-      .flow-body { padding: 32px 24px 28px; }
+      .flow-section { background: #fff; border: 1px solid #000; overflow: hidden; }
+      .flow-title-bar { background: #000; padding: 32px 48px; }
+      .flow-title-bar-kicker { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+      .flow-title-bar-label { font-size: 30px; font-weight: 700; color: #fff; }
+      .flow-body { padding: 64px 48px 56px; }
 
     HTML STRUCTURE:
     <div class="flow-section">
@@ -991,7 +1004,7 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
     </div>
 
     STEP BADGES (optional but recommended for numbered steps):
-      .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: #083386; color: #fff; border-radius: 999px; font-size: 10px; font-weight: 800; margin-bottom: 6px; flex-shrink: 0; }
+      .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #000; color: #fff; border-radius: 0; font-size: 20px; font-weight: 700; margin-bottom: 12px; flex-shrink: 0; }
       .n-with-badge { display: flex; flex-direction: column; align-items: center; }
       Usage: <div class="n-with-badge"><div class="step-badge">1</div><div class="n-start">...</div></div>
   -->
@@ -1003,24 +1016,21 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
 
     NODE TYPES:
     ┌──────────────────────────────────────────────────────────────────┐
-    │ .n-start / .n-end  │ Dark rounded pill │ bg #111827, #15803D   │
-    │ .n-click           │ Purple rounded rect │ bg #F3EEFF, border  │
-    │                    │   2px solid #7C3AED, border-radius 16px   │
-    │ .n-type            │ Purple sharp rect   │ bg #F3EEFF, border  │
-    │                    │   2px solid #7C3AED, border-radius 0      │
-    │ .n-view            │ Purple pill         │ bg #F3EEFF, border  │
-    │                    │   2px solid #7C3AED, border-radius 999px  │
-    │ .n-sys             │ Sky rounded rect │ bg #E0F2FE, border     │
-    │                    │   2px solid #0284C7                       │
-    │ .n-dec-wrap +      │ Blue diamond (CSS rotate 45°)             │
-    │ .n-dec + .n-dec-text│ bg #BFDBFE, border 2px solid #2563EB    │
+    │ .n-start           │ Dark navy pill           │ bg #111827      │
+    │ .n-end             │ Green outlined pill      │ bg #DCFCE7, border 2px #16A34A │
+    │ .n-click           │ Purple rect (16px rad.)  │ bg #F3EEFF, border 2px #7C3AED │
+    │ .n-type            │ Purple sharp rect (0 r.) │ bg #F3EEFF, border 2px #7C3AED │
+    │ .n-view            │ Purple pill              │ bg #F3EEFF, border 2px #7C3AED │
+    │ .n-sys             │ Sky-blue rounded rect    │ bg #E0F2FE, border 2px #0284C7 │
+    │ .n-dec-wrap +      │ Blue diamond             │                 │
+    │ .n-dec + .n-dec-text│ bg #BFDBFE, border 2px solid #2563EB     │
     └──────────────────────────────────────────────────────────────────┘
 
     USER NODE SELECTION — pick the right one per step:
     - .n-click  → user presses a button, taps a link, selects an option (rounded rect — button-like)
     - .n-type   → user enters text, searches, fills a field (sharp rectangle — hard 90° corners)
     - .n-view   → user reads, scans, observes a screen state (pill — soft, passive)
-    - .n-sys    → app/system responds automatically (sky rect — no user input)
+    - .n-sys    → app/system responds automatically (sky-blue rect — no user input)
 
     HTML STRUCTURE:
     <div class="fc">                          ← flowchart container, flex column, center align
@@ -1092,20 +1102,20 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
     DECISION DIAMONDS:
     - Question text: one yes/no question naming a visible screen state (not an abstract outcome)
     - Always show two branches: Yes (green label) and No (red label)
-    - Branch nodes use smaller max-width (220px instead of 280px)
+    - Branch nodes use smaller max-width (440px instead of 560px)
     - If a branch has a second decision, show it inline within that branch column
 
     .nt CLASS (node type mini-label inside node):
-    - font-size: 8px, font-weight: 800, text-transform: uppercase, letter-spacing: .07em
-    - opacity: .55, display: block, margin-bottom: 4px
-    - All user node types (.n-click, .n-type, .n-view): .nt color #7C3AED
+    - font-size: 16px, font-weight: 700, text-transform: uppercase, letter-spacing: .1em
+    - opacity: .6, display: block, margin-bottom: 8px
+    - User action nodes (.n-click, .n-type, .n-view): .nt color #7C3AED
     - System nodes (.n-sys): .nt color #0284C7
   -->
 
   <!-- OUTCOME NODES — end of every branch and main path -->
   <!--
     .n-end: background #DCFCE7, border 2px solid #16A34A, border-radius 999px (pill shape)
-    padding 10px 28px, color #14532D, font-size 11px, font-weight 700, text-align center
+    padding 20px 56px, color #14532D, font-size 22px, font-weight 700, text-align center
     
     Text: "Verb phrase ✓" — e.g. "Item found in <5 seconds ✓", "Task complete ✓"
     
@@ -1116,8 +1126,8 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
 
   <!-- BLOCKER CARD — when the user hits a hard stop or error state -->
   <!--
-    White card, 3px solid #EF4444 left border, #FFF1F2 background tint.
-    ⚠ icon (12px, #EF4444) before the step title.
+    Background #fafafa, border-left 3px solid #cc0000.
+    ⚠ icon (12px, #cc0000) before the step title.
     Use only when the brief explicitly calls out a failure or blocked state.
   -->
 
@@ -1126,8 +1136,8 @@ BLOCKER / ERROR   card + 3px left border   border: #EF4444 red
 
   <!-- FOOTNOTE — only when genuinely needed -->
   <!--
-    #fff bg, border-left 3px solid #083386, border-radius 6px, padding 10px 14px.
-    11px #6B7280. One sentence max.
+    #fafafa bg, border-left 4px solid #000, border-radius 0, padding 20px 28px.
+    22px #666. One sentence max.
   -->
 
 </body>
@@ -1143,71 +1153,71 @@ Nodes are the building blocks of each flow. Shape = type. Color = actor. No read
 **Complete CSS (add to `<style>` block):**
 ```css
 .fc { display: flex; flex-direction: column; align-items: center; }
-.nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
+.nt { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; opacity: .6; margin-bottom: 8px; }
 
 /* Start / End nodes */
-.n-start { background: #111827; color: #fff; border-radius: 999px; padding: 10px 28px; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
-.n-end { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 10px 28px; color: #14532D; font-size: 11px; font-weight: 700; text-align: center; max-width: 300px; }
+.n-start { background: #111827; color: #fff; border-radius: 999px; padding: 20px 56px; font-size: 22px; font-weight: 700; text-align: center; max-width: 600px; letter-spacing: .04em; }
+.n-end   { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 20px 56px; color: #14532D; font-size: 22px; font-weight: 700; text-align: center; max-width: 600px; letter-spacing: .04em; }
 
-/* User action — CLICK (more rounded rect, button-like) */
-.n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+/* User action — CLICK (rounded rect — suggests interactive button) */
+.n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 32px; padding: 20px 32px; color: #3B0764; font-size: 24px; font-weight: 500; text-align: center; max-width: 560px; line-height: 1.4; }
 .n-click .nt { color: #7C3AED; }
 
-/* User action — TYPE (sharp rectangle, no rounded edges) */
-.n-type { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 10px 16px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+/* User action — TYPE (sharp rectangle — suggests input field) */
+.n-type { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 20px 32px; color: #3B0764; font-size: 24px; font-weight: 500; text-align: center; max-width: 560px; line-height: 1.4; }
 .n-type .nt { color: #7C3AED; }
 
-/* User action — VIEW (pill, passive/observational) */
-.n-view { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 10px 24px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+/* User action — VIEW (pill — passive/observational) */
+.n-view { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 20px 48px; color: #3B0764; font-size: 24px; font-weight: 400; text-align: center; max-width: 560px; line-height: 1.4; }
 .n-view .nt { color: #7C3AED; }
 
 /* System response node */
-.n-sys { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; padding: 10px 16px; color: #0C4A6E; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; line-height: 1.4; }
+.n-sys { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 16px; padding: 20px 32px; color: #0C4A6E; font-size: 24px; font-weight: 400; text-align: center; max-width: 560px; line-height: 1.4; }
 .n-sys .nt { color: #0284C7; }
 
 /* Decision diamond */
-.n-dec-wrap { display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; flex-shrink: 0; }
-.n-dec { width: 96px; height: 96px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-.n-dec-text { transform: rotate(-45deg); font-size: 10px; font-weight: 700; color: #1D4ED8; text-align: center; line-height: 1.35; max-width: 70px; }
+.n-dec-wrap { display: flex; align-items: center; justify-content: center; width: 240px; height: 240px; flex-shrink: 0; }
+.n-dec { width: 192px; height: 192px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+.n-dec-text { transform: rotate(-45deg); font-size: 20px; font-weight: 700; color: #1D4ED8; text-align: center; line-height: 1.35; max-width: 140px; }
 
 /* Connector arrow */
-.fc-conn { display: flex; flex-direction: column; align-items: center; padding: 2px 0; }
-.fc-conn-line { width: 2px; height: 24px; background: #CBD5E1; }
-.fc-conn-arrow { font-size: 11px; color: #94A3B8; margin-top: -2px; }
+.fc-conn { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
+.fc-conn-line { width: 2px; height: 48px; background: #000; }
+.fc-conn-arrow { font-size: 22px; color: #000; margin-top: -4px; }
 
 /* Branching after a decision */
-.fc-branches { display: flex; gap: 20px; align-items: flex-start; justify-content: center; }
+.fc-branches { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
 .fc-branch { display: flex; flex-direction: column; align-items: center; }
-.fc-bl-y { font-size: 9px; font-weight: 700; color: #16A34A; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
-.fc-bl-n { font-size: 9px; font-weight: 700; color: #DC2626; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
-.fc-branch .n-click, .fc-branch .n-type, .fc-branch .n-view, .fc-branch .n-sys, .fc-branch .n-end { max-width: 220px; }
+.fc-bl-y { font-size: 16px; font-weight: 700; color: #15803d; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
+.fc-bl-n { font-size: 16px; font-weight: 700; color: #b91c1c; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
+.fc-branch .n-click, .fc-branch .n-type, .fc-branch .n-view, .fc-branch .n-sys, .fc-branch .n-end { max-width: 440px; }
 ```
 
 **Node reference:**
 
 | Node | Shape | Colors | Use when |
 |------|-------|--------|----------|
-| `.n-start` | Dark rounded pill | bg `#111827`, white text | Entry point of a flow |
-| `.n-click` | Purple rounded rect (16px radius) | bg `#F3EEFF`, border `#7C3AED` | User presses a button, link, or option |
-| `.n-type` | Purple sharp rectangle (`border-radius: 0`, hard 90° corners) | bg `#F3EEFF`, border `#7C3AED` | User types text or fills a field |
-| `.n-view` | Purple pill (999px radius) | bg `#F3EEFF`, border `#7C3AED` | User reads, scans, or observes |
-| `.n-sys` | Sky rounded rect | bg `#E0F2FE`, border `#0284C7` | App responds automatically |
-| `.n-dec` (diamond) | Rotated square | bg `#BFDBFE`, border `#2563EB` | User or system makes a choice |
-| `.n-end` | Green rounded pill | bg `#DCFCE7`, border `#16A34A` | Flow terminates with outcome |
+| `.n-start` | Black rounded pill | bg `#000`, white text | Entry point of a flow |
+| `.n-click` | White rect (4px radius) | bg `#fff`, border `2px solid #000` | User presses a button, link, or option |
+| `.n-type` | White sharp rectangle (`border-radius: 0`) | bg `#fff`, border `2px solid #000` | User types text or fills a field |
+| `.n-view` | Light-gray pill (999px radius) | bg `#f0f0f0`, border `1px solid #000` | User reads, scans, or observes |
+| `.n-sys` | Light-gray dashed rect | bg `#f0f0f0`, border `1px dashed #666` | App responds automatically |
+| `.n-dec` (diamond) | Rotated square | bg `#fff`, border `2px solid #000` | User or system makes a choice |
+| `.n-end` | White outlined pill | bg `#fff`, border `2px solid #000` | Flow terminates with outcome |
 
 **Connectors:**
-Straight (one next step): `.fc-conn` with a 24px `#CBD5E1` vertical line + `▼` in `#94A3B8`.
+Straight (one next step): `.fc-conn` with a 48px `#000` vertical line (2px wide) + `▼` in `#000` (22px).
 Branching: after a `.n-dec-wrap`, render `.fc-branches` containing 2+ `.fc-branch` divs.
-Each branch starts with `.fc-bl-y` (Yes, green) or `.fc-bl-n` (No, red) and ends with `.n-end`.
+Each branch starts with `.fc-bl-y` (Yes, bold green 16px) or `.fc-bl-n` (No, bold red 16px) and ends with `.n-end`.
 
 **Outcome nodes (end of flow):**
-- `.n-end`: `background: #DCFCE7`, `border: 2px solid #16A34A`, `border-radius: 999px` (pill), `padding: 10px 28px`, `color: #14532D`, `font-size: 11px`, `font-weight: 700`, `text-align: center`
+- `.n-end`: `background: #DCFCE7`, `border: 2px solid #16A34A`, `border-radius: 999px` (pill), `padding: 20px 56px`, `color: #14532D`, `font-size: 22px`, `font-weight: 700`, `text-align: center`
 - Text: "Verb phrase ✓" — e.g. "Item found in <5 seconds ✓", "Task complete ✓"
 - No connector after `.n-end` — these terminate the branch.
 
 **Blocker cards (failure / hard stop states):**
-- Background: `#FFF1F2`, left border: `3px solid #EF4444`
-- ⚠ icon (`10px #EF4444`) before title text
+- Background: `#fafafa`, left border: `3px solid #cc0000`
+- ⚠ icon (`10px #cc0000`) before title text
 - Use only when the brief explicitly describes a failure or blocked state.
 
 **Shape legend (inside the header — "How to read this diagram" section):**
@@ -1215,21 +1225,21 @@ The legend shows actual CSS shapes — not icons or text characters — so a rea
 
 | Class | Rendered shape | Label |
 |-------|---------------|-------|
-| `.hs-start` | 52×22px dark pill (`#111827`, border-radius 999px) | "Start / End" |
-| `.hs-click` | 44×22px purple rect (`#F3EEFF`, border `2px solid #7C3AED`, border-radius 16px) | "Click" |
-| `.hs-type` | 44×22px purple sharp rect (`#F3EEFF`, border `2px solid #7C3AED`, border-radius 0) | "Type" |
-| `.hs-view` | 44×22px purple pill (`#F3EEFF`, border `2px solid #7C3AED`, border-radius 999px) | "View" |
-| `.hs-sys` | 52×22px sky rect (`#0284C7`, border-radius 6px) | "System response" |
-| `.hs-dec-wrap` + `.hs-dec` | 27×27px blue square rotated 45° (`#2563EB`) | "Decision" |
-| `.hs-end` | 52×22px green pill (`#15803D`, border-radius 999px) | "Outcome" |
+| `.hs-start` | 112×44px dark navy pill (bg `#111827`, border-radius 999px) | "Start" |
+| `.hs-click` | 100×44px purple rounded rect (bg `#F3EEFF`, border `2px solid #7C3AED`, border-radius 32px) | "Click" |
+| `.hs-type` | 100×44px purple sharp rect (bg `#F3EEFF`, border `2px solid #7C3AED`, border-radius 0) | "Type" |
+| `.hs-view` | 100×44px purple pill (bg `#F3EEFF`, border `2px solid #7C3AED`, border-radius 999px) | "View" |
+| `.hs-sys` | 112×44px sky-blue rounded rect (bg `#E0F2FE`, border `2px solid #0284C7`, border-radius 16px) | "System response" |
+| `.hs-dec-wrap` + `.hs-dec` | 68×68px wrapper, 44×44px blue square rotated 45° (bg `#BFDBFE`, border `2px solid #2563EB`) | "Decision" |
+| `.hs-end` | 112×44px green outlined pill (bg `#DCFCE7`, border `2px solid #16A34A`, border-radius 999px) | "Outcome" |
 
-Labels: `font-size: 9px; color: rgba(255,255,255,.55); font-weight: 600; white-space: nowrap`
+Labels: `font-size: 16px; color: #666; font-weight: 700; white-space: nowrap`
 
 CSS for the three new legend shapes (add to `<style>` block alongside other `.hs-*` rules):
 ```css
-.hs-click { width: 44px; height: 22px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; }
-.hs-type  { width: 44px; height: 22px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
-.hs-view  { width: 44px; height: 22px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
+.hs-click { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 32px; }
+.hs-type  { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
+.hs-view  { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
 ```
 
 HTML for the three user legend items:
@@ -1271,27 +1281,29 @@ The test: cover the badge. Read only the text. Can you picture the exact screen 
 - ~~"The full conversation detail page"~~ → "Detail page"
 - ~~"takes their place"~~ after "disappear" → redundant
 
-**Footnote notes** (only when genuinely needed): `#fff` bg, `1px solid #E5E7EB`, `3px solid #083386` left accent. `11px #6B7280`. One sentence max.
+**Footnote notes** (only when genuinely needed): `#fafafa` bg, `border-left: 3px solid #000`. `11px #666`. One sentence max.
 
 **Color system:**
 ```
-Page background:       #F1F5F9 slate-50
-Header bg:             #083386 navy
-Flow header bg:        #1E2A40 dark navy
-Flow steps bg:         #F8FAFC
-Node — user:           bg #F3EEFF, border #7C3AED
-Node — system:         bg #E0F2FE, border #0284C7
-Node — decision:       bg #BFDBFE, border #2563EB
-Node — start:          bg #111827 (dark pill)
-Node — end/outcome:    bg #DCFCE7, border #16A34A
-Blocker bg:            #FFF1F2 red-tint
-Connector line:        #CBD5E1
-Text primary:          #1E2A40
-Text body:             #4B5563
-Text muted:            #9CA3AF
+Page background:       #fff white
+Header bg:             #fff white, border-top 4px solid #000
+Flow header bg:        #000 black
+Flow steps bg:         #fff
+Node — user click:     bg #fff, border 2px solid #000 (4px radius)
+Node — user type:      bg #fff, border 2px solid #000 (0 radius — sharp)
+Node — user view:      bg #f0f0f0, border 1px solid #000 (pill)
+Node — system:         bg #f0f0f0, border 1px dashed #666 (0 radius — dashed encodes automated)
+Node — decision:       bg #fff, border 2px solid #000 (diamond, 0 radius)
+Node — start:          bg #000 (solid black pill, white text)
+Node — end/outcome:    bg #fff, border 2px solid #000 (outlined pill, black text)
+Blocker bg:            #fafafa, border-left 3px solid #cc0000
+Connector line:        #000 (1px)
+Text primary:          #000
+Text body:             #333
+Text muted:            #666
 ```
 
-**Typography:** Inter (CSS font-stack fallback, no CDN). Node text: 12px/600. Node mini-label (.nt): 8px/800/uppercase. Flow purpose: 13px/700. Header block body: 13px/400, line-height 1.6. Header eyebrow: 9px/800/uppercase.
+**Typography:** 'Helvetica Neue', Helvetica, Arial, sans-serif (CSS font-stack fallback, no CDN). Node text: 12px/500. Node mini-label (.nt): 8px/700/uppercase/opacity .6. Flow purpose: 13px/700. Header block body: 12px/400, line-height 1.6. Header eyebrow: 9px/700/uppercase.
 
 **Layout:** max-width 660px, centered. Connectors: 24px tall line + ▼ arrow.
 
@@ -1466,29 +1478,30 @@ Each HTML file combines the visual layout render and the full text specification
     */
 
     /* ── BASE (required — copy exactly, add token citations when implementing) ── */
-    html, body { background: #EEEEEE; /* color-page-bg */ color: #1E2A40; /* color-text-primary */ font-family: Inter, system-ui, -apple-system, sans-serif; /* font-family-body */ font-size: 14px; /* font-size-body */ -webkit-font-smoothing: antialiased; line-height: 1.5; /* font-lh-body */ }
+    html, body { background: #f5f5f5; /* color-page-bg */ color: #000; /* color-text-primary */ font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* font-family-body */ font-size: 13px; /* font-size-body */ -webkit-font-smoothing: antialiased; line-height: 1.5; /* font-lh-body */ }
 
     /* ── PAGE HEADER (required — copy exactly) ── */
-    .page-header { background: #083386; padding: 18px 24px 14px; }
-    .page-header-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
-    .direction-tag { background: rgba(255,255,255,0.18); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; border-radius: 4px; padding: 3px 8px; flex-shrink: 0; }
-    .direction-concept-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: .03em; border-radius: 4px; padding: 3px 10px; flex-shrink: 0; }
-    .header-sub { color: rgba(255,255,255,0.70); font-size: 12px; font-weight: 400; margin-bottom: 10px; }
-    .goal-thread { background: rgba(255,255,255,0.10); border-left: 3px solid rgba(255,255,255,0.40); border-radius: 0 4px 4px 0; color: rgba(255,255,255,0.88); font-size: 12px; line-height: 1.6; padding: 8px 12px; }
+    .page-header { background: #000; padding: 16px 28px 14px; }
+    .page-header-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+    .direction-tag { background: rgba(255,255,255,0.12); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border-radius: 0; padding: 4px 10px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); }
+    .direction-concept-badge { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 14px; font-weight: 600; letter-spacing: .02em; border-radius: 0; padding: 4px 12px; flex-shrink: 0; }
+    .header-sub { color: rgba(255,255,255,0.55); font-size: 12px; font-weight: 400; margin-bottom: 8px; letter-spacing: .02em; }
+    .goal-thread { background: rgba(255,255,255,0.07); border-left: 2px solid rgba(255,255,255,0.45); color: rgba(255,255,255,0.88); font-size: 13px; line-height: 1.6; padding: 8px 12px; }
     .goal-thread strong { color: #fff; font-weight: 700; }
 
     /* ── WHAT THIS CHANGES (required — copy exactly) ── */
-    .changes-box { background: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 14px 20px; margin: 16px 24px 0; }
-    .changes-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #083386; margin-bottom: 10px; }
-    .changes-list { display: flex; flex-direction: column; gap: 6px; }
-    .change-row { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: #1E2A40; line-height: 1.5; }
-    .change-num { width: 18px; height: 18px; border-radius: 50%; background: #083386; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-    .change-text strong { font-weight: 700; color: #083386; }
+    .changes-box { background: #fff; border: 1px solid #000; border-radius: 0; padding: 16px 24px; margin: 16px 28px 0; }
+    .changes-box h2 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 10px; }
+    .changes-box ol { list-style: decimal; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+    .changes-box li { font-size: 14px; color: #000; line-height: 1.5; padding-left: 4px; }
+    .changes-box li strong { font-weight: 700; color: #000; }
 
     /* ── TWO-COLUMN BODY (required — copy exactly) ── */
-    .two-col-body { display: flex; gap: 24px; padding: 24px; align-items: flex-start; }
-    .col-render { flex: 0 0 60%; min-width: 0; }
-    .col-spec { flex: 0 0 calc(40% - 24px); min-width: 0; }
+    .two-col-body { display: flex; gap: 0; padding: 0; align-items: flex-start; }
+    .col-render { flex: 0 0 60%; min-width: 0; padding: 40px 32px; background: #f5f5f5; border-right: 1px solid #e0e0e0; }
+    .col-spec { flex: 0 0 calc(40%); min-width: 0; padding: 40px 32px; background: #fff; }
+    .col-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; }
+    .spec-panel { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -1512,24 +1525,20 @@ Each HTML file combines the visual layout render and the full text specification
 
   <!-- 1b. WHAT THIS CHANGES — scannable numbered list, directly below the header bar -->
   <!--
-    Uses .changes-box / .changes-label / .changes-list / .change-row / .change-num — see canonical CSS above.
-    One row per callout number in the visual render. Number in the bullet = number on the element.
+    Uses .changes-box with native <h2> + <ol>/<li> — see canonical CSS above.
+    One list item per callout number in the visual render. Number in the item = number on the element.
 
     Rules:
-      - .change-num circles: background #083386 navy — NOT amber, NOT direction-specific color.
-      - Order rows by callout number top-to-bottom, left-to-right.
+      - Order items by callout number top-to-bottom, left-to-right.
       - Bold the component name; one plain-English clause. No design jargon.
-      - Do NOT write a prose paragraph. One row per changed element. Skimmable in 5 seconds.
+      - Do NOT write a prose paragraph. One item per changed element. Skimmable in 5 seconds.
   -->
   <div class="changes-box">
-    <div class="changes-label">What this changes</div>
-    <div class="changes-list">
-      <div class="change-row">
-        <div class="change-num">1</div>
-        <div class="change-text"><strong>[Component name]</strong> — [what changes and why it helps]</div>
-      </div>
+    <h2>What This Changes</h2>
+    <ol>
+      <li><strong>[Component name]</strong> — [what changes and why it helps]</li>
       [repeat per callout number]
-    </div>
+    </ol>
   </div>
 
   <!-- 2. TWO-COLUMN BODY -->
@@ -1537,11 +1546,13 @@ Each HTML file combines the visual layout render and the full text specification
 
     <!-- LEFT COLUMN — .col-render (~60% width): VISUAL LAYOUT RENDER -->
     <!-- Barebones HTML diagram at accurate relative proportions -->
-    <!-- Navy callout circles on every new/changed component: background #083386, not amber -->
-    <!-- Existing unchanged elements as flat #E5E7EB gray boxes -->
+    <!-- Black callout circles on every new/changed component: background #000 -->
+    <!-- Existing unchanged elements as flat #e0e0e0 gray boxes -->
     <!-- SPATIAL SUMMARY block directly below the render -->
 
-    <!-- RIGHT COLUMN — .col-spec (~40% width): TEXT SPECIFICATION (scrollable) -->
+    <!-- RIGHT COLUMN — .col-spec (~40% width): TEXT SPECIFICATION (sticky-scrollable) -->
+    <!-- Wrap all spec content in <div class="spec-panel"> for sticky scroll behavior -->
+    <!-- No .col-label inside the spec panel — start directly with spec-section divs -->
     <!-- Existing Screen Analysis -->
     <!-- Layout description -->
     <!-- Above the Fold hierarchy -->
@@ -1575,10 +1586,11 @@ Each HTML file combines the visual layout render and the full text specification
 ### LEFT COLUMN — Visual Layout Render: Required Rules
 
 **New or changed elements:**
-- Amber numbered callout circle placed **inline at the far right** of the element's flex row — apply `margin-left: auto` on the `.num` span. Do NOT use `position: absolute` — it will be clipped by `overflow: hidden` on the screen frame container.
+- Black numbered callout square placed **inline at the far right** of the element's flex row — apply `margin-left: auto` on the `.num` span. Do NOT use `position: absolute` — it will be clipped by `overflow: hidden` on the screen frame container.
 - Use plain digits `1 2 3 4` as the circle content — NOT unicode circled characters (①②③④). Unicode enclosed numbers render with a built-in circle glyph that creates an unwanted inner ring on a colored background.
-- No amber left border wrapper on the element's container. No annotation text label below the element. The inline callout number in the render is the only marker — the matching bullet in "What this changes" carries the explanation.
-- `.num` CSS (copy exactly): `display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#D97706; color:#fff; font-size:11px; font-weight:700; flex-shrink:0;`
+- No colored left border wrapper on the element's container. No annotation text label below the element. The inline callout number in the render is the only marker — the matching bullet in "What this changes" carries the explanation.
+- `.num` CSS (copy exactly): `display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:0; background:#000; color:#fff; font-size:11px; font-weight:700; flex-shrink:0;`
+- **NEVER add a `style` attribute on a `.num` span.** The class already defines `background:#000`. Any inline `style="background:..."` overrides the class and reintroduces stale colors. Write `<span class="num">1</span>` — nothing else.
 
 **Existing unchanged elements:**
 - Render as actual UI elements matching the current live page. No special wrapper or tinting.
@@ -2000,12 +2012,15 @@ HONEST RISK ASSESSMENT
 - Never present options to the client without a structured comparison that makes the tradeoff clear
 - Never pass anything to the Prototyper until the client explicitly selects a direction at both checkpoints
 - Never use lorem ipsum, "Button", "Label", or any placeholder copy — use confirmed strings from brief §11
+- Never use placeholder image sources (Unsplash, picsum.photos, or any synthetic image service) when the live page is reachable — if an extraction JSON has a truncated or missing asset URL, use `mcp__playwright__browser_evaluate` on the live page to get the complete URL before writing any markup
+- Never hand-write, approximate, or reconstruct SVG path data (`d` attributes) from memory or training knowledge — all vector geometry must be extracted from the live DOM via `mcp__playwright__browser_evaluate` or exported directly from Figma; brand logos are the highest-risk case and must always be extracted, never rebuilt from scratch
 - Never proceed past a genuine design direction ambiguity without asking — observation → two options → recommendation → one-word-answerable question
 - Never pass the Intermediate Evaluation Gate with the debate system audit incomplete
 - Never pass the Intermediate Evaluation Gate with any P0 component missing a Pixel Redline, Schema, goal thread connection, or backward-from-failure statement
 - Never ship a screen that has not passed Step 10's Final Falsification Pass
 - Never use unconfirmed generic fonts (Inter, Roboto, Arial, system-ui) — confirmed brief typography only
 - Never apply a ★ CLIENT DEFERRED judgment silently — every applied judgment is documented in the Living Token Reference and Designer Notes
+- Never design a new interaction model for any component without explicitly stating the current model (from §14 / `BEHAVIORS.md`) and the new model, and confirming the client's tier assignment permits this change — Tier 1 locks all interaction models, Tier 2 requires a rationale in Designer Notes, Tier 3 is unconstrained
 
 ---
 

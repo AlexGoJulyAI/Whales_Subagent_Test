@@ -3,531 +3,974 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Direction A — Integrated Pills | Airbnb Safety Overlay</title>
+<title>Direction A — Editorial Voice | Audible Narrators</title>
 <style>
+  /* ── BASE ── */
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif; background: #F0F4F8; color: #222222; -webkit-font-smoothing: antialiased; }
+  html, body { background: #f5f5f5; color: #010e19; font-family: Arial, sans-serif; font-size: 13px; -webkit-font-smoothing: antialiased; line-height: 1.5; }
 
-  /* ── DOC HEADER ── */
-  .doc-header { background: #1E2A40; padding: 28px 32px 24px; }
-  .doc-kicker { font-size: 10px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 6px; }
-  .doc-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; }
-  .doc-title span { color: #FF385C; }
-  .doc-subtitle { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
-  .doc-quality { display: flex; gap: 14px; flex-wrap: wrap; }
-  .doc-q { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55); }
-  .doc-q span { color: #FF385C; }
-  .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 12px; }
-  .callout-strategy { background: rgba(255,56,92,.12); border-color: #FF385C; }
-  .callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 4px; }
-  .callout-body { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.6; }
+  /* ── PAGE HEADER ── */
+  .page-header { background: #000; padding: 16px 28px 14px; }
+  .page-header-top, .page-header-row1 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .direction-tag { background: rgba(255,255,255,0.12); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border-radius: 0; padding: 4px 10px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); }
+  .direction-concept-badge { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 14px; font-weight: 600; letter-spacing: .02em; border-radius: 0; padding: 4px 12px; flex-shrink: 0; }
+  .header-sub, .page-header-row2 { color: rgba(255,255,255,0.55); font-size: 12px; font-weight: 400; margin-bottom: 8px; letter-spacing: .02em; }
+  .goal-thread, .goal-thread-box { background: rgba(255,255,255,0.07); border-left: 2px solid rgba(255,255,255,0.45); color: rgba(255,255,255,0.88); font-size: 13px; line-height: 1.6; padding: 8px 12px; }
+  .goal-thread strong, .goal-thread-box strong { color: #fff; font-weight: 700; }
+
+  /* ── CHANGES BOX ── */
+  .changes-box { background: #fff; border: 1px solid #000; border-radius: 0; padding: 16px 24px; margin: 16px 28px 0; }
+  .changes-box h2 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 10px; }
+  .changes-box ol { list-style: decimal; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .changes-box li { font-size: 14px; color: #000; line-height: 1.5; padding-left: 4px; }
+  .changes-box li strong { font-weight: 700; color: #000; }
 
   /* ── TWO-COLUMN BODY ── */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .col { padding: 24px 28px; min-width: 0; }
-  .col-left { background: #F0F4F8; border-right: 1px solid #E2E8F0; }
-  .col-right { background: #FFFFFF; }
-  .col-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .10em; color: #6A6A6A; margin-bottom: 12px; }
-  .col-title { font-size: 18px; font-weight: 800; color: #222222; margin-bottom: 18px; line-height: 1.3; }
+  .two-col-body { display: flex; gap: 0; padding: 0; align-items: flex-start; }
+  .col-render { flex: 0 0 60%; min-width: 0; padding: 40px 32px; background: #f5f5f5; border-right: 1px solid #e0e0e0; }
+  .col-spec { flex: 0 0 calc(40%); min-width: 0; padding: 40px 32px; background: #fff; }
+  .col-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; }
 
-  /* ── PART A: WIREFRAME DIAGRAM ── */
-  .wireframe { background: #FFFFFF; border: 1px solid #DDDDDD; border-radius: 8px; overflow: hidden; }
-  .wf-header { background: #F8F8F8; border-bottom: 1px solid #DDDDDD; padding: 12px 16px; }
-  .wf-zone-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6A6A6A; }
-  .wf-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
-  .wf-pill { height: 28px; padding: 0 10px; border: 1px solid #DDDDDD; border-radius: 24px; background: #fff; display: inline-flex; align-items: center; font-size: 10px; color: #6A6A6A; }
-  .wf-pill.brand { background: #FF385C; color: #fff; border-color: #FF385C; }
-  .wf-pill.safety-active { background: #222222; color: #fff; border-color: #222222; position: relative; }
-  .wf-pill.safety-active::after { content: ""; position: absolute; left: -2px; top: -2px; right: -2px; bottom: -2px; border: 2px solid #FF385C; border-radius: 24px; }
-  .wf-pill.icon { width: 28px; padding: 0; justify-content: center; border-radius: 50%; background: #F2F2F2; border: none; }
+  /* ── CALLOUT NUMBER SQUARES ── */
+  .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 0;
+    background: #000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
 
-  .wf-body { display: grid; grid-template-columns: 1.12fr 1fr; gap: 0; min-height: 480px; }
-  .wf-listings { padding: 14px; border-right: 1px solid #DDDDDD; background: #FFFFFF; }
-  .wf-map { background: linear-gradient(135deg, #DCEEF5, #E8F1ED); padding: 14px; position: relative; }
-  .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .wf-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #EFEFEF; }
-  .wf-card-photo { aspect-ratio: 1.05/1; background: linear-gradient(135deg, #C8D5DD, #B8C7D1); position: relative; }
-  .wf-card-photo .heart { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; }
-  .wf-card-photo .heart::before { content: "♡"; color: #fff; font-size: 16px; line-height: 1; }
-  /* Direction A — Safety badge overlay top-left of photo (small pill) */
-  .wf-card-badge-A { position: absolute; top: 8px; left: 8px; height: 18px; padding: 0 7px; border-radius: 24px; background: #1A7A4A; color: #fff; font-size: 8px; font-weight: 700; display: inline-flex; align-items: center; line-height: 1; }
-  .wf-card-badge-A.B { background: #B58B00; }
-  .wf-card-badge-A.C { background: #D4600A; }
-  .wf-card-body { padding: 8px 10px; }
-  .wf-card-title-row { height: 8px; background: #E2E8F0; border-radius: 4px; margin-bottom: 5px; width: 70%; }
-  .wf-card-meta-row { height: 6px; background: #EEF2F6; border-radius: 4px; margin-bottom: 4px; width: 88%; }
-  .wf-card-price-row { height: 8px; background: #DCE3EA; border-radius: 4px; width: 50%; margin-top: 6px; }
+  /* ── SCREEN FRAME ── */
+  .screen-frame {
+    background: #ffffff; /* body-bg */
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .screen-frame-label {
+    background: #e8e8e8;
+    border-bottom: 1px solid #d0d0d0;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .screen-frame-label .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    display: inline-block;
+  }
+  .screen-frame-label .dot.red { background: #ff5f56; }
+  .screen-frame-label .dot.yellow { background: #ffbd2e; }
+  .screen-frame-label .dot.green { background: #27c93f; }
 
-  .wf-map-marker { position: absolute; height: 22px; padding: 0 8px; background: rgba(255,255,255,.95); border-radius: 4px; font-size: 9px; font-weight: 600; color: #222; display: inline-flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
-  .wf-heatzone { position: absolute; border-radius: 50%; filter: blur(20px); }
+  /* ── PROMO BANNER ── */
+  .promo-banner {
+    background: #131369; /* promo-navy */
+    height: 54px; /* promo-banner-height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 16px;
+    width: 100%;
+    position: relative;
+  }
+  .promo-banner-text {
+    font-size: 12px;
+    color: #fff;
+    font-weight: 400;
+  }
+  .promo-banner-text strong {
+    font-weight: 700;
+  }
+  .promo-banner-cta {
+    background: #ffb333; /* banner-cta-amber */
+    color: #010e19; /* text-primary */
+    border: none;
+    border-radius: 9999px; /* button-radius */
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .promo-callout {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 
-  /* Callout numbers */
-  .num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #FF385C; color: #fff; font-size: 10px; font-weight: 700; flex-shrink: 0; vertical-align: middle; margin-left: 4px; }
+  /* ── NAV HEADER ── */
+  .nav-header {
+    background: #ffffff; /* body-bg */
+    border-bottom: 1px solid rgba(1,14,25,0.15); /* divider */
+    min-height: 136px; /* nav-header-height */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .nav-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 8px;
+    border-bottom: 1px solid rgba(1,14,25,0.08);
+  }
+  .audible-logo {
+    font-size: 22px;
+    font-weight: 900;
+    color: #010e19; /* text-primary */
+    letter-spacing: -0.5px;
+  }
+  .audible-logo span {
+    color: #1479cf; /* brand-blue */
+  }
+  .nav-top-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #7690b2; /* search-border */
+    border-radius: 2px; /* search-radius */
+    overflow: hidden;
+    height: 32px;
+    width: 200px;
+  }
+  .nav-search-select {
+    background: #f0f4f8;
+    border: none;
+    border-right: 1px solid #7690b2; /* search-border */
+    font-size: 11px;
+    padding: 0 6px;
+    height: 100%;
+    color: #010e19; /* text-primary */
+    font-family: Arial, sans-serif;
+    outline: none;
+  }
+  .nav-search-input {
+    border: none;
+    font-size: 11px;
+    padding: 0 8px;
+    flex: 1;
+    height: 100%;
+    color: #010e19; /* text-primary */
+    font-family: Arial, sans-serif;
+    background: #fff;
+    outline: none;
+  }
+  .nav-search-btn {
+    background: #ffa000; /* cta-amber */
+    border: none;
+    padding: 0 10px;
+    height: 100%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-cta-btn {
+    background: #ffa000; /* cta-amber */
+    color: #010e19; /* text-primary */
+    border: none;
+    border-radius: 9999px; /* button-radius */
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: Arial, sans-serif;
+  }
+  .nav-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 16px;
+    overflow: hidden;
+    flex: 1;
+  }
+  .nav-browse-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px; /* nav-link */
+    font-weight: 700;
+    color: #010e19; /* text-primary */
+    padding: 10px 12px 10px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-right: 1px solid rgba(1,14,25,0.15); /* divider */
+    margin-right: 8px;
+    font-family: Arial, sans-serif;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .nav-link {
+    font-size: 13px; /* nav-link (scaled for render) */
+    line-height: 24px;
+    font-weight: 400;
+    color: #010e19; /* text-primary */
+    text-decoration: none;
+    padding: 10px 10px;
+    white-space: nowrap;
+    position: relative;
+  }
+  .nav-link.active {
+    font-weight: 700;
+    color: #010e19; /* text-primary */
+  }
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background: #010e19; /* text-primary */
+  }
+  .nav-callout {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 10px;
+  }
 
-  /* ── PART B: SPEC TABLE ── */
-  .spec-section { margin-bottom: 22px; }
-  .spec-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #E2E8F0; }
-  .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .spec-table td { padding: 6px 8px; vertical-align: top; line-height: 1.5; border-bottom: 1px solid #F1F5F9; }
-  .spec-table td:first-child { width: 38%; font-weight: 600; color: #6A6A6A; }
-  .spec-table td:last-child { color: #222222; font-family: "SF Mono", Menlo, monospace; font-size: 11px; }
-  .spec-bullet { font-size: 12px; color: #222222; line-height: 1.6; padding-left: 14px; position: relative; margin-bottom: 6px; }
-  .spec-bullet::before { content: "•"; position: absolute; left: 0; color: #FF385C; font-weight: 700; }
-  .spec-bullet strong { color: #222222; font-weight: 700; }
+  /* ── CONTENT AREA ── */
+  .content-area {
+    max-width: 1000px; /* content-max-width */
+    margin: 0 auto;
+    padding: 20px 16px 0;
+  }
+  .page-h1-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .page-h1 {
+    font-size: 36px; /* scaled from 48px for render width */
+    line-height: 42px; /* scaled from 52px */
+    font-weight: 700;
+    color: #010e19; /* text-primary */
+  }
+  .results-count {
+    font-size: 13px; /* metadata-small */
+    line-height: 19px;
+    color: #061624; /* text-secondary */
+    white-space: nowrap;
+  }
 
-  .state-block { background: #F8F8F8; border-left: 3px solid #FF385C; border-radius: 0 6px 6px 0; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; line-height: 1.55; }
-  .state-name { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #FF385C; margin-bottom: 4px; }
+  /* ── CHIP ROW ── */
+  .chip-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(1,14,25,0.15); /* divider */
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+  .chip-row-callout {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 2px solid #93accd; /* chip-border */
+    border-radius: 8px; /* chip-radius */
+    padding: 4px 10px;
+    font-size: 12px; /* chip-label scaled */
+    line-height: 20px;
+    font-weight: 400;
+    color: #010e19; /* text-primary */
+    background: #fff; /* body-bg */
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: Arial, sans-serif;
+  }
+  .chip.selected {
+    background: #e6f3ff; /* chip-selected-bg */
+    border-color: #1479cf; /* chip-selected-border / brand-blue */
+    font-weight: 700;
+    color: #010e19; /* text-primary */
+  }
+  .chip-separator {
+    width: 1px;
+    height: 20px;
+    background: rgba(1,14,25,0.15); /* divider */
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
+  .chip-search {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #7690b2; /* search-border */
+    border-radius: 2px; /* search-radius */
+    background: #fff; /* body-bg */
+    padding: 4px 8px;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .chip-search-icon {
+    font-size: 11px;
+    color: #7690b2; /* search-border */
+  }
+  .chip-search input {
+    border: none;
+    outline: none;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    color: #010e19; /* text-primary */
+    background: transparent;
+    width: 130px;
+  }
+  .chip-search input::placeholder {
+    color: #7690b2; /* search-border / muted */
+  }
 
-  .grade-A { background: #1A7A4A; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
-  .grade-B { background: #B58B00; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
-  .grade-C { background: #D4600A; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
-  .grade-D { background: #C0292B; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; }
+  /* ── BOOK LIST ── */
+  .book-list {
+    padding: 0;
+  }
+  .book-item {
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(1,14,25,0.15); /* divider */
+    position: relative;
+  }
+  .book-item:first-child {
+    border-top: 1px solid rgba(1,14,25,0.15); /* divider */
+  }
+  .book-cover {
+    width: 116px; /* scaled from 232px for render */
+    height: 116px; /* scaled from 232px for render */
+    background: #e8e8e8; /* cover-image-size placeholder */
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .book-meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .book-narrator {
+    font-size: 13px; /* 14px scaled */
+    font-weight: 700;
+    color: #1479cf; /* brand-blue — FIRST LINE, direction-defining */
+    line-height: 1.4;
+  }
+  .book-title {
+    font-size: 16px; /* scaled from 20px book-title */
+    line-height: 22px; /* scaled from 26px */
+    font-weight: 400;
+    color: #0e5b9b; /* link-blue */
+    text-decoration: none;
+    display: block;
+  }
+  .book-title:hover {
+    text-decoration: underline;
+  }
+  .book-author {
+    font-size: 13px; /* metadata-small */
+    line-height: 19px;
+    font-weight: 400;
+    color: #010e19; /* text-primary */
+  }
+  .book-length {
+    font-size: 13px; /* metadata-small */
+    line-height: 19px;
+    font-weight: 400;
+    color: #061624; /* text-secondary */
+  }
+  .book-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+  }
+  .book-tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #93accd; /* chip-border */
+    border-radius: 8px; /* chip-radius */
+    padding: 2px 8px;
+    font-size: 11px;
+    color: #061624; /* text-secondary */
+    background: #fff; /* body-bg */
+  }
+  .book-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .book-rating {
+    font-size: 13px; /* metadata-small */
+    color: #010e19; /* text-primary */
+    font-weight: 700;
+  }
+  .book-price {
+    font-size: 13px; /* metadata-small */
+    color: #061624; /* text-secondary */
+  }
+  .book-cta {
+    background: #ffa000; /* cta-amber */
+    color: #010e19; /* text-primary */
+    border: none;
+    border-radius: 9999px; /* button-radius */
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 6px;
+    font-family: Arial, sans-serif;
+    align-self: flex-start;
+    white-space: nowrap;
+  }
+  .book-callout {
+    position: absolute;
+    right: 0;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
 
-  /* ── DESIGNER NOTES ── */
-  .notes-section { background: #1E2A40; padding: 28px 32px; }
-  .notes-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.5); margin-bottom: 16px; }
-  .note-group { margin-bottom: 18px; }
-  .note-group-label { font-size: 11px; font-weight: 700; color: #FF385C; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
-  .note-item { font-size: 12px; color: rgba(255,255,255,.78); line-height: 1.65; padding-left: 12px; border-left: 2px solid rgba(255,56,92,.4); margin-bottom: 6px; }
-  .note-item code { background: rgba(255,255,255,.08); padding: 1px 5px; border-radius: 3px; font-size: 11px; color: #fff; }
+  /* ── SPATIAL SUMMARY ── */
+  .spatial-summary {
+    background: #f8f9fa;
+    border: 1px solid #d0d0d0;
+    border-radius: 2px;
+    padding: 14px 16px;
+    margin-top: 20px;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #010e19; /* text-primary */
+  }
+  .spatial-summary-title {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .spatial-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .spatial-label {
+    font-weight: 700;
+    color: #010e19; /* text-primary */
+    white-space: nowrap;
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+  .spatial-val {
+    color: #061624; /* text-secondary */
+  }
 
-  .debate-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-  .debate-cell { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px 12px; font-size: 11px; color: rgba(255,255,255,.78); line-height: 1.5; }
-  .debate-cell strong { color: #FF385C; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  /* ── SPEC PANEL ── */
+  .spec-panel { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; }
+  .spec-section { margin-bottom: 20px; }
+  .spec-section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #1479cf; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid rgba(1,14,25,0.15); }
+  .spec-body { font-size: 11px; line-height: 1.65; color: #010e19; }
+  .spec-body p { margin-bottom: 6px; }
+  .spec-body p:last-child { margin-bottom: 0; }
+  .spec-bullets { list-style: none; padding: 0; }
+  .spec-bullets li, .spec-bullet { font-size: 11px; color: #010e19; line-height: 1.65; padding-left: 14px; position: relative; margin-bottom: 5px; }
+  .spec-bullets li::before, .spec-bullet::before { content: "•"; position: absolute; left: 0; color: #1479cf; font-weight: 700; }
+  .spec-bullet strong { color: #010e19; font-weight: 700; }
+  .spec-kv-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .spec-kv-table tr { border-bottom: 1px solid rgba(1,14,25,0.08); }
+  .spec-kv-table tr:last-child { border-bottom: none; }
+  .spec-kv-table td { padding: 5px 6px; vertical-align: top; line-height: 1.5; }
+  .spec-kv-table .kv-key { color: #555; white-space: nowrap; padding-right: 10px; font-weight: 600; width: 40%; }
+  .spec-kv-table .kv-val { color: #010e19; font-family: "SF Mono", Menlo, monospace; font-size: 10px; word-break: break-word; }
+  .spec-tag-p0, .p0-badge { display: inline-block; background: #1479cf; color: #fff; font-size: 8px; font-weight: 700; padding: 1px 5px; border-radius: 2px; margin-left: 4px; vertical-align: middle; }
+  .new-badge { display: inline-block; background: #ffa000; color: #010e19; font-size: 8px; font-weight: 700; padding: 1px 5px; border-radius: 2px; margin-left: 4px; vertical-align: middle; }
+  .spec-warn, .warn { background: rgba(255,160,0,0.08); border-left: 3px solid #ffa000; border-radius: 0 4px 4px 0; padding: 7px 10px; margin-top: 6px; font-size: 10px; line-height: 1.5; color: #061624; font-style: italic; }
+  .spec-warn-icon { font-size: 8px; font-weight: 800; text-transform: uppercase; color: #ffa000; }
+  .state-block { background: #f8f8f8; border-left: 3px solid #1479cf; border-radius: 0 4px 4px 0; padding: 8px 10px; margin-bottom: 6px; font-size: 10px; line-height: 1.55; color: #010e19; }
+  .state-name { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #1479cf; margin-bottom: 3px; }
 
-  .quality-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 8px; }
-  .quality-card { background: rgba(255,255,255,.05); border-radius: 6px; padding: 10px; text-align: center; }
-  .quality-num { font-size: 20px; font-weight: 800; color: #FF385C; }
-  .quality-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: rgba(255,255,255,.55); margin-top: 4px; }
+  /* ── ABOVE-FOLD NUMBERED LIST ── */
+  .above-fold-list { list-style: none; padding: 0; counter-reset: fold-counter; }
+  .above-fold-list li { counter-increment: fold-counter; font-size: 11px; line-height: 1.65; color: #010e19; padding-left: 20px; position: relative; margin-bottom: 5px; }
+  .above-fold-list li::before { content: counter(fold-counter); position: absolute; left: 0; top: 1px; width: 14px; height: 14px; background: #1479cf; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border-radius: 0; }
+
+  /* ── COMPONENT HEADER ── */
+  .comp-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .comp-name { font-size: 11px; font-weight: 700; color: #010e19; }
+
+  /* ── INLINE CALLOUT BADGE (right-flush in content row) ── */
+  .callout-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── NAV SCALE NOTE ── */
+  .scale-note {
+    font-size: 10px;
+    color: #888;
+    text-align: center;
+    padding: 4px 0 2px;
+    background: #f0f0f0;
+    border-top: 1px solid #ddd;
+  }
 </style>
 </head>
 <body>
 
-<!-- ============= DOC HEADER ============= -->
-<div class="doc-header">
-  <div class="doc-kicker">Airbnb Safety Overlay · Designer Agent · v1-pipeline 2026-04-25</div>
-  <div class="doc-title">Direction A — <span>Integrated Pills</span></div>
-  <div class="doc-subtitle">Most native approach: safety joins the existing sub-nav as one more pill. Smallest visual footprint. Lowest learning cost.</div>
-  <div class="doc-quality">
-    <span class="doc-q">Clean <span>5/5</span></span>
-    <span class="doc-q">Effective <span>3/5</span></span>
-    <span class="doc-q">Intuitive <span>4/5</span></span>
-    <span class="doc-q">Pleasing <span>5/5</span></span>
-    <span class="doc-q">Total <span>17/20</span></span>
+<!-- ════════════════════════════════════════════════════════
+     1. PAGE HEADER
+     ════════════════════════════════════════════════════════ -->
+<div class="page-header">
+  <!-- Row 1: direction tag + concept badge -->
+  <div class="page-header-row1">
+    <span class="direction-tag">Mockup A</span>
+    <span class="direction-concept-badge">Editorial Voice</span>
   </div>
-  <div class="callout callout-strategy">
-    <div class="callout-label">Why this direction exists</div>
-    <div class="callout-body">The brief's primary goal (§4) is "safety grade visible without leaving the page, within one interaction." The lowest-friction way to add a fourth filter category is to drop it into the row that already holds the type pills (Any / Home / Hotel). A user who can use those pills can use this one — no learning curve, no new visual grammar. The badge mirrors Guest Favorite's overlay placement so it reads as a peer signal, not a foreign one.</div>
+
+  <!-- Row 2: context line -->
+  <div class="page-header-row2">
+    1440px desktop &middot; Narrators browse page + nav edit
+  </div>
+
+  <!-- Row 3: goal thread -->
+  <div class="goal-thread-box">
+    <strong>Goal thread:</strong> Direction A serves &sect;4&rsquo;s primary metric (demonstrate nav edit + narrator browse end-to-end) by making the narrator name the first thing a user reads on every list row &mdash; directly solving &sect;3&rsquo;s problem that narrators are buried as secondary metadata. Users oriented by voice first find their next listen without prior title knowledge.
   </div>
 </div>
 
-<!-- ============= TWO-COLUMN BODY ============= -->
-<div class="two-col">
+<!-- ════════════════════════════════════════════════════════
+     2. WHAT THIS CHANGES
+     ════════════════════════════════════════════════════════ -->
+<div class="changes-box">
+  <h2>What This Changes</h2>
+  <ol>
+    <li><strong>Nav entry</strong> &mdash; &ldquo;Narrators&rdquo; replaces &ldquo;Series&rdquo; in Popular Lists column; identical styling to Authors entry</li>
+    <li><strong>Narrator name search</strong> &mdash; inline text input at right end of chip row; filters list as you type</li>
+    <li><strong>Chip row</strong> &mdash; single sticky row: voice-style chips (Epic, Conversational, Dramatic, Character-rich) + genre chips (Thriller, Fantasy, Sci-Fi, Romance, Literary Fiction) + Language</li>
+    <li><strong>List item hierarchy</strong> &mdash; &ldquo;Narrated by: [Name]&rdquo; in #1479cf leads each row above the title (replaces Authors page which shows author first)</li>
+  </ol>
+</div>
 
-  <!-- ── PART A: LAYOUT WIREFRAME ── -->
-  <div class="col col-left">
-    <div class="col-label">Part A · Layout Diagram</div>
-    <div class="col-title">Page wireframe — safety pill integrated into sub-nav row</div>
+<!-- ════════════════════════════════════════════════════════
+     3. TWO-COLUMN BODY
+     ════════════════════════════════════════════════════════ -->
+<div class="two-col-body">
 
-    <div class="wireframe">
-      <!-- Sticky header zone -->
-      <div class="wf-header">
-        <div class="wf-zone-label">Sticky header — 151px</div>
-        <div class="wf-row" style="margin-top: 8px;">
-          <div class="wf-pill" style="font-weight: 700; color: #FF385C;">airbnb</div>
-          <div style="flex: 1;"></div>
-          <div class="wf-pill" style="height: 48px; padding: 0 24px;">San Francisco · Anywhere · Add guests</div>
-          <div style="flex: 1;"></div>
-          <div class="wf-pill" style="font-size: 10px;">Become a host</div>
-          <div class="wf-pill icon">⊕</div>
-          <div class="wf-pill icon">≡</div>
-        </div>
-        <!-- Sub-nav row with type pills + filter button -->
-        <div class="wf-row" style="margin-top: 10px;">
-          <div class="wf-pill safety-active">Any</div>
-          <div class="wf-pill">Home</div>
-          <div class="wf-pill">Hotel</div>
-          <!-- THE INTEGRATED SAFETY PILL — DIRECTION A SIGNATURE -->
-          <div class="wf-pill safety-active" style="background: #1A7A4A; border-color: #1A7A4A;">Very Safe ✓<span class="num">1</span></div>
-          <div style="flex: 1;"></div>
-          <div class="wf-pill" style="border: 1px solid #222;">≡ Filters</div>
-        </div>
+  <!-- ── LEFT COLUMN: Visual Render ── -->
+  <div class="col-render">
+
+    <div class="screen-frame">
+      <!-- Browser chrome bar -->
+      <div class="screen-frame-label">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span style="color:#888;font-size:10px;margin-left:6px;">audible.com/search?feature=narrators</span>
       </div>
 
-      <!-- Body: listings + map -->
-      <div class="wf-body">
-        <div class="wf-listings">
-          <div class="wf-zone-label" style="margin-bottom: 8px;">Listings panel — 734px · 2-col grid</div>
-          <div class="wf-grid">
-            <div class="wf-card">
-              <div class="wf-card-photo">
-                <div class="wf-card-badge-A">A · Pacific Heights<span class="num" style="margin-left: 4px;">2</span></div>
-                <div class="heart"></div>
-              </div>
-              <div class="wf-card-body">
-                <div class="wf-card-title-row"></div>
-                <div class="wf-card-meta-row"></div>
-                <div class="wf-card-price-row"></div>
-              </div>
-            </div>
-            <div class="wf-card">
-              <div class="wf-card-photo">
-                <div class="wf-card-badge-A">A · Noe Valley</div>
-                <div class="heart"></div>
-              </div>
-              <div class="wf-card-body">
-                <div class="wf-card-title-row"></div>
-                <div class="wf-card-meta-row"></div>
-                <div class="wf-card-price-row"></div>
-              </div>
-            </div>
-            <div class="wf-card">
-              <div class="wf-card-photo">
-                <div class="wf-card-badge-A B">B · Mission</div>
-                <div class="heart"></div>
-              </div>
-              <div class="wf-card-body">
-                <div class="wf-card-title-row"></div>
-                <div class="wf-card-meta-row"></div>
-                <div class="wf-card-price-row"></div>
-              </div>
-            </div>
-            <div class="wf-card">
-              <div class="wf-card-photo">
-                <div class="wf-card-badge-A B">B · Castro</div>
-                <div class="heart"></div>
-              </div>
-              <div class="wf-card-body">
-                <div class="wf-card-title-row"></div>
-                <div class="wf-card-meta-row"></div>
-                <div class="wf-card-price-row"></div>
-              </div>
-            </div>
-            <div class="wf-card">
-              <div class="wf-card-photo">
-                <div class="wf-card-badge-A C">C · SoMa</div>
-                <div class="heart"></div>
-              </div>
-              <div class="wf-card-body">
-                <div class="wf-card-title-row"></div>
-                <div class="wf-card-meta-row"></div>
-                <div class="wf-card-price-row"></div>
-              </div>
-            </div>
-            <div class="wf-card">
-              <div class="wf-card-photo">
-                <div class="wf-card-badge-A">A · Pac Heights</div>
-                <div class="heart"></div>
-              </div>
-              <div class="wf-card-body">
-                <div class="wf-card-title-row"></div>
-                <div class="wf-card-meta-row"></div>
-                <div class="wf-card-price-row"></div>
-              </div>
+      <!-- a) PROMO BANNER -->
+      <div class="promo-banner">
+        <span class="promo-banner-text">
+          <strong>Special Prime Offer</strong> | 2 months free with your first Audible trial
+        </span>
+        <button class="promo-banner-cta">Get this deal</button>
+      </div>
+
+      <!-- b) NAV HEADER -->
+      <div class="nav-header">
+        <!-- Top row: logo + search + cta -->
+        <div class="nav-top-row">
+          <!-- Audible wordmark -->
+          <div class="audible-logo">audible<span>.</span></div>
+
+          <!-- Search bar -->
+          <div style="display:flex;align-items:center;gap:8px;flex:1;max-width:400px;margin:0 16px;">
+            <div class="nav-search-bar" style="width:100%;max-width:340px;">
+              <select class="nav-search-select">
+                <option>All</option>
+              </select>
+              <input class="nav-search-input" type="text" placeholder="Search titles, authors, narrators">
+              <button class="nav-search-btn">&#128269;</button>
             </div>
           </div>
-          <div class="wf-zone-label" style="margin-top: 14px; text-align: center;">Inline drawer expands here on badge tap →<span class="num">3</span></div>
-        </div>
 
-        <div class="wf-map">
-          <div class="wf-zone-label">Map panel — 657px sticky</div>
-          <!-- Heatmap zones -->
-          <div class="wf-heatzone" style="background: rgba(26,122,74,0.45); width: 100px; height: 90px; top: 50px; left: 30px;"></div>
-          <div class="wf-heatzone" style="background: rgba(181,139,0,0.45); width: 90px; height: 80px; top: 180px; left: 90px;"></div>
-          <div class="wf-heatzone" style="background: rgba(212,96,10,0.45); width: 80px; height: 70px; top: 100px; right: 60px;"></div>
-          <div class="wf-heatzone" style="background: rgba(192,41,43,0.45); width: 70px; height: 60px; bottom: 90px; left: 60px;"></div>
-
-          <!-- Price markers -->
-          <div class="wf-map-marker" style="top: 70px; left: 60px;">$248</div>
-          <div class="wf-map-marker" style="top: 130px; left: 110px;">$312</div>
-          <div class="wf-map-marker" style="top: 220px; left: 80px;">$186</div>
-          <div class="wf-map-marker" style="top: 180px; right: 80px;">$198</div>
-
-          <!-- Heatmap toggle -->
-          <div style="position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.2);">≋<span class="num" style="position: absolute; top: -8px; right: -8px;">4</span></div>
-          <div style="position: absolute; bottom: 14px; left: 14px; background: rgba(255,255,255,.95); padding: 8px 10px; border-radius: 6px; font-size: 9px; box-shadow: 0 2px 6px rgba(0,0,0,.12);">
-            <div style="font-weight: 700; margin-bottom: 4px; color: #222;">Safety</div>
-            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#1A7A4A; border-radius:2px;"></span>A</div>
-            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#B58B00; border-radius:2px;"></span>B</div>
-            <div style="display:flex; align-items:center; gap:5px; margin-bottom:2px;"><span style="width:8px; height:8px; background:#D4600A; border-radius:2px;"></span>C</div>
-            <div style="display:flex; align-items:center; gap:5px;"><span style="width:8px; height:8px; background:#C0292B; border-radius:2px;"></span>D</div>
+          <!-- CTA button -->
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:11px;color:#061624;white-space:nowrap;">Sign in</span>
+            <button class="nav-cta-btn">Try Standard free</button>
           </div>
         </div>
+
+        <!-- Bottom row: browse + nav links -->
+        <div class="nav-bottom-row">
+          <button class="nav-browse-btn">
+            &#9776; Browse
+          </button>
+          <nav class="nav-links">
+            <a class="nav-link" href="#">Best Sellers</a>
+            <a class="nav-link" href="#">New Releases</a>
+            <a class="nav-link" href="#">Blog</a>
+            <a class="nav-link" href="#">Authors</a>
+            <!-- CHANGED: Narrators replaces Series -->
+            <div class="nav-callout">
+              <a class="nav-link active" href="#">Narrators</a>
+              <span class="num">1</span>
+            </div>
+            <a class="nav-link" href="#">Audible Originals</a>
+            <a class="nav-link" href="#">Whispersync</a>
+          </nav>
+        </div>
+      </div>
+      <div class="scale-note">Rendered at ~720px &mdash; scaled proportional representation of 1440px desktop</div>
+
+      <!-- c) H1 + Results count -->
+      <div class="content-area">
+        <div class="page-h1-row">
+          <h1 class="page-h1">Narrators</h1>
+          <span class="results-count">1 - 20 of 847 results</span>
+        </div>
+
+        <!-- d) CHIP ROW -->
+        <div style="position:relative;">
+          <div class="chip-row">
+            <!-- Voice style: All selected -->
+            <span class="chip selected">All &#10003;</span>
+            <!-- Voice style chips -->
+            <span class="chip">Epic</span>
+            <span class="chip">Conversational</span>
+            <span class="chip">Dramatic</span>
+            <span class="chip">Character-rich</span>
+            <!-- Separator -->
+            <span class="chip-separator"></span>
+            <!-- Genre chips -->
+            <span class="chip">Thriller</span>
+            <span class="chip">Fantasy</span>
+            <span class="chip">Sci-Fi</span>
+            <span class="chip">Romance</span>
+            <!-- Separator -->
+            <span class="chip-separator"></span>
+            <!-- Language -->
+            <span class="chip">English</span>
+            <!-- Separator -->
+            <span class="chip-separator"></span>
+            <!-- Narrator name search — CHANGED: new element -->
+            <div class="chip-search">
+              <span class="chip-search-icon">&#128269;</span>
+              <input type="text" placeholder="Search narrator name...">
+            </div>
+            <!-- Callout numbers for chip row changes -->
+            <span style="display:inline-flex;align-items:center;gap:3px;flex-shrink:0;margin-left:6px;">
+              <span class="num">2</span>
+              <span class="num">3</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- e) BOOK LIST: 3 items -->
+        <div class="book-list">
+
+          <!-- Item 1: Jim Dale -->
+          <div class="book-item">
+            <div class="book-cover">
+              <span>232&times;232<br>cover</span>
+            </div>
+            <div class="book-meta">
+              <!-- NARRATOR FIRST — direction-defining change -->
+              <div class="book-narrator">
+                Narrated by: Jim Dale
+                <span class="callout-inline"><span class="num">4</span></span>
+              </div>
+              <a class="book-title" href="#">The Complete Harry Potter Series</a>
+              <div class="book-author">By: J.K. Rowling</div>
+              <div class="book-length">Length: 118 hrs &nbsp;&middot;&nbsp; Language: English</div>
+              <div class="book-tags">
+                <span class="book-tag">Fantasy</span>
+                <span class="book-tag">Character-rich voice</span>
+              </div>
+              <div class="book-rating-row">
+                <span class="book-rating">4.9 &#9733;</span>
+                <span class="book-price">$0.00 with trial</span>
+              </div>
+              <button class="book-cta">Try Standard free</button>
+            </div>
+          </div>
+
+          <!-- Item 2: Scott Brick -->
+          <div class="book-item">
+            <div class="book-cover">
+              <span>232&times;232<br>cover</span>
+            </div>
+            <div class="book-meta">
+              <!-- NARRATOR FIRST -->
+              <div class="book-narrator">
+                Narrated by: Scott Brick
+                <span class="callout-inline"><span class="num">4</span></span>
+              </div>
+              <a class="book-title" href="#">The Girl with the Dragon Tattoo</a>
+              <div class="book-author">By: Stieg Larsson</div>
+              <div class="book-length">Length: 16 hrs 12 min &nbsp;&middot;&nbsp; Language: English</div>
+              <div class="book-tags">
+                <span class="book-tag">Thriller</span>
+                <span class="book-tag">Dramatic voice</span>
+              </div>
+              <div class="book-rating-row">
+                <span class="book-rating">4.7 &#9733;</span>
+                <span class="book-price">$0.00 with trial</span>
+              </div>
+              <button class="book-cta">Try Standard free</button>
+            </div>
+          </div>
+
+          <!-- Item 3: Julia Whelan -->
+          <div class="book-item">
+            <div class="book-cover">
+              <span>232&times;232<br>cover</span>
+            </div>
+            <div class="book-meta">
+              <!-- NARRATOR FIRST -->
+              <div class="book-narrator">
+                Narrated by: Julia Whelan
+                <span class="callout-inline"><span class="num">4</span></span>
+              </div>
+              <a class="book-title" href="#">Where the Crawdads Sing</a>
+              <div class="book-author">By: Delia Owens</div>
+              <div class="book-length">Length: 12 hrs 12 min &nbsp;&middot;&nbsp; Language: English</div>
+              <div class="book-tags">
+                <span class="book-tag">Literary Fiction</span>
+                <span class="book-tag">Conversational voice</span>
+              </div>
+              <div class="book-rating-row">
+                <span class="book-rating">4.8 &#9733;</span>
+                <span class="book-price">$0.00 with trial</span>
+              </div>
+              <button class="book-cta">Try Standard free</button>
+            </div>
+          </div>
+
+        </div><!-- /book-list -->
+      </div><!-- /content-area -->
+
+    </div><!-- /screen-frame -->
+
+    <!-- SPATIAL SUMMARY -->
+    <div class="spatial-summary">
+      <div class="spatial-summary-title">Spatial Summary</div>
+      <div class="spatial-row">
+        <span class="spatial-label">Direction:</span>
+        <span class="spatial-val">A &mdash; Editorial Voice</span>
+      </div>
+      <div class="spatial-row">
+        <span class="spatial-label">Layout:</span>
+        <span class="spatial-val">Single-column content (max-width 1000px), centered. Sticky chip row stays at top on scroll.</span>
+      </div>
+      <div class="spatial-row">
+        <span class="spatial-label">Distinctive move:</span>
+        <span class="spatial-val">Narrator name precedes title on every list row &mdash; orientation is by voice, not by title</span>
+      </div>
+      <div class="spatial-row">
+        <span class="spatial-label">New / changed zones:</span>
+        <span class="spatial-val">Nav Popular Lists column (1), chip row with inline search (2+3), audiobook list item hierarchy (4)</span>
+      </div>
+      <div class="spatial-row">
+        <span class="spatial-label">Proportional note:</span>
+        <span class="spatial-val">cover-image-size 232&times;232px confirmed via getComputedStyle(); chip row height [estimated ~48px]</span>
       </div>
     </div>
 
-    <!-- Spatial summary -->
-    <div style="background: #fff; border: 1px solid #DDDDDD; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 11px; line-height: 1.7; color: #222;">
-      <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: #FF385C; margin-bottom: 6px;">Spatial Summary</div>
-      <div><strong>Direction:</strong> Integrated Pills</div>
-      <div><strong>Layout:</strong> Standard Airbnb 2-pane (734px listings · 657px map). Header height unchanged at 151px. Sub-nav row gains one safety pill — no new structural zones.</div>
-      <div><strong>Distinctive layout move:</strong> The safety filter pill lives inside the existing type-pill row. Zero new vertical real estate consumed.</div>
-      <div><strong>New/changed zones:</strong> Sub-nav (1 added pill) · Card photo top-left (badge overlay) · Map (heatmap toggle + zones) · Inline expandable drawer below tapped card.</div>
-      <div><strong>Proportional note:</strong> All Airbnb dimensions extracted from live URL. Heatmap zone positions are illustrative.</div>
-    </div>
-  </div>
+  </div><!-- /col-render -->
 
-  <!-- ── PART B: DESIGN SPECIFICATION ── -->
-  <div class="col col-right">
-    <div class="col-label">Part B · Design Specification</div>
-    <div class="col-title">Tokens, components, states, edge cases — for Prototyper handoff</div>
+  <!-- ── RIGHT COLUMN: Spec Panel ── -->
+  <div class="col-spec">
+    <div class="spec-panel">
 
-    <!-- LIVING TOKEN REFERENCE -->
-    <div class="spec-section">
-      <div class="spec-section-title">Living Token Reference</div>
-      <table class="spec-table">
-        <tr><td>color-primary-brand</td><td>#FF385C</td></tr>
-        <tr><td>color-text-primary</td><td>#222222</td></tr>
-        <tr><td>color-text-secondary</td><td>#6A6A6A</td></tr>
-        <tr><td>color-bg-page</td><td>#FFFFFF</td></tr>
-        <tr><td>color-bg-header-light</td><td>#F8F8F8</td></tr>
-        <tr><td>color-border-default</td><td>#DDDDDD</td></tr>
-        <tr><td>color-border-active-pill</td><td>#222222</td></tr>
-        <tr><td>color-bg-icon-button</td><td>#F2F2F2</td></tr>
-        <tr><td>font-family</td><td>"Circular", -apple-system, system-ui</td></tr>
-        <tr><td>font-pill-tab</td><td>12px / 400 / lh 16px</td></tr>
-        <tr><td>font-listing-title</td><td>14px / 500 / lh 18px</td></tr>
-        <tr><td>font-price</td><td>15px / 400 / lh 19px</td></tr>
-        <tr><td>spacing-header-height</td><td>151px</td></tr>
-        <tr><td>spacing-filter-pill</td><td>8px 12px · h 34px</td></tr>
-        <tr><td>spacing-card</td><td>307×398px</td></tr>
-        <tr><td>radius-filter-pill</td><td>24px</td></tr>
-        <tr><td>radius-card-inner</td><td>20px</td></tr>
-        <tr><td colspan="2" style="padding-top: 10px; font-weight: 700; color: #FF385C;">Safety tokens (designer-determined)</td></tr>
-        <tr><td>color-safety-A</td><td>#1A7A4A</td></tr>
-        <tr><td>color-safety-B</td><td>#B58B00</td></tr>
-        <tr><td>color-safety-C</td><td>#D4600A</td></tr>
-        <tr><td>color-safety-D</td><td>#C0292B</td></tr>
-        <tr><td>color-heatmap-A</td><td>rgba(26,122,74,0.25)</td></tr>
-        <tr><td>color-heatmap-B</td><td>rgba(181,139,0,0.25)</td></tr>
-        <tr><td>color-heatmap-C</td><td>rgba(212,96,10,0.25)</td></tr>
-        <tr><td>color-heatmap-D</td><td>rgba(192,41,43,0.25)</td></tr>
-        <tr><td>safety-pill (sub-nav)</td><td>same as type-pills · h 34px · r 24px</td></tr>
-        <tr><td>safety-badge-overlay</td><td>h 18px · r 24px · 8px px · 8px font / 700</td></tr>
-        <tr><td>heatmap-toggle</td><td>40px · r 50% · bg #fff → active #222</td></tr>
-        <tr><td>safety-transition</td><td>all 200ms ease</td></tr>
-      </table>
-    </div>
-
-    <!-- COMPONENT 1: SAFETY FILTER PILL -->
-    <div class="spec-section">
-      <div class="spec-section-title">Component 1 · Safety Filter Pill (P0)</div>
-      <table class="spec-table">
-        <tr><td>Source</td><td>NEW · sits in sub-nav row</td></tr>
-        <tr><td>Background — default</td><td>#FFFFFF</td></tr>
-        <tr><td>Border — default</td><td>1px solid #DDDDDD</td></tr>
-        <tr><td>Text color — default</td><td>#222222</td></tr>
-        <tr><td>Font</td><td>12px / 400 / lh 16px</td></tr>
-        <tr><td>Padding</td><td>8px 12px</td></tr>
-        <tr><td>Height</td><td>34px</td></tr>
-        <tr><td>Radius</td><td>24px</td></tr>
-        <tr><td>Position</td><td>4th pill in sub-nav, after "Hotel" — gap 8px</td></tr>
-        <tr><td>Copy default</td><td>"Safety"</td></tr>
-        <tr><td>Copy active</td><td>"Very Safe ✓" / "Safe ✓" / "Average ✓"</td></tr>
-        <tr><td>Click behavior</td><td>Dropdown opens · 4 options · single-select</td></tr>
-        <tr><td>Transition</td><td>all 200ms ease</td></tr>
-      </table>
-
-      <div class="state-block">
-        <div class="state-name">State · Default (no filter applied)</div>
-        Background #FFFFFF · border 1px solid #DDDDDD · text "Safety" #222222 / 400. Hover: bg #F8F8F8.
+      <!-- DIRECTION AT A GLANCE -->
+      <div class="spec-section">
+        <div class="spec-section-title">Direction at a Glance</div>
+        <ul class="spec-bullets">
+          <li>Narrator name is the primary label on every list row &mdash; above title, in brand-blue (#1479cf)</li>
+          <li>Single sticky chip row handles all filtering without secondary UI layer</li>
+          <li>Most token-faithful to Authors page &mdash; lowest implementation risk, highest stakeholder recognizability</li>
+        </ul>
       </div>
-      <div class="state-block">
-        <div class="state-name">State · Active (Very Safe selected)</div>
-        Background #1A7A4A · border 1px solid #1A7A4A · text "Very Safe ✓" #FFFFFF / 500. The pill takes the grade color of the selected tier — strongest-possible signal that a filter is engaged. Tier B → #B58B00, C → #D4600A.
-      </div>
-      <div class="state-block">
-        <div class="state-name">State · Open (dropdown menu)</div>
-        Pill becomes anchor for absolute-positioned menu (white bg, 1px #DDDDDD border, 12px radius, 8px box-shadow). Four options: Very Safe (A) · Safe (A or B) · Average (A–C) · All. Selected option shows checkmark + grade-color left rail.
-      </div>
-    </div>
 
-    <!-- COMPONENT 2: SAFETY BADGE OVERLAY -->
-    <div class="spec-section">
-      <div class="spec-section-title">Component 2 · Safety Badge — Photo Overlay (P0)</div>
-      <table class="spec-table">
-        <tr><td>Source</td><td>NEW · overlaid on card photo</td></tr>
-        <tr><td>Position</td><td>top: 12px · left: 12px (within photo)</td></tr>
-        <tr><td>Background</td><td>color-safety-{grade} solid fill</td></tr>
-        <tr><td>Text color</td><td>#FFFFFF</td></tr>
-        <tr><td>Font</td><td>10px / 700 / lh 14px / letter-spacing .04em</td></tr>
-        <tr><td>Padding</td><td>4px 8px</td></tr>
-        <tr><td>Height</td><td>22px</td></tr>
-        <tr><td>Radius</td><td>24px (matches Guest Favorite pill)</td></tr>
-        <tr><td>Copy</td><td>"A · Pacific Heights" (grade · neighborhood)</td></tr>
-        <tr><td>Shadow</td><td>0 1px 3px rgba(0,0,0,.25)</td></tr>
-        <tr><td>Click behavior</td><td>Stops photo carousel propagation · expands inline drawer</td></tr>
-      </table>
-
-      <div class="state-block">
-        <div class="state-name">State · Default</div>
-        Solid grade color fill. Shadow ensures legibility on light photos.
+      <!-- STRATEGY -->
+      <div class="spec-section">
+        <div class="spec-section-title">Strategy</div>
+        <div class="spec-body">
+          <p>Direction A exists because the &sect;3 primary problem is not that filters are hard to use &mdash; it is that narrator identity is invisible in the current page layout. Placing the narrator name first on every row directly solves the discovery deficit identified in &sect;3 and &sect;12 Task 1 (find audiobooks by a specific narrator). The single chip row honors &sect;4&rsquo;s secondary metric (filter controls visible) while preserving the Authors page&rsquo;s spatial contract, minimizing the stakeholder delta required for approval.</p>
+        </div>
       </div>
-      <div class="state-block">
-        <div class="state-name">State · Hover</div>
-        Brightness +10% · cursor: pointer. Adds 1px outer ring rgba(255,255,255,.6) for affordance.
+
+      <!-- ABOVE THE FOLD -->
+      <div class="spec-section">
+        <div class="spec-section-title">Above the Fold</div>
+        <ol class="above-fold-list">
+          <li>H1 &ldquo;Narrators&rdquo; + chip row &mdash; sets the page&rsquo;s identity and surfaces all filter affordances at once</li>
+          <li>Results counter &mdash; confirms the catalog is substantive (847 results)</li>
+          <li>First list item &mdash; &ldquo;Narrated by:&rdquo; in blue is the first piece of information read</li>
+        </ol>
       </div>
-      <div class="state-block">
-        <div class="state-name">State · Drawer-Open (badge active)</div>
-        Brightness +15% · 2px solid #FFFFFF outer ring. Indicates "this card's drawer is the one expanded below".
+
+      <!-- COMPONENT 1: Nav Entry -->
+      <div class="spec-section">
+        <div class="comp-header">
+          <span class="comp-name">Component: 1 Nav Entry</span>
+          <span class="spec-tag-p0">P0</span>
+        </div>
+        <table class="spec-kv-table">
+          <tr><td class="kv-key">Source</td><td class="kv-val">Edit of existing adbl-nav-mega-menu component</td></tr>
+          <tr><td class="kv-key">Background</td><td class="kv-val">#ffffff (body-bg)</td></tr>
+          <tr><td class="kv-key">Text color</td><td class="kv-val">#010e19 (text-primary)</td></tr>
+          <tr><td class="kv-key">Font</td><td class="kv-val">Arial 16px/24px 400 (nav-link)</td></tr>
+          <tr><td class="kv-key">Copy</td><td class="kv-val">&ldquo;Narrators&rdquo; &mdash; brief &sect;11</td></tr>
+          <tr><td class="kv-key">Interaction model</td><td class="kv-val">click-driven (same as Authors entry)</td></tr>
+          <tr><td class="kv-key">Change</td><td class="kv-val">&ldquo;Series&rdquo; removed, &ldquo;Narrators&rdquo; inserted in identical position</td></tr>
+        </table>
       </div>
-    </div>
 
-    <!-- COMPONENT 3: INLINE SAFETY DRAWER -->
-    <div class="spec-section">
-      <div class="spec-section-title">Component 3 · Inline Safety Drawer (P0)</div>
-      <table class="spec-table">
-        <tr><td>Source</td><td>NEW · expands below tapped card row</td></tr>
-        <tr><td>Background</td><td>#F8F8F8 (color-bg-header-light)</td></tr>
-        <tr><td>Border-top</td><td>4px solid color-safety-{grade}</td></tr>
-        <tr><td>Border-other</td><td>1px solid #DDDDDD</td></tr>
-        <tr><td>Padding</td><td>20px 24px</td></tr>
-        <tr><td>Radius</td><td>20px (matches card-inner)</td></tr>
-        <tr><td>Width</td><td>100% of listings panel (734px)</td></tr>
-        <tr><td>Layout</td><td>4-column grid · gap 24px</td></tr>
-        <tr><td>Content</td><td>Night walkability · Dominant crime · Hospitals nearby · Transit nearby</td></tr>
-        <tr><td>Animation</td><td>height 0→auto · opacity 0→1 · 250ms ease</td></tr>
-        <tr><td>Close affordance</td><td>X icon top-right · re-tap badge · tap another badge</td></tr>
-      </table>
-
-      <div class="state-block">
-        <div class="state-name">State · Collapsed (default)</div>
-        Drawer is height 0 · display none. No visual presence.
+      <!-- COMPONENT 2: Narrator Name Search -->
+      <div class="spec-section">
+        <div class="comp-header">
+          <span class="comp-name">Component: 2 Narrator Name Search</span>
+          <span class="spec-tag-p0">P0</span>
+        </div>
+        <table class="spec-kv-table">
+          <tr><td class="kv-key">Source</td><td class="kv-val">New &mdash; designer addition &#9888;</td></tr>
+          <tr><td class="kv-key">Position</td><td class="kv-val">Right end of chip row, inline</td></tr>
+          <tr><td class="kv-key">Background</td><td class="kv-val">#ffffff (body-bg)</td></tr>
+          <tr><td class="kv-key">Border</td><td class="kv-val">1px solid #7690b2 (search-border) &middot; 2px radius</td></tr>
+          <tr><td class="kv-key">Font</td><td class="kv-val">Arial 14px/20px 400 (body)</td></tr>
+          <tr><td class="kv-key">Placeholder</td><td class="kv-val">Search narrator name&hellip;</td></tr>
+          <tr><td class="kv-key">Interaction model</td><td class="kv-val">type-driven, filters list as you type</td></tr>
+          <tr><td class="kv-key">Width</td><td class="kv-val">~200px, grows on focus to ~280px (CSS transition)</td></tr>
+        </table>
+        <div class="spec-warn">
+          <span class="spec-warn-icon">&#9888;</span>
+          Unconfirmed: live filtering vs. submit-on-enter &mdash; confirm before build
+        </div>
       </div>
-      <div class="state-block">
-        <div class="state-name">State · Expanded</div>
-        Drawer slides into row position between the tapped card's row and the next row. Pushes subsequent rows down. Sticky map remains pinned.
+
+      <!-- COMPONENT 3: Chip Row -->
+      <div class="spec-section">
+        <div class="comp-header">
+          <span class="comp-name">Component: 3 Chip Row</span>
+          <span class="spec-tag-p0">P0</span>
+        </div>
+        <table class="spec-kv-table">
+          <tr><td class="kv-key">Source</td><td class="kv-val">Existing adbl-chip pattern, extended with new categories</td></tr>
+          <tr><td class="kv-key">Height</td><td class="kv-val">[estimated ~48px]</td></tr>
+          <tr><td class="kv-key">Position</td><td class="kv-val">Sticky top:0 on scroll</td></tr>
+          <tr><td class="kv-key">Chip border</td><td class="kv-val">2px solid #93accd (chip-border); radius 8px</td></tr>
+          <tr><td class="kv-key">Selected state</td><td class="kv-val">bg #e6f3ff &middot; border #1479cf (chip-selected)</td></tr>
+          <tr><td class="kv-key">Chip label font</td><td class="kv-val">Arial 16px/24px 400 (chip-label)</td></tr>
+          <tr><td class="kv-key">Categories</td><td class="kv-val">Voice Style (Epic, Conversational, Dramatic, Character-rich) &middot; Genre (Thriller, Fantasy, Sci-Fi, Romance, Literary Fiction) &middot; Language (English, Spanish, French)</td></tr>
+          <tr><td class="kv-key">Interaction model</td><td class="kv-val">click-driven, additive AND filter</td></tr>
+        </table>
+        <div class="spec-warn">
+          <span class="spec-warn-icon">&#9888;</span>
+          Unconfirmed: chip overflow behavior on mobile &mdash; confirm with prototyper
+        </div>
       </div>
-      <div class="state-block">
-        <div class="state-name">State · Switching listings</div>
-        If a different badge is tapped while drawer is open: drawer fades out (150ms), repositions, fades in with new content (150ms).
+
+      <!-- COMPONENT 4: List Item Hierarchy -->
+      <div class="spec-section">
+        <div class="comp-header">
+          <span class="comp-name">Component: 4 List Item Hierarchy</span>
+          <span class="spec-tag-p0">P0</span>
+        </div>
+        <table class="spec-kv-table">
+          <tr><td class="kv-key">Source</td><td class="kv-val">Modified from existing Authors page list item</td></tr>
+          <tr><td class="kv-key">Cover</td><td class="kv-val">232&times;232px placeholder &mdash; brief &sect;8 cover-image-size</td></tr>
+          <tr><td class="kv-key">Narrator line</td><td class="kv-val">&ldquo;Narrated by: [Name]&rdquo; &middot; color #1479cf (brand-blue) &middot; 14px/700 &middot; FIRST element</td></tr>
+          <tr><td class="kv-key">Title link</td><td class="kv-val">#0e5b9b (link-blue) &middot; 20px/26px/400 (book-title)</td></tr>
+          <tr><td class="kv-key">Author line</td><td class="kv-val">&ldquo;By: [Name]&rdquo; &middot; #010e19 &middot; 14px/400</td></tr>
+          <tr><td class="kv-key">Metadata line</td><td class="kv-val">&ldquo;Length: X &middot; Language: English&rdquo; &middot; #061624 &middot; 13px/400 (metadata-small)</td></tr>
+          <tr><td class="kv-key">Divider</td><td class="kv-val">1px solid rgba(1,14,25,0.15) between items</td></tr>
+          <tr><td class="kv-key">CTA button</td><td class="kv-val">&ldquo;Try Standard free&rdquo; &middot; #ffa000 bg &middot; #010e19 text &middot; 9999px radius</td></tr>
+          <tr><td class="kv-key">Change from Authors</td><td class="kv-val">narrator line moves from secondary metadata position to FIRST position above title</td></tr>
+        </table>
       </div>
-    </div>
 
-    <!-- COMPONENT 4: HEATMAP TOGGLE -->
-    <div class="spec-section">
-      <div class="spec-section-title">Component 4 · Heatmap Toggle (P0)</div>
-      <table class="spec-table">
-        <tr><td>Source</td><td>NEW · floats over map panel</td></tr>
-        <tr><td>Position</td><td>absolute · top 14px · right 14px (next to zoom)</td></tr>
-        <tr><td>Size</td><td>40px × 40px</td></tr>
-        <tr><td>Radius</td><td>50%</td></tr>
-        <tr><td>Background — off</td><td>#FFFFFF</td></tr>
-        <tr><td>Background — on</td><td>#222222</td></tr>
-        <tr><td>Icon — off</td><td>≋ (waves) · #222222</td></tr>
-        <tr><td>Icon — on</td><td>≋ (waves) · #FFFFFF</td></tr>
-        <tr><td>Shadow</td><td>0 2px 8px rgba(0,0,0,.2)</td></tr>
-        <tr><td>Tooltip</td><td>"Safety heatmap"</td></tr>
-      </table>
-    </div>
-
-    <!-- ACTIVE STATE DOC -->
-    <div class="spec-section">
-      <div class="spec-section-title">Active States — All Interactive Components</div>
-      <div class="spec-bullet"><strong>Safety pill</strong> — default white · hover #F8F8F8 · open white + 8px shadow · active grade-color fill</div>
-      <div class="spec-bullet"><strong>Badge overlay</strong> — default solid color · hover +10% brightness · drawer-open white 2px ring</div>
-      <div class="spec-bullet"><strong>Drawer</strong> — collapsed h0 · expanded h auto · switching fade150ms</div>
-      <div class="spec-bullet"><strong>Heatmap toggle</strong> — off white · on black · zones fade in 200ms when activated</div>
-      <div class="spec-bullet"><strong>Map zones</strong> — render with 0.25 alpha when on · fade out 200ms when off</div>
-    </div>
-
-    <!-- EDGE CASES -->
-    <div class="spec-section">
-      <div class="spec-section-title">Edge Cases</div>
-      <div class="state-block">
-        <div class="state-name">Edge · Filter "Very Safe" → 0 results</div>
-        Listings panel renders empty-state card: bold "No Very Safe stays match your dates" · body "Try expanding to Safe or Average to see more options." · primary CTA "Show Safe (B+)" — button style same as Filters pill, brand color. Map shows only A-zone heatmap with no markers.
+      <!-- INTEGRATION -->
+      <div class="spec-section">
+        <div class="spec-section-title">Integration</div>
+        <ul class="spec-bullets">
+          <li>Narrator-first hierarchy uses the same #1479cf selected-state blue already established in chips &mdash; visually coherent</li>
+          <li>Chip row is identical to Authors page chip row in spacing and height &mdash; stakeholders recognize the pattern immediately</li>
+          <li>Distinctive move: reversing the &ldquo;By / Narrated by&rdquo; label order is a single CSS change that fundamentally reframes the page&rsquo;s purpose</li>
+        </ul>
       </div>
-      <div class="state-block">
-        <div class="state-name">Edge · Drawer open + new filter applied</div>
-        Drawer auto-collapses with 150ms fade. If the same listing remains in filtered set, the badge active-state ring is preserved so user can re-tap easily. If listing is filtered out, scroll resets to top of panel.
+
+      <!-- OPEN QUESTIONS -->
+      <div class="spec-section">
+        <div class="spec-section-title">Open Questions</div>
+        <div class="spec-warn" style="margin-top:0;margin-bottom:8px;">
+          <span class="spec-warn-icon">&#9888;</span>
+          Narrator name search: live filter vs. submit &mdash; confirm before build
+        </div>
+        <div class="spec-warn" style="margin-top:0;">
+          <span class="spec-warn-icon">&#9888;</span>
+          Chip row scroll behavior on mobile &mdash; confirm with prototyper
+        </div>
       </div>
-      <div class="state-block">
-        <div class="state-name">Edge · Heatmap on + filter "All"</div>
-        All four heatmap colors render simultaneously at full 0.25 alpha. Legend in bottom-left of map shows all four grade swatches. Price markers remain on top of heatmap (z-index: 2).
-      </div>
-    </div>
 
-    <!-- COMPONENT ASSEMBLY ORDER -->
-    <div class="spec-section">
-      <div class="spec-section-title">Component Assembly Order</div>
-      <div class="spec-bullet">1. <strong>Map heatmap zones</strong> — base layer, behind price markers</div>
-      <div class="spec-bullet">2. <strong>Heatmap toggle button</strong> — floats top-right of map</div>
-      <div class="spec-bullet">3. <strong>Map legend</strong> — bottom-left, conditional on heatmap on</div>
-      <div class="spec-bullet">4. <strong>Safety pill</strong> — added to sub-nav row, position 4</div>
-      <div class="spec-bullet">5. <strong>Safety pill dropdown menu</strong> — anchored to pill</div>
-      <div class="spec-bullet">6. <strong>Safety badge overlay</strong> — added to each listing card photo</div>
-      <div class="spec-bullet">7. <strong>Inline drawer</strong> — conditional render below tapped card row</div>
-    </div>
+    </div><!-- /spec-panel -->
+  </div><!-- /col-spec -->
 
-    <!-- BACKWARD-FROM-FAILURE -->
-    <div class="spec-section">
-      <div class="spec-section-title">Backward-from-Failure — P0 Components</div>
-      <div class="spec-bullet"><strong>Safety pill:</strong> If users miss it, they will fail Task 2 (filter to Very Safe). Mitigation — when active, pill takes the full grade color so its activation state is unmissable; when default, it sits at position 4 (read-order priority) and uses the exact pill grammar of the existing type pills it lives next to.</div>
-      <div class="spec-bullet"><strong>Badge overlay:</strong> If users overlook it, they will fail Task 1 (assess safety at a glance). Mitigation — placement matches Guest Favorite (top-left of photo), so eyes already know to look there; the saturated grade color contrasts strongly against typical photography.</div>
-      <div class="spec-bullet"><strong>Inline drawer:</strong> If users don't realize the badge is tappable, they will fail Task 3 (access neighborhood detail). Mitigation — cursor pointer + hover brightness change + tooltip "Tap for safety details" on first hover per session.</div>
-    </div>
-
-    <!-- DISTINCTIVENESS LOG -->
-    <div class="spec-section">
-      <div class="spec-section-title">Distinctiveness Log — what makes A unique</div>
-      <div class="spec-bullet">Safety filter occupies <strong>zero new vertical space</strong> — joins the existing type-pill row. B and C add structural elements; A does not.</div>
-      <div class="spec-bullet">Active filter pill takes the <strong>grade color itself</strong>. Most distinctive activation state of the three directions.</div>
-      <div class="spec-bullet">Badge is a <strong>small overlay pill</strong> on the photo top-left — mirroring Guest Favorite. B uses a metadata chip; C uses a card border.</div>
-      <div class="spec-bullet">Of the three, A is the most <strong>"native"</strong> — a user could be told this was always part of Airbnb.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ============= DESIGNER NOTES ============= -->
-<div class="notes-section">
-  <div class="notes-title">Designer Notes for Prototyper · Direction A</div>
-
-  <!-- INTERNAL DEBATE SUMMARY -->
-  <div class="note-group">
-    <div class="note-group-label">Internal Design Debate Summary</div>
-    <div class="debate-row">
-      <div class="debate-cell">
-        <strong>Q3 Filter Placement</strong>
-        Three candidates: (a) sub-nav pill, (b) dedicated bar, (c) Filters modal. A wins for Direction A because it preserves Airbnb's existing visual rhythm — every other filter category is a pill in this row.
-      </div>
-      <div class="debate-cell">
-        <strong>Q5 Badge Style</strong>
-        Three candidates: (a) photo overlay pill, (b) metadata chip, (c) card-border. (a) wins for Direction A because it pairs natively with Guest Favorite — same shape grammar, same position grammar.
-      </div>
-      <div class="debate-cell">
-        <strong>Trade-off Acknowledged</strong>
-        Lowest prominence of the three. Effective score 3/5 — a user who is not actively scanning for safety could miss the pill. Mitigation: active state takes the full grade color so engaged use is unmissable.
-      </div>
-    </div>
-    <div class="quality-grid">
-      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Clean</div></div>
-      <div class="quality-card"><div class="quality-num">3</div><div class="quality-label">Effective</div></div>
-      <div class="quality-card"><div class="quality-num">4</div><div class="quality-label">Intuitive</div></div>
-      <div class="quality-card"><div class="quality-num">5</div><div class="quality-label">Pleasing</div></div>
-      <div class="quality-card"><div class="quality-num">17</div><div class="quality-label">Total / 20</div></div>
-    </div>
-  </div>
-
-  <!-- FALSIFICATION -->
-  <div class="note-group">
-    <div class="note-group-label">Final Falsification Pass</div>
-    <div class="note-item"><strong>Failure mode:</strong> Safety pill is too subtle in default state — sits in a row of 3 other pills with identical grammar and could fail to register as "the safety filter". Users who arrived at the page knowing they want safety filtering would scan and see only "Any / Home / Hotel" until they re-read.</div>
-    <div class="note-item"><strong>Mitigation:</strong> When the user has not engaged the pill, render a subtle 1px <code>#FF385C</code> dot inside the pill at the trailing edge — visual hint that this pill is new, removed once user has interacted with it once (sessionStorage flag).</div>
-  </div>
-
-  <!-- BUILD INSTRUCTIONS -->
-  <div class="note-group">
-    <div class="note-group-label">Exact Build Instructions for Prototyper</div>
-    <div class="note-item">Header height stays at <code>151px</code>. Do not modify. Sub-nav row: keep the existing 3 type pills (Any / Home / Hotel), add the Safety pill at position 4 with <code>gap: 8px</code>. Filters button stays at far right.</div>
-    <div class="note-item">Card photo: add <code>position: absolute; top: 12px; left: 12px;</code> badge as the FIRST child of the photo container — Guest Favorite badge sits below it if both exist. Stack order: badge (z 3) · heart (z 2) · carousel (z 1).</div>
-    <div class="note-item">Inline drawer: render as a sibling of the card grid. Use CSS grid <code>grid-row</code> trick to make the drawer span both columns when expanded. <code>height: auto; max-height: 0; overflow: hidden;</code> with <code>transition: max-height 250ms ease, opacity 200ms ease</code>.</div>
-    <div class="note-item">Map heatmap: render as <code>div</code>s with <code>position: absolute</code> and <code>filter: blur(40px)</code> on the map panel. Coordinates are mock — Pacific Heights top-left, Tenderloin bottom-right of a stylized SF outline. Each zone <code>200×200px</code> at <code>0.25</code> alpha.</div>
-    <div class="note-item">Heatmap toggle: <code>40×40px</code> circular button absolute top: 14px right: 14px. State managed in React via <code>useState</code>. When toggled on, heatmap zones get <code>opacity: 1</code> from 0; transition <code>opacity 200ms ease</code>.</div>
-    <div class="note-item">Mock SF data — Pacific Heights A · Noe Valley A · Mission B · Castro B · SoMa C · Outer Sunset C · Tenderloin D · Civic Center D. Use these eight neighborhoods for all listing cards. Cycle through.</div>
-    <div class="note-item">Font fallback chain (Airbnb Cereal VF unavailable): <code>"Circular", -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif</code>. Do not use system serif fallback.</div>
-  </div>
-</div>
+</div><!-- /two-col-body -->
 
 </body>
 </html>

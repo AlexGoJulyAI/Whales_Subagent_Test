@@ -1,0 +1,240 @@
+{
+  "listCount": 0,
+  "listInfo": [],
+  "guestFavBadge": {
+    "background-color": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "\"Airbnb Cereal VF\", Circular, -apple-system, \"system-ui\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-size": "14px",
+    "font-weight": "500",
+    "line-height": "20.02px",
+    "padding-top": "0px",
+    "padding-bottom": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "border": "0px none rgb(0, 0, 0)",
+    "border-radius": "0px",
+    "gap": "normal",
+    "width": "1px",
+    "height": "1px",
+    "display": "block",
+    "flex-direction": "row",
+    "position": "absolute",
+    "z-index": "auto",
+    "box-shadow": "none",
+    "letter-spacing": "normal"
+  },
+  "guestFavBadgeParent": {
+    "background-color": "rgba(0, 0, 0, 0)",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "\"Airbnb Cereal VF\", Circular, -apple-system, \"system-ui\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-size": "14px",
+    "font-weight": "500",
+    "line-height": "20.02px",
+    "padding-top": "4px",
+    "padding-bottom": "4px",
+    "padding-left": "10px",
+    "padding-right": "10px",
+    "border": "1px solid rgb(255, 255, 255)",
+    "border-radius": "40px",
+    "gap": "6px",
+    "width": "117.93px",
+    "height": "28px",
+    "display": "inline-flex",
+    "flex-direction": "row",
+    "position": "static",
+    "z-index": "auto",
+    "box-shadow": "rgba(0, 0, 0, 0.16) 0px 4px 10px 0px",
+    "letter-spacing": "normal"
+  },
+  "imgAssets": [
+    {
+      "src": "https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-search-bar-icons/original/4aae4ed7-5939-",
+      "alt": "",
+      "w": 48,
+      "h": 48,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/user/User/original/d62f9408-53ae-448b-aad6-985e46dde321.jpeg?im_w=720",
+      "alt": "",
+      "w": 42,
+      "h": 42,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTM0ODUxNzM4NDQ2NzEwOTk3OA==/original/763a90",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/prohost-api/Hosting-621071033093123904/original/6d83d4c5-77d3-4ea6-ab3c-d44990a16fef",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/4d090f93-f9a5-4f0",
+      "alt": "",
+      "w": 16,
+      "h": 16,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/hosting/Hosting-1627834133012798203/original/12fe4f95-9e23-4d13-b96a-badbed5cdf1f.jp",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/hosting/Hosting-1646755437420761203/original/87077de2-2a0b-4653-a28d-5dc022eb46d0.jp",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/prohost-api/Hosting-1428263244626399356/original/b342380a-5ed3-49be-89d7-364843ae5f5",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/4d090f93-f9a5-4f0",
+      "alt": "",
+      "w": 16,
+      "h": 16,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/81145239/057058ee_original.jpg?im_w=720",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/users/22402/profile_pic/1428806504/original.jpg?im_w=720",
+      "alt": "",
+      "w": 42,
+      "h": 42,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/312575a6-1f9e-43f8-ad39-8a7bb52e2402.jpg?im_w=720",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/user/2ed37327-95e2-422e-9227-3db0697ab0be.jpg?im_w=720",
+      "alt": "",
+      "w": 42,
+      "h": 42,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/airflow/Hosting-1309177104836941071/original/ef9e9549-83c8-43fe-992f-5584fca780de.jp",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/hosting/Hosting-873139345275744380/original/8cd7a4a6-29de-4942-9350-07113894d1c0.jpe",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/users/1032643/profile_pic/1315000349/original.jpg?im_w=720",
+      "alt": "",
+      "w": 42,
+      "h": 42,
+      "loading": "auto"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/14099586/7b518190_original.jpg?im_w=720",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "eager"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/miso/Hosting-1008316122987976155/original/bbf6f9e0-a7b6-4ec8-978d-270a027506ce.jpeg?",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "lazy"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/7c2bcd13-11a8-4667-a6c6-1a8a1a4b0d99.jpg?im_w=720",
+      "alt": "",
+      "w": 307,
+      "h": 292,
+      "loading": "lazy"
+    },
+    {
+      "src": "https://a0.muscache.com/im/pictures/user/User/original/b45a8436-ff62-45bc-93d1-c862a995d5d4.jpeg?im_w=720",
+      "alt": "",
+      "w": 42,
+      "h": 42,
+      "loading": "auto"
+    }
+  ],
+  "priceMarkerCount": 18,
+  "priceMarkerBtn": {
+    "background-color": "rgba(0, 0, 0, 0)",
+    "color": "rgb(34, 34, 34)",
+    "font-family": "\"Airbnb Cereal VF\", Circular, -apple-system, \"system-ui\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-size": "15px",
+    "font-weight": "500",
+    "line-height": "normal",
+    "padding-top": "0px",
+    "padding-bottom": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "border": "0px none rgb(34, 34, 34)",
+    "border-radius": "4px",
+    "gap": "normal",
+    "width": "34.9609px",
+    "height": "19.5px",
+    "display": "block",
+    "flex-direction": "row",
+    "position": "static",
+    "z-index": "auto",
+    "box-shadow": "none",
+    "letter-spacing": "normal",
+    "_text": "$520Show price breakdown"
+  },
+  "priceMarkerInner": {
+    "background-color": "rgba(0, 0, 0, 0)",
+    "color": "rgb(34, 34, 34)",
+    "font-family": "\"Airbnb Cereal VF\", Circular, -apple-system, \"system-ui\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-size": "15px",
+    "font-weight": "500",
+    "line-height": "normal",
+    "padding-top": "0px",
+    "padding-bottom": "0px",
+    "padding-left": "0px",
+    "padding-right": "0px",
+    "border": "0px none rgb(34, 34, 34)",
+    "border-radius": "0px",
+    "gap": "normal",
+    "width": "auto",
+    "height": "auto",
+    "display": "inline",
+    "flex-direction": "row",
+    "position": "static",
+    "z-index": "auto",
+    "box-shadow": "none",
+    "letter-spacing": "normal"
+  }
+}

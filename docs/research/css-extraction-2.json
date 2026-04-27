@@ -1,0 +1,163 @@
+{
+  "cardCount": 0,
+  "mainChildCount": 3,
+  "mainChildren": [
+    {
+      "i": 0,
+      "tag": "DIV",
+      "id": "",
+      "cls": "b188omv7 atm_wq_37ucgo atm_mk_1n9t6rb atm_6i_1au8wfg atm_fq_a4lrqx atm_tr_zr6sja atm_uc_1jgzaua atm_",
+      "width": 0,
+      "height": 0,
+      "position": "fixed",
+      "display": "none"
+    },
+    {
+      "i": 1,
+      "tag": "DIV",
+      "id": "site-content",
+      "cls": "fgdo31e atm_lh_1fjmi68 atm_vy_chrnpt atm_j3_10maqu6 dir dir-ltr",
+      "width": 734,
+      "height": 4113,
+      "position": "static",
+      "display": "block"
+    },
+    {
+      "i": 2,
+      "tag": "DIV",
+      "id": "",
+      "cls": "m1arl239 atm_mk_1if85x1 atm_wq_cs5v99 atm_iy_1nqcu5t atm_1anz5yx_1nqcu5t atm_f6_1u495k0 atm_gx_pc4iq",
+      "width": 658,
+      "height": 684,
+      "position": "sticky",
+      "display": "block"
+    }
+  ],
+  "pillButtonsFound": 3,
+  "anyPill": {
+    "background-color": "rgb(255, 255, 255)",
+    "color": "rgb(34, 34, 34)",
+    "font-family": "\"Airbnb Cereal VF\", Circular, -apple-system, \"system-ui\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-size": "12px",
+    "font-weight": "400",
+    "line-height": "16px",
+    "padding-top": "8px",
+    "padding-bottom": "8px",
+    "padding-left": "12px",
+    "padding-right": "12px",
+    "border": "1px solid rgb(34, 34, 34)",
+    "border-radius": "24px",
+    "gap": "normal",
+    "width": "54px",
+    "height": "34px",
+    "display": "inline-block",
+    "flex-direction": "row",
+    "position": "relative",
+    "z-index": "auto",
+    "box-shadow": "none",
+    "letter-spacing": "normal",
+    "opacity": "1",
+    "_text": "Any",
+    "_border": "1px solid rgb(34, 34, 34)",
+    "_borderColor": "rgb(34, 34, 34)"
+  },
+  "filtersButton": {
+    "background-color": "rgb(255, 255, 255)",
+    "color": "rgb(34, 34, 34)",
+    "font-family": "\"Airbnb Cereal VF\", Circular, -apple-system, \"system-ui\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-size": "12px",
+    "font-weight": "400",
+    "line-height": "16px",
+    "padding-top": "8px",
+    "padding-bottom": "8px",
+    "padding-left": "12px",
+    "padding-right": "12px",
+    "border": "1px solid rgb(221, 221, 221)",
+    "border-radius": "24px",
+    "gap": "normal",
+    "width": "83.6406px",
+    "height": "34px",
+    "display": "inline-flex",
+    "flex-direction": "row",
+    "position": "relative",
+    "z-index": "auto",
+    "box-shadow": "none",
+    "letter-spacing": "normal",
+    "opacity": "1",
+    "_text": "Filters"
+  },
+  "colorPairs": [
+    {
+      "tag": "h1",
+      "text": "rgb(34, 34, 34)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "sample": "Search results; Over 1,000 homes in San "
+    },
+    {
+      "tag": "h2",
+      "text": "rgb(255, 255, 255)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "fontSize": "21px",
+      "fontWeight": "700",
+      "sample": "Google map\nShowing 19 stays."
+    },
+    {
+      "tag": "a",
+      "text": "rgb(0, 0, 0)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "sample": "Terms"
+    },
+    {
+      "tag": "a",
+      "text": "rgb(106, 106, 106)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "sample": "Learn more"
+    },
+    {
+      "tag": "button",
+      "text": "rgb(34, 34, 34)",
+      "bg": "rgb(255, 255, 255)",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "sample": "Any"
+    },
+    {
+      "tag": "button",
+      "text": "rgb(0, 0, 0)",
+      "bg": "rgb(255, 255, 255)",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "sample": "Hotel"
+    },
+    {
+      "tag": "button",
+      "text": "rgb(34, 34, 34)",
+      "bg": "rgb(34, 34, 34)",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "sample": "Show map"
+    },
+    {
+      "tag": "button",
+      "text": "rgb(255, 255, 255)",
+      "bg": "rgb(34, 34, 34)",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "sample": "1"
+    },
+    {
+      "tag": "span",
+      "text": "rgba(0, 0, 0, 0)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "fontSize": "8px",
+      "fontWeight": "700",
+      "sample": "NEW"
+    }
+  ]
+}

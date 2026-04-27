@@ -3,344 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Journey C — Trust Layer | TreeHouse / SafeChat</title>
+  <title>Direction C — Search-First Discovery | Audible Narrators User Journey</title>
   <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Inter, system-ui, sans-serif; background: #F8FAFC; padding: 32px 24px; color: #1E293B; }
-.page-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Inter, system-ui, sans-serif; background: #f4f4f4; padding: 80px 48px; color: #000; }
+    .page-wrap { max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
 
-/* HEADER */
-.header { background: #1E2A40; border-radius: 14px; padding: 30px 32px 26px; box-shadow: 0 4px 24px rgba(8,51,134,.18); }
-.hdr-kicker { font-size: 11px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 6px; }
-.hdr-direction { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 20px; line-height: 1.2; letter-spacing: -.01em; }
-.hdr-direction span { color: #7C3AED; }
-.callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px; }
-.callout-prob { background: rgba(239,68,68,.10); border-color: #EF4444; }
-.callout-sol  { background: rgba(22,163,74,.10);  border-color: #16A34A; }
-.callout-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
-.callout-prob .callout-label { color: #FCA5A5; }
-.callout-sol  .callout-label { color: #86EFAC; }
-.callout-body { font-size: 12px; color: rgba(255,255,255,.82); line-height: 1.6; }
-.hdr-divider { height: 1px; background: rgba(255,255,255,.10); margin: 20px 0 16px; }
-.hdr-legend-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.32); margin-bottom: 12px; }
-.hdr-shapes { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-.hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.hdr-shape-item span { font-size: 8px; color: rgba(255,255,255,.45); font-weight: 700; letter-spacing: .04em; white-space: nowrap; text-transform: uppercase; }
-.hs-start { width: 56px; height: 24px; background: #111827; border-radius: 999px; }
-.hs-click { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; }
-.hs-type  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
-.hs-view  { width: 50px; height: 24px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
-.hs-sys   { width: 56px; height: 24px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; }
-.hs-dec-wrap { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-.hs-dec { width: 28px; height: 28px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 3px; }
-.hs-end { width: 56px; height: 24px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
+    /* HEADER */
+    .header { background: #fff; border: 1px solid #000; border-top: 4px solid #000; padding: 72px 80px 56px; }
+    .hdr-kicker { font-size: 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #666; margin-bottom: 16px; }
+    .hdr-direction { font-size: 56px; font-weight: 700; color: #000; margin-bottom: 48px; line-height: 1.2; letter-spacing: -.01em; }
+    .hdr-direction span { color: #000; font-style: italic; }
+    .callout { border-left: 4px solid; padding: 24px 28px; margin-bottom: 18px; }
+    .callout-prob { background: #fafafa; border-color: #cc0000; }
+    .callout-sol  { background: #fafafa; border-color: #000; }
+    .callout-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 12px; }
+    .callout-prob .callout-label { color: #cc0000; }
+    .callout-sol  .callout-label { color: #000; }
+    .callout-body { font-size: 30px; color: #000; line-height: 1.6; }
+    .hdr-divider { height: 1px; background: #000; margin: 40px 0 32px; }
+    .hdr-legend-title { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 24px; }
+    .hdr-shapes { display: flex; align-items: flex-end; gap: 40px; flex-wrap: wrap; }
+    .hdr-shape-item { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .hdr-shape-item span { font-size: 16px; color: #666; font-weight: 700; letter-spacing: .06em; white-space: nowrap; text-transform: uppercase; }
+    .hs-start { width: 112px; height: 44px; background: #111827; border-radius: 999px; }
+    .hs-click { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 32px; }
+    .hs-type  { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; }
+    .hs-view  { width: 100px; height: 44px; background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; }
+    .hs-sys   { width: 112px; height: 44px; background: #E0F2FE; border: 2px solid #0284C7; border-radius: 16px; }
+    .hs-dec-wrap { width: 68px; height: 68px; display: flex; align-items: center; justify-content: center; }
+    .hs-dec { width: 44px; height: 44px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 8px; }
+    .hs-end { width: 112px; height: 44px; background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; }
 
-/* FLOW SECTION */
-.flow-section { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,42,64,.07); }
-.flow-title-bar { background: #1E2A40; padding: 16px 24px; }
-.flow-title-bar-kicker { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: rgba(255,255,255,.42); margin-bottom: 3px; }
-.flow-title-bar-label { font-size: 14px; font-weight: 800; color: #fff; }
-.flow-body { padding: 32px 24px 28px; }
+    /* FLOW SECTION */
+    .flow-section { background: #fff; border: 1px solid #000; overflow: hidden; }
+    .flow-title-bar { background: #000; padding: 32px 48px; }
+    .flow-title-bar-kicker { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+    .flow-title-bar-label { font-size: 30px; font-weight: 700; color: #fff; }
+    .flow-body { padding: 64px 48px 56px; }
 
-/* FLOWCHART */
-.fc { display: flex; flex-direction: column; align-items: center; gap: 0; }
-.fc-conn { display: flex; flex-direction: column; align-items: center; }
-.fc-conn-line { width: 2px; height: 24px; background: #CBD5E1; }
-.fc-conn-arrow { font-size: 10px; color: #94A3B8; line-height: 1; }
+    /* FLOWCHART */
+    .fc { display: flex; flex-direction: column; align-items: center; }
+    .nt { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; opacity: .6; margin-bottom: 8px; }
 
-/* NODE BASE */
-.n-start { background: #111827; color: #fff; border-radius: 999px; padding: 10px 28px; font-size: 12px; font-weight: 700; text-align: center; max-width: 280px; }
-.n-end { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 10px 28px; color: #14532D; font-size: 11px; font-weight: 700; text-align: center; max-width: 280px; }
-.n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 16px; padding: 10px 20px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; }
-.n-type  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 10px 20px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; }
-.n-view  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 10px 28px; color: #3B0764; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; }
-.n-sys   { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 8px; padding: 10px 20px; color: #0C4A6E; font-size: 12px; font-weight: 600; text-align: center; max-width: 280px; }
+    /* Nodes */
+    .n-start { background: #111827; color: #fff; border-radius: 999px; padding: 20px 56px; font-size: 22px; font-weight: 700; text-align: center; max-width: 600px; letter-spacing: .04em; }
+    .n-end   { background: #DCFCE7; border: 2px solid #16A34A; border-radius: 999px; padding: 20px 56px; color: #14532D; font-size: 22px; font-weight: 700; text-align: center; max-width: 600px; letter-spacing: .04em; }
+    .n-click { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 32px; padding: 20px 32px; color: #3B0764; font-size: 24px; font-weight: 500; text-align: center; max-width: 560px; line-height: 1.4; }
+    .n-click .nt { color: #7C3AED; }
+    .n-type  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 0; padding: 20px 32px; color: #3B0764; font-size: 24px; font-weight: 500; text-align: center; max-width: 560px; line-height: 1.4; }
+    .n-type .nt { color: #7C3AED; }
+    .n-view  { background: #F3EEFF; border: 2px solid #7C3AED; border-radius: 999px; padding: 20px 48px; color: #3B0764; font-size: 24px; font-weight: 400; text-align: center; max-width: 560px; line-height: 1.4; }
+    .n-view .nt { color: #7C3AED; }
+    .n-sys   { background: #E0F2FE; border: 2px solid #0284C7; border-radius: 16px; padding: 20px 32px; color: #0C4A6E; font-size: 24px; font-weight: 400; text-align: center; max-width: 560px; line-height: 1.4; }
+    .n-sys .nt { color: #0284C7; }
+    .n-dec-wrap { display: flex; align-items: center; justify-content: center; width: 240px; height: 240px; flex-shrink: 0; }
+    .n-dec { width: 192px; height: 192px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+    .n-dec-text { transform: rotate(-45deg); font-size: 20px; font-weight: 700; color: #1D4ED8; text-align: center; line-height: 1.35; max-width: 140px; }
 
-/* NODE TYPE MINI-LABEL (.nt inside nodes) */
-.nt { display: block; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; opacity: .55; margin-bottom: 4px; }
-.n-click .nt, .n-type .nt, .n-view .nt { color: #7C3AED; }
-.n-sys .nt { color: #0284C7; }
+    /* Connector */
+    .fc-conn { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
+    .fc-conn-line { width: 2px; height: 48px; background: #000; }
+    .fc-conn-arrow { font-size: 22px; color: #000; margin-top: -4px; }
 
-/* DECISION DIAMOND */
-.n-dec-wrap { width: 96px; height: 96px; display: flex; align-items: center; justify-content: center; }
-.n-dec { width: 96px; height: 96px; background: #BFDBFE; border: 2px solid #2563EB; transform: rotate(45deg); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-.n-dec-text { transform: rotate(-45deg); color: #1D4ED8; font-size: 10px; font-weight: 700; text-align: center; max-width: 70px; line-height: 1.3; }
+    /* Branching */
+    .fc-branches { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
+    .fc-branch { display: flex; flex-direction: column; align-items: center; }
+    .fc-bl-y { font-size: 16px; font-weight: 700; color: #15803d; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
+    .fc-bl-n { font-size: 16px; font-weight: 700; color: #b91c1c; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
+    .fc-branch .n-click, .fc-branch .n-type, .fc-branch .n-view, .fc-branch .n-sys, .fc-branch .n-end { max-width: 440px; }
 
-/* BRANCHES */
-.fc-branches { display: flex; gap: 20px; align-items: flex-start; justify-content: center; }
-.fc-branch { display: flex; flex-direction: column; align-items: center; gap: 0; max-width: 220px; }
-.fc-bl-y { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #16A34A; padding: 4px 0; }
-.fc-bl-n { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #DC2626; padding: 4px 0; }
+    /* Step badge */
+    .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #000; color: #fff; border-radius: 0; font-size: 20px; font-weight: 700; margin-bottom: 12px; flex-shrink: 0; }
+    .n-with-badge { display: flex; flex-direction: column; align-items: center; }
 
-/* SCREEN LABEL (section divider between flows) */
-.screen-label { display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; align-self: stretch; }
-.screen-label-text { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #94A3B8; white-space: nowrap; }
-.screen-label-line { flex: 1; height: 1px; background: #E2E8F0; }
-
-/* STEP BADGE */
-.step-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: #083386; color: #fff; border-radius: 999px; font-size: 10px; font-weight: 800; margin-bottom: 6px; flex-shrink: 0; }
-.n-with-badge { display: flex; flex-direction: column; align-items: center; }
-
-/* TRUST NOTE — Direction C signature annotation */
-.trust-note { background: #EFF6FF; border: 1.5px solid #3B82F6; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 11px; color: #1E3A8A; text-align: center; max-width: 360px; line-height: 1.5; }
+    /* Footnote */
+    .footnote { background: #fafafa; border-left: 4px solid #000; padding: 20px 28px; font-size: 22px; color: #666; line-height: 1.5; }
   </style>
 </head>
 <body>
 <div class="page-wrap">
 
-  <!-- HEADER -->
+  <!-- DOCUMENT HEADER -->
   <div class="header">
-    <div class="hdr-kicker">TreeHouse / SafeChat &mdash; User Journey</div>
-    <div class="hdr-direction">Direction C &mdash; <span>Trust Layer</span></div>
+    <div class="hdr-kicker">Audible Narrators · User Journey</div>
+    <div class="hdr-direction">Direction C — <span>Search-First Discovery</span></div>
 
     <div class="callout callout-prob">
       <div class="callout-label">Problem</div>
-      <div class="callout-body">Parents who trust their instincts are forced through a 5-step setup anyway. Parents who want details have no way to access them without doing the whole flow.</div>
+      <div class="callout-body">
+        Narrator-aware listeners are split into two types: those who know a name they want (e.g., "Jim Dale") and those who only know a feeling ("I want that big epic voice from the last fantasy book I loved"). Neither type has a supported browse path today — the nav has no Narrators entry, and a global site search for narrator names returns audiobook results, not narrator-centric pages.
+      </div>
     </div>
+
     <div class="callout callout-sol">
-      <div class="callout-label">Solution</div>
-      <div class="callout-body">A single overview panel shows all 5 categories defaulted to Balanced — ready immediately. Experts drill into any category via bottom sheet. Everyone else taps "Done" in under 30 seconds.</div>
+      <div class="callout-label">Solution — Direction C</div>
+      <div class="callout-body">
+        "Narrators" in the nav opens a page where a large narrator-name search field dominates the above-fold viewport — it is the first and most prominent element on the page. Below it, a horizontal scrollable "Popular Narrator" chip row surfaces known names as starting points for exploration. As the user types, a live-updating results stream appears inline — no separate results page, no button to press. For users who don't have a name, scrolling past the search field reveals the full audiobook list with filter chips appearing as a sticky bar on scroll — filter-after-browse rather than filter-then-browse.
+      </div>
     </div>
 
     <div class="hdr-divider"></div>
     <div class="hdr-legend-title">Node Legend</div>
     <div class="hdr-shapes">
-      <div class="hdr-shape-item"><div class="hs-start"></div><span>Entry / Start</span></div>
-      <div class="hdr-shape-item"><div class="hs-click"></div><span>User Tap</span></div>
-      <div class="hdr-shape-item"><div class="hs-type"></div><span>User Types</span></div>
-      <div class="hdr-shape-item"><div class="hs-view"></div><span>User Views</span></div>
-      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System Action</span></div>
+      <div class="hdr-shape-item"><div class="hs-start"></div><span>Start</span></div>
+      <div class="hdr-shape-item"><div class="hs-click"></div><span>Click</span></div>
+      <div class="hdr-shape-item"><div class="hs-type"></div><span>Type</span></div>
+      <div class="hdr-shape-item"><div class="hs-view"></div><span>View</span></div>
+      <div class="hdr-shape-item"><div class="hs-sys"></div><span>System</span></div>
       <div class="hdr-shape-item"><div class="hs-dec-wrap"><div class="hs-dec"></div></div><span>Decision</span></div>
       <div class="hdr-shape-item"><div class="hs-end"></div><span>Outcome</span></div>
     </div>
   </div>
 
-  <!-- SECTION 1: PARENT SIGN-UP -->
+  <!-- FLOW 1: NAV ENTRY -->
   <div class="flow-section">
     <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Screen 1</div>
-      <div class="flow-title-bar-label">Parent Sign-Up — Minimal, Confident</div>
+      <div class="flow-title-bar-kicker">Flow 1 of 2 — Navigation Entry</div>
+      <div class="flow-title-bar-label">Reach the search-first Narrators page from the global nav</div>
     </div>
     <div class="flow-body">
       <div class="fc">
-        <div class="n-start">Parent opens TreeHouse app</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Clean sign-up — tagline: "SafeChat, ready in under a minute."</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">SSO or email?</div></div></div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">SSO</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Continue with Apple" — fastest possible account creation</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-sys"><span class="nt">System</span>SSO resolves instantly — zero form-filling</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">Email</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-type"><span class="nt">Type</span>Email and password — 2 fields only</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Create account" — CTA unlocks immediately</div>
-          </div>
+
+        <div class="n-with-badge">
+          <div class="step-badge">1</div>
+          <div class="n-start">User on any Audible page</div>
         </div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-click"><span class="nt">Click</span>"Browse" in the nav header</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-sys"><span class="nt">System</span>Browse mega-menu opens — "Narrators" visible in Popular Lists column in place of "Series"</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-click"><span class="nt">Click</span>"Narrators" in the Popular Lists column</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-sys"><span class="nt">System</span>Narrators page loads — narrator search field autofocused above the fold; "Popular Narrators" chip row below it; full audiobook list further down</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-view"><span class="nt">View</span>Above-fold: H1 "Narrators" + large search input (full page width, placeholder "Search by narrator name...") + scrollable Popular Narrators chip row (Jim Dale, Scott Brick, Julia Whelan...)</div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-end">Narrators page reached — cursor in search field, ready to type ✓</div>
+
       </div>
     </div>
   </div>
 
-  <!-- SECTION 2: CHILD PROFILE — MINIMAL -->
+  <!-- FLOW 2: SEARCH OR BROWSE -->
   <div class="flow-section">
     <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Screen 2</div>
-      <div class="flow-title-bar-label">Child Profile Setup — Name and Age Only, Then Straight to Overview</div>
+      <div class="flow-title-bar-kicker">Flow 2 of 2 — Search by Name or Browse by Feel</div>
+      <div class="flow-title-bar-label">Find audiobooks by a specific narrator name or discover by scrolling the live-filtered list</div>
     </div>
     <div class="flow-body">
       <div class="fc">
-        <div class="n-view"><span class="nt">View</span>Minimal card — "Who is this for?" just name and age. No avatar forced.</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-type"><span class="nt">Type</span>Child's first name into name field</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-click"><span class="nt">Tap</span>Age chip — one tap, immediately CTA unlocks</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-click"><span class="nt">Tap</span>"See your settings" CTA — frames next screen as already done</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-sys"><span class="nt">System</span>All 5 categories pre-set to Balanced — overview panel loads instantly</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="trust-note">Direction C key difference: the user arrives at the overview panel with everything already set. No steps required — just review and confirm.</div>
+
+        <div class="n-with-badge">
+          <div class="step-badge">1</div>
+          <div class="n-start">User on Narrators page — search field above fold</div>
+        </div>
+        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+
+        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Know narrator name?</div></div></div>
+
+        <div class="fc-branches">
+          <div class="fc-branch">
+            <div class="fc-bl-y">Yes — type name</div>
+            <div class="n-type"><span class="nt">Type</span>Narrator name into the large search field above the fold — e.g. "Jim Dale" — results stream in below the field as you type</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-sys"><span class="nt">System</span>Inline results list appears below search field — each row: cover · "Narrated by: [Name]" · title · genre chip · rating — updates with each keystroke</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-view"><span class="nt">View</span>Results — narrator name bolded in each row, matching text highlighted; "Popular Narrators" chips update to show related names</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>Audiobook title or cover in the inline results list</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Item found by narrator name in &lt;5 seconds ✓</div>
+          </div>
+
+          <div class="fc-branch">
+            <div class="fc-bl-n">No — browsing by feel</div>
+            <div class="n-click"><span class="nt">Click</span>A "Popular Narrator" chip — e.g. "Scott Brick" — or scroll past the search field to the full audiobook list below</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-sys"><span class="nt">System</span>If chip clicked: search field populates with narrator name and list filters instantly. If scrolled: sticky filter chip bar appears at top of viewport — Voice Style · Genre · Language · Most Listened</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>A voice-style chip in the sticky filter bar — e.g. "Conversational" — chip turns selected (#e6f3ff bg, #1479cf border)</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-sys"><span class="nt">System</span>List re-renders with matching audiobooks only — results count updates in-place — no page reload, no scroll position reset</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-view"><span class="nt">View</span>Filtered list — each row: cover · title · "Narrated by:" in #1479cf blue · genre · voice style badge · price + "Try Standard free" amber button</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-click"><span class="nt">Click</span>Title link or cover to open product detail page</div>
+            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">▼</div></div>
+            <div class="n-end">Item found by discovery scroll — never left the page ✓</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- SECTION 3-8: NON-LINEAR OVERVIEW PANEL + OPTIONAL DRILL-IN -->
-  <div class="flow-section">
-    <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Screens 3–8 — Non-Linear</div>
-      <div class="flow-title-bar-label">Overview Panel — All 5 Categories Pre-Set, Any Can Be Drilled Into or Skipped</div>
-    </div>
-    <div class="flow-body">
-      <div class="fc">
-
-        <div class="screen-label">
-          <div class="screen-label-line"></div>
-          <div class="screen-label-text">Overview Panel — The Only Required Step</div>
-          <div class="screen-label-line"></div>
-        </div>
-        <div class="n-view"><span class="nt">View</span>Overview panel — 5 category rows, each showing "Balanced" pill, all pre-set</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Green status indicator: "Ready to go. All settings are on." at panel top</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Wants to adjust any category?</div></div></div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">No — Trust Default</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Done — start using SafeChat" CTA at bottom of panel</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-end">Complete in under 30 seconds — all Balanced defaults ✓</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">Yes — Expert Path</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>Any category row — e.g. "Content Moderation" row in panel</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-sys"><span class="nt">System</span>Bottom sheet slides up — full detail for that category only</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-view"><span class="nt">View</span>Bottom sheet — tier pills + subcategory rows all in one place</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>Tier pill or subcategory pill to adjust — in-place, no screen change</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-sys"><span class="nt">System</span>Overview panel pill updates instantly — change visible without closing sheet</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Confirm" in bottom sheet — sheet slides down, returns to panel</div>
-          </div>
-        </div>
-
-        <div class="screen-label">
-          <div class="screen-label-line"></div>
-          <div class="screen-label-text">After Adjusting — Return to Panel, Repeat for Any Other Category</div>
-          <div class="screen-label-line"></div>
-        </div>
-        <div class="n-view"><span class="nt">View</span>Overview panel — adjusted category now shows changed tier pill</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Adjust another category?</div></div></div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">Yes</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>Another category row — bottom sheet slides up again</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">No</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Done — start using SafeChat" at bottom of panel</div>
-          </div>
-        </div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-sys"><span class="nt">System</span>All choices confirmed — transitions to ambient confirmation</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Inline confirmation: "All set." — no separate screen, no fanfare</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-sys"><span class="nt">System</span>Dashboard loads directly — bottom tab bar appears</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 9: PARENT DASHBOARD — AMBIENT, NO URGENCY PUSH -->
-  <div class="flow-section">
-    <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Screen 9</div>
-      <div class="flow-title-bar-label">Parent Dashboard — Ambient View, Settings Summary Prominent</div>
-    </div>
-    <div class="flow-body">
-      <div class="fc">
-        <div class="n-view"><span class="nt">View</span>Dashboard header — "Everything looks good." status message at top</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Settings summary strip — 5 category pills visible at a glance</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-click"><span class="nt">Tap</span>Any category pill in strip — opens same bottom sheet from onboarding</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Alerts section — ambient, not top-priority; collapsed by default</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-click"><span class="nt">Tap</span>Alert row if present — expands inline, reads like ambient awareness</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Conversation list — recent sessions, scan without urgency</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 10: CHILD LOGIN -->
-  <div class="flow-section">
-    <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Screen 10</div>
-      <div class="flow-title-bar-label">Child Login — Same Entry as Directions A and B, No Friction</div>
-    </div>
-    <div class="flow-body">
-      <div class="fc">
-        <div class="n-start">Child opens SafeChat app</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-view"><span class="nt">View</span>Dark navy SafeChat login screen — wordmark, teal logo</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">First login or returning?</div></div></div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">First</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-type"><span class="nt">Type</span>Credentials from parent handoff into login fields</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Sign in" CTA</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">Returning</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-click"><span class="nt">Tap</span>"Use Face ID" — instant biometric re-entry</div>
-          </div>
-        </div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-sys"><span class="nt">System</span>Auth succeeds — chat interface loads, no interstitials</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 11: CHILD CHATBOT — AMBIENT, TRUST-FIRST -->
-  <div class="flow-section">
-    <div class="flow-title-bar">
-      <div class="flow-title-bar-kicker">Screen 11</div>
-      <div class="flow-title-bar-label">Child Chatbot — Balanced Defaults in Action, Frictionless Experience</div>
-    </div>
-    <div class="flow-body">
-      <div class="fc">
-        <div class="n-view"><span class="nt">View</span>Empty state greeting: "Hey! What's on your mind?" — minimal, open</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-click"><span class="nt">Tap</span>Starter prompt pill or input bar to start</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-type"><span class="nt">Type</span>Message — Balanced defaults mean most topics flow freely</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-sys"><span class="nt">System</span>AI responds naturally — Balanced tier rarely triggers redirects</div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-dec-wrap"><div class="n-dec"><div class="n-dec-text">Topic hits a Balanced boundary?</div></div></div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="fc-branches">
-          <div class="fc-branch">
-            <div class="fc-bl-y">No (most cases)</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-view"><span class="nt">View</span>Normal AI response — conversation continues uninterrupted</div>
-          </div>
-          <div class="fc-branch">
-            <div class="fc-bl-n">Yes (rare)</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-view"><span class="nt">View</span>Soft conversational redirect — no warning, same bubble style</div>
-            <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-            <div class="n-sys"><span class="nt">System</span>Ambient alert logged silently to parent dashboard — no interruption</div>
-          </div>
-        </div>
-        <div class="fc-conn"><div class="fc-conn-line"></div><div class="fc-conn-arrow">&#9660;</div></div>
-        <div class="n-end">Child has natural conversation — Balanced defaults rarely noticed ✓</div>
-      </div>
-    </div>
+  <div class="footnote">
+    Direction C — Search-First Discovery: The page serves both user types simultaneously — the name-knower types immediately (search field is autofocused on page load), the explorer scrolls and filters. The two paths share the same page and the same result list — no branching navigation, no second page. The "Popular Narrators" chip row acts as a bridge between the two modes: clicking a chip is a shortcut for the explorer who doesn't want to type. Platform tokens throughout: #1479cf selected state, #ffa000 amber CTA, 8px chip radius, 2px border, Arial fallback font.
   </div>
 
 </div>

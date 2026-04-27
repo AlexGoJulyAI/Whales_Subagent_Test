@@ -1,192 +1,215 @@
-# AudiobookItem Specification
+# AudiobookItem Specification — Audible Authors Page
+## Extracted: 2026-04-27 from live page via getComputedStyle() + Playwright DOM walk
+
+---
 
 ## Overview
-- **Target file:** `src/components/AudiobookItem.tsx`
-- **Screenshot:** `docs/design-references/audible-scrolled-600.png`
-- **Interaction model:** static
+- **Section slug:** audiobook-list-item
+- **Screenshot:** `docs/design-references/audible-authors-desktop-1440-full.png`
+- **Visual order:** 5
+- **Interaction model:** click-driven (title → product detail page, author/narrator → author page, Preview → audio, CTA → checkout)
+- **Complexity:** Complex (6+ sub-components per item, multiple interactive elements)
+- **Dependencies:** Browse nav (mega-menu panel overlays top items when open)
 
-## DOM Structure
-```
-li.audiobook-item (1000px wide, list-item display)
-  div.item-row (3-column grid)
-    div.col-image (256px wide)
-      a.cover-link href={bookUrl}
-        img.cover src={coverUrl} alt={altText} (232px × 232px square)
-      a.preview-link href="#"
-        span "▶ Preview"
+---
 
-    div.col-metadata (448px wide)
-      h3.title
-        a href={bookUrl} "What Remains"
-      p.subtitle "A Memoir of Fate, Friendship, and Love"
-      p.by-line
-        span "By: "
-        a href={authorUrl} "Carole Radziwill"
-      p.narrated-by
-        span "Narrated by: "
-        a href={narratorUrl} "Carole Radziwill"
-      p.length "Length: 5 hrs and 57 mins"
-      p.release-date "Release date: 09-26-05"
-      p.language "Language: English"
-      StarRating rating={4.6} reviewCount={1771}
-      p.description "A stunning, tragic memoir about..."
+## Computed Styles (exact values from getComputedStyle)
 
-    div.col-price (256px wide)
-      p.price "$14.99 or free with 30-day trial"
-      a.buy-btn href={buyUrl}
-        "Try Standard free"
+### li.bc-list-item.productListItem (row container)
+- width: 1000px
+- height: 331.5px (approx — varies by content)
+- display: list-item
+- padding: 0px
+- margin: 0px
+- backgroundColor: transparent
+- color: rgb(1, 14, 25)
+- fontSize: 14px
+- fontWeight: 400
+- lineHeight: 20px
 
-  div.divider (full width separator)
-```
+### div.bc-row-responsive (outer 3-col row)
+- display: block
+- width: 1024px
+- height: 331.5px
+- margin: 0px -12px  ← negative margin gutter
 
-## Computed Styles
-
-### li.audiobook-item
-- display: list-item (use `li` element)
-- width: 1000px  ← (inside a 1000px max-width container)
-- padding: 0
-
-### .item-row (inner flex container)
-- display: flex
-- flexDirection: row
-- alignItems: flex-start
-- paddingTop: 20px
-- paddingBottom: 20px
-
-### .col-image
-- width: 232px
-- minWidth: 232px
-- paddingRight: 24px
-
-### .cover-link img
-- width: 232px
-- height: 232px
-- objectFit: cover
+#### div.bc-col-responsive.bc-col-4 (cover image column)
+- width: 255.992px
+- height: 277.992px
+- padding: 0px 12px
 - display: block
 
-### .preview-link (below image)
-- display: flex
-- alignItems: center
-- gap: 4px
-- fontSize: 14px
+##### img (cover art)
+- computedWidth: 231.992px
+- computedHeight: 231.992px (rendered as square)
+- naturalWidth: 250px
+- naturalHeight: 250px
+- position: static
+- Source pattern: `https://m.media-amazon.com/images/I/[ASIN]._SL250_.jpg`
+
+##### "▶ Preview" link
+- display: block (below image)
 - color: rgb(1, 14, 25)
-- marginTop: 8px
-- textDecoration: none
+- fontSize: 14px
 - cursor: pointer
+- Text: "▶ Preview"
 
-### .col-metadata
-- flex: 1
-- paddingRight: 24px
+#### div.bc-col-responsive.bc-col-7 (metadata column)
+- width: 447.992px
+- height: 289.5px
+- padding: 0px 12px
+- display: block
 
-### h3.title a (book title link)
-- fontSize: 18px   ← larger than body
-- fontWeight: 700
-- color: rgb(14, 91, 155)  ← EXACT blue link color
-- textDecoration: none
-- lineHeight: 24px
+##### h3.bc-heading.bc-color-link (book title)
+- fontSize: 20px
+- fontWeight: 400
+- lineHeight: 26px
+- color: rgb(14, 91, 155)   ← Audible link blue
+- backgroundColor: transparent
 
-### h3.title a:hover
-- textDecoration: underline
-
-### p.subtitle
-- fontSize: 14px
-- color: rgb(1, 14, 25)
-- margin: 4px 0
-
-### p.by-line, p.narrated-by
-- fontSize: 14px
-- color: rgb(1, 14, 25)
-- margin: 2px 0
-
-### p.by-line a, p.narrated-by a (author/narrator links)
+##### a.bc-link.bc-color-link (title link)
+- fontSize: 20px
+- fontWeight: 400
+- lineHeight: 26px
 - color: rgb(14, 91, 155)
-- textDecoration: none
+- border: none
+- padding: 0px
+
+##### li.bc-list-item.subtitle > span.bc-text.bc-size-base.bc-color-secondary (subtitle)
+- fontSize: 14px
 - fontWeight: 400
-
-### p.length, p.release-date, p.language
-- fontSize: 14px
-- color: rgb(1, 14, 25)
-- margin: 2px 0
-
-### p.description
-- fontSize: 14px
-- color: rgb(1, 14, 25)
-- marginTop: 8px
 - lineHeight: 20px
-- display: -webkit-box
-- -webkit-line-clamp: 3
-- -webkit-box-orient: vertical
-- overflow: hidden
+- color: rgb(6, 22, 36)   ← near-black secondary text
 
-### .col-price
-- width: 232px
-- minWidth: 232px
-- paddingTop: 4px
+##### li.bc-list-item.authorLabel > span.bc-text.bc-size-small.bc-color-secondary (author row)
+- fontSize: 13px
+- fontWeight: 400
+- lineHeight: 19px
+- color: rgb(6, 22, 36)
 
-### p.price
+##### a.bc-link.bc-color-link (author name link)
+- fontSize: 13px
+- fontWeight: 400
+- lineHeight: 19px
+- color: rgb(14, 91, 155)
+
+##### li.bc-list-item.narratorLabel > span.bc-text.bc-size-small.bc-color-secondary (narrator row)
+- fontSize: 13px
+- fontWeight: 400
+- lineHeight: 19px
+- color: rgb(6, 22, 36)
+
+##### a.bc-link.bc-color-link (narrator name link)
+- fontSize: 13px
+- lineHeight: 19px
+- color: rgb(14, 91, 155)
+
+##### li.bc-list-item.runtimeLabel > span.bc-text.bc-size-small.bc-color-secondary (length)
+- fontSize: 13px
+- lineHeight: 19px
+- color: rgb(6, 22, 36)
+
+##### li.bc-list-item.releaseDateLabel > span.bc-text.bc-size-small.bc-color-secondary (release date)
+- fontSize: 13px
+- lineHeight: 19px
+- color: rgb(6, 22, 36)
+
+##### li.bc-list-item.languageLabel > span.bc-text.bc-size-small.bc-color-secondary (language)
+- fontSize: 13px
+- lineHeight: 19px
+- color: rgb(6, 22, 36)
+
+##### span.bc-text.bc-size-callout (star rating number)
 - fontSize: 14px
+- lineHeight: 22px
 - color: rgb(1, 14, 25)
-- marginBottom: 10px
 
-### a.buy-btn (orange pill button)
-- display: flex
-- alignItems: center
-- justifyContent: center
-- width: 232px
-- height: 28px
-- backgroundColor: rgb(255, 160, 0)  ← EXACT orange
-- color: rgb(1, 14, 25)  ← EXACT dark text
-- borderRadius: 32px  ← EXACT
+##### span.bc-text.bc-size-callout.bc-color-secondary (ratings count)
+- fontSize: 14px
+- lineHeight: 22px
+- color: rgb(6, 22, 36)
+
+##### span.bc-text.bc-size-secondary.bc-color-secondary (description excerpt)
 - fontSize: 14px
 - fontWeight: 400
-- textDecoration: none
-- cursor: pointer
-- marginTop: 10px
+- lineHeight: 20px
+- color: rgb(6, 22, 36)
 
-### a.buy-btn:hover
-- backgroundColor: rgb(220, 136, 0)  ← darken by ~15%
+#### div.bc-col-responsive.bc-col-3 (price + CTA column)
+- width: 256px
+- height: 66px
+- padding: 0px 12px
 
-### .divider
+##### Price text (e.g., "$19.49 or free with 30-day trial")
+- fontSize: 14px
+- fontWeight: 400
+- color: rgb(1, 14, 25)
+
+##### adbl-button "Try Standard free" (CTA)
+- backgroundColor: rgb(255, 160, 0)   ← amber orange (slightly different from banner button which is rgb(255,179,51))
+- color: rgb(1, 14, 25)
+- fontSize: 14px
+- borderRadius: 9999px (pill shape)
+- height: 42px (md size)
+- fontWeight: 600 (slot text)
+
+### div.bc-col-responsive.bc-spacing-base (divider row — between items)
+- margin: 20px 0px
+- height: 2px
+
+#### div.bc-divider.bc-divider-secondary (1px separator line)
+- borderBottom: 0px none rgba(1, 14, 25, 0.15)  ← subtle separator
 - height: 1px
-- backgroundColor: rgba(1, 14, 25, 0.15)  ← EXACT divider color
-- margin: 0
-- (The margin-top 20px + margin-bottom 20px is on the col-price div)
+- width: 1000px
 
-## TypeScript Interface
-```ts
-interface AudiobookItemProps {
-  coverUrl: string;
-  coverAlt: string;
-  bookUrl: string;
-  title: string;
-  subtitle?: string;
-  authorName: string;
-  authorUrl: string;
-  narratorNames: string[];
-  narratorUrls: string[];
-  length: string;
-  releaseDate: string;
-  language: string;
-  rating: number;
-  reviewCount: number;
-  description: string;
-  price: string;
-  buyUrl: string;
-}
-```
+---
 
 ## States & Behaviors
-- **Interaction model:** static
-- **Hover on title link:** underline
-- **Hover on author/narrator links:** underline
-- **Hover on buy button:** darker orange background
+
+### Default
+- Cover image static, full color
+- Title link: rgb(14, 91, 155) blue
+- Author/narrator links: rgb(14, 91, 155) blue
+- CTA button: rgb(255, 160, 0) amber
+
+### Hover on title/author/narrator link
+- text-decoration: underline
+- Transition: instantaneous
+
+### Hover on CTA button
+- Background likely darkens — exact value not extracted
+
+### Preview button
+- Trigger: click → triggers `<audio id="webPlayer">` playback
+- Text changes to pause state while playing (not extracted — requires click)
+
+---
 
 ## Assets
-- Cover images: `public/images/covers/<filename>.jpg`
-- All 20 cover images from Amazon CDN (see download script)
+
+| Layer | z-index | Type | Source URL pattern | Dimensions | Position |
+|---|---|---|---|---|---|
+| 1 | auto | img | `https://m.media-amazon.com/images/I/[ASIN]._SL250_.jpg` | 250×250px natural, 232×232px rendered | static |
+
+Background images: none (only bc-popover-beak SVG background which is a tooltip artifact).
+
+---
+
+## Text Content — First item (verbatim)
+- **Title:** What Remains
+- **Subtitle:** A Memoir of Fate, Friendship, and Love
+- **By:** Carole Radziwill
+- **Narrated by:** Carole Radziwill
+- **Length:** 5 hrs and 57 mins
+- **Release date:** 09-26-05
+- **Language:** English
+- **Rating:** 4.6 ★★★★½ 1,771 ratings
+- **Description excerpt:** A stunning, tragic memoir about John F. Kennedy Jr., his wife Carolyn Bessette-Kennedy, and his cousin Anthony Radziwill, by Radziwill's widow. What Remains is a vivid and haunting memoir about a girl from a working-class town who becomes an award-winning television producer and marries a...
+
+---
 
 ## Responsive Behavior
-- **Desktop (1440px):** 3-column flex layout as described
-- **Tablet (768px):** same 3-column but cover reduces
-- **Mobile (390px):** stack vertically: image full-width top, then metadata, then price+button
-- **Breakpoint:** stack below 640px
+- **Desktop (1440px):** Three-column row — cover (232px) + metadata (448px) + price/CTA (232px). Total item width: 1000px.
+- **Tablet (768px):** Cover shrinks (~135px), metadata extends, price/CTA may wrap below metadata
+- **Mobile (390px):** Cover left ~135px, metadata right truncated, price/CTA hidden below fold or stacked
+- **Breakpoint:** ~768px layout collapses; price/CTA column stacks below on mobile

@@ -21,8 +21,14 @@ You are a world-class senior product designer with 15+ years across SaaS, fintec
 
 Before any other step, ensure the output directories exist:
 ```bash
-mkdir -p docs/research docs/design-references/figma-components
+mkdir -p docs/research docs/research/components docs/design-references/figma-components
 ```
+
+Then verify the project is in a buildable state before writing any output files:
+```bash
+npm run build
+```
+If the build fails, investigate and report the failure to the user before proceeding. Do not begin extraction against a broken project baseline.
 
 ### Step 1: Figma Upfront Extraction
 
@@ -65,6 +71,17 @@ When a URL is present, browser automation is required. Run all four sweeps befor
 - Record the exact viewport width and `document.documentElement.scrollHeight` for each screenshot immediately after capture — these are required for annotation coordinate math.
 - Extract global tokens immediately: all `<link>` tags for fonts; computed `font-family` on headings, body, labels; color palette from computed styles across the page; favicon and OG image URLs.
 - Map every distinct section top-to-bottom. Assign a working name to each section (e.g., `hero`, `feature-grid`, `testimonials`, `cta-banner`). For each, record: visual order, sticky/fixed vs. flow, z-index layer, and — critically — its **interaction model** (static | click-driven | scroll-driven | time-driven). Also document the **overall page layout structure**: the primary scroll container, column layout (single-column, sidebar+content, multi-column grid), and max-width zones. Note **dependencies between sections** — e.g., a sticky nav that reacts to a scroll-driven hero, or a sidebar synchronized with the main content area.
+
+  **Section complexity rating** — for every section, assign: **Simple** (1–2 sub-components, static), **Moderate** (3–5 sub-components, single interaction model), or **Complex** (6+ sub-components, multiple states, or layered assets). Used by the Designer Agent to calibrate annotation depth and by the Prototyper Agent to know which components need multi-state registry entries.
+
+  **Write this immediately to `docs/research/PAGE_TOPOLOGY.md`** — one row per section in visual order. This file is the Designer Agent's assembly blueprint and must be written before handoff.
+
+  ```
+  | Section name | Visual order | Fixed/sticky or flow | Interaction model | Complexity | Dependencies |
+  |---|---|---|---|---|---|
+  | hero | 1 | flow | static | Simple | nav overlays this section |
+  | [section] | [N] | [fixed/flow] | [model] | [Simple/Moderate/Complex] | [or none] |
+  ```
 
 **After screenshots — Annotation Coordinate Extraction (mandatory before writing HTML):**
 
@@ -130,13 +147,43 @@ Use the returned `top`, `left`, `width`, `height` values directly as the `style`
 - If a single entry returns `error: 'not found'` — refine the selector and re-run that entry before proceeding.
 - Never manually adjust returned values — use them verbatim.
 
-**B. Interaction Sweep** *(run before extracting any component styles)*
-This sweep exists to catch behaviors invisible in a static screenshot. Run it as a dedicated pass.
+---
+
+**B. Interaction Sweep** *(mandatory dedicated pass — run before extracting any component styles)*
+
+> **This is the single most consequential extraction step.** Misidentifying one section's interaction model here (e.g., labeling scroll-driven as click-driven) forces a complete pipeline rewrite downstream — not a CSS fix. Do not rush it and do not scroll-test this step.
+
+This sweep exists to catch behaviors invisible in a static screenshot. Run it as a dedicated pass before touching any component-level CSS.
 
 - **Scroll sweep:** Scroll slowly top to bottom. At each section, pause and record: does the header change appearance (note exact scroll-position trigger)? Do elements animate into view (note type)? Does a sidebar or indicator auto-switch as content scrolls past (note mechanism)? Are there scroll-snap points? Is a smooth-scroll library active (check for `.lenis`, `.locomotive-scroll`, or non-native scroll behavior)? Do any layers move at different rates than the scroll itself (parallax)? Is any content cycling automatically — carousels, rotating headlines, auto-advancing slides? Does the page color scheme or background shift dramatically between sections (dark-to-light or light-to-dark transitions triggered by scroll position)? Are there tabbed or pill-selected panels where clicking a button swaps the visible card set? Do tabs or accordion panels switch based on scroll position — driven by IntersectionObserver rather than a click?
 - **Click sweep:** Click every button, tab, pill, link, and card. For each: record what changes, whether content switches, whether a modal or dropdown opens. For tabbed/pill content — click every tab and record the full content set visible for each state.
 - **Hover sweep:** Hover over every interactive element. Record what changes (color, scale, shadow, opacity, underline) and the transition.
 - **Responsive sweep:** Test at 1440px, 768px, and 390px. Note which sections reflow and at approximately which breakpoint.
+
+**Write all interaction sweep findings to `docs/research/BEHAVIORS.md` before proceeding to Step C.** Structure it as follows:
+
+```
+# BEHAVIORS
+
+## Scroll-triggered behaviors
+  [element / section] → trigger: [scroll position Npx | IntersectionObserver rootMargin "..."] → state A: [CSS values] → state B: [CSS values] → transition: [value]
+
+## Click-driven behaviors
+  [element] → trigger: click → content per state: [state A | state B | ...]
+
+## Hover behaviors
+  [element] → changed properties: [list] → transition: [duration easing]
+
+## Responsive behaviors
+  [section] → breakpoint ~[N]px → what changes: [description]
+
+## Smooth scroll library
+  Detected: [Lenis | Locomotive Scroll | none | unconfirmed] → evidence: [class name or behavior observed]
+```
+
+This file is the Designer Agent's behavior reference and the Prototyper's interaction implementation guide. It is not optional.
+
+---
 
 **C. Per-Component CSS Extraction**
 For every section identified in the topology, extract computed styles using `getComputedStyle()` — never hand-measure or estimate. Run this script via browser automation on each component container:
@@ -181,6 +228,8 @@ For every section identified in the topology, extract computed styles using `get
   return JSON.stringify(walk(el, 0), null, 2);
 })('SELECTOR');
 ```
+
+**Depth-limit recovery protocol:** If any node in the returned tree has `tag: '[depth-limit]'` and `skipped: true`, this is a mandatory re-run signal — not an acceptable gap. Identify the parent element's selector from the returned tree, append a child selector to narrow the scope, and re-run the script on that subtree before recording any values for those elements. Do not proceed with a section's extraction until all depth-limited nodes are resolved.
 
 **D. WCAG Contrast Extraction** *(run after C — once per unique text-on-background pair found)*
 
@@ -288,6 +337,83 @@ JSON.stringify({
 ```
 
 Record all layers in the Design Token Record. Flag any layer whose source is ambiguous (server-generated, session-unique) in the gap map.
+
+---
+
+**G. Per-Section Spec File** *(write after passes C, E, and F are complete for all sections — skip entirely if no live URL was available)*
+
+**Before extracting CSS for each section, scroll to it and take a viewport screenshot.** Save to `docs/design-references/[section-slug]-section.png`. This is the screenshot referenced in the spec file's Overview and is the image the Prototyper Agent views immediately before writing markup for that component. A full-page screenshot is not a substitute — the Prototyper needs a viewport-framed crop of the section at the moment of extraction.
+
+After completing CSS extraction (C), multi-state extraction (E), and layered asset detection (F) for all sections, write one file per section to `docs/research/components/[section-slug].spec.md`. The section slug must match the entry in `PAGE_TOPOLOGY.md`. These files are the primary per-element CSS source for the Prototyper Agent — the Design Token Record captures the design system; spec files capture exact computed values per DOM node.
+
+**Spec file size budget:** After writing each spec file, check its line count. If it exceeds ~150 lines of content (excluding template headings), the section is too complex for a single spec. Split it into sub-component specs (e.g., `hero-card.spec.md`, `hero-background.spec.md`, `hero-cta.spec.md`) and one wrapper spec. This is a mechanical check — do not override it because the sub-components feel related.
+
+The wrapper spec's Overview section must include a `Sub-components:` field listing the paths to every sub-component spec file:
+
+```markdown
+## Overview
+- **Section slug:** hero
+- **Screenshot:** `docs/design-references/hero-section.png`
+- **Interaction model:** static
+- **Complexity:** Complex
+- **Sub-components:**
+  - `docs/research/components/hero-background.spec.md`
+  - `docs/research/components/hero-card.spec.md`
+  - `docs/research/components/hero-cta.spec.md`
+```
+
+The wrapper's Computed Styles section describes the outer container only. All per-element CSS detail lives in the sub-component spec files.
+
+```markdown
+# [Section Name] Specification
+
+## Overview
+- **Section slug:** [working name from PAGE_TOPOLOGY.md]
+- **Screenshot:** `docs/design-references/[screenshot-name].png`
+- **Visual order:** [N — from PAGE_TOPOLOGY.md]
+- **Interaction model:** [static | click-driven | scroll-driven | time-driven]
+- **Complexity:** [Simple | Moderate | Complex]
+- **Dependencies:** [or none]
+
+## Computed Styles (exact values from getComputedStyle)
+[One subsection per DOM node from the walk() output. Heading = tag.firstClass. Preserve nesting depth — child nodes are nested subsections. List every non-default property returned.]
+
+### [tag.class — e.g. section.hero]
+- property: exact value
+
+  #### [child-tag.class]
+  - property: exact value
+
+## States & Behaviors
+[From BEHAVIORS.md for this section only. One subsection per state.]
+
+### [State name — e.g. Scroll-triggered nav shrink]
+- **Trigger:** [scroll position Npx | IntersectionObserver rootMargin "..." | click | hover]
+- **State A (before):** [property: value]
+- **State B (after):** [property: value]
+- **Transition:** [CSS transition value — exact]
+
+### Hover states
+- **[element tag.class]:** [property]: [before] → [after], transition: [value]
+
+## Assets
+[From layered asset detection — every layer in z-index order]
+
+| Layer | z-index | Type | Source URL or src | Dimensions | Position |
+|---|---|---|---|---|---|
+| 1 | 0 | img | https://... | 1440×600 | absolute |
+
+## Text Content (verbatim)
+[All text content from this section exactly as it appears — no paraphrasing]
+
+## Responsive Behavior
+- **Desktop (1440px):** [layout]
+- **Tablet (768px):** [what changes]
+- **Mobile (390px):** [what changes]
+- **Breakpoint:** ~Npx
+```
+
+---
 
 For every text style extracted from Figma, record the **exact Figma style name**. For every component, record all variant property names and their full value sets. Resolve all alias chains to terminal primitive values.
 
@@ -491,6 +617,21 @@ Before writing the brief, run every check:
 **The brief is written when — and only when — every topic is confirmed.**
 
 **Hard rule — what the brief must NOT contain:** Layout decisions, format decisions, component fix prescriptions, or any statement of the form "reduce X to Ypx", "replace X with Y", "remove the accordion", "add a search bar at position Z". These are Designer Agent decisions. The brief describes WHAT exists (current state), WHAT the client wants to achieve (goals, success metrics, features in scope), and HOW it should LOOK (style tokens, brand, visual language). It never prescribes HOW to restructure, reorganize, or redesign the UI. If a brief section contains a proposed layout change, it must be moved to §2 Problem Statements as a stated problem — not a solution.
+
+### Pre-Handoff Checklist
+
+Before writing the handoff notification, verify every item. If any cannot be checked, return to the extraction step and complete it first.
+
+- [ ] `docs/research/PAGE_TOPOLOGY.md` written with interaction model and complexity rating per section
+- [ ] `docs/research/BEHAVIORS.md` written with all findings from the interaction sweep
+- [ ] Full-page screenshots (1440px and 390px) saved and confirmed viewable via the `Read` tool — a file path is not the same as a viewed screenshot
+- [ ] All CSS values in Design Token Record sourced from `getComputedStyle()` — none marked `[screenshot-estimated]` for URL-accessible elements unless the URL was genuinely inaccessible
+- [ ] Interaction model confirmed for every section by scrolling first before clicking — no section defaulted to click-driven without a scroll test
+- [ ] Every stateful component has all states extracted (not just the default)
+- [ ] Every section has its layered asset enumeration complete (all `<img>` elements and `background-image` values in the DOM subtree recorded in `layered_assets:`)
+- [ ] Section complexity ratings populated in `PAGE_TOPOLOGY.md` for every section
+- [ ] All text content in the brief is verbatim from the site — no paraphrasing
+- [ ] `docs/research/components/[section-slug].spec.md` written for every section in `PAGE_TOPOLOGY.md` (required when a live URL was available — skip only if source was Figma-only or screenshot-only)
 
 **Handoff:** After writing both `PROJECT_BRIEF.md` and `PROJECT_BRIEF.html`, notify the user with a brief summary:
 1. How many questions were sent in Phase 1 and how many were confirmed vs. client-deferred
@@ -744,79 +885,82 @@ Use this markup pattern for every problem-annotated screenshot:
   <title>Project Brief — [CLIENT] [ENGAGEMENT_ID]</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
-    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #fff; color: #000; line-height: 1.5; font-size: 30px; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 1600px; margin: 0 auto; padding: 88px 72px 160px; }
 
     /* ── HEADER ── */
-    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
-    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
-    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
-    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
-    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
-    .brief-meta-item strong { color: #fff; }
+    .brief-header { border-bottom: 3px solid #000; padding-bottom: 44px; margin-bottom: 72px; }
+    .brief-kicker { font-size: 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #666; margin-bottom: 20px; }
+    .brief-title { font-size: 80px; font-weight: 700; color: #000; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 40px; }
+    .brief-meta { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid #000; padding-top: 20px; }
+    .brief-meta-item { font-size: 22px; color: #000; padding-right: 36px; margin-right: 36px; border-right: 1px solid #ccc; }
+    .brief-meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+    .brief-meta-item strong { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #666; margin-bottom: 4px; }
 
-    /* ── SECTION CARDS ── */
-    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
-    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
-    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
-    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
-    .section-body { padding: 22px; }
+    /* ── SECTIONS — Swiss two-column grid ── */
+    .section { border-top: 1px solid #000; padding: 64px 0; display: grid; grid-template-columns: 140px 1fr; gap: 0 72px; }
+    .section:last-of-type { border-bottom: 1px solid #000; }
+    .section-header { display: flex; flex-direction: column; align-items: flex-start; padding-top: 2px; }
+    .section-num { font-size: 88px; font-weight: 700; color: #000; line-height: 1; letter-spacing: -.03em; display: block; margin-bottom: 8px; }
+    .section-title { font-size: 20px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: .14em; }
+    .section-body { min-width: 0; }
 
     /* ── TYPOGRAPHY INSIDE SECTIONS ── */
-    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
+    .section-body p { font-size: 30px; color: #000; margin-bottom: 20px; line-height: 1.65; }
     .section-body p:last-child { margin-bottom: 0; }
-    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
+    .section-body h4 { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin: 40px 0 18px; }
     .section-body h4:first-child { margin-top: 0; }
 
     /* ── TABLES ── */
-    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
-    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
-    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
-    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 30px; margin-bottom: 28px; }
+    .brief-table th { font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: .12em; color: #666; padding: 14px 20px; border-bottom: 2px solid #000; text-align: left; background: none; }
+    .brief-table td { padding: 14px 20px; border-bottom: 1px solid #ddd; color: #000; vertical-align: top; line-height: 1.55; }
+    .brief-table tr:last-child td { border-bottom: none; }
 
     /* ── CODE / MONO ── */
-    .brief-code { background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px 16px; font-family: 'Fira Code', 'Cascadia Code', 'Menlo', monospace; font-size: 12px; color: #1E40AF; overflow-x: auto; margin: 12px 0; white-space: pre; }
+    .brief-code { background: #f5f5f5; border-left: 3px solid #000; padding: 18px 22px; font-family: 'Courier New', Courier, monospace; font-size: 16px; color: #000; overflow-x: auto; margin: 18px 0; white-space: pre; }
 
     /* ── ANNOTATED SCREENSHOT SYSTEM ── */
-    .screenshot-wrap { margin: 16px 0; }
-    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
-    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+    .screenshot-wrap { margin: 36px 0; }
+    .screenshot-caption { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 12px; }
+    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #000; overflow: hidden; }
     .annotated-img img { display: block; width: 100%; height: auto; }
     .annotation-box {
       position: absolute;
-      border: 2.5px solid #DC2626;
-      border-radius: 3px;
+      border: 2px solid #cc0000;
       pointer-events: none;
     }
     .annotation-label {
       position: absolute;
       top: 0;
       left: 0;
-      background: #DC2626;
+      background: #cc0000;
       color: #fff;
-      font-size: 10px;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 0 0 3px 0;
+      padding: 4px 10px;
       white-space: nowrap;
-      line-height: 18px;
+      line-height: 22px;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
+      letter-spacing: .06em;
+      text-transform: uppercase;
     }
 
-    /* ── PROBLEM / SOLUTION CALLOUTS ── */
-    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
-    .callout-sol { background: #F0FDF4; border-left: 3px solid #16A34A; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #14532D; line-height: 1.6; }
-    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
-    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
+    /* ── CALLOUTS ── */
+    .callout-prob { border-left: 4px solid #cc0000; background: #fafafa; padding: 24px 28px; margin-bottom: 18px; font-size: 30px; color: #000; line-height: 1.65; }
+    .callout-sol  { border-left: 4px solid #000; background: #fafafa; padding: 24px 28px; margin-bottom: 18px; font-size: 30px; color: #000; line-height: 1.65; }
+    .callout-note { border-left: 4px solid #999; background: #fafafa; padding: 24px 28px; margin-bottom: 18px; font-size: 30px; color: #000; line-height: 1.65; }
+    .callout-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 12px; color: #666; }
 
     /* ── PILLS ── */
-    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
-    .pill-blue { background: #DBEAFE; color: #1E40AF; }
-    .pill-green { background: #DCFCE7; color: #166534; }
-    .pill-red { background: #FEE2E2; color: #991B1B; }
-    .pill-gray { background: #F3F4F6; color: #374151; }
+    .pill { display: inline-block; font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 0; margin: 2px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid #000; background: none; color: #000; }
+    .pill-blue  { background: none; color: #000; border-color: #000; }
+    .pill-green { background: none; color: #000; border-color: #000; }
+    .pill-red   { background: #cc0000; color: #fff; border-color: #cc0000; }
+    .pill-gray  { background: none; color: #666; border-color: #666; }
 
   </style>
 </head>
@@ -1065,6 +1209,23 @@ Multiple problems on the same screenshot = multiple `.annotation-box` divs. Each
 | Client says "you decide" | Log the instruction. Apply designer judgment. Send as confirmation message before finalizing. |
 | P0 question unanswered after two messages | Halt the brief. Escalate explicitly. |
 | P1/P2 question unanswered after two messages | Mark ★ CLIENT DEFERRED. Apply designer judgment. |
+
+---
+
+## WHAT NOT TO DO
+
+These are intake-specific failure modes. Each one produces a broken downstream pipeline that cannot be fixed without re-running the entire Intake phase.
+
+- **Don't default a section's interaction model to click-driven without scrolling through it first.** This is the single most expensive extraction mistake. If you label a scroll-driven section as click-driven, the Designer designs the wrong pattern and the Prototyper builds the wrong interaction — a complete rewrite, not a fix.
+- **Don't treat a URL as inaccessible before actually attempting to access it.** Note a URL as unavailable only after a failed browser MCP access attempt, not preactively.
+- **Don't write behavioral findings only in §14 of the brief.** If a behavior is only in the brief, downstream agents must parse prose to find it. It must also be in `docs/research/BEHAVIORS.md` in its structured format.
+- **Don't estimate CSS values for URL-accessible elements.** If the URL loads, `getComputedStyle()` is required. Mark values as `[screenshot-estimated]` only for elements genuinely unreachable via browser automation.
+- **Don't record only the default state of a component.** If there are scroll-triggered headers, tabbed content, or hover states — extract all of them before leaving the URL. Re-visiting the live site later to fill gaps is expensive and may be impossible if the URL changes.
+- **Don't treat a depth-limited extraction result as complete.** `tag: '[depth-limit]'` is a mandatory re-run trigger, not an acceptable output.
+- **Don't treat a section with a single visible image as a single-layer asset.** Enumerate all `<img>` elements and CSS `background-image` values in the container's DOM subtree before recording any layer count.
+- **Don't write `PAGE_TOPOLOGY.md` interaction models based on visual appearance alone.** A sticky sidebar with scrolling content looks like click-driven tabs to a static observer. Scroll through it before recording the model.
+- **Don't write the brief before `PAGE_TOPOLOGY.md` and `BEHAVIORS.md` are written.** These files are the machine-readable handoff artifacts the Designer reads directly — the brief alone is not sufficient.
+- **Don't proceed to handoff without per-section spec files in `docs/research/components/` (when a live URL was available).** The brief's Design Token Record captures the design system — not per-element computed CSS for individual DOM nodes. Spec files are what give the Prototyper exact values at element level. Without them, the Prototyper infers per-element CSS from design tokens and loses precision on any component with more than 2 DOM depth levels.
 
 ---
 

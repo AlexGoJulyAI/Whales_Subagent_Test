@@ -3,91 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Brief — alex_airbnb_safety_overlay_2026_04_25</title>
+  <title>Project Brief — Audible Narrators audible_narrators_2026_04_27</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E2A40; line-height: 1.6; }
-    .page { max-width: 780px; margin: 0 auto; padding: 40px 20px 100px; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #fff; color: #000; line-height: 1.5; font-size: 30px; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 1600px; margin: 0 auto; padding: 88px 72px 160px; }
 
-    /* ── HEADER ── */
-    .brief-header { background: #083386; border-radius: 14px; padding: 32px 36px; margin-bottom: 32px; }
-    .brief-kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
-    .brief-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 16px; }
-    .brief-meta { display: flex; gap: 24px; flex-wrap: wrap; }
-    .brief-meta-item { font-size: 12px; color: rgba(255,255,255,.7); }
-    .brief-meta-item strong { color: #fff; }
+    .brief-header { border-bottom: 3px solid #000; padding-bottom: 44px; margin-bottom: 72px; }
+    .brief-kicker { font-size: 16px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #666; margin-bottom: 20px; }
+    .brief-title { font-size: 80px; font-weight: 700; color: #000; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 40px; }
+    .brief-meta { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid #000; padding-top: 20px; }
+    .brief-meta-item { font-size: 22px; color: #000; padding-right: 36px; margin-right: 36px; border-right: 1px solid #ccc; }
+    .brief-meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+    .brief-meta-item strong { display: block; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #666; margin-bottom: 4px; }
 
-    /* ── SECTION CARDS ── */
-    .section { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
-    .section-header { background: #1E2A40; padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; }
-    .section-num { font-size: 28px; font-weight: 900; color: rgba(255,255,255,.1); line-height: 1; }
-    .section-title { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .05em; }
-    .section-body { padding: 22px; }
+    .section { border-top: 1px solid #000; padding: 64px 0; display: grid; grid-template-columns: 140px 1fr; gap: 0 72px; }
+    .section:last-of-type { border-bottom: 1px solid #000; }
+    .section-header { display: flex; flex-direction: column; align-items: flex-start; padding-top: 2px; }
+    .section-num { font-size: 88px; font-weight: 700; color: #000; line-height: 1; letter-spacing: -.03em; display: block; margin-bottom: 8px; }
+    .section-title { font-size: 20px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: .14em; }
+    .section-body { min-width: 0; }
 
-    /* ── TYPOGRAPHY INSIDE SECTIONS ── */
-    .section-body p { font-size: 14px; color: #374151; margin-bottom: 12px; }
+    .section-body p { font-size: 30px; color: #000; margin-bottom: 20px; line-height: 1.65; }
     .section-body p:last-child { margin-bottom: 0; }
-    .section-body h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin: 16px 0 8px; }
+    .section-body h4 { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin: 40px 0 18px; }
     .section-body h4:first-child { margin-top: 0; }
-    .section-body ul { padding-left: 20px; margin-bottom: 12px; }
-    .section-body li { font-size: 14px; color: #374151; margin-bottom: 6px; }
 
-    /* ── TABLES ── */
-    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
-    .brief-table th { background: #F8FAFC; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #6B7280; padding: 8px 12px; border: 1px solid #E5E7EB; text-align: left; }
-    .brief-table td { padding: 8px 12px; border: 1px solid #E5E7EB; color: #374151; vertical-align: top; }
-    .brief-table tr:nth-child(even) td { background: #FAFAFA; }
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 30px; margin-bottom: 28px; }
+    .brief-table th { font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: .12em; color: #666; padding: 14px 20px; border-bottom: 2px solid #000; text-align: left; background: none; }
+    .brief-table td { padding: 14px 20px; border-bottom: 1px solid #ddd; color: #000; vertical-align: top; line-height: 1.55; }
+    .brief-table tr:last-child td { border-bottom: none; }
 
-    /* ── CODE / MONO ── */
-    .brief-code { background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px 16px; font-family: 'Fira Code', 'Cascadia Code', 'Menlo', monospace; font-size: 12px; color: #1E40AF; overflow-x: auto; margin: 12px 0; white-space: pre-wrap; }
+    .brief-code { background: #f5f5f5; border-left: 3px solid #000; padding: 18px 22px; font-family: 'Courier New', Courier, monospace; font-size: 16px; color: #000; overflow-x: auto; margin: 18px 0; white-space: pre; }
 
-    /* ── ANNOTATED SCREENSHOT SYSTEM ── */
-    .screenshot-wrap { margin: 16px 0; }
-    .screenshot-caption { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #6B7280; margin-bottom: 8px; }
-    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+    .screenshot-wrap { margin: 36px 0; }
+    .screenshot-caption { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #666; margin-bottom: 12px; }
+    .annotated-img { position: relative; display: inline-block; width: 100%; border: 1px solid #000; overflow: hidden; }
     .annotated-img img { display: block; width: 100%; height: auto; }
-    .annotation-box {
-      position: absolute;
-      border: 2.5px solid #DC2626;
-      border-radius: 3px;
-      pointer-events: none;
-    }
-    .annotation-label {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: #DC2626;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 0 0 3px 0;
-      white-space: nowrap;
-      line-height: 18px;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .annotation-box { position: absolute; border: 2px solid #cc0000; pointer-events: none; }
+    .annotation-label { position: absolute; top: 0; left: 0; background: #cc0000; color: #fff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; padding: 4px 10px; white-space: nowrap; line-height: 22px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; letter-spacing: .06em; text-transform: uppercase; }
 
-    /* ── PROBLEM / SOLUTION CALLOUTS ── */
-    .callout-prob { background: #FEF2F2; border-left: 3px solid #DC2626; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #7F1D1D; line-height: 1.6; }
-    .callout-sol { background: #F0FDF4; border-left: 3px solid #16A34A; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #14532D; line-height: 1.6; }
-    .callout-note { background: #FFF7ED; border-left: 3px solid #F97316; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; font-size: 13px; color: #9A3412; line-height: 1.6; }
-    .callout-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; opacity: .7; }
+    .callout-prob { border-left: 4px solid #cc0000; background: #fafafa; padding: 24px 28px; margin-bottom: 18px; font-size: 30px; color: #000; line-height: 1.65; }
+    .callout-sol  { border-left: 4px solid #000; background: #fafafa; padding: 24px 28px; margin-bottom: 18px; font-size: 30px; color: #000; line-height: 1.65; }
+    .callout-note { border-left: 4px solid #999; background: #fafafa; padding: 24px 28px; margin-bottom: 18px; font-size: 30px; color: #000; line-height: 1.65; }
+    .callout-label { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 12px; color: #666; }
 
-    /* ── PILLS ── */
-    .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; margin: 2px; }
-    .pill-blue { background: #DBEAFE; color: #1E40AF; }
-    .pill-green { background: #DCFCE7; color: #166534; }
-    .pill-red { background: #FEE2E2; color: #991B1B; }
-    .pill-gray { background: #F3F4F6; color: #374151; }
-    .pill-orange { background: #FED7AA; color: #9A3412; }
+    .pill { display: inline-block; font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 0; margin: 2px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid #000; background: none; color: #000; }
+    .pill-red { background: #cc0000; color: #fff; border-color: #cc0000; }
+    .pill-gray { background: none; color: #666; border-color: #666; }
 
-    /* ── COLOR SWATCH ── */
-    .swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
-    .swatch { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .swatch-block { width: 48px; height: 32px; border-radius: 6px; border: 1px solid #E2E8F0; }
-    .swatch-label { font-size: 10px; color: #6B7280; font-weight: 600; text-align: center; max-width: 60px; }
+    .swatch-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .swatch { width: 64px; height: 64px; border: 1px solid #ddd; border-radius: 2px; display: flex; align-items: flex-end; padding: 4px; }
+    .swatch-label { font-size: 10px; font-weight: 700; letter-spacing: .04em; color: #fff; text-shadow: 0 0 2px #000; }
   </style>
 </head>
 <body>
@@ -96,12 +63,12 @@
   <!-- HEADER -->
   <div class="brief-header">
     <div class="brief-kicker">Project Brief</div>
-    <div class="brief-title">Airbnb — Safety Overlay for San Francisco Search Results</div>
+    <div class="brief-title">Audible — Narrators Browse &amp; Nav Edit</div>
     <div class="brief-meta">
-      <div class="brief-meta-item"><strong>Engagement</strong> alex_airbnb_safety_overlay_2026_04_25</div>
-      <div class="brief-meta-item"><strong>Client</strong> Alex / GoJuly AI</div>
-      <div class="brief-meta-item"><strong>Date</strong> 2026-04-25</div>
+      <div class="brief-meta-item"><strong>Engagement</strong> audible_narrators_2026_04_27</div>
+      <div class="brief-meta-item"><strong>Date</strong> 2026-04-27</div>
       <div class="brief-meta-item"><strong>Status</strong> All values client-confirmed or asset-extracted</div>
+      <div class="brief-meta-item"><strong>Phase 1</strong> Skipped — zero unconfirmed gaps</div>
     </div>
   </div>
 
@@ -109,8 +76,8 @@
   <div class="section">
     <div class="section-header"><div class="section-num">1</div><div class="section-title">Product Vision</div></div>
     <div class="section-body">
-      <p>A desktop-only (1440px) Airbnb search results page augmented with a neighborhood safety overlay for San Francisco. The product adds three safety features on top of the existing Airbnb search results UI: a safety-tier filter (Very Safe / Safe / Average / All), a map heatmap (green → yellow → red by neighborhood), and a listing card safety badge (letter grade A–D), plus an inline expandable safety detail drawer.</p>
-      <p>All safety data is hardcoded mock data — no API calls. The prototype is fully interactive: selecting a safety tier updates the visible listing cards and activates the corresponding heatmap zones. Success means a traveler can instantly assess the safety profile of any San Francisco neighborhood and make a booking decision with that context in view, without ever leaving the search results page.</p>
+      <p>Audible's browse navigation surfaces curated "Popular Lists" collections that let listeners discover audiobooks by editorial curation (Bestsellers, New Releases, etc.). The product requires adding a dedicated <strong>Narrators</strong> entry to the Popular Lists section — mirroring the existing Authors page — so listeners who want to find audiobooks by a specific narrator's voice, style, or specialty can do so from the top-level navigation.</p>
+      <p>The prototype will demonstrate: (a) the nav edit (Series → Narrators in Popular Lists) and (b) a fully functional Narrators browse page with search and filter capability, built 1:1 to the Audible Authors page layout and design system.</p>
     </div>
   </div>
 
@@ -119,60 +86,29 @@
     <div class="section-header"><div class="section-num">2</div><div class="section-title">Problem Statements</div></div>
     <div class="section-body">
       <div class="callout-prob">
-        <div class="callout-label">Core Problem</div>
-        Travelers booking in unfamiliar cities — specifically San Francisco — have no neighborhood safety context at the point of decision. The Airbnb search results page shows price, photos, ratings, and amenities but zero information about the surrounding neighborhood's safety profile.
+        <div class="callout-label">Primary Problem</div>
+        There is no "Narrators" entry in the Popular Lists section of the Browse mega-menu. Listeners who want to browse by narrator's voice or specialty have no navigation path. The client's described nav includes: Bestsellers | Coming Soon | New Releases | Best of the Year | Best of #BookTok | <strong>Series</strong> | Authors | Editors' Picks. "Series" will be replaced by "Narrators."
       </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">Problem 1 — No safety filter in the filter bar</div>
-        The existing filter row (Filters button + type pills: Any / Home / Experiences / Services) contains no mechanism to narrow results by safety tier. Travelers cannot isolate listings in Very Safe or Safe neighborhoods.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">Problem 2 — Map panel has no safety heatmap</div>
-        The map panel (~657px wide, sticky) shows property price markers on a base map but no overlay communicating relative neighborhood safety. The entire visual plane of the map is currently safety-blind.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">Problem 3 — No safety signal on listing cards</div>
-        Each listing card (307×398px) shows a photo, title, badge, description, star rating, and price. There is no visual indicator — badge, color, or label — communicating the safety grade of the neighborhood the listing is in.
-      </div>
-
-      <div class="callout-prob">
-        <div class="callout-label">Problem 4 — No inline neighborhood safety detail</div>
-        Clicking a listing navigates away to a full listing detail page. There is no lightweight mechanism to surface neighborhood-level safety details inline within the search results page.
-      </div>
-
       <div class="callout-note">
-        <div class="callout-label">WCAG Contrast Audit</div>
-        Zero failures. All tested text-on-background pairs PASS WCAG AA. Full audit: docs/design-references/airbnb-wcag-audit.json.
+        <div class="callout-label">Nav A/B Discrepancy — Noted</div>
+        The live Browse nav (logged-out state, screenshot below) shows only: Bestsellers, Coming Soon, New Releases, Best of the Year, Best of #BookTok — without Series, Authors, or Editors' Picks. This differs from the client's described nav. Likely an A/B test or login-state variant. The prototype uses the client's described nav structure as source of truth.
       </div>
 
-      <!-- ANNOTATED SCREENSHOT -->
       <div class="screenshot-wrap">
-        <div class="screenshot-caption">Airbnb search results — desktop 1440px — problems annotated</div>
+        <div class="screenshot-caption">Browse nav open — live page (logged-out) — Popular Lists missing Series, Authors, Narrators</div>
         <div class="annotated-img">
-          <img src="../design-references/airbnb-com-desktop-1440.png" alt="Airbnb search results page at 1440px desktop — showing absence of safety features" />
-          <!-- Problem 1: No safety filter in header filter row -->
-          <div class="annotation-box" style="top: 0%; left: 0%; width: 100%; height: 3.11%;">
-            <span class="annotation-label">P1 — No safety filter in filter bar</span>
-          </div>
-          <!-- Problem 2: Map panel — no heatmap overlay -->
-          <div class="annotation-box" style="top: 3.96%; left: 51%; width: 45.67%; height: 14.09%;">
-            <span class="annotation-label">P2 — Map panel — no safety heatmap overlay</span>
-          </div>
-          <!-- Problem 3: No safety badge on listing card -->
-          <div class="annotation-box" style="top: 4.60%; left: 3.33%; width: 21.33%; height: 8.21%;">
-            <span class="annotation-label">P3 — No safety badge on listing card</span>
+          <img src="../../docs/design-references/audible-browse-nav-open-live.png" alt="Audible Browse nav open showing Popular Lists column" />
+          <!-- Popular Lists column — Narrators missing. Coordinates from live extraction: navList[3] top:2.83% left:28.61% w:20.68% h:4.04% -->
+          <div class="annotation-box" style="top: 2.83%; left: 28.61%; width: 20.68%; height: 4.04%;">
+            <span class="annotation-label">Popular Lists — no Narrators entry</span>
           </div>
         </div>
       </div>
 
-      <!-- VIEWPORT SCREENSHOT -->
       <div class="screenshot-wrap">
-        <div class="screenshot-caption">Viewport at 1440×900 — initial load</div>
+        <div class="screenshot-caption">Desktop viewport (1440px) — initial load</div>
         <div class="annotated-img">
-          <img src="../design-references/airbnb-com-desktop-1440-viewport.png" alt="Airbnb search results page — viewport initial load at 1440px" />
+          <img src="../../docs/design-references/audible-authors-desktop-1440-viewport.png" alt="Audible Authors page desktop viewport" />
         </div>
       </div>
     </div>
@@ -182,16 +118,8 @@
   <div class="section">
     <div class="section-header"><div class="section-num">3</div><div class="section-title">Target Users</div></div>
     <div class="section-body">
-      <h4>Primary Persona</h4>
-      <p><strong>Traveler booking in an unfamiliar city.</strong> Specifically: someone planning a trip to San Francisco who has shortlisted several Airbnb listings in different neighborhoods and is in the final comparison phase.</p>
-      <table class="brief-table">
-        <tr><th>Attribute</th><th>Value</th></tr>
-        <tr><td>Technical fluency</td><td>Moderate to high — comfortable booking online</td></tr>
-        <tr><td>Emotional state at key task</td><td>Focused decision state — skimming 5–15 listings, looking for reasons to eliminate or shortlist</td></tr>
-        <tr><td>Primary anxiety</td><td>Mild-to-moderate concern about unfamiliar neighborhoods — solo travel, travel with children, or late-night arrivals</td></tr>
-        <tr><td>Price consciousness</td><td>High — actively comparing options</td></tr>
-        <tr><td>Current blocker</td><td>Cannot assess neighborhood safety without leaving Airbnb to check a separate source</td></tr>
-      </table>
+      <p><strong>Primary:</strong> Audiobook listener who is narrator-aware — someone who has a preferred narrator's voice and wants to find their complete catalog, or who is exploring audiobooks by voice style rather than by subject or title. May be a power user or a casual listener who had a great experience with one narrator. Context: desktop browser (primary), mobile (secondary). Technical fluency: comfortable with e-commerce browse UX. Emotional state: exploratory / discovery mode.</p>
+      <p><strong>Secondary:</strong> First-time Audible trial user arriving via the promo banner, browsing the catalog before committing to a subscription.</p>
     </div>
   </div>
 
@@ -201,35 +129,33 @@
     <div class="section-body">
       <table class="brief-table">
         <tr><th>Field</th><th>Value</th></tr>
-        <tr><td>Primary metric</td><td>A traveler can identify the safety grade of any visible SF listing without leaving the search results page, within one interaction</td></tr>
-        <tr><td>Secondary metrics</td><td>Selecting a safety filter tier reduces visible listings to only matching neighborhoods; map heatmap reflects the active filter state in real time</td></tr>
-        <tr><td>Proxy signals</td><td>Safety badge visible on every listing card; expandable drawer surfaces night walkability, crime type, and nearby hospitals/transit without page navigation; heatmap toggle reachable without scrolling</td></tr>
+        <tr><td>Primary metric</td><td>Prototype demonstrates nav edit (Series → Narrators) and Narrators browse page end-to-end</td></tr>
+        <tr><td>Secondary metrics</td><td>Filter controls visible and usable (narrator name, genre specialty, voice style, language, most-listened); page matches Authors layout 1:1</td></tr>
+        <tr><td>Proxy signals</td><td>Stakeholder can identify Narrators entry in Popular Lists without assistance; filter panel is self-explanatory</td></tr>
       </table>
     </div>
   </div>
 
-  <!-- §5 Key Features & Scope -->
+  <!-- §5 Scope -->
   <div class="section">
     <div class="section-header"><div class="section-num">5</div><div class="section-title">Key Features &amp; Scope</div></div>
     <div class="section-body">
       <h4>In Scope</h4>
       <table class="brief-table">
         <tr><th>Screen / Feature</th><th>Description</th></tr>
-        <tr><td>Airbnb search results page (desktop 1440px)</td><td>Full existing page with safety overlay applied — search header, filter row, listings panel, and map panel all in scope</td></tr>
-        <tr><td>Safety tier filter <span class="pill pill-orange">★ DEFERRED</span></td><td>Segmented control or pill set: Very Safe / Safe / Average / All. Selecting a tier filters visible listing cards and activates map heatmap. Placement is CLIENT DEFERRED — designer applies judgment.</td></tr>
-        <tr><td>Map heatmap toggle</td><td>Floating toggle on the map panel, top-right corner near zoom/fullscreen controls. Toggles green → yellow → red neighborhood heatmap overlay on/off.</td></tr>
-        <tr><td>Safety badge on listing cards <span class="pill pill-orange">★ DEFERRED</span></td><td>Letter grade (A / B / C / D) shown on each card. Visual placement and style are CLIENT DEFERRED — designer applies judgment.</td></tr>
-        <tr><td>Inline expandable safety detail drawer</td><td>Clicking the safety badge on a card expands an inline drawer showing: night walkability, crime type, nearby hospitals, transit. Clicking again collapses it.</td></tr>
-        <tr><td>Hardcoded SF mock data</td><td>Safety grades pre-assigned by SF neighborhood (Pacific Heights = A, Nob Hill = A, Marina = B, Inner Sunset = B, Mission = C, SoMa = C, Tenderloin = D, Civic Center = D). Baked into HTML. No API calls.</td></tr>
+        <tr><td>Browse nav edit</td><td>Replace "Series" with "Narrators" in the Popular Lists section of the Browse mega-menu panel</td></tr>
+        <tr><td>Narrators browse page</td><td>New page mirroring Audible Authors layout: promo banner, nav header, chip filter row, audiobook list — with "Narrators" as heading and narrator-specific metadata</td></tr>
+        <tr><td>Filter/search bar</td><td>Narrator-specific filters: narrator name (text search), genre specialty (chips/dropdown), voice style (chips/dropdown), language (chips/dropdown), most-listened (sort option)</td></tr>
+        <tr><td>Desktop layout</td><td>1440px viewport, three-column list item layout</td></tr>
+        <tr><td>Mobile layout</td><td>390px viewport, responsive single-column layout</td></tr>
       </table>
       <h4>Out of Scope</h4>
       <table class="brief-table">
         <tr><th>Item</th><th>Reason</th></tr>
-        <tr><td>Mobile (390px)</td><td>Client confirmed desktop-only; mobile explicitly excluded</td></tr>
-        <tr><td>Tablet (768px)</td><td>Client confirmed desktop-only</td></tr>
-        <tr><td>Full listing detail page</td><td>Client confirmed out of scope</td></tr>
-        <tr><td>Live safety data API</td><td>Client confirmed hardcoded mock data; no API integration</td></tr>
-        <tr><td>User authentication / saved preferences</td><td>Not in scope for this prototype</td></tr>
+        <tr><td>Live backend / real narrator data</td><td>Prototype uses static representative data</td></tr>
+        <tr><td>Account / sign-in flow</td><td>Not part of this feature</td></tr>
+        <tr><td>Checkout / purchase flow</td><td>Not part of this feature</td></tr>
+        <tr><td>Authors page modifications</td><td>Reference only — not edited</td></tr>
       </table>
     </div>
   </div>
@@ -238,16 +164,11 @@
   <div class="section">
     <div class="section-header"><div class="section-num">6</div><div class="section-title">Constraints</div></div>
     <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Constraint</th><th>Value</th><th>Source</th></tr>
-        <tr><td>Device</td><td>Desktop only — 1440px. No responsive behavior required.</td><td>client-confirmed (Q2)</td></tr>
-        <tr><td>Data</td><td>Hardcoded mock data for SF neighborhoods. No external API calls.</td><td>client-confirmed (Q1)</td></tr>
-        <tr><td>Interactivity</td><td>Functional prototype — safety tier filter must update listings and activate heatmap.</td><td>client-confirmed (Q7)</td></tr>
-        <tr><td>Output format</td><td>Single self-contained HTML prototype file.</td><td>client-confirmed</td></tr>
-        <tr><td>Accessibility</td><td>WCAG AA for all text — match existing Airbnb standard. All Phase 0 pairs PASS.</td><td>extracted + brand standard</td></tr>
-        <tr><td>Fonts</td><td>"Airbnb Cereal VF", Circular, -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif. Self-hosted at a0.muscache.com.</td><td>url_extracted</td></tr>
-        <tr><td>Map</td><td>Static map image or placeholder acceptable. Live tile map not required.</td><td>inferred from hardcoded-data constraint</td></tr>
-      </table>
+      <p><strong>Output format:</strong> HTML prototype (static file)</p>
+      <p><strong>Device targets:</strong> Desktop 1440px + mobile 390px</p>
+      <p><strong>Accessibility:</strong> WCAG AA — 4.5:1 minimum contrast for normal text, 3:1 for large text. All extracted color pairs pass.</p>
+      <p><strong>Brand:</strong> Must use Audible's extracted design tokens exactly — no personal aesthetic changes to existing components.</p>
+      <p><strong>Font:</strong> "Audible Sans" is proprietary — prototype uses Arial as fallback.</p>
     </div>
   </div>
 
@@ -257,22 +178,33 @@
     <div class="section-body">
       <table class="brief-table">
         <tr><th>Reference</th><th>Draw from</th></tr>
-        <tr><td>Airbnb search results page (live)</td><td>Pixel-perfect emulation of the existing UI — all existing components must match the live page exactly. Safety overlay additions should feel native, not bolted-on.</td></tr>
-        <tr><td>Airbnb brand system</td><td>Existing colors, type scale, pill components, card structure — all confirmed from live extraction</td></tr>
-      </table>
-      <h4>Aesthetic Keywords Translated</h4>
-      <table class="brief-table">
-        <tr><th>Keyword</th><th>Pixel decision</th><th>Confirmed by</th></tr>
-        <tr><td>Native to Airbnb</td><td>New safety components use Airbnb's existing type scale, border-radius, and color conventions so they feel built-in, not appended</td><td>Asset extraction + client goal: augment, not replace</td></tr>
-        <tr><td>Informational clarity</td><td>Safety grades use a letter scale (A–D) — universally understood, scannable at card size</td><td>Client confirmation (Q5 deferred to designer)</td></tr>
-        <tr><td>Safety-legible color</td><td>Heatmap uses green → yellow → red — the universal semantic for safe → moderate → unsafe</td><td>Client confirmation (Q4)</td></tr>
+        <tr><td>Audible Authors page (live)</td><td>Complete layout, component structure, design tokens, interaction patterns — source of truth</td></tr>
+        <tr><td>audible-authors-desktop-1440-viewport.png</td><td>Desktop initial viewport reference</td></tr>
+        <tr><td>audible-authors-desktop-1440-full.png</td><td>Full-page list layout reference</td></tr>
+        <tr><td>audible-authors-mobile-390-full.png</td><td>Mobile layout reference</td></tr>
+        <tr><td>audible-browse-nav-open-live.png</td><td>Browse nav panel reference (A/B discrepancy noted)</td></tr>
       </table>
 
-      <!-- Reference screenshots -->
+      <h4>Aesthetic Keywords</h4>
+      <table class="brief-table">
+        <tr><th>Keyword</th><th>Pixel decision</th><th>Confirmed by</th></tr>
+        <tr><td>Match Audible Authors 1:1</td><td>All spacing, colors, typography, border-radius from getComputedStyle() — no approximations</td><td>url_extracted</td></tr>
+        <tr><td>Navy promotional accent</td><td>Promo banner: rgb(19, 19, 105) — #131369</td><td>url_extracted</td></tr>
+        <tr><td>Amber CTA</td><td>Primary button: rgb(255, 160, 0) — #ffa000</td><td>url_extracted</td></tr>
+        <tr><td>Blue link / active</td><td>Links: #0e5b9b; Active/selected: #1479cf</td><td>url_extracted</td></tr>
+      </table>
+
+      <h4>Reference Screenshots</h4>
       <div class="screenshot-wrap">
-        <div class="screenshot-caption">Airbnb home page — 1440px reference</div>
+        <div class="screenshot-caption">Authors page — desktop 1440px full page</div>
         <div class="annotated-img">
-          <img src="../design-references/airbnb-home-1440.png" alt="Airbnb home page at 1440px — visual reference" />
+          <img src="../../docs/design-references/audible-authors-desktop-1440-full.png" alt="Audible Authors page full desktop" />
+        </div>
+      </div>
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Authors page — mobile 390px full page</div>
+        <div class="annotated-img">
+          <img src="../../docs/design-references/audible-authors-mobile-390-full.png" alt="Audible Authors page full mobile" />
         </div>
       </div>
     </div>
@@ -282,104 +214,67 @@
   <div class="section">
     <div class="section-header"><div class="section-num">8</div><div class="section-title">Design System</div></div>
     <div class="section-body">
-
       <h4>Color Swatches</h4>
       <div class="swatch-row">
-        <div class="swatch">
-          <div class="swatch-block" style="background: #FF385C;"></div>
-          <div class="swatch-label">primary-brand #FF385C</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: #222222;"></div>
-          <div class="swatch-label">text-primary #222222</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: #6A6A6A;"></div>
-          <div class="swatch-label">text-secondary #6A6A6A</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: #FFFFFF; border: 1px solid #ccc;"></div>
-          <div class="swatch-label">bg-page #FFFFFF</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: #F8F8F8;"></div>
-          <div class="swatch-label">bg-header-light #F8F8F8</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: #DDDDDD;"></div>
-          <div class="swatch-label">border-default #DDDDDD</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: #F2F2F2;"></div>
-          <div class="swatch-label">bg-icon-btn #F2F2F2</div>
-        </div>
-        <div class="swatch">
-          <div class="swatch-block" style="background: linear-gradient(357.5deg, rgb(62,86,124), rgb(128,157,192));"></div>
-          <div class="swatch-label">guest-fav-badge gradient</div>
-        </div>
+        <div><div class="swatch" style="background:#131369;"><span class="swatch-label">#131369</span></div><div style="font-size:10px;margin-top:4px;">promo-navy</div></div>
+        <div><div class="swatch" style="background:#ffa000;"><span class="swatch-label" style="color:#000;">#ffa000</span></div><div style="font-size:10px;margin-top:4px;">cta-amber</div></div>
+        <div><div class="swatch" style="background:#ffb333;"><span class="swatch-label" style="color:#000;">#ffb333</span></div><div style="font-size:10px;margin-top:4px;">banner-cta</div></div>
+        <div><div class="swatch" style="background:#0e5b9b;"><span class="swatch-label">#0e5b9b</span></div><div style="font-size:10px;margin-top:4px;">link-blue</div></div>
+        <div><div class="swatch" style="background:#1479cf;"><span class="swatch-label">#1479cf</span></div><div style="font-size:10px;margin-top:4px;">brand-blue</div></div>
+        <div><div class="swatch" style="background:#010e19;"><span class="swatch-label">#010e19</span></div><div style="font-size:10px;margin-top:4px;">text-primary</div></div>
+        <div><div class="swatch" style="background:#061624;"><span class="swatch-label">#061624</span></div><div style="font-size:10px;margin-top:4px;">text-secondary</div></div>
+        <div><div class="swatch" style="background:#93accd; border:1px solid #ddd;"><span class="swatch-label" style="color:#000;">#93accd</span></div><div style="font-size:10px;margin-top:4px;">chip-border</div></div>
+        <div><div class="swatch" style="background:#e6f3ff; border:1px solid #ddd;"><span class="swatch-label" style="color:#000;">#e6f3ff</span></div><div style="font-size:10px;margin-top:4px;">chip-selected</div></div>
+        <div><div class="swatch" style="background:#ffffff; border:1px solid #ddd;"><span class="swatch-label" style="color:#000;">#ffffff</span></div><div style="font-size:10px;margin-top:4px;">body-bg</div></div>
       </div>
 
       <h4>Design Token Record</h4>
       <table class="brief-table">
         <tr><th>Category</th><th>Token</th><th>Value</th><th>Source</th><th>Confirmed</th></tr>
-        <tr><td>Color</td><td>primary-brand</td><td>#FF385C</td><td>url_extracted (logo link color)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>text-primary</td><td>#222222</td><td>url_extracted (body, header, card title)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>text-secondary</td><td>#6A6A6A</td><td>url_extracted (card description, strike price, inactive tab)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>bg-page</td><td>#FFFFFF</td><td>url_extracted (body background)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>bg-header-light</td><td>#F8F8F8</td><td>url_extracted (header gradient endpoint)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>bg-header-gradient</td><td>linear-gradient(rgb(255,255,255), rgb(248,248,248))</td><td>url_extracted (header background)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>border-default</td><td>#DDDDDD</td><td>url_extracted (inactive filter pill)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>border-active-pill</td><td>#222222</td><td>url_extracted (active/selected pill)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>bg-icon-button</td><td>#F2F2F2</td><td>url_extracted (globe + menu buttons)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>carousel-overlay</td><td>linear-gradient(rgba(0,0,0,0) 80%, rgba(0,0,0,0.25))</td><td>url_extracted (card photo bottom gradient)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>guest-fav-badge-bg</td><td>linear-gradient(357.5deg, rgb(62,86,124), rgb(128,157,192))</td><td>url_extracted (Guest Favorite badge)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Color</td><td>superhost-badge-bg</td><td>#222222</td><td>screenshot-estimated (Superhost badge background)</td><td>Partial — screenshot</td></tr>
-        <tr><td>Color</td><td>map-price-marker-bg</td><td>rgba(255,255,255,0.925)</td><td>url_extracted (map price pill background)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>font-family-base</td><td>"Airbnb Cereal VF", Circular, -apple-system, "system-ui", Roboto, "Helvetica Neue", sans-serif</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>results-count-heading</td><td>20px / 24px line-height / weight 600</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>body-default</td><td>14px / 20px line-height / weight 400</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>listing-title</td><td>14px / 18px line-height / weight 500</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>listing-description</td><td>14px / 20px line-height / weight 400 / #6A6A6A</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>price-text</td><td>15px / 19px line-height / weight 400 / #222222</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>strikethrough-price</td><td>15px / 19px line-height / weight 400 / #6A6A6A</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>map-price-marker</td><td>15px / weight 500 / #222222</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Typography</td><td>pill-tab</td><td>12px / 16px line-height / weight 400</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>header-height</td><td>151px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>search-form-h-padding</td><td>48px left and right</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>filter-pill-padding</td><td>8px 12px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>filter-pill-height</td><td>34px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>card-width</td><td>307px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>card-height</td><td>398px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>listings-panel-width</td><td>~734px</td><td>url_extracted (layout extraction)</td><td>Yes — layout extraction</td></tr>
-        <tr><td>Spacing</td><td>map-panel-width</td><td>~657px</td><td>url_extracted (layout extraction)</td><td>Yes — layout extraction</td></tr>
-        <tr><td>Spacing</td><td>heart-btn-size</td><td>32px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Spacing</td><td>globe-menu-btn-size</td><td>40px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Border/Radius</td><td>filter-pill-radius</td><td>24px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Border/Radius</td><td>icon-btn-radius</td><td>50%</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Border/Radius</td><td>card-inner-radius</td><td>20px</td><td>url_extracted (.cy5jw6o card container)</td><td>Yes — getComputedStyle</td></tr>
-        <tr><td>Border/Radius</td><td>map-price-marker-radius</td><td>4px</td><td>url_extracted</td><td>Yes — getComputedStyle</td></tr>
+        <tr><td>Color</td><td>promo-navy</td><td>#131369</td><td>url_extracted (shadow DOM)</td><td>yes</td></tr>
+        <tr><td>Color</td><td>cta-amber</td><td>#ffa000</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>banner-cta-amber</td><td>#ffb333</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>link-blue</td><td>#0e5b9b</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>brand-blue</td><td>#1479cf</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>text-primary</td><td>#010e19</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>text-secondary</td><td>#061624</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>chip-border</td><td>#93accd</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>chip-selected-bg</td><td>#e6f3ff</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>chip-selected-border</td><td>#1479cf</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>search-border</td><td>#7690b2</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Color</td><td>browse-text</td><td>#4a6687</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>font-family</td><td>"Audible Sans", Arial, sans-serif</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>heading-h1</td><td>48px / 700 / 52px line-height</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>book-title</td><td>20px / 400 / 26px line-height</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>metadata-small</td><td>13px / 400 / 19px line-height</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>body</td><td>14px / 400 / 20px line-height</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>nav-link / chip</td><td>16px / 400 / 24px line-height</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Typography</td><td>banner-title</td><td>18px / 700 / 26px line-height</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>promo-banner-height</td><td>54px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>nav-header-height</td><td>136px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>cover-image-size</td><td>232×232px rendered</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>content-max-width</td><td>1000px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Spacing</td><td>list-item-gutter</td><td>12px padding each side</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Radius</td><td>chip-radius</td><td>8px</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Radius</td><td>button-radius</td><td>9999px (pill)</td><td>url_extracted</td><td>yes</td></tr>
+        <tr><td>Radius</td><td>search-radius</td><td>2px</td><td>url_extracted</td><td>yes</td></tr>
       </table>
 
       <h4>Component Variant Record</h4>
       <table class="brief-table">
         <tr><th>Component</th><th>Figma Node ID</th><th>Variant Properties</th><th>Confirmed States</th><th>Unconfirmed States</th></tr>
-        <tr><td>Filter Pill</td><td>N/A</td><td>active (border #222222) / inactive (border #DDDDDD)</td><td>default, active/selected</td><td>hover (requires interaction)</td></tr>
-        <tr><td>Listing Card</td><td>N/A</td><td>with Guest Fav badge / with Superhost badge / no badge</td><td>default, photo carousel</td><td>hover highlight, saved state</td></tr>
-        <tr><td>Map Price Marker</td><td>N/A</td><td>default</td><td>default</td><td>selected/highlighted</td></tr>
-        <tr><td>Heart/Save Button</td><td>N/A</td><td>unsaved / saved</td><td>unsaved (default)</td><td>saved state</td></tr>
-        <tr><td>Globe/Menu Button</td><td>N/A</td><td>default</td><td>default</td><td>hover</td></tr>
-        <tr><td>Safety Filter (new) <span class="pill pill-orange">★ DEFERRED</span></td><td>N/A — new feature</td><td>Very Safe / Safe / Average / All</td><td>N/A — does not exist</td><td>All states — CLIENT DEFERRED</td></tr>
-        <tr><td>Safety Badge (new) <span class="pill pill-orange">★ DEFERRED</span></td><td>N/A — new feature</td><td>A / B / C / D grade</td><td>N/A — does not exist</td><td>All states — CLIENT DEFERRED</td></tr>
-        <tr><td>Heatmap Toggle (new)</td><td>N/A — new feature</td><td>heatmap-on / heatmap-off</td><td>N/A — does not exist</td><td>All states</td></tr>
-        <tr><td>Safety Detail Drawer (new)</td><td>N/A — new feature</td><td>collapsed / expanded</td><td>N/A — does not exist</td><td>All states</td></tr>
+        <tr><td>adbl-button (primary)</td><td>N/A</td><td>variant: primary; size: sm/md</td><td>resting (amber bg)</td><td>hover exact bg</td></tr>
+        <tr><td>adbl-chip</td><td>N/A</td><td>outline / selected</td><td>outline, selected</td><td>hover exact</td></tr>
+        <tr><td>adbl-nav-mega-menu</td><td>N/A</td><td>open / closed</td><td>open, closed</td><td>none</td></tr>
+        <tr><td>search input</td><td>N/A</td><td>resting / focus</td><td>resting</td><td>focus border</td></tr>
       </table>
 
       <h4>Active State Visual Record</h4>
       <table class="brief-table">
         <tr><th>Component</th><th>Active State Treatment</th><th>Source</th></tr>
-        <tr><td>Filter Pill (active/selected)</td><td>Border: 1px solid #DDDDDD → 1px solid #222222; bg #FFFFFF unchanged; text #222222 unchanged</td><td>url_extracted — anyPill vs homePill getComputedStyle</td></tr>
-        <tr><td>Nav Tab — Homes (active)</td><td>font-weight: 500; color: #222222</td><td>url_extracted</td></tr>
-        <tr><td>Nav Tab — Experiences/Services (inactive)</td><td>font-weight: 500; color: #6A6A6A</td><td>url_extracted</td></tr>
+        <tr><td>adbl-chip (selected)</td><td>bg: #e6f3ff; border: 2px solid #1479cf</td><td>url_extracted</td></tr>
+        <tr><td>Browse nav indicator</td><td>4px horizontal bar, #1479cf, below button text</td><td>url_extracted</td></tr>
+        <tr><td>Pagination current page</td><td>Plain span (not linked), no special background</td><td>url_extracted</td></tr>
       </table>
     </div>
   </div>
@@ -388,14 +283,13 @@
   <div class="section">
     <div class="section-header"><div class="section-num">9</div><div class="section-title">Brand Identity</div></div>
     <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Element</th><th>Value</th><th>Source</th></tr>
-        <tr><td>Logo</td><td>Airbnb Bélo mark + wordmark in #FF385C. Rendered as SVG inline.</td><td>url_extracted</td></tr>
-        <tr><td>Primary brand color</td><td>#FF385C — logo, selected state emphasis, primary CTA only</td><td>url_extracted</td></tr>
-        <tr><td>Primary typeface</td><td>Airbnb Cereal VF — self-hosted at a0.muscache.com</td><td>url_extracted (9 @font-face rules)</td></tr>
-        <tr><td>Voice</td><td>Warm, conversational, direct. Short labels. No jargon.</td><td>Airbnb brand + client-confirmed copy tone</td></tr>
-        <tr><td>Safety overlay brand rule</td><td>New safety components must feel native — same border-radius, type scale, and spacing as existing Airbnb UI</td><td>client-confirmed (augment, not replace)</td></tr>
-      </table>
+      <p><strong>Brand name:</strong> Audible (an Amazon company)</p>
+      <p><strong>Logo:</strong> Inline SVG, role="img", aria-label="audible, an amazon company", 140×55px, Audible wave mark + wordmark</p>
+      <p><strong>Primary font:</strong> "Audible Sans" (proprietary; fallback: Arial)</p>
+      <p><strong>Primary action color:</strong> Amber #ffa000 (Sign In, CTA buttons)</p>
+      <p><strong>Brand accent:</strong> Navy #131369 (promo banner)</p>
+      <p><strong>Link color:</strong> #0e5b9b</p>
+      <p><strong>Voice/tone:</strong> Clear, informative, discovery-focused</p>
     </div>
   </div>
 
@@ -403,26 +297,12 @@
   <div class="section">
     <div class="section-header"><div class="section-num">10</div><div class="section-title">Visual Design Language</div></div>
     <div class="section-body">
-      <h4>Surfaces and Tone</h4>
-      <p>The page is clean and minimal — white background (#FFFFFF), a subtle gradient header (white → #F8F8F8), and a light neutral (#F2F2F2) for icon button backgrounds. The visual tone is airy and functional. No decorative elements, no gradients in the content area.</p>
-
-      <h4>Color System</h4>
-      <p>Two-tier. Primary accent: <code>#FF385C</code> for brand and CTA moments only. Semantic blacks and grays (<code>#222222</code>, <code>#6A6A6A</code>, <code>#DDDDDD</code>) handle all UI hierarchy. New safety colors introduce a distinct semantic layer: green for Very Safe, yellow/amber for Safe, orange for Average, red for grade D — following traffic-light convention. These must not clash with #FF385C.</p>
-
-      <h4>Typography</h4>
-      <p>Single family — Airbnb Cereal VF at 12–20px across all text roles. No display type. Hierarchy established through weight (400 body, 500 titles/active tabs, 600 results count) and color (#222222 primary, #6A6A6A secondary). New safety components use the same type scale.</p>
-
-      <h4>Component Style</h4>
-      <p>Pill-shaped controls (24px radius) for filters. Cards with 20px inner radius. Icon buttons with 50% radius (circles). Borders are always 1px solid, never 2px+. Shadows absent from the main card surface — elevation communicated through the carousel overlay gradient on card photos only.</p>
-
-      <h4>Badges</h4>
-      <p>Guest Favorite uses a blue gradient (<code>linear-gradient(357.5deg, rgb(62,86,124), rgb(128,157,192))</code>); Superhost uses <code>#222222</code>. New safety letter-grade badges introduce a distinct color family — grade A in green, grade B in amber/yellow, grade C in orange, grade D in red — while maintaining the same pill shape and type conventions as existing badges.</p>
-
-      <h4>Motion</h4>
-      <p>The existing page uses <code>transition: all</code> on interactive elements (header, logo, listing card). New interactive components (safety filter, heatmap toggle, drawer expand/collapse) should use moderate transitions (200–300ms ease) consistent with the existing page feel.</p>
-
-      <h4>Map Panel</h4>
-      <p>Currently shows price markers (15px / weight 500 / #222222 on rgba(255,255,255,0.925) pill background, 4px radius) over a base map. Heatmap overlay will be a color-coded zone layer beneath the price markers. Toggle control positioned in the top-right corner near zoom/fullscreen buttons.</p>
+      <p><strong>Surface and tone:</strong> Clean white page background (#ffffff). Light, editorial feel. Content-forward layout with generous whitespace between list items (~20px margin + 1px divider). No decorative backgrounds or gradients in the main content area.</p>
+      <p><strong>Color system:</strong> Two accent surfaces — (1) navy promo banner at top (#131369) with white text, (2) amber CTA buttons (#ffa000) on white background. Link blue (#0e5b9b) for all interactive text links. Brand blue (#1479cf) for active/selected states and the Browse indicator bar. Secondary text (#061624) for metadata labels.</p>
+      <p><strong>Typography:</strong> Single typeface — "Audible Sans" (Arial fallback). Scale: H1 48px/700, book titles 20px/400, nav/chip labels 16px/400, metadata 13px/400, body text 14px/400, banner title 18px/700. No serif, no display face.</p>
+      <p><strong>Components:</strong> Web component architecture (adbl-* elements). All interactive elements use shadow DOM. Chips: 8px radius, 2px border. Buttons: 9999px radius (pill). Cover art: 232×232px square. List items: full-width rows separated by 1px rgba dividers.</p>
+      <p><strong>Motion:</strong> No scroll-driven animation. No page transitions. Hover states instantaneous. Browse nav panel open/close is the only significant state change on the page.</p>
+      <p><strong>Layout:</strong> Single content column (max-width 1000px, centered). Nav and promo banner full-width (1440px). Three-column list item grid: cover 4/12 (~232px) | metadata 7/12 (~448px) | price 3/12 (~232px).</p>
     </div>
   </div>
 
@@ -433,40 +313,25 @@
       <h4>Tone Descriptors</h4>
       <table class="brief-table">
         <tr><th>Adjective</th><th>Writing rule</th><th>Confirmed by</th></tr>
-        <tr><td>Direct</td><td>No qualifiers. "Very Safe" not "Considered Very Safe". "Night walkability: High" not "Generally considered safe for walking at night."</td><td>Airbnb brand voice + client intent</td></tr>
-        <tr><td>Scannable</td><td>Labels only at card scale — single words or short phrases. Full sentences only in expanded drawer.</td><td>Card space constraints (307px width)</td></tr>
-        <tr><td>Non-alarmist</td><td>Safety grades are neutral data signals, not editorial judgments. Avoid "dangerous", "sketchy", "risky". Prefer "Average" over "Below Average".</td><td>User trust requirement</td></tr>
+        <tr><td>Clear</td><td>Plain language, no jargon; labels match Audible conventions exactly</td><td>url_extracted verbatim copy</td></tr>
+        <tr><td>Informative</td><td>All metadata fields fully labeled: By:, Narrated by:, Length:, Release date:, Language:</td><td>url_extracted</td></tr>
+        <tr><td>Discovery-oriented</td><td>Page heading is a content category noun (Authors, Narrators)</td><td>client-confirmed pattern</td></tr>
       </table>
-
-      <h4>Locked Strings</h4>
+      <h4>Locked Strings (verbatim)</h4>
       <table class="brief-table">
-        <tr><th>String</th><th>Usage</th></tr>
-        <tr><td>Very Safe / Safe / Average / All</td><td>Safety tier filter labels</td></tr>
-        <tr><td>Safety Heatmap</td><td>Map toggle label (full) — "Heatmap" at smaller scale</td></tr>
-        <tr><td>Night Walkability / Crime Type / Nearby Hospitals / Transit</td><td>Safety detail drawer section labels</td></tr>
-        <tr><td>A / B / C / D</td><td>Safety badge letter grades</td></tr>
+        <tr><th>String</th><th>Value</th></tr>
+        <tr><td>New page heading</td><td>Narrators</td></tr>
+        <tr><td>New nav entry</td><td>Narrators (replaces "Series")</td></tr>
+        <tr><td>Results counter pattern</td><td>"1 - 20 of [N] results"</td></tr>
+        <tr><td>CTA button</td><td>Try Standard free</td></tr>
+        <tr><td>Promo title</td><td>Special Prime Offer</td></tr>
+        <tr><td>Promo description</td><td>2 months free with your first Audible trial</td></tr>
+        <tr><td>Promo CTA</td><td>Get this deal</td></tr>
+        <tr><td>Copyright</td><td>© Copyright 1997 - 2026 Audible Inc.</td></tr>
+        <tr><td>Search placeholder</td><td>Find your next great listen</td></tr>
       </table>
-
-      <h4>SF Mock Data (Locked)</h4>
-      <table class="brief-table">
-        <tr><th>Neighborhood</th><th>Grade</th><th>Tier</th></tr>
-        <tr><td>Pacific Heights</td><td>A</td><td>Very Safe</td></tr>
-        <tr><td>Nob Hill</td><td>A</td><td>Very Safe</td></tr>
-        <tr><td>Marina District</td><td>B</td><td>Safe</td></tr>
-        <tr><td>Inner Sunset</td><td>B</td><td>Safe</td></tr>
-        <tr><td>Mission District</td><td>C</td><td>Average</td></tr>
-        <tr><td>SoMa</td><td>C</td><td>Average</td></tr>
-        <tr><td>Tenderloin</td><td>D</td><td>—</td></tr>
-        <tr><td>Civic Center</td><td>D</td><td>—</td></tr>
-      </table>
-
       <h4>Terminology Rules</h4>
-      <ul>
-        <li>"Safety grade" not "safety score" or "safety rating"</li>
-        <li>"Neighborhood" not "area" or "zone"</li>
-        <li>"Night walkability" not "walkability at night"</li>
-        <li>All prices in USD with $ prefix, no decimal for round numbers</li>
-      </ul>
+      <p>"By:" (not "Author:") — "Narrated by:" (not "Narrator:") — "Length:" (not "Duration:")</p>
     </div>
   </div>
 
@@ -474,12 +339,9 @@
   <div class="section">
     <div class="section-header"><div class="section-num">12</div><div class="section-title">User Tasks</div></div>
     <div class="section-body">
-      <table class="brief-table">
-        <tr><th>Priority</th><th>Task</th></tr>
-        <tr><td><span class="pill pill-blue">Task 1 — Primary</span></td><td>User needs to determine the safety grade of any listing in the SF search results at a glance, without opening a new tab or page.</td></tr>
-        <tr><td><span class="pill pill-blue">Task 2</span></td><td>User needs to narrow the listing results to only Very Safe or Safe neighborhoods by applying a safety tier filter, so they can compare eligible listings side-by-side.</td></tr>
-        <tr><td><span class="pill pill-blue">Task 3</span></td><td>User needs to access neighborhood-level safety details — night walkability, crime type, nearby hospitals and transit — for a specific listing they are considering, without navigating away from the search results page.</td></tr>
-      </table>
+      <p><strong>1.</strong> User needs to find audiobooks associated with a specific narrator — from the global nav, user clicks Browse → Popular Lists → Narrators, lands on the Narrators page, and can browse or filter the list by narrator name.</p>
+      <p><strong>2.</strong> User needs to filter the Narrators list by preferred attributes — on the Narrators page, user applies one or more filters (narrator name, genre specialty, voice style, language, most-listened) to narrow the audiobook results.</p>
+      <p><strong>3.</strong> User needs to discover a new audiobook through narrator browse — user scans the Narrators page list, reads title/metadata/description for items, and clicks to the product detail page or starts a preview.</p>
     </div>
   </div>
 
@@ -487,31 +349,28 @@
   <div class="section">
     <div class="section-header"><div class="section-num">13</div><div class="section-title">Current Page State</div></div>
     <div class="section-body">
-      <h4>Header (sticky, z-index 10, height 151px)</h4>
-      <p>The header is <code>position: sticky; top: 0</code>. It contains: (1) a logo zone (Airbnb Bélo + wordmark, #FF385C, 102×80px clickable area) aligned left; (2) a centered search form (full-width at 1440px, horizontal padding 48px); (3) a right-aligned nav group with a globe icon button (40px circle, bg #F2F2F2) and a menu button (40px circle, bg #F2F2F2). Below the search form, a horizontal scrollable filter row contains: a "Filters" pill button (border #DDDDDD, 34px height, 24px radius) followed by type pills: Any (active — border #222222), Home, Experiences (with NEW badge), Services (with NEW badge). Header background: <code>linear-gradient(rgb(255,255,255), rgb(248,248,248))</code>.</p>
+      <p>The Audible Authors page serves as the reference and layout template for the new Narrators page. Current layout (top to bottom):</p>
+      <table class="brief-table">
+        <tr><th>Section</th><th>Height</th><th>Description</th></tr>
+        <tr><td>Promo banner</td><td>54px</td><td>Navy #131369 bg. "Special Prime Offer | 2 months free with your first Audible trial" + amber "Get this deal" button</td></tr>
+        <tr><td>Nav header</td><td>136px</td><td>White bg. Logo left. Utility nav (Help, English–USD, Sign In amber button) top-right. Browse mega-menu + search input bottom row. Nav NOT sticky.</td></tr>
+        <tr><td>Page header (h1)</td><td>52px</td><td>"Authors" — 48px/700 weight</td></tr>
+        <tr><td>Category chips</td><td>~116px</td><td>9 genre chips in 2 rows: Biographical Fiction, Women, Artists Architects & Photographers, Memoirs Diaries & Correspondence, Musician, Collections & Anthologies, Biographies, Writing & Publishing, Literary Fiction. 42px height, 8px radius, 2px border #93accd.</td></tr>
+        <tr><td>Audiobook list</td><td>~6617px</td><td>20 items per page. Each item: cover 232×232px | metadata (title h3 20px/blue, subtitle 14px, By:, Narrated by:, Length, Release date, Language, rating, description 13–14px) | price + "Try Standard free" amber button. 1px rgba divider between items.</td></tr>
+        <tr><td>Pagination</td><td>~40px</td><td>Show [20/30/40/50] items per page + page navigation. Results: "1 - 20 of 500 results"</td></tr>
+        <tr><td>Footer</td><td>120px</td><td>"© Copyright 1997 - 2026 Audible Inc." + links (About Audible, Careers, Conditions of Use, Privacy Notice, Interest-Based Ads, License, Cookies, Your ads privacy choices, United States (English))</td></tr>
+      </table>
 
-      <h4>Main Content Area (flex-row, 1440px width)</h4>
-      <p>The main content below the header is a horizontal flex row split into two columns:</p>
-      <p><strong>Left: Listings panel (~734px wide)</strong> — Opens with a results count heading (Over 1,000 homes in San Francisco, 20px / 24px / weight 600). Below it is a scrollable grid of listing cards. Each card is 307×398px with a 20px inner border-radius. Card anatomy: photo at top (~60% of card height), carousel dot indicators, heart/save button (32px circle, top-right of photo), optional badge (Guest Favorite with blue gradient, or Superhost with #222222 bg), listing title (14px / 18px / weight 500 / #222222), description line (14px / 20px / weight 400 / #6A6A6A), star rating + review count, price line (strikethrough original price in #6A6A6A, discounted price in #222222, both 15px / 19px). <strong>No safety information of any kind exists on the card.</strong></p>
-      <p><strong>Right: Map panel (~657px wide, sticky)</strong> — Shows a base map of San Francisco with price marker pills positioned over each listing's location. Each price marker: rgba(255,255,255,0.925) background, 4px radius, 15px / weight 500 price text. <strong>No heatmap overlay. No safety information of any kind.</strong></p>
-
-      <!-- Full page screenshot -->
       <div class="screenshot-wrap">
-        <div class="screenshot-caption">Airbnb search results — desktop 1440px — full page</div>
+        <div class="screenshot-caption">Authors page — desktop 1440px viewport — initial load</div>
         <div class="annotated-img">
-          <img src="../design-references/airbnb-com-desktop-1440.png" alt="Airbnb search results full page at 1440px" />
-          <!-- Problem 1 annotation -->
-          <div class="annotation-box" style="top: 0%; left: 0%; width: 100%; height: 3.11%;">
-            <span class="annotation-label">No safety filter in filter row</span>
-          </div>
-          <!-- Problem 2 annotation -->
-          <div class="annotation-box" style="top: 3.96%; left: 51%; width: 45.67%; height: 14.09%;">
-            <span class="annotation-label">No safety heatmap on map panel</span>
-          </div>
-          <!-- Problem 3 annotation -->
-          <div class="annotation-box" style="top: 4.60%; left: 3.33%; width: 21.33%; height: 8.21%;">
-            <span class="annotation-label">No safety badge on listing card</span>
-          </div>
+          <img src="../../docs/design-references/audible-authors-desktop-1440-viewport.png" alt="Audible Authors page desktop viewport initial load" />
+        </div>
+      </div>
+      <div class="screenshot-wrap">
+        <div class="screenshot-caption">Authors page — mobile 390px viewport</div>
+        <div class="annotated-img">
+          <img src="../../docs/design-references/audible-authors-mobile-390-viewport.png" alt="Audible Authors page mobile viewport" />
         </div>
       </div>
     </div>
@@ -523,25 +382,20 @@
     <div class="section-body">
       <table class="brief-table">
         <tr><th>Component</th><th>Observed States</th><th>Visual Treatment</th><th>Source</th></tr>
-        <tr><td>Filter Pill (inactive)</td><td>Default</td><td>1px solid #DDDDDD border; bg #FFFFFF; text #222222; 12px/400; 34px height; 24px radius</td><td>url_extracted</td></tr>
-        <tr><td>Filter Pill (active/selected)</td><td>Selected</td><td>1px solid #222222 border; bg #FFFFFF; text #222222; same size</td><td>url_extracted</td></tr>
-        <tr><td>Listing Card</td><td>Default</td><td>307×398px block; no border; 20px inner radius; no shadow on card surface</td><td>url_extracted</td></tr>
-        <tr><td>Card photo</td><td>Default</td><td>Photo fills top of card; carousel overlay: linear-gradient(rgba(0,0,0,0) 80%, rgba(0,0,0,0.25))</td><td>url_extracted</td></tr>
-        <tr><td>Heart/Save Button</td><td>Default (unsaved)</td><td>32px circle; border-radius 50%; color #222222; padding-top 2px</td><td>url_extracted</td></tr>
-        <tr><td>Globe Button</td><td>Default</td><td>40px circle; bg #F2F2F2; border-radius 50%; no border</td><td>url_extracted</td></tr>
-        <tr><td>Menu Button</td><td>Default</td><td>40px circle; bg #F2F2F2; border-radius 50%; no border</td><td>url_extracted</td></tr>
-        <tr><td>Map Price Marker</td><td>Default</td><td>rgba(255,255,255,0.925) bg; 4px radius; 15px/500 text</td><td>url_extracted</td></tr>
-        <tr><td>Nav Tab — Homes</td><td>Active</td><td>14px / weight 500 / #222222</td><td>url_extracted</td></tr>
-        <tr><td>Nav Tab — Experiences/Services</td><td>Inactive</td><td>14px / weight 500 / #6A6A6A</td><td>url_extracted</td></tr>
-        <tr><td>Header</td><td>Sticky scroll</td><td>position: sticky; top: 0; z-index: 10; height: 151px</td><td>url_extracted</td></tr>
+        <tr><td>adbl-chip (category chip)</td><td>Default (outline), Selected (filled)</td><td>Default: transparent bg, 2px solid #93accd, 8px radius. Selected: #e6f3ff bg, 2px solid #1479cf</td><td>url_extracted</td></tr>
+        <tr><td>adbl-button.primary (Sign In)</td><td>Resting</td><td>#ffa000 amber bg, #010e19 text, 9999px radius, 42px height, 8px 12px padding</td><td>url_extracted</td></tr>
+        <tr><td>adbl-button.sm.primary (Get this deal)</td><td>Resting</td><td>#ffb333 golden-yellow bg, #010e19 text, 9999px radius, 38px height, 8px padding</td><td>url_extracted</td></tr>
+        <tr><td>adbl-button (Try Standard free)</td><td>Resting</td><td>#ffa000 amber bg, #010e19 text, 9999px radius, 42px height</td><td>url_extracted</td></tr>
+        <tr><td>adbl-nav-mega-menu (Browse)</td><td>Closed, Open</td><td>Closed: panel hidden. Open: panel display:grid 320px height, white bg, indicator bar #1479cf 4px</td><td>url_extracted</td></tr>
+        <tr><td>search input</td><td>Resting</td><td>1px solid #7690b2, 2px radius, 40px height, white bg, 13px font, placeholder "Find your next great listen"</td><td>url_extracted</td></tr>
+        <tr><td>Book title link</td><td>Default, Hover</td><td>Default: #0e5b9b, no underline. Hover: underline (instantaneous)</td><td>url_extracted</td></tr>
+        <tr><td>Pagination current page</td><td>Current (not linked), Others (linked)</td><td>Current: plain span. Others: #0e5b9b link</td><td>url_extracted</td></tr>
       </table>
-
-      <h4>Active State Visual Treatments (Existing Only)</h4>
+      <h4>Active State Visual Treatments</h4>
       <table class="brief-table">
         <tr><th>Component</th><th>Active Treatment</th><th>Source</th></tr>
-        <tr><td>Filter Pill</td><td>Border 1px solid #DDDDDD → 1px solid #222222; bg and text color unchanged</td><td>url_extracted (anyPill vs homePill computed styles)</td></tr>
-        <tr><td>Nav Tab (Homes)</td><td>color: #222222; font-weight: 500</td><td>url_extracted</td></tr>
-        <tr><td>Nav Tab (Experiences/Services inactive)</td><td>color: #6A6A6A; font-weight: 500</td><td>url_extracted</td></tr>
+        <tr><td>Browse nav indicator</td><td>4px horizontal bar, #1479cf, directly below Browse button text</td><td>url_extracted</td></tr>
+        <tr><td>adbl-chip selected</td><td>#e6f3ff bg + 2px solid #1479cf border</td><td>url_extracted</td></tr>
       </table>
     </div>
   </div>
@@ -552,18 +406,12 @@
     <div class="section-body">
       <table class="brief-table">
         <tr><th>Field</th><th>Value</th><th>Source</th></tr>
-        <tr><td>Output format</td><td>Single self-contained HTML prototype file</td><td>client-confirmed (functional prototype)</td></tr>
-        <tr><td>Device targets</td><td>Desktop 1440px only</td><td>client-confirmed (Q2)</td></tr>
-        <tr><td>Accessibility</td><td>WCAG AA for all text — match existing Airbnb standard (all Phase 0 pairs PASS)</td><td>extracted + brand standard</td></tr>
-        <tr><td>Interactivity</td><td>Functional: safety tier filter updates listings + activates map heatmap</td><td>client-confirmed (Q7)</td></tr>
-        <tr><td>Data</td><td>Hardcoded SF mock data — no API</td><td>client-confirmed (Q1)</td></tr>
-        <tr><td>Map</td><td>Static map image or placeholder acceptable; live tile map not required</td><td>inferred from hardcoded-data constraint</td></tr>
+        <tr><td>Output format</td><td>HTML prototype</td><td>client-confirmed</td></tr>
+        <tr><td>Device targets</td><td>Desktop (1440px) + mobile (390px)</td><td>client-confirmed</td></tr>
+        <tr><td>Accessibility</td><td>WCAG AA — all extracted color pairs pass</td><td>url_extracted contrast audit</td></tr>
+        <tr><td>Reference page</td><td>Audible Authors page — layout template for Narrators page</td><td>client-confirmed</td></tr>
+        <tr><td>Engagement ID</td><td>audible_narrators_2026_04_27</td><td>assigned</td></tr>
       </table>
-
-      <div class="callout-sol">
-        <div class="callout-label">Ready for Designer Agent</div>
-        All P0 items confirmed. Two P1 items (safety filter placement Q3, safety badge placement Q5) are CLIENT DEFERRED — designer applies judgment. Brief is complete and handoff-ready.
-      </div>
     </div>
   </div>
 
